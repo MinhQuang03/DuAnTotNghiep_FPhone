@@ -1,0 +1,157 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width"/>
+    <title>@ViewBag.Title</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="~/Adminassets/images/logo/favicon.png">
+
+    <!-- page css -->
+    <link href="~/Adminassets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css" rel="stylesheet">
+
+    <!-- Core css -->
+    <link href="~/Adminassets/css/app.min.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="~/assets/images/logo/apple-touch-icon.png">
+    <link rel="shortcut icon" href="~/assets/images/logo/favicon.png">
+
+    <link rel="stylesheet" href="~/assets/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/assets/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="~/assets/css/materialdesignicons.min.css"/>
+    <link rel="stylesheet" href="~/assets/css/themify-icons.css"/>
+    <link rel="stylesheet" href="~/assets/css/prism.css"/>
+    <link rel="stylesheet" href="~/assets/css/app.css"/>
+
+   
+    <style>
+        .fixed-top {
+            position: fixed;
+            top: 30px;
+            background-color: #fff;
+            margin-bottom: 30px;
+            -webkit-box-shadow: 1px 3px 15px 0px rgba(0, 0, 0, 0.1);
+            -moz-box-shadow: 1px 3px 15px 0px rgba(0, 0, 0, 0.1);
+            box-shadow: 1px 3px 15px 0px rgba(0, 0, 0, 0.1);
+            padding: 15px 30px;
+            z-index: 1;
+        }
+
+        .loader-wrapper {
+            display: none;
+        }
+
+        .header .title {
+            line-height: 65px;
+            font-size: 20px;
+        }
+
+        .toc ul li>a {
+            color: #888da8;
+            font-weight: 500;
+            font-size: 15px;
+            padding: 10px 0px;
+            display: block;
+        }
+
+        .toc ul li>a:hover,
+        .toc ul li>a:focus,
+        .toc ul li>a.active {
+            text-decoration: none;
+            color: #515365;
+        }
+
+        ul {
+            list-style: none;
+            margin-bottom: auto;
+            padding-left: 0;
+        }
+
+        .font-weight-light {
+            font-weight: 300;
+        }
+
+        code {
+            color: #cd4945;
+        }
+
+        td.active {
+            background-color: #fafcff;
+        }
+
+        .wrapper {
+            max-width: 800px;
+        }
+
+        .syntaxhighlighter .toolbar {
+            display: none;
+        }
+
+        pre {
+            display: block;
+            padding: 20px;
+            margin: 0 0 10px;
+            font-size: 13px;
+            word-wrap: break-word;
+            color: #b1c8d4;
+            background-color: #313644;
+            border: 1px solid #313644;
+            border-radius: 4px;
+            white-space: normal;
+            word-wrap: break-word;
+        }
+
+        .opacity {
+            opacity: 0.6;
+        }
+    </style>
+
+</head>
+<body>
+<script src="~/assets/js/jquery.min.js"></script>
+<script src="~/assets/js/popper.min.js"></script>
+<script src="~/assets/js/bootstrap.js"></script>
+<script src="~/assets/js/prism.js"></script>
+
+<div class="app header-success-info">
+    <div class="layout">
+
+        <div class="header navbar">
+            <div class="header-container">
+                <div class="nav-logo">
+                    <a href="/admin/home">
+                        <img src="~/assets/images/logo/logo.png"/>
+                    </a>
+                </div>
+                <ul class="nav-right">
+                    <li>
+                        <span class="font-size-20 lh-3 p-r-20">Docs v1.0.0</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        @await Html.PartialAsync("_SideNavPartialView.cshtml");
+
+    </div>
+</div>
+
+<div>
+    <div class="page-container">
+        <div class="main-content">
+            <div class="container">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade in active" id="introduction">
+                                @RenderBody()
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
