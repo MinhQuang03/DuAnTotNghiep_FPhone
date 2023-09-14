@@ -1,0 +1,148 @@
+﻿@model IEnumerable<AppData.Models.PhoneDetaild>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdPhone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdDiscount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdMaterial)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdRom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdRam)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdOperatingSystem)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdBattery)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdSim)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdChipCPU)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdChipGPU)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdColor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdChargingport)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Weight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FrontCamera)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MainCamera)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Resolution)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Size)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                    @ViewBag.PhoneName[item.IdPhone]
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdDiscount)
+            </td>
+            <td>
+                    @ViewBag.MaterialName[item.IdMaterial]
+            </td>
+            <td>
+                    @ViewBag.RomName[item.IdRom]
+            </td>
+            <td>
+                    @ViewBag.RamName[item.IdRam]
+            </td>
+            <td>
+                    @ViewBag.OperatingSystemName[item.IdOperatingSystem]
+            </td>
+            <td>
+                    @ViewBag.BatteryName[item.IdBattery]
+            </td>
+            <td>
+                    @ViewBag.SimName[item.IdSim]
+            </td>
+            <td>
+                    @ViewBag.ChipCPUName[item.IdChipCPU]
+            </td>
+            <td>
+                    @ViewBag.ChipGPUName[item.IdChipGPU]
+            </td>
+            <td>
+                    @ViewBag.ColorName[item.IdColor]
+            </td>
+            <td>
+                    @ViewBag.ChargingportName[item.IdChargingport]
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Weight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FrontCamera)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MainCamera)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Resolution)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Size)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.Id }) 
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

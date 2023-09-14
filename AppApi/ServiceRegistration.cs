@@ -9,7 +9,7 @@ namespace AppApi
         {
             services.AddScoped<IAccountStaffRepository, AccountStaffRepository>();
             services.AddScoped<ISimRepository, SimRepository>();
-
+            services.AddScoped<IPhoneDetaildRepository, PhoneDetaildRepository>();
             services.AddScoped<IChargingportTypeRepository, ChargingportTypeRepository>();
             services.AddScoped<IChipCPURepository, ChipCPURepository>();
             services.AddScoped<IChipGPURepository, ChipGPURepository>();
