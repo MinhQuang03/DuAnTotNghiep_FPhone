@@ -16,6 +16,13 @@ namespace AppApi
             services.AddScoped<IColorRepository, ColorRepository>();
             services.AddScoped<IPhoneRepository, PhoneRepository>();
             services.AddScoped<IProductionCompanyRepository, ProductionCompanyRepository>();
+
+            services.AddScoped<IBatteryRepository, BatteryRepository>();
+            services.AddScoped<IMaterialRepository, MaterialRepository>();
+            services.AddScoped<IOpertingRepository, OperatingRepository>();
+            services.AddScoped<IRamRepository, RamRepository>();
+            services.AddScoped<IRomRepository, RomRepository>();
+            services.AddScoped<ISimRepository, SimRepository>();
         }
     }
 }

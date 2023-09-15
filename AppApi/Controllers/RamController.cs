@@ -1,51 +1,47 @@
 ﻿using AppData.IRepositories;
 using AppData.Models;
-using AppData.Repositories;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace AppApi.Controllers
 {
-    [Route("api/Sim")]
+    [Route("api/Ram")]
     [ApiController]
-    public class SimController : ControllerBase
+    public class RamController : ControllerBase
     {
-        private ISimRepository _simRepository;
-        public SimController(ISimRepository simRepository)
+        private IRamRepository _ramRepository;
+        public RamController(IRamRepository RamController)
         {
-            _simRepository = simRepository;
+            _ramRepository = RamController;
         }
-
-
         [HttpGet]
         public async Task<IActionResult> Get()
         {
 
-            var a = await _simRepository.GetAll();
+            var a = await _ramRepository.GetAll();
             return Ok(a);
         }
 
         [HttpGet("getById/{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var a = await _simRepository.GetById(id);
+            var a = await _ramRepository.GetById(id);
             return Ok(a);
         }
 
         // POST api/<ProductionCompanyController>
         [HttpPost("add")]
-        public async Task<IActionResult> Post(Sim obj)
+        public async Task<IActionResult> Post(Ram obj)
         {
-            var a = await _simRepository.Add(obj);
+            var a = await _ramRepository.Add(obj);
             return Ok(a);
         }
 
         // PUT api/<ProductionCompanyController>/5
         [HttpPut("update")]
-        public async Task<IActionResult> Put(Sim obj)
+        public async Task<IActionResult> Put(Ram obj)
         {
-            var a = await _simRepository.Update(obj);
+            var a = await _ramRepository.Update(obj);
             return Ok(a);
         }
 
@@ -53,7 +49,7 @@ namespace AppApi.Controllers
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            await _simRepository.Delete(id);
+            await _ramRepository.Delete(id);
             return Ok();
         }
     }
