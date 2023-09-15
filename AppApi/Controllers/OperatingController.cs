@@ -15,7 +15,7 @@ namespace AppApi.Controllers
         {
             _opertingRepository = OpertingRepository;
         }
-        [HttpGet]
+        [HttpGet("get")]
         public async Task<IActionResult> Get()
         {
 

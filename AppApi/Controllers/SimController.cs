@@ -18,7 +18,7 @@ namespace AppApi.Controllers
         }
 
 
-        [HttpGet]
+        [HttpGet("get")]
         public async Task<IActionResult> Get()
         {
 

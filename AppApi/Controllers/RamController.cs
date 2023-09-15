@@ -14,7 +14,7 @@ namespace AppApi.Controllers
         {
             _ramRepository = RamController;
         }
-        [HttpGet]
+        [HttpGet("get")]
         public async Task<IActionResult> Get()
         {
 

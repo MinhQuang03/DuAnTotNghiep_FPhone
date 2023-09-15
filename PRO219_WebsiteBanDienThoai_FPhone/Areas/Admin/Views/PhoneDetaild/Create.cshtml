@@ -13,14 +13,14 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+           @* <div class="form-group">
                 <label asp-for="Id" class="control-label"></label>
                 <input asp-for="Id" class="form-control" />
                 <span asp-validation-for="Id" class="text-danger"></span>
-            </div>
+            </div>*@
             <div class="form-group">
                 <label asp-for="IdPhone" class="control-label"></label>
-                <input asp-for="IdPhone" class="form-control" />
+                <select asp-for="IdPhone" asp-items="@ViewBag.IdPhone" class="form-control"></select>
                 <span asp-validation-for="IdPhone" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -30,52 +30,62 @@
             </div>
             <div class="form-group">
                 <label asp-for="IdMaterial" class="control-label"></label>
-                <input asp-for="IdMaterial" class="form-control" />
+                <select asp-for="IdMaterial" asp-items="@ViewBag.IdMaterial" class="form-control"></select>
+
                 <span asp-validation-for="IdMaterial" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="IdRom" class="control-label"></label>
-                <input asp-for="IdRom" class="form-control" />
+                <select asp-for="IdRom" asp-items="@ViewBag.IdRom" class="form-control"></select>
+
                 <span asp-validation-for="IdRom" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="IdRam" class="control-label"></label>
-                <input asp-for="IdRam" class="form-control" />
+                <select asp-for="IdRam" asp-items="@ViewBag.IdRam" class="form-control"></select>
+
                 <span asp-validation-for="IdRam" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="IdOperatingSystem" class="control-label"></label>
-                <input asp-for="IdOperatingSystem" class="form-control" />
+                <select asp-for="IdOperatingSystem" asp-items="@ViewBag.IdOperatingSystems" class="form-control"></select>
+
                 <span asp-validation-for="IdOperatingSystem" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="IdBattery" class="control-label"></label>
-                <input asp-for="IdBattery" class="form-control" />
+                <select asp-for="IdBattery" asp-items="@ViewBag.IdBattery" class="form-control"></select>
+
                 <span asp-validation-for="IdBattery" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="IdSim" class="control-label"></label>
-                <input asp-for="IdSim" class="form-control" />
+                <select asp-for="IdSim" asp-items="@ViewBag.IdSim" class="form-control"></select>
+
                 <span asp-validation-for="IdSim" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="IdChipCPU" class="control-label"></label>
-                <input asp-for="IdChipCPU" class="form-control" />
+                <select asp-for="IdChipCPU" asp-items="@ViewBag.IdChipCPUs" class="form-control"></select>
+
                 <span asp-validation-for="IdChipCPU" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="IdChipGPU" class="control-label"></label>
-                <input asp-for="IdChipGPU" class="form-control" />
+                <select asp-for="IdChipGPU" asp-items="@ViewBag.IdChipGPUs" class="form-control"></select>
+
                 <span asp-validation-for="IdChipGPU" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="IdColor" class="control-label"></label>
-                <input asp-for="IdColor" class="form-control" />
+                <select asp-for="IdColor" asp-items="@ViewBag.IdColor" class="form-control"></select>
+
                 <span asp-validation-for="IdColor" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="IdChargingport" class="control-label"></label>
-                <input asp-for="IdChargingport" class="form-control" />
+                <select asp-for="IdChargingport" asp-items="@ViewBag.IdChargingportType" class="form-control"></select>
+
                 <span asp-validation-for="IdChargingport" class="text-danger"></span>
             </div>
             <div class="form-group">
