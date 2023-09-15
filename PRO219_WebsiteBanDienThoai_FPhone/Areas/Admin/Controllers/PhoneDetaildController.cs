@@ -1,5 +1,6 @@
 ﻿using AppData.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Text;
 
@@ -43,42 +44,42 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
 
                 if (!materialName.ContainsKey(a.IdMaterial))
                 {
-                    var materialNameData = await _httpClient.GetStringAsync($"api/Phone/getById/{a.IdMaterial}");
+                    var materialNameData = await _httpClient.GetStringAsync($"api/Material/getById/{a.IdMaterial}");
                     var material = JsonConvert.DeserializeObject<Material>(materialNameData);
                     materialName.Add(a.IdMaterial, material.Name);
                 }
 
                 if (!ramName.ContainsKey(a.IdRam))
                 {
-                    var ramNameData = await _httpClient.GetStringAsync($"api/Phone/getById/{a.IdRam}");
+                    var ramNameData = await _httpClient.GetStringAsync($"api/Ram/getById/{a.IdRam}");
                     var ram = JsonConvert.DeserializeObject<Ram>(ramNameData);
                     ramName.Add(a.IdRam, ram.Name);
                 }
 
                 if (!romName.ContainsKey(a.IdRom))
                 {
-                    var romNameData = await _httpClient.GetStringAsync($"api/Phone/getById/{a.IdRom}");
+                    var romNameData = await _httpClient.GetStringAsync($"api/Rom/getById/{a.IdRom}");
                     var rom = JsonConvert.DeserializeObject<Rom>(romNameData);
                     romName.Add(a.IdRom, rom.Name);
                 }
 
                 if (!OperatingSystemName.ContainsKey(a.IdOperatingSystem))
                 {
-                    var OperatingSystemNameData = await _httpClient.GetStringAsync($"api/Phone/getById/{a.IdOperatingSystem}");
+                    var OperatingSystemNameData = await _httpClient.GetStringAsync($"api/Operating/getById/{a.IdOperatingSystem}");
                     var OperatingSystem = JsonConvert.DeserializeObject<OperatingSystems>(OperatingSystemNameData);
                     OperatingSystemName.Add(a.IdOperatingSystem, OperatingSystem.Name);
                 }
 
                 if (!batteryName.ContainsKey(a.IdBattery))
                 {
-                    var batteryNameData = await _httpClient.GetStringAsync($"api/Phone/getById/{a.IdBattery}");
+                    var batteryNameData = await _httpClient.GetStringAsync($"api/Battery/getById/{a.IdBattery}");
                     var battery = JsonConvert.DeserializeObject<Battery>(batteryNameData);
                     batteryName.Add(a.IdBattery, battery.Name);
                 }
 
                 if (!simName.ContainsKey(a.IdSim))
                 {
-                    var simNameData = await _httpClient.GetStringAsync($"api/Phone/getById/{a.IdSim}");
+                    var simNameData = await _httpClient.GetStringAsync($"api/Sim/getById/{a.IdSim}");
                     var sim = JsonConvert.DeserializeObject<Sim>(simNameData);
                     simName.Add(a.IdSim, sim.Name);
                 }
@@ -127,8 +128,52 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             return View(obj);
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var phoneNameData = await _httpClient.GetStringAsync("api/Phone/get");
+            List<Phone> phone = JsonConvert.DeserializeObject<List<Phone>>(phoneNameData);
+            ViewBag.IdPhone = new SelectList(phone, "Id", "PhoneName");
+
+            var materialNameData = await _httpClient.GetStringAsync("api/Material/get");
+            List<Material> material = JsonConvert.DeserializeObject<List<Material>>(materialNameData);
+            ViewBag.IdMaterial = new SelectList(material, "Id", "Name");
+
+            var ramName = await _httpClient.GetStringAsync("api/Ram/get");
+            List<Ram> ram = JsonConvert.DeserializeObject<List<Ram>>(ramName);
+            ViewBag.IdRam = new SelectList(ram, "Id", "Name");
+
+            var romName = await _httpClient.GetStringAsync("api/Rom/get");
+            List<Rom> rom = JsonConvert.DeserializeObject<List<Rom>>(romName);
+            ViewBag.IdRom = new SelectList(rom, "Id", "Name");
+
+            var OperatingSystemName = await _httpClient.GetStringAsync("api/Operating/get");
+            List<OperatingSystems> OperatingSystem = JsonConvert.DeserializeObject<List<OperatingSystems>>(OperatingSystemName);
+            ViewBag.IdOperatingSystems = new SelectList(OperatingSystem, "Id", "Name");
+
+            var batteryName = await _httpClient.GetStringAsync("api/Battery/get");
+            List<Battery> battery = JsonConvert.DeserializeObject<List<Battery>>(batteryName);
+            ViewBag.IdBattery = new SelectList(battery, "Id", "Name");
+
+            var simName = await _httpClient.GetStringAsync("api/Sim/get");
+            List<Sim> sim = JsonConvert.DeserializeObject<List<Sim>>(simName);
+            ViewBag.IdSim = new SelectList(sim, "Id", "Name");
+
+            var chipCPUName = await _httpClient.GetStringAsync("api/ChipCPUs/get");
+            List<ChipCPUs> chipCPU = JsonConvert.DeserializeObject<List<ChipCPUs>>(chipCPUName);
+            ViewBag.IdChipCPUs = new SelectList(chipCPU, "Id", "Name");
+
+            var chipGPUName = await _httpClient.GetStringAsync("api/ChipGPUs/get");
+            List<ChipGPUs> chipGPU = JsonConvert.DeserializeObject<List<ChipGPUs>>(chipGPUName);
+            ViewBag.IdChipGPUs = new SelectList(chipGPU, "Id", "Name");
+
+            var colorName = await _httpClient.GetStringAsync("api/Colors/get");
+            List<Color> color = JsonConvert.DeserializeObject<List<Color>>(colorName);
+            ViewBag.IdColor = new SelectList(color, "Id", "Name");
+
+            var chargingportName = await _httpClient.GetStringAsync("api/ChargingportType/get");
+            List<ChargingportType> chargingport = JsonConvert.DeserializeObject<List<ChargingportType>>(chargingportName);
+            ViewBag.IdChargingportType = new SelectList(chargingport, "Id", "Name");
+
             return View();
         }
 

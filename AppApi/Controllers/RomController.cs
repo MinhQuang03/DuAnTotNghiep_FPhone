@@ -15,7 +15,7 @@ namespace AppApi.Controllers
         {
             _romRepository = RomController;
         }
-        [HttpGet]
+        [HttpGet("get")]
         public async Task<IActionResult> Get()
         {
 

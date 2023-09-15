@@ -16,7 +16,7 @@ namespace AppApi.Controllers
             _batteryRepository = batteryRepository;
         }
 
-        [HttpGet]
+        [HttpGet("get")]
         public async Task<IActionResult> Get()
         {
 

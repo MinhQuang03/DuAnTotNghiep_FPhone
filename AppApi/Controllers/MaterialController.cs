@@ -15,7 +15,7 @@ namespace AppApi.Controllers
         {
             _materialRepository = materialRepository;
         }
-        [HttpGet]
+        [HttpGet("get")]
         public async Task<IActionResult> Get()
         {
 
