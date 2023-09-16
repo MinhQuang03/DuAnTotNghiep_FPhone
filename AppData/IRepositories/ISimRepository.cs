@@ -4,6 +4,11 @@ namespace AppData.IRepositories
 {
     public interface ISimRepository
     {
-        Task<bool> Create(Sim obj);
+        Task<Sim> Add(Sim obj);
+        Task<Sim> Update(Sim obj);
+        Task<List<Sim>> GetAll();
+        Task Delete(Guid id);
+
+        Task<Sim> GetById(Guid id);
     }
 }

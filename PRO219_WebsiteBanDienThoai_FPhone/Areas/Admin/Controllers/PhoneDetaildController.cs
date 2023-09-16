@@ -1,5 +1,6 @@
 ﻿using AppData.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Text;
 
@@ -19,11 +20,160 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         {
             var datajson = await _httpClient.GetStringAsync("api/PhoneDetaild/get");
             var obj = JsonConvert.DeserializeObject<List<PhoneDetaild>>(datajson);
+
+            var phoneName = new Dictionary<Guid, string>();
+            var materialName = new Dictionary<Guid, string>();
+            var ramName = new Dictionary<Guid, string>();
+            var romName = new Dictionary<Guid, string>();
+            var OperatingSystemName = new Dictionary<Guid, string>();
+            var batteryName = new Dictionary<Guid, string>();
+            var simName = new Dictionary<Guid, string>();
+            var chipCPUName = new Dictionary<Guid, string>();
+            var chipGPUName = new Dictionary<Guid, string>();
+            var colorName = new Dictionary<Guid, string>();
+            var chargingportName = new Dictionary<Guid, string>();
+
+            foreach (var a in obj)
+            {
+                if (!phoneName.ContainsKey(a.IdPhone))
+                {
+                    var phoneNameData = await _httpClient.GetStringAsync($"api/Phone/getById/{a.IdPhone}");
+                    var phone = JsonConvert.DeserializeObject<Phone>(phoneNameData);
+                    phoneName.Add(a.IdPhone, phone.PhoneName);
+                }
+
+                if (!materialName.ContainsKey(a.IdMaterial))
+                {
+                    var materialNameData = await _httpClient.GetStringAsync($"api/Material/getById/{a.IdMaterial}");
+                    var material = JsonConvert.DeserializeObject<Material>(materialNameData);
+                    materialName.Add(a.IdMaterial, material.Name);
+                }
+
+                if (!ramName.ContainsKey(a.IdRam))
+                {
+                    var ramNameData = await _httpClient.GetStringAsync($"api/Ram/getById/{a.IdRam}");
+                    var ram = JsonConvert.DeserializeObject<Ram>(ramNameData);
+                    ramName.Add(a.IdRam, ram.Name);
+                }
+
+                if (!romName.ContainsKey(a.IdRom))
+                {
+                    var romNameData = await _httpClient.GetStringAsync($"api/Rom/getById/{a.IdRom}");
+                    var rom = JsonConvert.DeserializeObject<Rom>(romNameData);
+                    romName.Add(a.IdRom, rom.Name);
+                }
+
+                if (!OperatingSystemName.ContainsKey(a.IdOperatingSystem))
+                {
+                    var OperatingSystemNameData = await _httpClient.GetStringAsync($"api/Operating/getById/{a.IdOperatingSystem}");
+                    var OperatingSystem = JsonConvert.DeserializeObject<OperatingSystems>(OperatingSystemNameData);
+                    OperatingSystemName.Add(a.IdOperatingSystem, OperatingSystem.Name);
+                }
+
+                if (!batteryName.ContainsKey(a.IdBattery))
+                {
+                    var batteryNameData = await _httpClient.GetStringAsync($"api/Battery/getById/{a.IdBattery}");
+                    var battery = JsonConvert.DeserializeObject<Battery>(batteryNameData);
+                    batteryName.Add(a.IdBattery, battery.Name);
+                }
+
+                if (!simName.ContainsKey(a.IdSim))
+                {
+                    var simNameData = await _httpClient.GetStringAsync($"api/Sim/getById/{a.IdSim}");
+                    var sim = JsonConvert.DeserializeObject<Sim>(simNameData);
+                    simName.Add(a.IdSim, sim.Name);
+                }
+
+                if (!chipCPUName.ContainsKey(a.IdChipCPU))
+                {
+                    var chipCPUNameData = await _httpClient.GetStringAsync($"api/ChipCPUs/getById/{a.IdChipCPU}");
+                    var chipCPU = JsonConvert.DeserializeObject<ChipCPUs>(chipCPUNameData);
+                    chipCPUName.Add(a.IdChipCPU, chipCPU.Name);
+                }
+
+                if (!chipGPUName.ContainsKey(a.IdChipGPU))
+                {
+                    var chipGPUNameData = await _httpClient.GetStringAsync($"api/ChipGPUs/getById/{a.IdChipGPU}");
+                    var chipGPU = JsonConvert.DeserializeObject<ChipCPUs>(chipGPUNameData);
+                    chipGPUName.Add(a.IdChipGPU, chipGPU.Name);
+                }
+
+                if (!colorName.ContainsKey(a.IdColor))
+                {
+                    var colorNameData = await _httpClient.GetStringAsync($"api/Colors/getById/{a.IdColor}");
+                    var color = JsonConvert.DeserializeObject<Color>(colorNameData);
+                    colorName.Add(a.IdColor, color.Name);
+                }
+
+                if (!chargingportName.ContainsKey(a.IdChargingport))
+                {
+                    var chargingportNameData = await _httpClient.GetStringAsync($"api/ChargingportType/getById/{a.IdChargingport}");
+                    var chargingport = JsonConvert.DeserializeObject<ChargingportType>(chargingportNameData);
+                    chargingportName.Add(a.IdChargingport, chargingport.Name);
+                }
+            }
+
+            ViewBag.PhoneName = phoneName;
+            ViewBag.MaterialName = materialName;
+            ViewBag.RamName = ramName;
+            ViewBag.RomName = romName;
+            ViewBag.OperatingSystemName = OperatingSystemName;
+            ViewBag.BatteryName = batteryName;
+            ViewBag.SimName = simName;
+            ViewBag.ChipCPUName = chipCPUName;
+            ViewBag.ChipGPUName = chipGPUName;
+            ViewBag.ColorName = colorName;
+            ViewBag.ChargingportName = chargingportName;
+
             return View(obj);
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var phoneNameData = await _httpClient.GetStringAsync("api/Phone/get");
+            List<Phone> phone = JsonConvert.DeserializeObject<List<Phone>>(phoneNameData);
+            ViewBag.IdPhone = new SelectList(phone, "Id", "PhoneName");
+
+            var materialNameData = await _httpClient.GetStringAsync("api/Material/get");
+            List<Material> material = JsonConvert.DeserializeObject<List<Material>>(materialNameData);
+            ViewBag.IdMaterial = new SelectList(material, "Id", "Name");
+
+            var ramName = await _httpClient.GetStringAsync("api/Ram/get");
+            List<Ram> ram = JsonConvert.DeserializeObject<List<Ram>>(ramName);
+            ViewBag.IdRam = new SelectList(ram, "Id", "Name");
+
+            var romName = await _httpClient.GetStringAsync("api/Rom/get");
+            List<Rom> rom = JsonConvert.DeserializeObject<List<Rom>>(romName);
+            ViewBag.IdRom = new SelectList(rom, "Id", "Name");
+
+            var OperatingSystemName = await _httpClient.GetStringAsync("api/Operating/get");
+            List<OperatingSystems> OperatingSystem = JsonConvert.DeserializeObject<List<OperatingSystems>>(OperatingSystemName);
+            ViewBag.IdOperatingSystems = new SelectList(OperatingSystem, "Id", "Name");
+
+            var batteryName = await _httpClient.GetStringAsync("api/Battery/get");
+            List<Battery> battery = JsonConvert.DeserializeObject<List<Battery>>(batteryName);
+            ViewBag.IdBattery = new SelectList(battery, "Id", "Name");
+
+            var simName = await _httpClient.GetStringAsync("api/Sim/get");
+            List<Sim> sim = JsonConvert.DeserializeObject<List<Sim>>(simName);
+            ViewBag.IdSim = new SelectList(sim, "Id", "Name");
+
+            var chipCPUName = await _httpClient.GetStringAsync("api/ChipCPUs/get");
+            List<ChipCPUs> chipCPU = JsonConvert.DeserializeObject<List<ChipCPUs>>(chipCPUName);
+            ViewBag.IdChipCPUs = new SelectList(chipCPU, "Id", "Name");
+
+            var chipGPUName = await _httpClient.GetStringAsync("api/ChipGPUs/get");
+            List<ChipGPUs> chipGPU = JsonConvert.DeserializeObject<List<ChipGPUs>>(chipGPUName);
+            ViewBag.IdChipGPUs = new SelectList(chipGPU, "Id", "Name");
+
+            var colorName = await _httpClient.GetStringAsync("api/Colors/get");
+            List<Color> color = JsonConvert.DeserializeObject<List<Color>>(colorName);
+            ViewBag.IdColor = new SelectList(color, "Id", "Name");
+
+            var chargingportName = await _httpClient.GetStringAsync("api/ChargingportType/get");
+            List<ChargingportType> chargingport = JsonConvert.DeserializeObject<List<ChargingportType>>(chargingportName);
+            ViewBag.IdChargingportType = new SelectList(chargingport, "Id", "Name");
+
             return View();
         }
 

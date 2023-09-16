@@ -1,0 +1,135 @@
+﻿@model AppData.Models.PhoneDetaild
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>PhoneDetaild</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+           @* <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>*@
+            <div class="form-group">
+                <label asp-for="IdPhone" class="control-label"></label>
+                <select asp-for="IdPhone" asp-items="@ViewBag.IdPhone" class="form-control"></select>
+                <span asp-validation-for="IdPhone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdDiscount" class="control-label"></label>
+                <input asp-for="IdDiscount" class="form-control" />
+                <span asp-validation-for="IdDiscount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdMaterial" class="control-label"></label>
+                <select asp-for="IdMaterial" asp-items="@ViewBag.IdMaterial" class="form-control"></select>
+
+                <span asp-validation-for="IdMaterial" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdRom" class="control-label"></label>
+                <select asp-for="IdRom" asp-items="@ViewBag.IdRom" class="form-control"></select>
+
+                <span asp-validation-for="IdRom" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdRam" class="control-label"></label>
+                <select asp-for="IdRam" asp-items="@ViewBag.IdRam" class="form-control"></select>
+
+                <span asp-validation-for="IdRam" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdOperatingSystem" class="control-label"></label>
+                <select asp-for="IdOperatingSystem" asp-items="@ViewBag.IdOperatingSystems" class="form-control"></select>
+
+                <span asp-validation-for="IdOperatingSystem" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdBattery" class="control-label"></label>
+                <select asp-for="IdBattery" asp-items="@ViewBag.IdBattery" class="form-control"></select>
+
+                <span asp-validation-for="IdBattery" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdSim" class="control-label"></label>
+                <select asp-for="IdSim" asp-items="@ViewBag.IdSim" class="form-control"></select>
+
+                <span asp-validation-for="IdSim" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdChipCPU" class="control-label"></label>
+                <select asp-for="IdChipCPU" asp-items="@ViewBag.IdChipCPUs" class="form-control"></select>
+
+                <span asp-validation-for="IdChipCPU" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdChipGPU" class="control-label"></label>
+                <select asp-for="IdChipGPU" asp-items="@ViewBag.IdChipGPUs" class="form-control"></select>
+
+                <span asp-validation-for="IdChipGPU" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdColor" class="control-label"></label>
+                <select asp-for="IdColor" asp-items="@ViewBag.IdColor" class="form-control"></select>
+
+                <span asp-validation-for="IdColor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdChargingport" class="control-label"></label>
+                <select asp-for="IdChargingport" asp-items="@ViewBag.IdChargingportType" class="form-control"></select>
+
+                <span asp-validation-for="IdChargingport" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Weight" class="control-label"></label>
+                <input asp-for="Weight" class="form-control" />
+                <span asp-validation-for="Weight" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FrontCamera" class="control-label"></label>
+                <input asp-for="FrontCamera" class="form-control" />
+                <span asp-validation-for="FrontCamera" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MainCamera" class="control-label"></label>
+                <input asp-for="MainCamera" class="form-control" />
+                <span asp-validation-for="MainCamera" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Resolution" class="control-label"></label>
+                <input asp-for="Resolution" class="form-control" />
+                <span asp-validation-for="Resolution" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Size" class="control-label"></label>
+                <input asp-for="Size" class="form-control" />
+                <span asp-validation-for="Size" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <input asp-for="Status" class="form-control" />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
