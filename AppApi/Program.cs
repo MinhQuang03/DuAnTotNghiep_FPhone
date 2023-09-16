@@ -21,9 +21,12 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<FPhoneDbContext>().AddDefaultTokenProviders();
 
 builder.Services.AddDbContext<FPhoneDbContext>(options => {
-
-    options.UseSqlServer(builder.Configuration.GetConnectionString("PRO219_WebsiteBanDienThoai"));
+    options.UseSqlServer(@"Data Source=MSI\SQLEXPRESS;Initial Catalog=PRO219_WebsiteBanDienThoai;Integrated Security=True;TrustServerCertificate=True");
 });
+
+
+
+
 
 ServiceRegistration.Configure(builder.Services);
 

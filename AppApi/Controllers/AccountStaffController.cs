@@ -1,6 +1,5 @@
 ﻿using AppData.IRepositories;
 using AppData.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -21,13 +20,13 @@ namespace AppApi.Controllers
         [HttpPost("SignUp")]
         public async Task<IActionResult> SignUp(SignUpModel signUpModel)
         {
-            var result =  _staffRepository.SignUpAsync(signUpModel);
-            if (result.Result.Succeeded)
+            var result = await _staffRepository.SignUpAsync(signUpModel);
+            if (result)
             {
-                return Ok(result.Result);
+                return Ok(result);
             }
 
-            return BadRequest(result.Result);
+            return BadRequest(result);
         }
 
         [HttpPost("SignIn")]
@@ -46,14 +45,6 @@ namespace AppApi.Controllers
             }
 
             return Ok(result);
-        }
-
-        [HttpGet("get-all-staff")]
-        [Authorize(Roles = "Admin")]
-        public async Task<List<ApplicationUser>> GetAll()
-        {
-            var result = await _staffRepository.GetAllAsync();
-            return result;
         }
 
     }
