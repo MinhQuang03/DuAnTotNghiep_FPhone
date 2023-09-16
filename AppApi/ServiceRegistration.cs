@@ -23,6 +23,7 @@ namespace AppApi
             services.AddScoped<IRamRepository, RamRepository>();
             services.AddScoped<IRomRepository, RomRepository>();
             services.AddScoped<ISimRepository, SimRepository>();
+            services.AddScoped<IImeiRepository, ImeiRepository>();
         }
     }
 }
