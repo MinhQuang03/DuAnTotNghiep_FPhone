@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppData.Migrations
 {
-    public partial class initdatabase : Migration
+    public partial class Fphone : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -22,7 +22,6 @@ namespace AppData.Migrations
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
                     Points = table.Column<int>(type: "int", nullable: true)
-
                 },
                 constraints: table =>
                 {
@@ -48,7 +47,7 @@ namespace AppData.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CitizenId = table.Column<int>(type: "int", nullable: true),
+                    CitizenId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -465,7 +464,7 @@ namespace AppData.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IdBill = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IdDiscount = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IdDiscount = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Number = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false)
@@ -483,8 +482,7 @@ namespace AppData.Migrations
                         name: "FK_BillDetails_Discount_IdDiscount",
                         column: x => x.IdDiscount,
                         principalTable: "Discount",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(

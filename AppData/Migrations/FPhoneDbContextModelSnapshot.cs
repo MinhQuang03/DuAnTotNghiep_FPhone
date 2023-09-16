@@ -59,7 +59,6 @@ namespace AppData.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Accounts");
-
                 });
 
             modelBuilder.Entity("AppData.Models.Address", b =>
@@ -104,8 +103,8 @@ namespace AppData.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("CitizenId")
-                        .HasColumnType("int");
+                    b.Property<string>("CitizenId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -233,7 +232,7 @@ namespace AppData.Migrations
                     b.Property<Guid>("IdBill")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("IdDiscount")
+                    b.Property<Guid?>("IdDiscount")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Number")
@@ -986,9 +985,7 @@ namespace AppData.Migrations
 
                     b.HasOne("AppData.Models.Discount", "Discounts")
                         .WithMany()
-                        .HasForeignKey("IdDiscount")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("IdDiscount");
 
                     b.Navigation("Bills");
 

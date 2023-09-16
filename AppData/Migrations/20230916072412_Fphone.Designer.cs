@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppData.Migrations
 {
     [DbContext(typeof(FPhoneDbContext))]
-    [Migration("20230828151644_init-database")]
-    partial class initdatabase
+    [Migration("20230916072412_Fphone")]
+    partial class Fphone
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -105,8 +105,8 @@ namespace AppData.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("CitizenId")
-                        .HasColumnType("int");
+                    b.Property<string>("CitizenId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -234,7 +234,7 @@ namespace AppData.Migrations
                     b.Property<Guid>("IdBill")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("IdDiscount")
+                    b.Property<Guid?>("IdDiscount")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Number")
@@ -987,9 +987,7 @@ namespace AppData.Migrations
 
                     b.HasOne("AppData.Models.Discount", "Discounts")
                         .WithMany()
-                        .HasForeignKey("IdDiscount")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("IdDiscount");
 
                     b.Navigation("Bills");
 
