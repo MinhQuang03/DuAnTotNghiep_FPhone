@@ -3,10 +3,10 @@
 @{
     ViewData["Title"] = "Accounts";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
-    List<string> role = ViewBag.Roles;
+   
 }
 
-@if (User.Identity.IsAuthenticated)
+@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
 {
     <h1>Accounts</h1>
 

@@ -94,7 +94,7 @@ namespace AppData.Repositories
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim("Id",model.Id),
-                    new Claim("UserName",model.UserName),
+                    new Claim(ClaimTypes.Name,model.UserName),
                     new Claim(ClaimTypes.Role,string.Join(",",role)),
                     new Claim("TokenId", Guid.NewGuid().ToString())
                 }),
