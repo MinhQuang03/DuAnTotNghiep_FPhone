@@ -1,11 +1,12 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Utilities
 {
     public class Utility
     {
-        private IHttpContextAccessor _contextAccessor;
+        private  IHttpContextAccessor _contextAccessor;
 
         public Utility(IHttpContextAccessor contextAccessor)
         {
@@ -24,5 +25,8 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Utilities
             var jwtToken = handler.ReadJwtToken(token);
             return jwtToken.Claims.ToList();
         }
+
+        
     }
+
 }

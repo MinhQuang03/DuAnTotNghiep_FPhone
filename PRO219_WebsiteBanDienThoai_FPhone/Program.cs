@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.Extensions.Options;
 using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,13 +10,19 @@ builder.Services.AddScoped(sp => new HttpClient()
 {
     BaseAddress = new Uri("https://localhost:7129/")
 });
-builder.Services.AddScoped<Utility>();
+
 builder.Services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options =>
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = "token";
+    options.DefaultSignInScheme = "token";
+    options.DefaultChallengeScheme = "token";
+})
+    .AddCookie("token",options =>
     {
-        options.LoginPath = "/Admin/Login"; // Trang đăng nhập
+        options.LoginPath = "/Admin/Login"; 
+        options.LogoutPath = "/Admin/Home/LogOut";
     });
 
 var app = builder.Build();

@@ -1,19 +1,22 @@
-﻿@{
+﻿
+@using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Utilities
+@{
     ViewData["Title"] = "_SideNavPartialView";
-    
-
 }
 
 <div class="side-nav">
     <div class="side-nav-inner">
         <ul class="side-nav-menu nav d-block">
             <li class="nav-item">
-                <a asp-area="Admin" asp-controller="Home" asp-action="Accounts">
-                    <span class="icon-holder">
-                        <i class="mdi mdi-bookmark-plus-outline text-primary"></i>
-                    </span>
-                    <span class="title">Accounts</span>
-                </a>
+                @if (UserClaim.HasRole(User,"Admin"))
+                {
+                    <a asp-area="Admin" asp-controller="Home" asp-action="Accounts">
+                        <span class="icon-holder">
+                            <i class="mdi mdi-bookmark-plus-outline text-primary"></i>
+                        </span>
+                        <span class="title">Accounts</span>
+                    </a>
+                }
             </li>
             <li class="nav-item">
                 <a asp-area="Admin" asp-controller="ChargingportType" asp-action="Index">
@@ -72,15 +75,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#source-credit" data-toggle="tab">
-                    <span class="icon-holder">
-                        <i class="mdi mdi-git icon-gradient-warning"></i>
-                    </span>
-                    <span class="title">Sources & Credits</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a asp-area="Admin" asp-action="SignOut" asp-controller="Home" methods="post" data-toggle="tab">
+                <a asp-area="Admin" asp-action="LogOut" asp-controller="Home">
                     <span class="icon-holder">
                         <i class="fa fa-sign-out text-danger"></i>
                     </span>
