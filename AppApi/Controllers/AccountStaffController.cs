@@ -43,9 +43,9 @@ public class AccountStaffController : ControllerBase
     }
      [HttpGet("get-all-staff")]
         //[Authorize(Roles = "Admin")]
-        public async Task<List<ApplicationUser>> GetAll()
-        {
-            var result = await _staffRepository.GetAllAsync();
-            return result;
-        }
+    public async Task<List<ApplicationUser>> GetAll()
+    {
+        var result = await _staffRepository.GetAllAsync();
+        return result;
+    }
 }

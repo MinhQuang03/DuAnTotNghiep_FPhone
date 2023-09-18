@@ -96,7 +96,6 @@ namespace AppData.Repositories
                     new Claim("Id",model.Id),
                     new Claim(ClaimTypes.Name,model.UserName),
                     new Claim(ClaimTypes.Role,string.Join(",",role)),
-                    new Claim("TokenId", Guid.NewGuid().ToString())
                 }),
                 Expires = DateTime.Now.AddHours(3),
                 SigningCredentials = new SigningCredentials(authenKey, SecurityAlgorithms.HmacSha512Signature)
