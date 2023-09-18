@@ -85,5 +85,28 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             return View();
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            var phoneNameData = await _httpClient.GetStringAsync("api/PhoneDetaild/get");
+            List<PhoneDetaild> phone = JsonConvert.DeserializeObject<List<PhoneDetaild>>(phoneNameData);
+            ViewBag.IdPhone = new SelectList(phone, "Id", "IdPhone");
+
+            var datajson = await _httpClient.GetStringAsync($"api/Imei/getById/{id}");
+            var obj = JsonConvert.DeserializeObject<Imei>(datajson);
+            return View(obj);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(Guid id, Imei obj)
+        {
+            var jsonData = JsonConvert.SerializeObject(obj);
+            HttpContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+            var response = await _httpClient.PutAsync("api/Imei/update", content);
+            return RedirectToAction("Index");
+        }
+
+
+
     }
 }
