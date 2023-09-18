@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,11 +9,13 @@ builder.Services.AddScoped(sp => new HttpClient()
 {
     BaseAddress = new Uri("https://localhost:7129/")
 });
+builder.Services.AddScoped<Utility>();
+builder.Services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/Admin"; // Trang đăng nhập
+        options.LoginPath = "/Admin/Login"; // Trang đăng nhập
     });
 
 var app = builder.Build();
@@ -30,7 +33,6 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
