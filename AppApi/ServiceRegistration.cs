@@ -1,5 +1,7 @@
 ﻿using AppData.IRepositories;
 using AppData.Repositories;
+using AppData.Services;
+using AppData.IServices;
 
 namespace AppApi
 {
@@ -10,6 +12,7 @@ namespace AppApi
             services.AddScoped<IAccountStaffRepository, AccountStaffRepository>();
             services.AddScoped<ISimRepository, SimRepository>();
             services.AddScoped<IPhoneDetaildRepository, PhoneDetaildRepository>();
+            services.AddScoped<IPhoneDetailService, PhoneDetailService>();
             services.AddScoped<IChargingportTypeRepository, ChargingportTypeRepository>();
             services.AddScoped<IChipCPURepository, ChipCPURepository>();
             services.AddScoped<IChipGPURepository, ChipGPURepository>();
