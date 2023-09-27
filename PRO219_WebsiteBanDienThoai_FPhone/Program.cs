@@ -14,14 +14,14 @@ builder.Services.AddScoped(sp => new HttpClient()
 builder.Services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = "token";
-    options.DefaultSignInScheme = "token";
-    options.DefaultChallengeScheme = "token";
-})
-    .AddCookie("token",options =>
     {
-        options.LoginPath = "/Admin/Login"; 
+        options.DefaultAuthenticateScheme = "token";
+        options.DefaultSignInScheme = "token";
+        options.DefaultChallengeScheme = "token";
+    })
+    .AddCookie("token", options =>
+    {
+        options.LoginPath = "/Admin/Login";
         options.LogoutPath = "/Admin/Home/LogOut";
     });
 
@@ -44,7 +44,7 @@ app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
         "areas",
-        "{area:exists}/{controller=LogIn}/{action=Index}/{id?}");
+        "{area:exists}/{controller=LogIn}/{action=Login}/{id?}");
     endpoints.MapControllerRoute(
         "default",
         "{controller=Home}/{action=Index}/{id?}");
