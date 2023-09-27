@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppData.Migrations
 {
-    public partial class Fphone : Migration
+    public partial class DATN2023 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

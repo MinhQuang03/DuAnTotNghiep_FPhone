@@ -1,4 +1,5 @@
 ﻿using AppData.IRepositories;
+using AppData.IServices;
 using AppData.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,42 +11,42 @@ namespace AppApi.Controllers
     [ApiController]
     public class PhoneDetaildController : ControllerBase
     {
-        private IPhoneDetaildRepository _phoneDetaildRepository;
-        public PhoneDetaildController(IPhoneDetaildRepository phoneDetaildRepository) 
+        private IPhoneDetailService _iIPhoneDetailService;
+        public PhoneDetaildController(IPhoneDetailService iIPhoneDetailService) 
         {
-            _phoneDetaildRepository = phoneDetaildRepository;
+            _iIPhoneDetailService = iIPhoneDetailService;
         }
         // GET: api/<PhoneDetaildController>
         [HttpGet("get")]
-        public async Task<IActionResult> GetAll()
+        public async Task<List<PhoneDetaild>> GetAll()
         {
-            var a = await _phoneDetaildRepository.GetAll();
-            return Ok(a);
+            var a = await _iIPhoneDetailService.GetPhoneDetailds();
+            return a;
         }
 
-        // GET api/<PhoneDetaildController>/5
-        [HttpGet("getById/{id}")]
-        public async Task<IActionResult> GetById(Guid id)
-        {
-            var a = await _phoneDetaildRepository.GetById(id);
-            return Ok(a);
-        }
+        //// GET api/<PhoneDetaildController>/5
+        //[HttpGet("getById/{id}")]
+        //public async Task<IActionResult> GetById(Guid id)
+        //{
+        //    var a = await _phoneDetaildRepository.GetById(id);
+        //    return Ok(a);
+        //}
 
-        // POST api/<PhoneDetaildController>
-        [HttpPost("add")]
-        public async Task<IActionResult> Post(PhoneDetaild obj)
-        {
-            var a = await _phoneDetaildRepository.Add(obj);
-            return Ok(a);
-        }
+        //// POST api/<PhoneDetaildController>
+        //[HttpPost("add")]
+        //public async Task<IActionResult> Post(PhoneDetaild obj)
+        //{
+        //    var a = await _phoneDetaildRepository.Add(obj);
+        //    return Ok(a);
+        //}
 
-        // PUT api/<PhoneDetaildController>/5
-        [HttpPut("update")]
-        public async Task<IActionResult> Put(PhoneDetaild obj)
-        {
-            var a = await _phoneDetaildRepository.Update(obj);
-            return Ok(a);
-        }
+        //// PUT api/<PhoneDetaildController>/5
+        //[HttpPut("update")]
+        //public async Task<IActionResult> Put(PhoneDetaild obj)
+        //{
+        //    var a = await _phoneDetaildRepository.Update(obj);
+        //    return Ok(a);
+        //}
 
     }
 }
