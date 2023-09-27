@@ -58,7 +58,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                     file.CopyTo(stream);
                 }
 
-                obj.Image = "~/img/" + fileName;
+                obj.Image = "/img/" + fileName;
             }
             var jsonData = JsonConvert.SerializeObject(obj);
             HttpContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
@@ -95,7 +95,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                     file.CopyTo(stream);
                 }
 
-                obj.Image = "~/img/" + fileName;
+                obj.Image = "/img/" + fileName;
             }
             var jsonData = JsonConvert.SerializeObject(obj);
             HttpContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
