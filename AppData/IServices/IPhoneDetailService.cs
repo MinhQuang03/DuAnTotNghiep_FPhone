@@ -9,6 +9,10 @@ namespace AppData.IServices
 {
     public interface IPhoneDetailService
     {
+        Task<PhoneDetaild> Add(PhoneDetaild obj);
+        Task<PhoneDetaild> Update(PhoneDetaild obj);
         public Task<List<PhoneDetaild>> GetPhoneDetailds();
+
+        Task<PhoneDetaild> GetById(Guid id);
     }
 }
