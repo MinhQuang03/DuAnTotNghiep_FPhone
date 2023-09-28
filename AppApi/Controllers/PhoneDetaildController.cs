@@ -24,29 +24,29 @@ namespace AppApi.Controllers
             return a;
         }
 
-        //// GET api/<PhoneDetaildController>/5
-        //[HttpGet("getById/{id}")]
-        //public async Task<IActionResult> GetById(Guid id)
-        //{
-        //    var a = await _phoneDetaildRepository.GetById(id);
-        //    return Ok(a);
-        //}
+        // GET api/<PhoneDetaildController>/5
+        [HttpGet("getById/{id}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var a = await _iIPhoneDetailService.GetById(id);
+            return Ok(a);
+        }
 
-        //// POST api/<PhoneDetaildController>
-        //[HttpPost("add")]
-        //public async Task<IActionResult> Post(PhoneDetaild obj)
-        //{
-        //    var a = await _phoneDetaildRepository.Add(obj);
-        //    return Ok(a);
-        //}
+        // POST api/<PhoneDetaildController>
+        [HttpPost("add")]
+        public async Task<IActionResult> Post(PhoneDetaild obj)
+        {
+            var a = await _iIPhoneDetailService.Add(obj);
+            return Ok(a);
+        }
 
-        //// PUT api/<PhoneDetaildController>/5
-        //[HttpPut("update")]
-        //public async Task<IActionResult> Put(PhoneDetaild obj)
-        //{
-        //    var a = await _phoneDetaildRepository.Update(obj);
-        //    return Ok(a);
-        //}
+        // PUT api/<PhoneDetaildController>/5
+        [HttpPut("update")]
+        public async Task<IActionResult> Put(PhoneDetaild obj)
+        {
+            var a = await _iIPhoneDetailService.Update(obj);
+            return Ok(a);
+        }
 
     }
 }
