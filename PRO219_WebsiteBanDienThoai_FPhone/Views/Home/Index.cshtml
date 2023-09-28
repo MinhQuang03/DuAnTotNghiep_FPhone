@@ -1,4 +1,5 @@
-﻿@using AppData.Models
+﻿
+@using AppData.Models
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -603,14 +604,14 @@
     </div>
 
     <div class="row">
-        @foreach (PhoneDetaild item in Model)
+        @foreach (ProductView item in Model)
         {
             <div class="product category__products">
                 <div class="product__header">
-                    <img src="@item.Phones?.Image" alt="product">
+                    <img src="@item.Image" alt="product">
                 </div>
                 <div class="product__footer">
-                    <h3>@item.Phones?.PhoneName</h3>
+                    <h3>@item.ProductName</h3>
                     <div class="rating">
                         <svg>
                             <use xlink:href="./images/sprite.svg#icon-star-full"></use>
@@ -628,11 +629,11 @@
                             <use xlink:href="./images/sprite.svg#icon-star-empty"></use>
                         </svg>
                     </div>
-                    <div class="product__price">
-                        <h4>@item.Price.ToString("C0")</h4>
+                    <div class="product__price mt-2">
+                            <h4 style="color:#da152b">@item.Price</h4>
                     </div>
                     <a href="#">
-                        <button type="submit" class="product__btn">Add To Cart</button>
+                        <button type="submit" class="product__btn" value="@item.IdProduct">Add To Cart</button>
                     </a>
                 </div>
                 <ul>

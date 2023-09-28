@@ -2,13 +2,7 @@
 using AppData.IRepositories;
 using AppData.IServices;
 using AppData.Models;
-using AppData.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AppData.Services
 {
