@@ -183,8 +183,8 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             try
             {
                 var jsonData = JsonConvert.SerializeObject(obj);
-                HttpContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-                var response = await _httpClient.PostAsync("api/PhoneDetaild/add", content);
+                //HttpContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+                var response = await _httpClient.PostAsJsonAsync("api/PhoneDetaild/add", obj);
                 if (response.IsSuccessStatusCode)
                 {
                     TempData["successMessage"] = "Them thanh cong";
@@ -197,7 +197,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                 return View();
             }
 
-            return View();
+            return View(obj);
         }
 
         [HttpGet]

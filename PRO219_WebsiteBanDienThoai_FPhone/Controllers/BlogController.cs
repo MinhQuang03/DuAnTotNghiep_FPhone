@@ -4,12 +4,10 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
 {
     public class BlogController : Controller
     {
-        Uri baseAddress = new Uri("https://localhost:7129/api");
         private readonly HttpClient _httpClient;
-        public BlogController()
+        public BlogController(HttpClient httpClient)
         {
-            _httpClient = new HttpClient();
-            _httpClient.BaseAddress = baseAddress;
+            _httpClient = httpClient;
         }
         public IActionResult Index()
         {

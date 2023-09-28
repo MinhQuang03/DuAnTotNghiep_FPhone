@@ -22,7 +22,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         {
             _client = client;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Login()    
         {
             var result = await _client.GetStringAsync("/api/AccountStaff/get-all-staff");
             var accounts = JsonConvert.DeserializeObject<List<ApplicationUser>>(result).Count;
@@ -58,7 +58,11 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                 HttpContext.Response.Cookies.Append("token", token, options);
                 return RedirectToAction("Index", "Home");
             }
-            return RedirectToAction("Index");
+            else
+            {
+                TempData["ErrorMessage"] = "Tài khoản hoặc mật khẩu không đúng.";
+                return View(model);
+            }
         }
     }
 }
