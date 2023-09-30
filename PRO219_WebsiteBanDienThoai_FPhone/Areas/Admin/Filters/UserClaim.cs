@@ -1,7 +1,6 @@
 ﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Utilities
+namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Filters
 {
     public static class UserClaim 
     {

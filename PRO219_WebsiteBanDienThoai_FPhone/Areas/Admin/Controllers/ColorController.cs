@@ -2,7 +2,6 @@
 using AppData.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Utilities;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers;
 

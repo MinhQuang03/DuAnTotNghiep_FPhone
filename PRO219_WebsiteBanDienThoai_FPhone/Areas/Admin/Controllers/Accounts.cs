@@ -1,35 +1,28 @@
 ﻿using AppData.Models;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Utilities;
-
-//using static PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Utilities.Utility;
-
+using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Filters;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers;
 
 [Area("Admin")]
-[AuthorizationFilter("Admin")]
-public class HomeController : Controller
+public class Accounts : Controller
 {
     private readonly HttpClient _client;
-    private IHttpContextAccessor _contextAccessor;
-   
-    public HomeController(HttpClient client, IHttpContextAccessor contextAccessor)
+
+    public Accounts(HttpClient client)
     {
         _client = client;
-        _contextAccessor = contextAccessor;
     }
-
 
     public IActionResult Index()
     {
         return View();
     }
 
-    public async Task<IActionResult> Accounts()
+    [AuthorizationFilter("Admin")]
+    public async Task<IActionResult> Account()  
     {
         var response = await _client.GetAsync("/api/AccountStaff/get-all-staff");
         if (response.IsSuccessStatusCode)

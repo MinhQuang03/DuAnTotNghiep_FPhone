@@ -1,14 +1,8 @@
 ﻿using AppData.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Build.Framework;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Utilities;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
-using System.Security.Principal;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using Newtonsoft.Json;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
@@ -56,7 +50,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                 var principal = new ClaimsPrincipal(identity);
                 await HttpContext.SignInAsync("token", principal);
                 HttpContext.Response.Cookies.Append("token", token, options);
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Accounts");
             }
             else
             {

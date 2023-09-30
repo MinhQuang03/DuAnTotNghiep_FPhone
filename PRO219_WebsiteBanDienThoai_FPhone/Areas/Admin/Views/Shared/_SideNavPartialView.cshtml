@@ -1,5 +1,4 @@
-﻿
-@using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Utilities
+﻿@using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Filters
 @{
     ViewData["Title"] = "_SideNavPartialView";
 }
@@ -10,7 +9,7 @@
             <li class="nav-item">
                 @if (UserClaim.HasRole(User,"Admin"))
                 {
-                    <a asp-area="Admin" asp-controller="Home" asp-action="Accounts">
+                    <a asp-area="Admin" asp-controller="Accounts" asp-action="Account">
                         <span class="icon-holder">
                             <i class="fa fa-users text-primary"></i>
                         </span>
@@ -123,7 +122,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a asp-area="Admin" asp-action="LogOut" asp-controller="Home">
+                <a asp-area="Admin" asp-action="LogOut" asp-controller="Accounts">
                     <span class="icon-holder">
                         <i class="fa fa-sign-out text-danger"></i>
                     </span>

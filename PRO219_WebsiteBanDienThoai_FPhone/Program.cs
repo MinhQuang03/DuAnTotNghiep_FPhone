@@ -1,6 +1,4 @@
-﻿using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Utilities;
-
-var builder = WebApplication.CreateBuilder(args);
+﻿var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

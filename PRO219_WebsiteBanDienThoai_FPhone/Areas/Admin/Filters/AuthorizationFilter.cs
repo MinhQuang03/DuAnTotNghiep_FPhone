@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Utilities
+namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Filters
 {
     public class AuthorizationFilter :Attribute, IActionFilter
     {
-        private string _role;
+        private readonly string _role;
         public AuthorizationFilter(string role)
         {
             _role = role;
@@ -28,7 +28,6 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Utilities
         {
 
         }
-
     }
 }
     
