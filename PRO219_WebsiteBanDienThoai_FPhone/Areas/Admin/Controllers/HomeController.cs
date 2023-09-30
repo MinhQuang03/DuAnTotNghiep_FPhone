@@ -1,5 +1,6 @@
 ﻿using AppData.Models;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Utilities;
@@ -10,18 +11,19 @@ using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Utilities;
 namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers;
 
 [Area("Admin")]
+[AuthorizationFilter("Admin")]
 public class HomeController : Controller
 {
     private readonly HttpClient _client;
     private IHttpContextAccessor _contextAccessor;
-
+   
     public HomeController(HttpClient client, IHttpContextAccessor contextAccessor)
     {
         _client = client;
         _contextAccessor = contextAccessor;
     }
 
-    [HttpGet]
+
     public IActionResult Index()
     {
         return View();

@@ -18,6 +18,7 @@ public class HomeController : Controller
         _client = client;
     }
 
+    
     public async Task<IActionResult> Index()
     {
         var datajson = await _client.GetStringAsync("api/PhoneDetaild/get");

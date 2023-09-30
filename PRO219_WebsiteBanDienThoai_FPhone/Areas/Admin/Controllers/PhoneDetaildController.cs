@@ -12,9 +12,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         public readonly HttpClient _httpClient;
         public PhoneDetaildController(HttpClient httpClient)
         {
-
             _httpClient = httpClient;
-
         }
         public async Task<IActionResult> Index()
         {

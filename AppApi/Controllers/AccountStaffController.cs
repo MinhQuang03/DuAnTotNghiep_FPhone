@@ -1,5 +1,7 @@
 ﻿using AppData.IRepositories;
 using AppData.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -19,6 +21,7 @@ public class AccountStaffController : ControllerBase
     }
 
     [HttpPost("SignUp")]
+
     public async Task<IActionResult> SignUp(SignUpModel signUpModel)
     {
         var result = _staffRepository.SignUpAsync(signUpModel);

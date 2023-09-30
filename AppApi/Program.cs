@@ -6,8 +6,6 @@ using AppData.FPhoneDbContexts;
 using AppData.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using AppData.IRepositories;
-using AppData.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
