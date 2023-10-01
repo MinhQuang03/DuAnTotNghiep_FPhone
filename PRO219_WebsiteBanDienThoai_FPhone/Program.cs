@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.Extensions.Options;
-using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Utilities;
-
-var builder = WebApplication.CreateBuilder(args);
+﻿var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -13,8 +9,10 @@ builder.Services.AddScoped(sp => new HttpClient()
 
 builder.Services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddAuthentication(options =>
     {
+     
         options.DefaultAuthenticateScheme = "token";
         options.DefaultSignInScheme = "token";
         options.DefaultChallengeScheme = "token";

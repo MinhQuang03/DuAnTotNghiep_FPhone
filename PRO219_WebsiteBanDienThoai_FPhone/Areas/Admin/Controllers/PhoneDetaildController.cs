@@ -12,9 +12,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         public readonly HttpClient _httpClient;
         public PhoneDetaildController(HttpClient httpClient)
         {
-
             _httpClient = httpClient;
-
         }
         public async Task<IActionResult> Index()
         {
@@ -182,8 +180,6 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         {
             try
             {
-                var jsonData = JsonConvert.SerializeObject(obj);
-                //HttpContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
                 var response = await _httpClient.PostAsJsonAsync("api/PhoneDetaild/add", obj);
                 if (response.IsSuccessStatusCode)
                 {

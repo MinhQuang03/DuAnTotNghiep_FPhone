@@ -1,8 +1,8 @@
 ﻿using System.Security.Claims;
 
-namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Utilities
+namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Filters
 {
-    public static class UserClaim
+    public static class UserClaim 
     {
         public static bool HasRole(ClaimsPrincipal User, string role)
         {
@@ -15,6 +15,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Utilities
             {
                 return true;
             }
+          
             return false;
         }
     }
