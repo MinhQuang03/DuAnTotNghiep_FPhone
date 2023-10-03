@@ -1,12 +1,10 @@
-﻿@using AppData.Models
-
-@{
+﻿@{
     ViewData["Title"] = "PhoneDetail";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 @foreach (ProductDetailView item in Model)
 {
-    <section class="section product-details__section">
+<section class="section product-details__section container">
     <div class="product-detail__container">
         <div class="product-detail__left">
             <div class="details__container--left">
@@ -31,7 +29,7 @@
                 <a class="add" href="#">
                     <span>
                         <svg>
-                            <use xlink:href="./images/sprite.svg#icon-cart-plus"></use>
+                            <use xlink:href="/images/sprite.svg#icon-cart-plus"></use>
                         </svg>
                     </span>
                     ADD TO CART
@@ -39,7 +37,7 @@
                 <a class="buy" href="#">
                     <span>
                         <svg>
-                            <use xlink:href="./images/sprite.svg#icon-credit-card"></use>
+                            <use xlink:href="/images/sprite.svg#icon-credit-card"></use>
                         </svg>
                     </span>
                     BUY NOW
@@ -56,19 +54,19 @@
                 <div class="product__review">
                     <div class="rating">
                         <svg>
-                            <use xlink:href="~./images/sprite.svg#icon-star-full"></use>
-                        </svg>
-                        <svg>
                             <use xlink:href="~/images/sprite.svg#icon-star-full"></use>
                         </svg>
                         <svg>
-                            <use xlink:href="~/images/sprite.svg#icon-star-full"></use>
+                            <use xlink:href="/images/sprite.svg#icon-star-full"></use>
                         </svg>
                         <svg>
-                            <use xlink:href="~/images/sprite.svg#icon-star-full"></use>
+                            <use xlink:href="/images/sprite.svg#icon-star-full"></use>
                         </svg>
                         <svg>
-                            <use xlink:href="~/images/sprite.svg#icon-star-empty"></use>
+                            <use xlink:href="/images/sprite.svg#icon-star-full"></use>
+                        </svg>
+                        <svg>
+                            <use xlink:href="/images/sprite.svg#icon-star-empty"></use>
                         </svg>
                     </div>
                     <a href="#" class="rating__quatity">3 reviews</a>
@@ -85,7 +83,7 @@
                             <div class="select__option">
                                 <label for="colors">Color</label>
                                 <select name="colors" id="colors" class="select-box">
-                                    @foreach (Color it in item.Color)
+                                    @foreach (var it in item.Color)
                                     {
                                         <option value="@it.Id">@it.Name</option>
                                     }
@@ -282,5 +280,5 @@
             </div>
         </div>
     </div>
-    </section>
+</section>
 }
