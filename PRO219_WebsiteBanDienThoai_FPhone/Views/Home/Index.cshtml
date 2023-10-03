@@ -633,7 +633,8 @@
                             <h4 style="color:#da152b">@item.Price</h4>
                     </div>
                     <a href="#">
-                        <button type="submit" class="product__btn" value="@item.IdProduct">Add To Cart</button>
+                            @Html.ActionLink("Add To Cart", "PhoneDetail","PhoneDetail", new { id=item.IdProduct} ,new {@class="product__btn", type="submit"})
+                     
                     </a>
                 </div>
                 <ul>

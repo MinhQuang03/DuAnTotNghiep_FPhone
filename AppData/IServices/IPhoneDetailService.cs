@@ -12,6 +12,7 @@ namespace AppData.IServices
         Task<PhoneDetaild> Add(PhoneDetaild obj);
         Task<PhoneDetaild> Update(PhoneDetaild obj);
         public Task<List<PhoneDetaild>> GetPhoneDetailds();
+        public Task<List<PhoneDetaild>> GetPhoneDetailds(Guid IdPhone);
 
         Task<PhoneDetaild> GetById(Guid id);
     }

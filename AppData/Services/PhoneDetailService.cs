@@ -10,12 +10,16 @@ namespace AppData.Services
     {
         private IPhoneDetaildRepository _iPhoneDetaildRepository;
         private IPhoneRepository _iPhoneRepository;
+        private IColorRepository _colorRepository;
+        private IProductionCompanyRepository _productionCompanyRepository;
         public readonly FPhoneDbContext _dbContext;
-        public PhoneDetailService(IPhoneDetaildRepository iPhoneDetaildRepository, IPhoneRepository phoneRepository)
+        public PhoneDetailService(IPhoneDetaildRepository iPhoneDetaildRepository, IPhoneRepository phoneRepository,FPhoneDbContext dbContext,IColorRepository colorRepository,IProductionCompanyRepository productionCompanyRepository) 
         {
             _iPhoneDetaildRepository = iPhoneDetaildRepository;
             _iPhoneRepository = phoneRepository;
-            _dbContext = new FPhoneDbContext();
+            _dbContext = dbContext;
+            _colorRepository = colorRepository;
+            _productionCompanyRepository = productionCompanyRepository;
         }
 
         public async Task<PhoneDetaild> Add(PhoneDetaild obj)
@@ -37,6 +41,18 @@ namespace AppData.Services
             {
                 phoneDetaild.Phones = await _iPhoneRepository.GetById(phoneDetaild.IdPhone);
                 // sau cần lấy thông tin khác thì add dependency repository vào rồi get tương tự
+            }
+            return results;
+        }
+        public async Task<List<PhoneDetaild>> GetPhoneDetailds(Guid IdPhone)
+        {
+            var results = await _iPhoneDetaildRepository.GetAll(IdPhone);
+            foreach (var phoneDetaild in results)
+            {
+                phoneDetaild.Phones = await _iPhoneRepository.GetById(phoneDetaild.IdPhone);
+                phoneDetaild.Colors = await _colorRepository.GetById(phoneDetaild.IdColor);
+                phoneDetaild.Phones.ProductionCompanies =
+                    await _productionCompanyRepository.GetById(phoneDetaild.Phones.IdProductionCompany);
             }
             return results;
         }

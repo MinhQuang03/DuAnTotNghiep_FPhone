@@ -36,6 +36,7 @@ namespace AppData.Repositories
             return await _dbContext.Phones.FirstOrDefaultAsync(p => p.Id == id);
         }
 
+
         public async Task<Phone> Update(Phone obj)
         {
             var a = await _dbContext.Phones.FindAsync(obj.Id);

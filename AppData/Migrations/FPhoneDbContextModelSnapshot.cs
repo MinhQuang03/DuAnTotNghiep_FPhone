@@ -451,9 +451,14 @@ namespace AppData.Migrations
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("PhoneDetaildId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("IdPhoneDetaild");
+
+                    b.HasIndex("PhoneDetaildId");
 
                     b.ToTable("ListImage");
                 });
@@ -1054,6 +1059,10 @@ namespace AppData.Migrations
                         .WithMany()
                         .HasForeignKey("IdPhoneDetaild");
 
+                    b.HasOne("AppData.Models.PhoneDetaild", null)
+                        .WithMany("Images")
+                        .HasForeignKey("PhoneDetaildId");
+
                     b.Navigation("PhoneDetailds");
                 });
 
@@ -1279,6 +1288,11 @@ namespace AppData.Migrations
             modelBuilder.Entity("AppData.Models.Account", b =>
                 {
                     b.Navigation("Carts");
+                });
+
+            modelBuilder.Entity("AppData.Models.PhoneDetaild", b =>
+                {
+                    b.Navigation("Images");
                 });
 #pragma warning restore 612, 618
         }

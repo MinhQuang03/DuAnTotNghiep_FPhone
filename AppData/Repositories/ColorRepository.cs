@@ -12,7 +12,7 @@ namespace AppData.Repositories
         {
             _dbContext = dbContext;
         }
-        public async Task<Color> Add(Color obj)
+        public async Task<Color?> Add(Color? obj)
         {
             await _dbContext.Colors.AddAsync(obj);
             await _dbContext.SaveChangesAsync();
@@ -26,12 +26,12 @@ namespace AppData.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<List<Color>> GetAll()
+        public async Task<List<Color?>> GetAll()
         {
             return await _dbContext.Colors.ToListAsync();
         }
 
-        public async Task<Color> GetById(Guid id)
+        public async Task<Color?> GetById(Guid id)
         {
             return await _dbContext.Colors.FirstOrDefaultAsync(p => p.Id == id);
         }
