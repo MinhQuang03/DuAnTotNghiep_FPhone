@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppData.Migrations
 {
     [DbContext(typeof(FPhoneDbContext))]
-    [Migration("20230919054105_DATN2023")]
-    partial class DATN2023
+    [Migration("20231001075212_FPhone")]
+    partial class FPhone
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -453,9 +453,14 @@ namespace AppData.Migrations
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("PhoneDetaildId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("IdPhoneDetaild");
+
+                    b.HasIndex("PhoneDetaildId");
 
                     b.ToTable("ListImage");
                 });
@@ -1056,6 +1061,10 @@ namespace AppData.Migrations
                         .WithMany()
                         .HasForeignKey("IdPhoneDetaild");
 
+                    b.HasOne("AppData.Models.PhoneDetaild", null)
+                        .WithMany("Images")
+                        .HasForeignKey("PhoneDetaildId");
+
                     b.Navigation("PhoneDetailds");
                 });
 
@@ -1281,6 +1290,11 @@ namespace AppData.Migrations
             modelBuilder.Entity("AppData.Models.Account", b =>
                 {
                     b.Navigation("Carts");
+                });
+
+            modelBuilder.Entity("AppData.Models.PhoneDetaild", b =>
+                {
+                    b.Navigation("Images");
                 });
 #pragma warning restore 612, 618
         }

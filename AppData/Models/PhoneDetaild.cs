@@ -41,6 +41,7 @@
         public decimal Price { get; set; }
 
         public int Status { get; set; }
+        public virtual List<ListImage> Images { get; set; }
 
         public virtual Ram? Rams { get; set; }
 

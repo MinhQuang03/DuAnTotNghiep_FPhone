@@ -34,7 +34,7 @@ namespace AppApi.Controllers
 
         // POST api/<ColorsController>
         [HttpPost("add")]
-        public async Task<IActionResult> Post(Color obj)
+        public async Task<IActionResult> Post(Color? obj)
         {
             var a = await _colorRepository.Add(obj);
             return Ok(a);

@@ -15,5 +15,6 @@ namespace AppData.IRepositories
         Task Delete(Guid id);
 
         Task<Phone> GetById(Guid id);
+          
     }
 }

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppData.Migrations
 {
-    public partial class DATN2023 : Migration
+    public partial class FPhone : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -730,7 +730,8 @@ namespace AppData.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IdPhoneDetaild = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    IdColor = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    IdColor = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    PhoneDetaildId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -738,6 +739,11 @@ namespace AppData.Migrations
                     table.ForeignKey(
                         name: "FK_ListImage_PhoneDetailds_IdPhoneDetaild",
                         column: x => x.IdPhoneDetaild,
+                        principalTable: "PhoneDetailds",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_ListImage_PhoneDetailds_PhoneDetaildId",
+                        column: x => x.PhoneDetaildId,
                         principalTable: "PhoneDetailds",
                         principalColumn: "Id");
                 });
@@ -854,6 +860,11 @@ namespace AppData.Migrations
                 name: "IX_ListImage_IdPhoneDetaild",
                 table: "ListImage",
                 column: "IdPhoneDetaild");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ListImage_PhoneDetaildId",
+                table: "ListImage",
+                column: "PhoneDetaildId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PhoneDetailds_IdBattery",

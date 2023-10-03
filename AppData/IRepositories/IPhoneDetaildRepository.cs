@@ -8,6 +8,7 @@ namespace AppData.IRepositories
         Task<PhoneDetaild> Update(PhoneDetaild obj);
 
         Task<List<PhoneDetaild>> GetAll();
+        Task<List<PhoneDetaild>> GetAll(Guid IdPhone);
 
         Task<PhoneDetaild> GetById(Guid id);
     }

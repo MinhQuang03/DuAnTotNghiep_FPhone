@@ -26,7 +26,7 @@ public class FPhoneDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<ChargingportType> ChargingportType { get; set; }
     public DbSet<ChipCPUs> ChipCPUs { get; set; }
     public DbSet<ChipGPUs> ChipGPUs { get; set; }
-    public DbSet<Color> Colors { get; set; }
+    public DbSet<Color?> Colors { get; set; }
     public DbSet<Discount> Discount { get; set; }
     public DbSet<Imei> Imei { get; set; }
     public DbSet<ListImage> ListImage { get; set; }

@@ -23,6 +23,12 @@ namespace AppApi.Controllers
             var a = await _iIPhoneDetailService.GetPhoneDetailds();
             return a;
         }
+        [HttpGet("get-detail/{id}")]
+        public async Task<List<PhoneDetaild>> GetAll(Guid id)
+        {
+            var a = await _iIPhoneDetailService.GetPhoneDetailds(id);
+            return a;
+        }
 
         // GET api/<PhoneDetaildController>/5
         [HttpGet("getById/{id}")]

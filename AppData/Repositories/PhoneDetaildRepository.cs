@@ -23,6 +23,10 @@ namespace AppData.Repositories
         {
             return await _dbContext.PhoneDetailds.ToListAsync();
         }
+        public async Task<List<PhoneDetaild>> GetAll(Guid IdPhone)
+        {
+            return await _dbContext.PhoneDetailds.Where(c =>c.IdPhone == IdPhone).ToListAsync();
+        }
 
         public async Task<PhoneDetaild> GetById(Guid id)
         {
