@@ -235,6 +235,10 @@ namespace AppData.Migrations
                     b.Property<Guid?>("IdDiscount")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("NameImei")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Number")
                         .HasColumnType("int");
 
@@ -402,7 +406,7 @@ namespace AppData.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("TimeForm")
+                    b.Property<DateTime?>("TimeForm")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("TimeTo")
@@ -738,6 +742,53 @@ namespace AppData.Migrations
                     b.ToTable("Rom");
                 });
 
+            modelBuilder.Entity("AppData.Models.SalePhoneDetaild", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("IdPhoneDetaild")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("IdSales")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdPhoneDetaild");
+
+                    b.HasIndex("IdSales");
+
+                    b.ToTable("SalePhoneDetailds");
+                });
+
+            modelBuilder.Entity("AppData.Models.Sales", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("ReducedAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("TimeForm")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("TimeTo")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Sales");
+                });
+
             modelBuilder.Entity("AppData.Models.Sim", b =>
                 {
                     b.Property<Guid>("Id")
@@ -765,11 +816,13 @@ namespace AppData.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("Time")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -792,7 +845,7 @@ namespace AppData.Migrations
                     b.Property<Guid>("IdPhone")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("Time")
+                    b.Property<DateTime?>("TimeWarranty")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -1191,6 +1244,25 @@ namespace AppData.Migrations
                     b.Navigation("Accounts");
 
                     b.Navigation("PhoneDetailds");
+                });
+
+            modelBuilder.Entity("AppData.Models.SalePhoneDetaild", b =>
+                {
+                    b.HasOne("AppData.Models.PhoneDetaild", "PhoneDetaild")
+                        .WithMany()
+                        .HasForeignKey("IdPhoneDetaild")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AppData.Models.Sales", "Sales")
+                        .WithMany()
+                        .HasForeignKey("IdSales")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PhoneDetaild");
+
+                    b.Navigation("Sales");
                 });
 
             modelBuilder.Entity("AppData.Models.Transaction", b =>

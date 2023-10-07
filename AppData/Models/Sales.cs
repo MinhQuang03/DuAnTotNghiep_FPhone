@@ -1,6 +1,12 @@
-﻿namespace AppData.Models
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace AppData.Models
 {
-    public class Discount
+    public class Sales
     {
         public Guid Id { get; set; }
         public Decimal ReducedAmount { get; set; }

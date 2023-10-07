@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppData.Migrations
 {
-    public partial class FPhone : Migration
+    public partial class initdatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -153,7 +153,7 @@ namespace AppData.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ReducedAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    TimeForm = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TimeForm = table.Column<DateTime>(type: "datetime2", nullable: true),
                     TimeTo = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false)
@@ -253,6 +253,22 @@ namespace AppData.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Rom", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Sales",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ReducedAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TimeForm = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    TimeTo = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sales", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -467,7 +483,8 @@ namespace AppData.Migrations
                     IdDiscount = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Number = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false)
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    NameImei = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -490,7 +507,8 @@ namespace AppData.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Time = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
                     IdPayment = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IdBill = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
@@ -619,7 +637,7 @@ namespace AppData.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IdPhone = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Time = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TimeWarranty = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -773,6 +791,31 @@ namespace AppData.Migrations
                         name: "FK_Reviews_PhoneDetailds_PhoneDetaildsId",
                         column: x => x.PhoneDetaildsId,
                         principalTable: "PhoneDetailds",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SalePhoneDetailds",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IdSales = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IdPhoneDetaild = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SalePhoneDetailds", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SalePhoneDetailds_PhoneDetailds_IdPhoneDetaild",
+                        column: x => x.IdPhoneDetaild,
+                        principalTable: "PhoneDetailds",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SalePhoneDetailds_Sales_IdSales",
+                        column: x => x.IdSales,
+                        principalTable: "Sales",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -942,6 +985,16 @@ namespace AppData.Migrations
                 column: "PhoneDetaildsId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_SalePhoneDetailds_IdPhoneDetaild",
+                table: "SalePhoneDetailds",
+                column: "IdPhoneDetaild");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SalePhoneDetailds_IdSales",
+                table: "SalePhoneDetailds",
+                column: "IdSales");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Transactions_IdBill",
                 table: "Transactions",
                 column: "IdBill");
@@ -1004,6 +1057,9 @@ namespace AppData.Migrations
                 name: "Reviews");
 
             migrationBuilder.DropTable(
+                name: "SalePhoneDetailds");
+
+            migrationBuilder.DropTable(
                 name: "Transactions");
 
             migrationBuilder.DropTable(
@@ -1023,6 +1079,9 @@ namespace AppData.Migrations
 
             migrationBuilder.DropTable(
                 name: "PhoneDetailds");
+
+            migrationBuilder.DropTable(
+                name: "Sales");
 
             migrationBuilder.DropTable(
                 name: "Payments");

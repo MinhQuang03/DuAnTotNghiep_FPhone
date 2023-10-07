@@ -13,11 +13,11 @@
 
         public int Status { get; set; }
 
-    
+        public string NameImei { get; set; }
 
-        public virtual Bill Bills { get; set; }
+        public virtual Bill? Bills { get; set; }
 
-        public virtual Discount Discounts { get; set; }
+        public virtual Discount? Discounts { get; set; }
        
 
     }

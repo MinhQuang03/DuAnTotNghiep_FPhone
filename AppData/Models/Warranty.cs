@@ -6,7 +6,7 @@
 
         public Guid IdPhone { get; set; }
 
-        public DateTime Time { get; set; }
+        public DateTime? TimeWarranty { get; set; }
 
         public string? Description { get; set; }
 
