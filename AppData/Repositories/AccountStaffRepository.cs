@@ -62,12 +62,12 @@ namespace AppData.Repositories
                 }
                 else
                 {
+                    
                     // nếu khi tạo mới chưa có role là staff thì sẽ tạo mới 1 role là staff
                     if (await _roleManager.RoleExistsAsync("Staff") == false)
                     {
                         await _roleManager.CreateAsync(new IdentityRole("Staff"));
                     }
-
                     // gán user với role là staff
                     await _userManager.AddToRoleAsync(user, "Staff");
                 }

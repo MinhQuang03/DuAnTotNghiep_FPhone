@@ -47,10 +47,10 @@ public class FPhoneDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<BillPhoneDetail> BillPhoneDetails { get; set; }
     public DbSet<ApplicationUser> AspNetUsers { get; set; }
 
-    // có thể comment OnConfigurating này và k cần dùng nếu k sửa gì trong db nữa
+    // Khi đặt giá trị của Data Source thành ".", nó có nghĩa là bạn đang chỉ định máy chủ SQL Server ở cùng một máy tính mà ứng dụng của bạn đang chạy.
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer(@"Data Source=MSI\SQLEXPRESS;Initial Catalog=PRO219_WebsiteBanDienThoai;Integrated Security=True;TrustServerCertificate=True");
+        optionsBuilder.UseSqlServer(@"Data Source=.;Initial Catalog=PRO219_WebsiteBanDienThoai;Integrated Security=True;TrustServerCertificate=True");
     }
     protected override void OnModelCreating(ModelBuilder builder)
     {

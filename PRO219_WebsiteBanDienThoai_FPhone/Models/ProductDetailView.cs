@@ -12,5 +12,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Models
         public string Brand { get; set; }
         public string Image { get; set; }
         public List<Color> Color { get; set; }  
+        public Ram Ram { get; set;}  
+        public Rom Rom { get; set;}      
     }
 }
