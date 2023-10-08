@@ -45,6 +45,8 @@ public class FPhoneDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Warranty> Warranty { get; set; }
     public DbSet<WarrantyCard> WarrantyCards { get; set; }
     public DbSet<BillPhoneDetail> BillPhoneDetails { get; set; }
+    public DbSet<Sales> Sales { get; set; }
+    public DbSet<SalePhoneDetaild> SalePhoneDetailds { get; set; }
     public DbSet<ApplicationUser> AspNetUsers { get; set; }
 
     // Khi đặt giá trị của Data Source thành ".", nó có nghĩa là bạn đang chỉ định máy chủ SQL Server ở cùng một máy tính mà ứng dụng của bạn đang chạy.
