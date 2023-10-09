@@ -26,7 +26,7 @@ public class AccountsController : Controller
     [AuthorizationFilter("Admin")]
     public async Task<IActionResult> Account()  
     {
-        var response = await _client.GetAsync("/api/AccountStaff/get-all-staff");
+        var response = await _client.GetAsync("/api/Accounts/get-all-staff");
         if (response.IsSuccessStatusCode)
             if (UserClaim.HasRole(User, "Admin"))
             {
@@ -44,6 +44,6 @@ public class AccountsController : Controller
             ExpiresUtc = DateTimeOffset.UtcNow.AddSeconds(20) // Thiết lập thời gian hết hạn sau khi đăng xuất
         };
         await HttpContext.SignOutAsync("token", authenticationProperties);
-        return RedirectToAction("Login", "LogIn");
+        return RedirectPermanent("/home");
     }
 }

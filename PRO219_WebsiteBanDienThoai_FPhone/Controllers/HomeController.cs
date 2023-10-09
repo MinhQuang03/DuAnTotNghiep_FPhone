@@ -1,7 +1,11 @@
 ﻿using AppData.Models;
+using AppData.ViewModels.Accounts;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PRO219_WebsiteBanDienThoai_FPhone.Models;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers;
 
@@ -11,14 +15,13 @@ public class HomeController : Controller
 
     private readonly HttpClient _client;
 
-
     public HomeController(ILogger<HomeController> logger, HttpClient client)
     {
         _logger = logger;
         _client = client;
     }
 
-    
+
     public async Task<IActionResult> Index()
     {
         var datajson = await _client.GetStringAsync("api/PhoneDetaild/get");
@@ -44,6 +47,56 @@ public class HomeController : Controller
         return View(lstspView);
     }
 
+    [HttpPost]
+    public async Task<IActionResult> Login(LoginModel model)    
+    {
+        var handler = new JwtSecurityTokenHandler();
+        var result = await (await _client.PostAsJsonAsync("/api/Accounts/Login", model)).Content.ReadAsStringAsync();
+        var respo = JsonConvert.DeserializeObject<LoginResponseVM>(result);
+        if (respo != null && respo.Roles != null && respo.Token != null)
+        {
+            var options = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = DateTime.UtcNow.AddDays(7) // Thời gian hết hạn của cookie
+            };
+            var token = respo.Token;
+
+            var claimsPrincipal = handler.ReadJwtToken(token);
+            var claims = claimsPrincipal.Claims;
+            var identity = new ClaimsIdentity(claims, "token");
+            var principal = new ClaimsPrincipal(identity);
+            await HttpContext.SignInAsync("token", principal);
+            //HttpContext.Response.Cookies.Append("token", token, options);
+            if (respo.Roles.Contains("Admin"))
+            {
+                return RedirectPermanent("/admin/accounts/index");
+            }
+
+            if (respo.Roles.Contains("User"))
+            {
+                return RedirectToAction("Index");
+            }
+        }
+        else
+        {
+            ModelState.AddModelError(model.UserName, "Tài khoản hoặc mật khẩu sai");
+        }
+
+        return NoContent();
+
+    }
+
+    public async Task<IActionResult> LogOut()
+    {
+        var authenticationProperties = new AuthenticationProperties
+        {
+            ExpiresUtc = DateTimeOffset.UtcNow.AddSeconds(20) // Thiết lập thời gian hết hạn sau khi đăng xuất
+        };
+        await HttpContext.SignOutAsync("token", authenticationProperties);
+        return RedirectToAction("Index");
+    }
+
     public IActionResult Privacy()
     {
         return View();
@@ -61,5 +114,4 @@ public class HomeController : Controller
     //{
     //    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     //}
-    
 }

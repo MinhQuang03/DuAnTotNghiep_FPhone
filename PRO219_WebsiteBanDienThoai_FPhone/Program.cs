@@ -1,4 +1,6 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using Microsoft.AspNetCore.Authentication;
+
+var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -12,7 +14,7 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddAuthentication(options =>
     {
-     
+
         options.DefaultAuthenticateScheme = "token";
         options.DefaultSignInScheme = "token";
         options.DefaultChallengeScheme = "token";

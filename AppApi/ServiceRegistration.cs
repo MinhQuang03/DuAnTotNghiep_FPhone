@@ -9,7 +9,7 @@ namespace AppApi
     {
         public static void Configure(IServiceCollection services)
         {
-            services.AddScoped<IAccountStaffRepository, AccountStaffRepository>();
+            services.AddScoped<IAccountsRepository, AccountsRepository>();
             services.AddScoped<ISimRepository, SimRepository>();
             services.AddScoped<IPhoneDetaildRepository, PhoneDetaildRepository>();
             services.AddScoped<IPhoneDetailService, PhoneDetailService>();
@@ -27,6 +27,8 @@ namespace AppApi
             services.AddScoped<IRomRepository, RomRepository>();
             services.AddScoped<ISimRepository, SimRepository>();
             services.AddScoped<IImeiRepository, ImeiRepository>();
+            services.AddTransient<IUserRepository, UserRepostitory>();
+            services.AddTransient<IAddressRepository, AddressRepostitory>();
         }
     }
 }
