@@ -1,5 +1,6 @@
 ﻿using AppData.IRepositories;
 using AppData.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -36,14 +37,14 @@ public class AccountsController : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("Login/{token}")]
+    [HttpGet("LoginWithToken/{token}")]
     public IActionResult LoginWithToken(string token)
     {
         return null;
     }
 
      [HttpGet("get-all-staff")]
-        //[Authorize(Roles = "Admin")]
+   
     public async Task<List<ApplicationUser>> GetAll()
     {
         var result = await _accountsRepository.GetAllAsync();

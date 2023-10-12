@@ -27,8 +27,8 @@ namespace AppApi
             services.AddScoped<IRomRepository, RomRepository>();
             services.AddScoped<ISimRepository, SimRepository>();
             services.AddScoped<IImeiRepository, ImeiRepository>();
-            services.AddTransient<IUserRepository, UserRepostitory>();
-            services.AddTransient<IAddressRepository, AddressRepostitory>();
+            services.AddScoped<IUserRepository, UserRepostitory>();
+            services.AddScoped<IAddressRepository, AddressRepostitory>();
         }
     }
 }

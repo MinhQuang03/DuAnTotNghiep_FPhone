@@ -111,7 +111,7 @@ namespace AppData.Repositories
                 return result;
             }
 
-            if (model.ApplicationUser != null && model.Account == null)
+            if (model is { ApplicationUser: not null, Account: null })
             {
                 var role = await _userManager.GetRolesAsync(model.ApplicationUser);
                 var tokenDescriptor = new SecurityTokenDescriptor()
@@ -134,7 +134,7 @@ namespace AppData.Repositories
                  return result;
             }
 
-            if (model.Account != null && model.ApplicationUser == null)
+            if (model is { Account: not null, ApplicationUser: null })
             {
                 var tokenDescriptor = new SecurityTokenDescriptor()
                 {

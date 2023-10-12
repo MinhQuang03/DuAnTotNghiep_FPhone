@@ -1,19 +1,19 @@
-﻿using AppData.Models;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using AppData.Models;
 using AppData.ViewModels.Accounts;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PRO219_WebsiteBanDienThoai_FPhone.Models;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-
     private readonly HttpClient _client;
+    private readonly ILogger<HomeController> _logger;
 
     public HomeController(ILogger<HomeController> logger, HttpClient client)
     {
@@ -48,7 +48,7 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Login(LoginModel model)    
+    public async Task<IActionResult> Login(LoginModel model)
     {
         var handler = new JwtSecurityTokenHandler();
         var result = await (await _client.PostAsJsonAsync("/api/Accounts/Login", model)).Content.ReadAsStringAsync();
@@ -64,19 +64,13 @@ public class HomeController : Controller
 
             var claimsPrincipal = handler.ReadJwtToken(token);
             var claims = claimsPrincipal.Claims;
-            var identity = new ClaimsIdentity(claims, "token");
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);
-            await HttpContext.SignInAsync("token", principal);
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
             //HttpContext.Response.Cookies.Append("token", token, options);
-            if (respo.Roles.Contains("Admin"))
-            {
-                return RedirectPermanent("/admin/accounts/index");
-            }
+            if (respo.Roles.Contains("Admin")) return RedirectPermanent("/admin/accounts/index");
 
-            if (respo.Roles.Contains("User"))
-            {
-                return RedirectToAction("Index");
-            }
+            if (respo.Roles.Contains("User")) return RedirectToAction("Index");
         }
         else
         {
@@ -84,7 +78,6 @@ public class HomeController : Controller
         }
 
         return NoContent();
-
     }
 
     public async Task<IActionResult> LogOut()
@@ -93,7 +86,7 @@ public class HomeController : Controller
         {
             ExpiresUtc = DateTimeOffset.UtcNow.AddSeconds(20) // Thiết lập thời gian hết hạn sau khi đăng xuất
         };
-        await HttpContext.SignOutAsync("token", authenticationProperties);
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme, authenticationProperties);
         return RedirectToAction("Index");
     }
 
