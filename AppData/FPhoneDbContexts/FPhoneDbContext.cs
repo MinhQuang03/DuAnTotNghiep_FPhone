@@ -52,7 +52,7 @@ public class FPhoneDbContext : IdentityDbContext<ApplicationUser>
     // có thể comment OnConfigurating này và k cần dùng nếu k sửa gì trong db nữa
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer(@"Data Source=MSI\SQLEXPRESS;Initial Catalog=PRO219_WebsiteBanDienThoai;Integrated Security=True;TrustServerCertificate=True");
+        optionsBuilder.UseSqlServer(@"Data Source=LKK\SQLEXPRESS;Initial Catalog=PRO219_WebsiteBanDienThoai;Integrated Security=True;TrustServerCertificate=True");
     }
     protected override void OnModelCreating(ModelBuilder builder)
     {
