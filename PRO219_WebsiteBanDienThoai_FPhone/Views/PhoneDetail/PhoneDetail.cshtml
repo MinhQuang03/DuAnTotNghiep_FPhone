@@ -4,7 +4,7 @@
 
 @foreach (ProductDetailView item in Model)
 {
-<section class="section product-details__section container">
+    <section class="section product-details__section container">
     <div class="product-detail__container">
         <div class="product-detail__left">
             <div class="details__container--left">
@@ -49,7 +49,7 @@
             <div class="product-detail__content">
                 <h3>@item.ProductName</h3>
                 <div class="price">
-                    <span class="new__price">@(item.Price.Min().ToString("C0") + " - " + item.Price.Max().ToString("C0"))</span>
+                    <span class="new__price">@item.Price</span>
                 </div>
                 <div class="product__review">
                     <div class="rating">
@@ -72,28 +72,18 @@
                     <a href="#" class="rating__quatity">3 reviews</a>
                 </div>
                 <p>
-                  @item.Description
+                    @item.Description
                 </p>
                 <div class="product__info-container">
                     <ul class="product__info">
-                        <li class="select">
-                            <div class="select__option">
-                                <label for="colors">Color</label>
-                                <select name="colors" id="colors" class="select-box">
-                                    @foreach (var it in item.Color)
-                                    {
-                                        <option value="@it.Id">@it.Name</option>
-                                    }
+                        <li class=" row">
+                            <a class="btn col-4 border rounded  mt-2">
+                                <div>
+                                    <strong>@item.Ram.Name - @item.Rom.Name</strong>
+                                </div>
+                                <span >36.990.000 đ</span>
+                            </a>
 
-                                </select>
-                            </div>
-                            <div class="select__option">
-                                <label for="size">Inches</label>
-                                <select name="size" id="size" class="select-box">
-                                    <option value="6.65">6.65</option>
-                                    <option value="7.50">7.50</option>
-                                </select>
-                            </div>
                         </li>
                         <li>
 
@@ -277,5 +267,5 @@
             </div>
         </div>*@
     </div>
-</section>
+    </section>
 }

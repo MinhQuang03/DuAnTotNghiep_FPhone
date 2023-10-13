@@ -1,4 +1,7 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+
+var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -12,15 +15,15 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddAuthentication(options =>
     {
-     
-        options.DefaultAuthenticateScheme = "token";
-        options.DefaultSignInScheme = "token";
-        options.DefaultChallengeScheme = "token";
+
+        options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     })
-    .AddCookie("token", options =>
+    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
     {
         options.LoginPath = "/Admin/Login";
-        options.LogoutPath = "/Admin/Home/LogOut";
+        options.LogoutPath = new PathString("/home");
     });
 
 var app = builder.Build();

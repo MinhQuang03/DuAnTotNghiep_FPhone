@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AppData.Models
 {
-    public class SignInModel
+    public class LoginModel
     {
         //    [EmailAddress]
         //    public string Email { get; set; }     

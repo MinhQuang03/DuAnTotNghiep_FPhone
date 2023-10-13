@@ -1,14 +1,15 @@
 ﻿using AppData.Models;
+using AppData.ViewModels.Accounts;
 using Microsoft.AspNetCore.Identity;
 
 namespace AppData.IRepositories
 {
-    public interface IAccountStaffRepository
+    public interface IAccountsRepository
     {
         public Task<IdentityResult> SignUpAsync(SignUpModel model);
-        public Task<string> SignInAsync(SignInModel model);
+        public Task<LoginResponseVM> Login(LoginModel model);
 
-        public Task<string> GenerateToken(ApplicationUser model);
+        //protected Task<LoginResponseVM> GenerateToken(LoginInputVM model);
         public Task<List<ApplicationUser>> GetAllAsync();
     }
 }
