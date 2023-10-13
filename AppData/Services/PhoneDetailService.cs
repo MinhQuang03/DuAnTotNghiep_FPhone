@@ -12,14 +12,18 @@ namespace AppData.Services
         private IPhoneRepository _iPhoneRepository;
         private IColorRepository _colorRepository;
         private IProductionCompanyRepository _productionCompanyRepository;
+        private IRamRepository _ramRepository;
+        private IRomRepository _romRepository;
         public readonly FPhoneDbContext _dbContext;
-        public PhoneDetailService(IPhoneDetaildRepository iPhoneDetaildRepository, IPhoneRepository phoneRepository,FPhoneDbContext dbContext,IColorRepository colorRepository,IProductionCompanyRepository productionCompanyRepository) 
+        public PhoneDetailService(IPhoneDetaildRepository iPhoneDetaildRepository, IPhoneRepository phoneRepository,FPhoneDbContext dbContext,IColorRepository colorRepository,IProductionCompanyRepository productionCompanyRepository,IRamRepository ramRepository, IRomRepository romRepository)    
         {
             _iPhoneDetaildRepository = iPhoneDetaildRepository;
             _iPhoneRepository = phoneRepository;
             _dbContext = dbContext;
             _colorRepository = colorRepository;
             _productionCompanyRepository = productionCompanyRepository;
+            _ramRepository = ramRepository;
+            _romRepository = romRepository;
         }
 
         public async Task<PhoneDetaild> Add(PhoneDetaild obj)
@@ -53,6 +57,8 @@ namespace AppData.Services
                 phoneDetaild.Colors = await _colorRepository.GetById(phoneDetaild.IdColor);
                 phoneDetaild.Phones.ProductionCompanies =
                     await _productionCompanyRepository.GetById(phoneDetaild.Phones.IdProductionCompany);
+                phoneDetaild.Rams = await _ramRepository.GetById(phoneDetaild.IdRam);
+                phoneDetaild.Roms = await _romRepository.GetById(phoneDetaild.IdRom);
             }
             return results;
         }
