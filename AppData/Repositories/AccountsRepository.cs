@@ -34,7 +34,7 @@ namespace AppData.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<IdentityResult> SignUpAsync(SignUpModel model)
+        public async Task<IdentityResult> SignUpAdmin(SignUpModel model)
         {
             var user = new ApplicationUser
             {
@@ -74,6 +74,38 @@ namespace AppData.Repositories
                 }
             }
             return result;
+        }
+
+        public async Task<bool> SignUpCl(ClAccountsViewModel model)
+        {
+            try
+            {
+                Account ac = new Account()
+                {
+                    Id = model.Id,
+                    Email = model.Email,
+                    ImageUrl = model.ImageUrl,
+                    Name = model.Name,
+                    Password = model.Password,
+                    Username = model.Username,
+                    PhoneNumber = model.PhoneNumber,
+                    Points = model.Points,
+                    Status = model.Status,
+                };
+                if (!_dbContext.AspNetUsers.Any(c => c.UserName == model.Username) && !_dbContext.Accounts.Any(c =>c.Username == model.Username))
+                {
+                    await _dbContext.Accounts.AddAsync(ac);
+                    await _dbContext.SaveChangesAsync();
+                    return true;
+                }
+                return false;
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         public async Task<LoginResponseVM> Login(LoginModel model)

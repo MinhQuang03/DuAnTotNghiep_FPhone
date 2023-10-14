@@ -1,7 +1,9 @@
 ﻿using AppData.IRepositories;
 using AppData.Models;
+using AppData.ViewModels.Accounts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -25,7 +27,15 @@ public class AccountsController : ControllerBase
 
     public async Task<IActionResult> SignUp(SignUpModel signUpModel)
     {
-        var result = _accountsRepository.SignUpAsync(signUpModel);
+        var result = _accountsRepository.SignUpAdmin(signUpModel);
+        if (!result.IsCompletedSuccessfully) return Ok(result.Result);
+        return BadRequest(result.Result);
+    }
+    [HttpPost("SignUp/Client/")]
+
+    public async Task<IActionResult> SignUp(ClAccountsViewModel signUpModel)
+    {
+        var result =  _accountsRepository.SignUpCl(signUpModel);
         if (!result.IsCompletedSuccessfully) return Ok(result.Result);
         return BadRequest(result.Result);
     }
