@@ -90,7 +90,7 @@
 
     <div class="auth">
        
-        <form asp-action="Login" asp-controller="Home" class="login-form">
+        <form asp-action="Login" asp-controller="Accounts" class="login-form">
             <h3>Login Now</h3>
             @if (TempData.ContainsKey("ErrorMessage"))
             {
@@ -115,7 +115,7 @@
     <div class="shopping-cart">
         <div class="box">
             <i class="fas fa-trash"></i>
-            <img src="images/products/iPhone/iphone1.jpeg">
+            <img src="~/images/products/iPhone/iphone1.jpeg">
             <div class="content">
                 <h3>iPhone</h3>
                 <span class="price">$800.99/-</span>
@@ -124,7 +124,7 @@
         </div>
         <div class="box">
             <i class="fas fa-trash"></i>
-            <img src="images/products/sumsung/samsung3.jpeg">
+            <img src="~/images/products/sumsung/samsung3.jpeg">
             <div class="content">
                 <h3>Samsung A22</h3>
                 <span class="price">$350.99/-</span>
@@ -133,7 +133,7 @@
         </div>
         <div class="box">
             <i class="fas fa-trash"></i>
-            <img src="images/products/headphone/headphone3.jpeg">
+            <img src="~/images/products/headphone/headphone3.jpeg">
             <div class="content">
                 <h3>Boat</h3>
                 <span class="price">$54.99/-</span>
