@@ -6,7 +6,8 @@ namespace AppData.IRepositories
 {
     public interface IAccountsRepository
     {
-        public Task<IdentityResult> SignUpAsync(SignUpModel model);
+        public Task<IdentityResult> SignUpAdmin(SignUpModel model);
+        public Task<bool> SignUpCl(ClAccountsViewModel model);  
         public Task<LoginResponseVM> Login(LoginModel model);
 
         //protected Task<LoginResponseVM> GenerateToken(LoginInputVM model);

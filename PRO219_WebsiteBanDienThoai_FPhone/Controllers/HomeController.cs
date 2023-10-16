@@ -47,38 +47,7 @@ public class HomeController : Controller
         return View(lstspView);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> Login(LoginModel model)
-    {
-        var handler = new JwtSecurityTokenHandler();
-        var result = await (await _client.PostAsJsonAsync("/api/Accounts/Login", model)).Content.ReadAsStringAsync();
-        var respo = JsonConvert.DeserializeObject<LoginResponseVM>(result);
-        if (respo != null && respo.Roles != null && respo.Token != null)
-        {
-            var options = new CookieOptions
-            {
-                HttpOnly = true,
-                Expires = DateTime.UtcNow.AddDays(7) // Thời gian hết hạn của cookie
-            };
-            var token = respo.Token;
-
-            var claimsPrincipal = handler.ReadJwtToken(token);
-            var claims = claimsPrincipal.Claims;
-            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            var principal = new ClaimsPrincipal(identity);
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-            //HttpContext.Response.Cookies.Append("token", token, options);
-            if (respo.Roles.Contains("Admin")) return RedirectPermanent("/admin/accounts/index");
-
-            if (respo.Roles.Contains("User")) return RedirectToAction("Index");
-        }
-        else
-        {
-            ModelState.AddModelError(model.UserName, "Tài khoản hoặc mật khẩu sai");
-        }
-
-        return NoContent();
-    }
+   
 
     public async Task<IActionResult> LogOut()
     {
