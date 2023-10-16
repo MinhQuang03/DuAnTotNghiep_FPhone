@@ -31,8 +31,16 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             var colorName = new Dictionary<Guid, string>();
             var chargingportName = new Dictionary<Guid, string>();
 
+            var productionCompanyNames = new Dictionary<Guid, string>();
+
             foreach (var a in obj)
             {
+                if (!productionCompanyNames.ContainsKey(a.Phones.IdProductionCompany))
+                {
+                    var productionCompanyData = await _httpClient.GetStringAsync($"api/ProductionCompany/getById/{a.Phones.IdProductionCompany}");
+                    var productionCompany = JsonConvert.DeserializeObject<ProductionCompany>(productionCompanyData);
+                    productionCompanyNames.Add(a.Phones.IdProductionCompany, productionCompany.Name);
+                }
                 if (!phoneName.ContainsKey(a.IdPhone))
                 {
                     var phoneNameData = await _httpClient.GetStringAsync($"api/Phone/getById/{a.IdPhone}");
@@ -122,6 +130,8 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             ViewBag.ChipGPUName = chipGPUName;
             ViewBag.ColorName = colorName;
             ViewBag.ChargingportName = chargingportName;
+
+            ViewBag.ProductionCompanyNames = productionCompanyNames;
 
             return View(obj);
         }

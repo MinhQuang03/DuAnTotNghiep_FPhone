@@ -4,6 +4,7 @@
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
+
 @*<table class="table">
     <thead>
         <tr>
@@ -220,7 +221,7 @@
                                     <h6 class="m-b-0 m-l-10">@ViewBag.PhoneName[item.IdPhone]</h6>
                                 </div>
                             </td>
-                            <td>Test Hang</td>
+                            <td>@ViewBag.ProductionCompanyNames[item.Phones.IdProductionCompany]</td>
                             <td>@item.Price</td>
                             <td>20</td>
                             <td>
@@ -230,7 +231,10 @@
                                 </div>
                             </td>
                             <td class="text-right">
-                                <button class="btn btn-icon btn-hover btn-sm btn-rounded pull-right">
+                                @{
+                                    string editUrl = Url.Action("Edit", new { id = item.Id });
+                                }
+                                <button class="btn btn-icon btn-hover btn-sm btn-rounded pull-right" onclick="location.href='@editUrl'">
                                     <i class="anticon anticon-edit"></i>
                                 </button>
                                 <button class="btn btn-icon btn-hover btn-sm btn-rounded">
