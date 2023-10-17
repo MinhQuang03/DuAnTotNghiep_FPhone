@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using PRO219_WebsiteBanDienThoai_FPhone.Models;
 using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Services
@@ -12,23 +13,23 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Services
             var jsonString = JsonConvert.SerializeObject(value);
             session.SetString(key, jsonString);
         }
-        public static List<CartDetailModel> GetObjFromSession(ISession session, string key)
+        public static List<ProductDetailView> GetObjFromSession(ISession session, string key)
         {
             var data = session.GetString(key); // doc du lieu tu ss
             if (data != null)
             {
-                var listobj = JsonConvert.DeserializeObject<List<CartDetailModel>>(data);
+                var listobj = JsonConvert.DeserializeObject<List<ProductDetailView>>(data);
                 return listobj;
             }
             else
             {
-                return new List<CartDetailModel>();
+                return new List<ProductDetailView>();
             }
         }
 
-        public static bool CheckProductIncart(Guid Id, List<CartDetailModel> cartpd)
+        public static bool CheckProductIncart(Guid Id, List<ProductDetailView> cartpd)
         {
-            return cartpd.Any(p => p.phoneDetaild.Id == Id);
+            return cartpd.Any(p => p.IdProduct == Id);
         }
     }
 }

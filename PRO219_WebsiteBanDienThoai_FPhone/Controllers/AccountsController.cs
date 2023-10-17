@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using PRO219_WebsiteBanDienThoai_FPhone.Services;
+using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
+using PRO219_WebsiteBanDienThoai_FPhone.Models;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers;
 
@@ -113,5 +116,64 @@ public class AccountsController : Controller
         }
 
         return NoContent();
+    }
+
+
+
+    public async Task<IActionResult> Cart()
+    {
+        var product = SessionCartDetail.GetObjFromSession(HttpContext.Session, "Cart");
+        return View(product);
+    }
+    public async Task<IActionResult> AddToCard(Guid id)
+    {
+
+        var product = SessionCartDetail.GetObjFromSession(HttpContext.Session, "Cart");
+
+        if (product == null)
+        {
+            // Nếu không có giỏ hàng trong phiên, bạn nên tạo một giỏ hàng mới
+            product = new List<ProductDetailView>();
+        }
+
+        // Tiến hành lấy dữ liệu sản phẩm từ API
+        var datajson = await _client.GetStringAsync($"api/PhoneDetaild/get-detail/{id}");
+        var cartList = JsonConvert.DeserializeObject<List<PhoneDetaild>>(datajson);
+        var lstPhonedt = from a in cartList
+                         group a by new
+                         {
+                             a.Phones.PhoneName,
+                             a.Phones.Id,
+                             a.Phones.Image,
+                             a.Phones.Description,
+                             a.Phones.ProductionCompanies.Name,
+                             a.Images,
+                             a.Price,
+                             a.Rams,
+                             a.Roms,
+
+                         } into b
+                         select new ProductDetailView()
+                         {
+                             IdProductDetail = b.Select(c => c.Id).ToList(),
+                             Description = b.Key.Description,
+                             IdProduct = b.Key.Id,
+                             Brand = b.Key.Name,
+                             Price = b.Key.Price,
+                             ProductName = b.Key.PhoneName,
+                             Color = b.Select(c => c.Colors).ToList(),
+                             Image = b.Key.Image,
+                             Ram = b.Key.Rams,
+                             Rom = b.Key.Roms
+                         };
+        // Thêm sản phẩm vào giỏ hàng
+        product.AddRange(lstPhonedt);
+
+        // Lưu giỏ hàng vào phiên
+        SessionCartDetail.SetobjTojson(HttpContext.Session, product, "Cart");
+        
+        // Sau khi thêm sản phẩm vào giỏ hàng, bạn có thể thực hiện chuyển hướng hoặc trả về một trạng thái tương ứng.
+        return RedirectToAction("Cart");
+
     }
 }
