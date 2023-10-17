@@ -26,6 +26,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
                                  a.Phones.Description,
                                  a.Phones.ProductionCompanies.Name,
                                  a.Images,
+                                 a.Price,
                                  a.Rams,
                                  a.Roms,
                               
@@ -36,7 +37,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
                                 Description = b.Key.Description,
                                 IdProduct = b.Key.Id,
                                 Brand = b.Key.Name,
-                             
+                                 Price = b.Key.Price,
                                  ProductName = b.Key.PhoneName,
                                 Color = b.Select(c =>c.Colors).ToList(),
                                 Image = b.Key.Image,
