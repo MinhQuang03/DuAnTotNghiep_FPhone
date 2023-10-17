@@ -23,9 +23,9 @@ public class AccountsController : ControllerBase
         _userRepository = userRepository;
     }
 
-    [HttpPost("SignUp")]
+    [HttpPost("SignUp/Admin/")]
 
-    public async Task<IActionResult> SignUp(SignUpModel signUpModel)
+    public async Task<IActionResult> SignUp(AdSignUpViewModel signUpModel)
     {
         var result = _accountsRepository.SignUpAdmin(signUpModel);
         if (!result.IsCompletedSuccessfully) return Ok(result.Result);

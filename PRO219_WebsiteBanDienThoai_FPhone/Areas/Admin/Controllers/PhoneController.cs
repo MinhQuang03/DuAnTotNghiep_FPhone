@@ -55,7 +55,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", fileName);
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                    file.CopyTo(stream);
+                    await file.CopyToAsync(stream);
                 }
 
                 obj.Image = "/img/" + fileName;

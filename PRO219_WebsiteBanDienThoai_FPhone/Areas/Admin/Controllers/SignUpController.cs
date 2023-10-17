@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Headers;
 using AppData.Models;
+using AppData.ViewModels.Accounts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -20,36 +21,23 @@ public class SignUpController : Controller
     }
 
     [AuthorizationFilter("Admin")]
-    public async Task<IActionResult> Index()
-    {
-        return View();
-    }
-
-    [HttpGet]
-    public IActionResult SignUpAdmin()
+    public async Task<IActionResult> SignUp()
     {
         return View();
     }
 
     [HttpPost]
-    public async Task<IActionResult> SignUp(SignUpModel model)
+    public async Task<IActionResult> SignUp(AdSignUpViewModel model)    
     {
-        var token = _contextAccessor.HttpContext.Request.Cookies["token"];
-        var content = await _client.GetStringAsync("/api/AccountStaff/get-all-staff");
-        var account = JsonConvert.DeserializeObject<List<ApplicationUser>>(content).Count;
-        model.Status = 1;
-        model.ImageUrl = "";
-        _client.DefaultRequestHeaders.Authorization =
-            new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, token);
-        var result = await _client.PostAsJsonAsync("/api/AccountStaff/SignUp", model);
+       
+        model.Status = 0;
+        model.ImageUrl = string.Empty;
+        var result = await _client.PostAsJsonAsync("/api/Accounts/SignUp/Admin", model);
         if (result.IsSuccessStatusCode)
         {
-            if (account == 0) // khi chưa có tài khoản nào ( signup với role admin )
-                return RedirectToAction("Login", "LogIn");
-
-            return RedirectToAction("Accounts", "Home"); // signup vs role staff
+            return RedirectToAction("Index", "Accounts"); 
         }
 
-        return RedirectToAction("Index");
+        return View();
     }
 }

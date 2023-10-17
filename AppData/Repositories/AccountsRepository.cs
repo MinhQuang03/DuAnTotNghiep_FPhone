@@ -34,8 +34,9 @@ namespace AppData.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<IdentityResult> SignUpAdmin(SignUpModel model)
+        public async Task<IdentityResult> SignUpAdmin(AdSignUpViewModel model)
         {
+            
             var user = new ApplicationUser
             {
                 Name = model.FullName,
@@ -51,27 +52,11 @@ namespace AppData.Repositories
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-                var us = await GetAllAsync();
-                if (us.Count == 1) // nếu có 1 tài khoản ( trường hợp lần đầu tiên tạo tk )
+                if (await _roleManager.RoleExistsAsync(model.Role) == false)
                 {
-                    if (await _roleManager.RoleExistsAsync("Admin") == false)
-                    {
-                        await _roleManager.CreateAsync(new IdentityRole("Admin")); // tạo role admin nếu chưa có
-                    }
-
-                    await _userManager.AddToRoleAsync(user, "Admin"); // gán role admin cho user đầu tiên đó
+                    await _roleManager.CreateAsync(new IdentityRole(model.Role)); // tạo role nếu chưa có
                 }
-                else
-                {
-                    
-                    // nếu khi tạo mới chưa có role là staff thì sẽ tạo mới 1 role là staff
-                    if (await _roleManager.RoleExistsAsync("Staff") == false)
-                    {
-                        await _roleManager.CreateAsync(new IdentityRole("Staff"));
-                    }
-                    // gán user với role là staff
-                    await _userManager.AddToRoleAsync(user, "Staff");
-                }
+                await _userManager.AddToRoleAsync(user, model.Role);
             }
             return result;
         }
