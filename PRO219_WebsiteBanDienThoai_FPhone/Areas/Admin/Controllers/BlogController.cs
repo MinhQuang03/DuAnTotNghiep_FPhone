@@ -74,5 +74,6 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             var response = await _httpClient.DeleteAsync($"api/Blog/delete/{id}");
             return RedirectToAction("Index");
         }
+        
     }
 }
