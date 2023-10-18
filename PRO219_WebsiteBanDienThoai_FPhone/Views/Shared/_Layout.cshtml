@@ -4,30 +4,17 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - PRO219_WebsiteBanDienThoai_FPhone</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/PRO219_WebsiteBanDienThoai_FPhone.styles.css" asp-append-version="true"/>
-
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700&display=swap" rel="stylesheet"/>
-    <link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon"/>
-    <!-- Carousel -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.4.1/css/glide.core.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.4.1/css/glide.theme.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css"/>
-    <!-- Custom StyleSheet -->
-    <link rel="stylesheet" href="~/css/styles.css"/>
+    <partial name="_LinkPartialView"/>
     <title>Phone Shop</title>
 </head>
 <body>
 @await Html.PartialAsync("_SideNavPartialView.cshtml");
-<div class="">
-    <main role="main" class="pb-3">
-        @RenderBody()
-    </main>
-</div>
+<main role="main">
+    @RenderBody()
+</main>
 @await Html.PartialAsync("_FooterPartialView.cshtml");
 
-<!-- PopUp -->
+@*<!-- PopUp -->
 <div class="popup hide__popup">
     <div class="popup__content">
         <div class="popup__close">
@@ -53,7 +40,7 @@
             </div>
         </div>
     </div>
-</div>
+</div>*@
 
 <!-- Go To -->
 
@@ -62,15 +49,9 @@
         <use xlink:href="/images/sprite.svg#icon-arrow-up"></use>
     </svg>
 </a>
+<partial name="_ScripPartialView"/>
+<!-- JS -->
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.4.1/glide.min.js"></script>
-<!-- Animate On Scroll -->
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-
-<!-- Custom JavaScript -->
-<script src="~/js/products.js"></script>
-<script src="~/js/index.js"></script>
-<script src="~/js/slider.js"></script>
 @await RenderSectionAsync("Scripts", false)
 </body>
 </html>

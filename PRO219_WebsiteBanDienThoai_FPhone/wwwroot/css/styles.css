@@ -2425,7 +2425,7 @@ Cart Area
 
 .auth .login-form{
   position: absolute;
-  top: 9%; 
+  top: 100%; 
   right: -110%;
   width: 35rem;
   box-shadow: var(--box-shadow);
@@ -2468,7 +2468,7 @@ Cart Area
 
 .searchF .search-form{
   position: absolute;
-  top: 9%; 
+  top: 100%; 
   right: -110%;
   max-width: 50rem;
   height: 5rem;
@@ -2507,7 +2507,7 @@ Cart Area
 
 .shopping-cart{
   position: absolute;
-  top: 9%; right: -110%;
+  top: 100%; right: -110%;
   padding: 1rem;
   border-radius: .5rem;
   box-shadow: var(--box-shadow);

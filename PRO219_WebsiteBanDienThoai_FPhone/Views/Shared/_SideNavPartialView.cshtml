@@ -1,4 +1,15 @@
-﻿@{
+﻿@using AppData.Models
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.Build.Framework
+@using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Filters
+
+@functions {
+
+    public LoginModel? LoginModel { get; set; }
+    
+}
+
+@{
     ViewData["Title"] = "_SideNavPartialView";
 }
 <header id="header" class="header">
@@ -7,12 +18,12 @@
             <nav class="nav">
                 <div class="nav__hamburger">
                     <svg>
-                        <use xlink:href="~/images/sprite.svg#icon-menu"></use>
+                        <use xlink:href="/images/sprite.svg#icon-menu"></use>
                     </svg>
                 </div>
 
                 <div class="nav__logo">
-                    <a asp-action="Index" asp-controller="Home" >
+                    <a asp-action="Index" asp-controller="Home">
                         PHONE
                     </a>
                 </div>
@@ -43,12 +54,22 @@
                 </div>
 
                 <div class="nav__icons">
-                    <a href="#" class="icon__item" id="login-btn">
-                        <svg class="icon__user">
-                            <use xlink:href="/images/sprite.svg#icon-user"></use>
-                        </svg>
-                    </a>
-
+                    @if (UserClaim.HasRole(User, "User"))
+                    {
+                        <a asp-action="Profile" asp-route-id="" asp-controller="Accounts" class="icon__item" id="">
+                            <svg class="icon__user">
+                                <use xlink:href="/images/sprite.svg#icon-user"></use>
+                            </svg>
+                        </a>
+                    }
+                    @if (!UserClaim.HasRole(User, "User"))
+                    {
+                        <a href="#" class="icon__item" id="login-btn">
+                            <svg class="icon__user">
+                                <use xlink:href="/images/sprite.svg#icon-user"></use>
+                            </svg>
+                        </a>
+                    }
                     <a href="#" class="icon__item" id="search-btn">
                         <svg class="icon__search">
                             <use xlink:href="/images/sprite.svg#icon-search"></use>
@@ -68,12 +89,19 @@
 
 
     <div class="auth">
-        <form action="" class="login-form">
+       
+        <form asp-action="Login" asp-controller="Accounts" class="login-form">
             <h3>Login Now</h3>
-            <input type="email" placeholder="your email" class="box">
-            <input type="password" placeholder="your password" class="box">
+            @if (TempData.ContainsKey("ErrorMessage"))
+            {
+                <div class="alert alert-danger">
+                    @TempData["ErrorMessage"]
+                </div>
+            }
+            <input required type="text" asp-for="@LoginModel.UserName" name="UserName" placeholder="User name" class="box">
+            <input required type="password" asp-for="@LoginModel.Password" name="Password" placeholder="your password" class="box">
             <p>forget your password <a href="#">Click Here</a></p>
-            <p>don't have an account <a href="#">Create now</a></p>
+            <p>don't have an account <a asp-controller="Accounts" asp-action="CreateAccount">Create now</a></p>
             <input type="submit" value="Login now" class="btn">
         </form>
     </div>
@@ -87,7 +115,7 @@
     <div class="shopping-cart">
         <div class="box">
             <i class="fas fa-trash"></i>
-            <img src="images/products/iPhone/iphone1.jpeg">
+            <img src="~/images/products/iPhone/iphone1.jpeg">
             <div class="content">
                 <h3>iPhone</h3>
                 <span class="price">$800.99/-</span>
@@ -96,7 +124,7 @@
         </div>
         <div class="box">
             <i class="fas fa-trash"></i>
-            <img src="images/products/sumsung/samsung3.jpeg">
+            <img src="~/images/products/sumsung/samsung3.jpeg">
             <div class="content">
                 <h3>Samsung A22</h3>
                 <span class="price">$350.99/-</span>
@@ -105,7 +133,7 @@
         </div>
         <div class="box">
             <i class="fas fa-trash"></i>
-            <img src="images/products/headphone/headphone3.jpeg">
+            <img src="~/images/products/headphone/headphone3.jpeg">
             <div class="content">
                 <h3>Boat</h3>
                 <span class="price">$54.99/-</span>
@@ -113,7 +141,9 @@
             </div>
         </div>
         <div class="total">Total : $1354.69/-</div>
-        <a href="#" class="btn">Check out</a>
+        <a asp-action="ShowCart" asp-controller="Accounts">
+            PHONE
+        </a>
     </div>
 
 </header>

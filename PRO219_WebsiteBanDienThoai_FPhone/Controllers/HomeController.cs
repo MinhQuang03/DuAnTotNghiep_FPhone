@@ -1,4 +1,9 @@
-﻿using AppData.Models;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using AppData.Models;
+using AppData.ViewModels.Accounts;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PRO219_WebsiteBanDienThoai_FPhone.Models;
@@ -7,10 +12,8 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-
     private readonly HttpClient _client;
-
+    private readonly ILogger<HomeController> _logger;
 
     public HomeController(ILogger<HomeController> logger, HttpClient client)
     {
@@ -18,7 +21,7 @@ public class HomeController : Controller
         _client = client;
     }
 
-    
+
     public async Task<IActionResult> Index()
     {
         var datajson = await _client.GetStringAsync("api/PhoneDetaild/get");
@@ -44,6 +47,18 @@ public class HomeController : Controller
         return View(lstspView);
     }
 
+   
+
+    public async Task<IActionResult> LogOut()
+    {
+        var authenticationProperties = new AuthenticationProperties
+        {
+            ExpiresUtc = DateTimeOffset.UtcNow.AddSeconds(20) // Thiết lập thời gian hết hạn sau khi đăng xuất
+        };
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme, authenticationProperties);
+        return RedirectToAction("Index");
+    }
+
     public IActionResult Privacy()
     {
         return View();
@@ -56,10 +71,11 @@ public class HomeController : Controller
         return View(ctsp);
     }
 
+   
+
     //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     //public IActionResult Error()
     //{
     //    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     //}
-    
 }

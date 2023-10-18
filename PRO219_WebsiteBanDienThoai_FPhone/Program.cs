@@ -1,4 +1,7 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+
+var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -6,21 +9,24 @@ builder.Services.AddScoped(sp => new HttpClient()
 {
     BaseAddress = new Uri("https://localhost:7129/")
 });
-
+builder.Services.AddSession(option =>
+{
+    option.IdleTimeout = TimeSpan.FromMinutes(60); // dinh nghia session ton tai
+});
 builder.Services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddAuthentication(options =>
     {
-     
-        options.DefaultAuthenticateScheme = "token";
-        options.DefaultSignInScheme = "token";
-        options.DefaultChallengeScheme = "token";
+
+        options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     })
-    .AddCookie("token", options =>
+    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
     {
         options.LoginPath = "/Admin/Login";
-        options.LogoutPath = "/Admin/Home/LogOut";
+        options.LogoutPath = new PathString("/home");
     });
 
 var app = builder.Build();
@@ -35,6 +41,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseSession();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
