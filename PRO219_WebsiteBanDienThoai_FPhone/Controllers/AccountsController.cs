@@ -15,12 +15,10 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers;
 public class AccountsController : Controller
 {
     private readonly HttpClient _client;
-
     public AccountsController(HttpClient client)
     {
         _client = client;
     }
-
     //Khi đã đăng nhập ấn nút có biểu tượng user sẽ hiện ra profile của người dùng
     public async Task<IActionResult> Profile()
     {
@@ -105,7 +103,7 @@ public class AccountsController : Controller
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
             // chuyển hướng đế trang admin
-            if (respo.Roles.Contains("Admin")) return RedirectPermanent("/admin/accounts/index");
+            if (respo.Roles.Contains("Admin") || respo.Roles.Contains("Staff")) return RedirectPermanent("/admin/accounts/index");
 
             //chuyển hướng đến trang chủ của web
             if (respo.Roles.Contains("User")) return RedirectToAction("Index","Home");
