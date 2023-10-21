@@ -8,6 +8,7 @@ using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Filters;
 namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers;
 
 [Area("Admin")]
+[AuthenFilter]
 public class AccountsController : Controller
 {
     private readonly HttpClient _client;
@@ -22,7 +23,6 @@ public class AccountsController : Controller
         return View();
     }
 
-    [AuthorizationFilter("Admin")]
     public async Task<IActionResult> Account()
     {
         var response = await _client.GetAsync("/api/Accounts/get-all-staff");
