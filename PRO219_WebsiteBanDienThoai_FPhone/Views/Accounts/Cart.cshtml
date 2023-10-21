@@ -1,0 +1,94 @@
+﻿@model IEnumerable<PRO219_WebsiteBanDienThoai_FPhone.Models.ProductDetailView>
+
+@{
+    ViewData["Title"] = "Cart";
+}
+@Model.Count();
+<main id="main">
+    <section class="section cart__area">
+        <div class="container">
+            <div class="responsive__cart-area">
+                <form class="cart__form">
+                    <div class="cart__table table-responsive">
+                        <table width="100%" class="table">
+                            <thead>
+                                <tr>
+                                    <th>PRODUCT</th>
+                                    <th>NAME</th>
+                                    <th>UNIT PRICE</th>
+                                    <th>QUANTITY</th>
+                                    <th>TOTAL</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td class="product__thumbnail">
+                                            <a href="#">
+                                                <img src="@item.Image" id="pic" />
+                                            </a>
+                                        </td>
+                                        <td class="product__name">
+                                            @item.ProductName
+                                            <br><br>
+                                        </td>
+                                        <td class="product__price">
+                                            <div class="price">
+                                                <span class="new__price">$@item.Price</span>
+                                            </div>
+                                        </td>
+                                        <td class="product__quantity">
+                                            <!-- Hiển thị số lượng sản phẩm ở đây -->
+                                            <p>1</p>
+                                        </td>
+                                        <td class="product__subtotal">
+                                            <!-- Hiển thị tổng giá trị cho sản phẩm này ở đây -->
+                                            <div class="price">
+                                                <span class="new__price">$@(item.Price)</span>
+                                            </div>
+                                            <a href="#" class="remove__cart-item">
+                                                <svg>
+                                                    <use xlink:href="~~/images/sprite.svg#icon-trash"></use>
+                                                </svg>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="cart-btns">
+                        <div class="continue__shopping">
+                            <a href="/">Continue Shopping</a>
+                        </div>
+                        <div class="check__shipping">
+                            <input type="checkbox">
+                            <span>Shipping(+7$)</span>
+                        </div>
+                    </div>
+
+                    <div class="cart__totals">
+                        <h3>Cart Totals</h3>
+                        <ul>
+                            <li>
+                                Subtotal
+                                <span class="new__price">$@(Model.Sum(item => item.Price))</span>
+                            </li>
+                            <li>
+                                Shipping
+                                <span>$0</span>
+                            </li>
+                            <li>
+                                Total
+                                <span class="new__price">$@(Model.Sum(item => item.Price))</span>
+                            </li>
+                        </ul>
+                        <a href="">PROCEED TO CHECKOUT</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</main>

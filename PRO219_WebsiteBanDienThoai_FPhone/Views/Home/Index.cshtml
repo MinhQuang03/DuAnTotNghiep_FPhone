@@ -688,11 +688,11 @@
                         <h4 style="color:#da152b">@item.Price</h4>
                     </div>
                     <a href="#">
-                        @Html.ActionLink("Add To Cart", "PhoneDetail", "PhoneDetail", new { id = item.IdProduct }, new { @class = "product__btn", type = "submit" })
+                        @Html.ActionLink("Chi tiet", "PhoneDetail", "PhoneDetail", new { id = item.IdProduct }, new { @class = "product__btn", type = "submit" })
 
                     </a>
                 </div>
-                <ul>
+               @*  <ul>
                     <li>
                         <a data-tip="Quick View" data-place="left" href="#">
                             <svg>
@@ -714,7 +714,7 @@
                             </svg>
                         </a>
                     </li>
-                </ul>
+                </ul> *@
             </div>
         }
     </div>
