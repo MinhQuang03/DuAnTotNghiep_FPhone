@@ -92,12 +92,7 @@
        
         <form asp-action="Login" asp-controller="Accounts" class="login-form">
             <h3>Login Now</h3>
-            @if (TempData.ContainsKey("ErrorMessage"))
-            {
-                <div class="alert alert-danger">
-                    @TempData["ErrorMessage"]
-                </div>
-            }
+            <partial name="DataError"/>
             <input required type="text" asp-for="@LoginModel.UserName" name="UserName" placeholder="User name" class="box">
             <input required type="password" asp-for="@LoginModel.Password" name="Password" placeholder="your password" class="box">
             <p>forget your password <a href="#">Click Here</a></p>
