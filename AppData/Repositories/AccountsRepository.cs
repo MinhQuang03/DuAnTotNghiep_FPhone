@@ -4,6 +4,7 @@ using System.Text;
 using AppData.FPhoneDbContexts;
 using AppData.IRepositories;
 using AppData.Models;
+using AppData.Utilities;
 using AppData.ViewModels.Accounts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -36,7 +37,6 @@ namespace AppData.Repositories
 
         public async Task<IdentityResult> SignUpAdmin(AdSignUpViewModel model)
         {
-            
             var user = new ApplicationUser
             {
                 Name = model.FullName,
@@ -63,6 +63,7 @@ namespace AppData.Repositories
 
         public async Task<bool> SignUpCl(ClAccountsViewModel model)
         {
+           
             try
             {
                 Account ac = new Account()
@@ -97,8 +98,7 @@ namespace AppData.Repositories
         {
             LoginInputVM x = new LoginInputVM();
             var adminResult = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, false, false);
-            var userResult = _dbContext.Accounts.AsNoTracking()
-                .FirstOrDefault(c => c.Username == model.UserName && c.Password == model.Password);
+            var userResult = _dbContext.Accounts.AsNoTracking().FirstOrDefault(c => c.Username == model.UserName && c.Password == model.Password);
            
             if (adminResult.Succeeded)
             {

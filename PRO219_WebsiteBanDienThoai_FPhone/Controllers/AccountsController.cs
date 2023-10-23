@@ -7,8 +7,8 @@ using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using PRO219_WebsiteBanDienThoai_FPhone.Services;
-using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
 using PRO219_WebsiteBanDienThoai_FPhone.Models;
+using AppData.Utilities;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers;
 
