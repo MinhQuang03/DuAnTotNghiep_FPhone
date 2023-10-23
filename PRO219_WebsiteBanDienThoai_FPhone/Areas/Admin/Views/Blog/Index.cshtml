@@ -4,7 +4,18 @@
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
-<h1>Index</h1>
+<div class="page-header">
+    <h2 class="header-title">Blog List</h2>
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a href="#" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+            <a class="breadcrumb-item" href="#">Pages</a>
+            <a class="breadcrumb-item" href="#">Blog</a>
+            <span class="breadcrumb-item active">Blog List</span>
+        </nav>
+    </div>
+</div>
+<h1>Blog List</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -50,8 +61,7 @@
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new {  id=item.Id  }) |
-                    @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+                @Html.ActionLink("Delete", "Delete", new { id=item.Id })
             </td>
         </tr>
 }

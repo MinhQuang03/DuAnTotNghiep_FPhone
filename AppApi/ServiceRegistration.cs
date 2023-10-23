@@ -9,24 +9,26 @@ namespace AppApi
     {
         public static void Configure(IServiceCollection services)
         {
-            services.AddScoped<IAccountStaffRepository, AccountStaffRepository>();
-            services.AddScoped<ISimRepository, SimRepository>();
-            services.AddScoped<IPhoneDetaildRepository, PhoneDetaildRepository>();
-            services.AddScoped<IPhoneDetailService, PhoneDetailService>();
-            services.AddScoped<IChargingportTypeRepository, ChargingportTypeRepository>();
-            services.AddScoped<IChipCPURepository, ChipCPURepository>();
-            services.AddScoped<IChipGPURepository, ChipGPURepository>();
-            services.AddScoped<IColorRepository, ColorRepository>();
-            services.AddScoped<IPhoneRepository, PhoneRepository>();
-            services.AddScoped<IProductionCompanyRepository, ProductionCompanyRepository>();
-            services.AddScoped<IBlogRepository, BlogRepository>();
-            services.AddScoped<IBatteryRepository, BatteryRepository>();
-            services.AddScoped<IMaterialRepository, MaterialRepository>();
-            services.AddScoped<IOpertingRepository, OperatingRepository>();
-            services.AddScoped<IRamRepository, RamRepository>();
-            services.AddScoped<IRomRepository, RomRepository>();
-            services.AddScoped<ISimRepository, SimRepository>();
-            services.AddScoped<IImeiRepository, ImeiRepository>();
+            services.AddTransient<IAccountsRepository, AccountsRepository>();
+            services.AddTransient<ISimRepository, SimRepository>();
+            services.AddTransient<IPhoneDetaildRepository, PhoneDetaildRepository>();
+            services.AddTransient<IPhoneDetailService, PhoneDetailService>();
+            services.AddTransient<IChargingportTypeRepository, ChargingportTypeRepository>();
+            services.AddTransient<IChipCPURepository, ChipCPURepository>();
+            services.AddTransient<IChipGPURepository, ChipGPURepository>();
+            services.AddTransient<IColorRepository, ColorRepository>();
+            services.AddTransient<IPhoneRepository, PhoneRepository>();
+            services.AddTransient<IProductionCompanyRepository, ProductionCompanyRepository>();
+            services.AddTransient<IBlogRepository,BlogRepository>();
+            services.AddTransient<IBatteryRepository, BatteryRepository>();
+            services.AddTransient<IMaterialRepository, MaterialRepository>();
+            services.AddTransient<IOpertingRepository, OperatingRepository>();
+            services.AddTransient<IRamRepository, RamRepository>();
+            services.AddTransient<IRomRepository, RomRepository>();
+            services.AddTransient<ISimRepository, SimRepository>();
+            services.AddTransient<IImeiRepository, ImeiRepository>();
+            services.AddTransient<IUserRepository, UserRepostitory>();
+            services.AddTransient<IAddressRepository, AddressRepostitory>();
         }
     }
 }
