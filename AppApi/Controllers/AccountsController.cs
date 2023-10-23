@@ -40,11 +40,30 @@ public class AccountsController : ControllerBase
     }
 
     [HttpPost("Login/")]
-    public async Task<IActionResult> Login(LoginModel loginModel) 
+    public async Task<IActionResult> Login(LoginModel model)
     {
-        var result = await _accountsRepository.Login(loginModel);
-        return Ok(result);
+        var clLogin = await _accountsRepository.ClLogin(model);
+        var adLogin = await _accountsRepository.AdLogin(model);
+        if (clLogin.Valid && adLogin.Valid) return BadRequest("Nếu bạn gặp lỗi này vui lòng liên hệ quản trị viên");
+        if (adLogin.Valid)
+        {
+            return Ok(adLogin);
+        }
+
+        if (clLogin.Valid)
+        {
+            return Ok(clLogin);
+        }
+
+        return BadRequest();
     }
+
+    //[HttpPost("Login/Client/")]
+    //public async Task<IActionResult> Login(LoginModel model)
+    //{
+    //    var result = await _accountsRepository.ClLogin(model);
+    //    return Ok(result);
+    //}
 
     [HttpGet("LoginWithToken/{token}")]
     public IActionResult LoginWithToken(string token)

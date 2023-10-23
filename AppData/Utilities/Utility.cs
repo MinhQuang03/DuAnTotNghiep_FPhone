@@ -1,10 +1,24 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace AppData.Utilities
 {
-    public class Utility
+    public static class Utility
     {
+        public static T ConvertJsonToObject<T>(string json)
+        {
+            if (string.IsNullOrEmpty(json)) return default;
+            try
+            {
+                return JsonConvert.DeserializeObject<T>(json);
+            }
+            catch
+            {
+                return default;
+                throw;
+            }
+        }
     }
 
     public class Security
