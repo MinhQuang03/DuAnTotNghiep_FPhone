@@ -2,6 +2,7 @@
 using AppData.IRepositories;
 using AppData.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Drawing;
 
 namespace AppData.Repositories
 {
@@ -33,6 +34,31 @@ namespace AppData.Repositories
             return await _dbContext.PhoneDetailds.FirstOrDefaultAsync(p => p.Id == id);
         }
 
+        public async Task<PhoneDetaild> GetPhoneByChipCPUs(Guid IdChipCPUs)
+        {
+            return await _dbContext.PhoneDetailds.FirstOrDefaultAsync(p => p.IdChipCPU == IdChipCPUs);
+        }
+
+        public async Task<PhoneDetaild> GetPhoneByColor(Guid IdColor)
+        {
+            return await _dbContext.PhoneDetailds.FirstOrDefaultAsync(p => p.IdColor == IdColor);
+        }
+
+        public async Task<PhoneDetaild> GetPhoneByRam(Guid IdRam)
+        {
+            return await _dbContext.PhoneDetailds.FirstOrDefaultAsync(p => p.IdRam == IdRam);
+        }
+
+        public async Task<List<PhoneDetaild>> GetPhoneASC()
+        {
+            return await _dbContext.PhoneDetailds.OrderBy(p => p.Price).ToListAsync();
+        }
+
+        public async Task<List<PhoneDetaild>> GetPhoneDESC()
+        {
+            return await _dbContext.PhoneDetailds.OrderByDescending(p => p.Price).ToListAsync();
+        }
+
         public async Task<PhoneDetaild> Update(PhoneDetaild obj)
         {
             var a = await _dbContext.PhoneDetailds.FindAsync(obj.Id);
@@ -58,6 +84,31 @@ namespace AppData.Repositories
             _dbContext.PhoneDetailds.Update(a);
             await _dbContext.SaveChangesAsync();
             return obj;
+        }
+
+        public async Task<List<PhoneDetaild>> GetPhone5tr()
+        {
+            return await _dbContext.PhoneDetailds.Where(p => p.Price >= 500000 && p.Price <= 5000000).ToListAsync();
+        }
+
+        public async Task<List<PhoneDetaild>> GetPhone10tr()
+        {
+            return await _dbContext.PhoneDetailds.Where(p => p.Price >= 5000000 && p.Price <= 10000000).ToListAsync();
+        }
+
+        public async Task<List<PhoneDetaild>> GetPhone15tr()
+        {
+            return await _dbContext.PhoneDetailds.Where(p => p.Price >= 10000000 && p.Price <= 15000000).ToListAsync();
+        }
+
+        public async Task<List<PhoneDetaild>> GetPhone25tr()
+        {
+            return await _dbContext.PhoneDetailds.Where(p => p.Price >= 15000000 && p.Price <= 25000000).ToListAsync();
+        }
+
+        public async Task<List<PhoneDetaild>> GetPhone50tr()
+        {
+            return await _dbContext.PhoneDetailds.Where(p => p.Price >= 25000000 && p.Price <= 50000000).ToListAsync();
         }
     }
 }
