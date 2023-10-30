@@ -65,6 +65,7 @@ namespace AppData.Repositories
         public async Task<bool> SignUpCl(ClAccountsViewModel model)
         {
             Security security = new Security();
+            
             try
             {
                 Account ac = new Account()
@@ -81,8 +82,18 @@ namespace AppData.Repositories
                 };
                 if (!_dbContext.AspNetUsers.Any(c => c.UserName == model.Username) && !_dbContext.Accounts.Any(c =>c.Username == model.Username))
                 {
-                    await _dbContext.Accounts.AddAsync(ac);
-                    await _dbContext.SaveChangesAsync();
+               
+                        await _dbContext.Accounts.AddAsync(ac);
+                        await _dbContext.SaveChangesAsync();
+                   
+                    ObjectEmailInput email = new ObjectEmailInput();
+                    //Gửi email
+                    email.UserName = model.Username;
+                    email.FullName = model.Name;
+                    email.Subject = "Thông báo tạo tài khoản thành công";
+                    email.Message = Utility.EmailCreateAccountTemplate;
+                    email.SendTo = model.Email;
+                    await Utility.SendEmail(email);
                     return true;
                 }
                 return false;

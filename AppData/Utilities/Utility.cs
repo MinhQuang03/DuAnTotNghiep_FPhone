@@ -1,5 +1,8 @@
-﻿using System.Security.Cryptography;
+﻿using System.Net;
+using System.Net.Mail;
+using System.Security.Cryptography;
 using System.Text;
+using AppData.Models;
 using Newtonsoft.Json;
 
 namespace AppData.Utilities
@@ -19,7 +22,69 @@ namespace AppData.Utilities
                 throw;
             }
         }
+
+        public static string EmailCreateAccountTemplate = "Chào {0},\r\n\r\nChúng tôi rất vui thông báo rằng tài khoản của Quý khách đã được tạo thành công trên hệ thống của FPHONE STORE.\r\n\r\nThông tin tài khoản của Quý khách như sau:\r\n\r\nTên đăng nhập: {1}\r\n\r\nNếu Quý khách có bất kỳ câu hỏi hoặc cần hỗ trợ, vui lòng liên hệ với chúng tôi qua email support@fphonestore.com hoặc gọi số điện thoại hỗ trợ khách hàng: 0123-456-789.\r\n\r\nChúc Quý khách có những trải nghiệm tốt nhất với hệ thống của chúng tôi!\r\n\r\nTrân trọng,\r\nFPHONE STORE\r\n";
+
+        public static async Task<ObjectEmailOutput> SendEmail(ObjectEmailInput obj)
+        {
+           var output = new ObjectEmailOutput();
+           string Address = "fphone.store.404@gmail.com"; //Địa chỉ email của bạn
+             string Password = "bezf nonp fbgq ssui";
+        
+            using (var smtp = new SmtpClient())
+            {
+                smtp.Host = "smtp.gmail.com";
+                smtp.Port = 587;
+                smtp.EnableSsl = true;
+                smtp.Credentials = new NetworkCredential(Address, Password);
+               var a = smtp.SendMailAsync(Address, obj.SendTo, obj.Subject, obj.Message);
+               if (a.IsCompletedSuccessfully)
+               {
+                   output.Success = true;
+                   output.Message = "Thành công";
+                   return output;
+               }
+            }
+            output.Success = false;
+            output.Message = "Không thành công";
+            return output;
+        }
     }
+
+    public class ObjectEmailInput
+    {
+        /// <summary>
+        /// Tên người dùng
+        /// </summary>
+        public string FullName { get; set; }
+        /// <summary>
+        /// Tên đăng nhập
+        /// </summary>
+        public string UserName { get; set; }
+        /// <summary>
+        /// Gửi đến
+        /// </summary>
+        public string SendTo { get; set; }
+        /// <summary>
+        /// Thông báo
+        /// </summary>
+        public string Message { get; set; }
+        /// <summary>
+        /// Tiêu đề
+        /// </summary>
+        public string Subject { get; set; }
+        /// <summary>
+        /// Chữ ký
+        /// </summary>
+        public string Signature { get; set; }
+
+    }
+
+    public class ObjectEmailOutput
+    {
+        public bool Success { get; set; } = false;
+        public string Message { get; set; }     
+    }   
 
     public class Security
     {   
