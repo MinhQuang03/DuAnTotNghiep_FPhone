@@ -48,6 +48,7 @@ public class FPhoneDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Sales> Sales { get; set; }
     public DbSet<SalePhoneDetaild> SalePhoneDetailds { get; set; }
     public DbSet<ApplicationUser> AspNetUsers { get; set; }
+    //MSI\SQLEXPRESS
     //LKK\SQLEXPRESS
     // Ko cần sửa file này
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

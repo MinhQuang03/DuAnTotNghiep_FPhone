@@ -25,7 +25,6 @@
                 </div>
                 <div class="zoom" id="zoom"></div>
             </div>
-
                 <form action="@Url.Action("AddToCard", "Accounts", new { id = item.IdProduct })" method="get">
                     <div class="product-details__btn">
                         <button type="submit" class="add" name="addToCart">
@@ -35,6 +34,19 @@
                                 </svg>
                             </span>
                             ADD TO CART
+                        </button>
+                    </div>
+                </form>
+
+                <form action="@Url.Action("Additem", "FavoritePhone", new { id = item.IdProduct })" method="get">
+                    <div class="product-details__btn">
+                        <button type="submit" class="add" name="Additem">
+                            <span>
+                                <svg>
+                                    <use xlink:href="/images/sprite.svg#icon-cart-plus"></use>
+                                </svg>
+                            </span>
+                            FAVORITE
                         </button>
                     </div>
                 </form>
