@@ -1,9 +1,7 @@
 ﻿using AppData.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
-using PRO219_WebsiteBanDienThoai_FPhone.Models;
-using System.Net.Http;
+using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
 {
