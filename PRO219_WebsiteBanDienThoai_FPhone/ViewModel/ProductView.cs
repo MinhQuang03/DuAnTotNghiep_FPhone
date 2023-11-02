@@ -2,6 +2,7 @@
 {
     public class ProductView
     {
+        public Guid IdPhoneDetail { get; set; }
         public Guid IdProduct { get; set; }
         public string ProductName { get; set; }
         public string Price { get; set; }

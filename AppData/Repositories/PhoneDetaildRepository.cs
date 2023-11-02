@@ -26,7 +26,7 @@ namespace AppData.Repositories
         }
         public async Task<List<PhoneDetaild>> GetAll(Guid IdPhone)
         {
-            return await _dbContext.PhoneDetailds.Where(c =>c.IdPhone == IdPhone).ToListAsync();
+            return await _dbContext.PhoneDetailds.Where(c =>c.Id == IdPhone).ToListAsync();
         }
 
         public async Task<PhoneDetaild> GetById(Guid id)

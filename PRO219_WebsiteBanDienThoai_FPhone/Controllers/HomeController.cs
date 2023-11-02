@@ -25,15 +25,16 @@ public class HomeController : Controller
         var ctsp = JsonConvert.DeserializeObject<List<PhoneDetaild>>(datajson);
 
         var lstspView = from a in ctsp
-            group a by new
+            group a by new 
             {
                 a.Phones.PhoneName,
-                a.Phones.Id,
+                a.Id,
                 a.Phones.Image
             }
             into b
             select new ProductView
             {
+                IdPhoneDetail = b.Key.Id,
                 IdProduct = b.Key.Id,
                 ProductName = b.Key.PhoneName,
                 Price = b.Select(c => c.Price).Min().ToString("C0") + " - " +
