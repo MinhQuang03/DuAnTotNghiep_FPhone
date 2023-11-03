@@ -53,11 +53,7 @@ public class FPhoneDbContext : IdentityDbContext<ApplicationUser>
     // Ko cần sửa file này
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-<<<<<<<<< Temporary merge branch 1
-        optionsBuilder.UseSqlServer(@"Data Source=TAINQ\SQLEXPRESS;Initial Catalog=PRO219_WebsiteBanDienThoai;Integrated Security=True;TrustServerCertificate=True");
-=========
-        optionsBuilder.UseSqlServer(@"Data Source=LKK\SQLEXPRESS;Initial Catalog=PRO219_WebsiteBanDienThoai;Integrated Security=True;TrustServerCertificate=True");
->>>>>>>>> Temporary merge branch 2
+        optionsBuilder.UseSqlServer(@"Data Source=.;Initial Catalog=PRO219_WebsiteBanDienThoai;Integrated Security=True;TrustServerCertificate=True");
     }
     protected override void OnModelCreating(ModelBuilder builder)
     {
