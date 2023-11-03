@@ -149,44 +149,6 @@ public class AccountsController : Controller
             return RedirectToAction("Cart");
         }
 
-        // Tiến hành lấy dữ liệu sản phẩm từ API
-        var datajson = await _client.GetStringAsync($"api/PhoneDetaild/get-detail/{id}");
-        var cartList = JsonConvert.DeserializeObject<List<PhoneDetaild>>(datajson);
-        var lstPhonedt = from a in cartList
-                         group a by new
-                         {
-                             a.Phones.PhoneName,
-                             a.Id,
-                             a.Phones.Image,
-                             a.Phones.Description,
-                             a.Phones.ProductionCompanies.Name,
-                             a.Images,
-                             a.Price,
-                             a.Rams,
-                             a.Roms,
-
-                         } into b
-                         select new ProductDetailView()
-                         {
-                             IdProductDetail = b.Key.Id,
-                             Description = b.Key.Description,
-                            
-                             Brand = b.Key.Name,
-                             Price = b.Key.Price,
-                             ProductName = b.Key.PhoneName,
-                             Color = b.Select(c => c.Colors).ToList(),
-                             Image = b.Key.Image,
-                             Ram = b.Key.Rams,
-                             Rom = b.Key.Roms
-                         };
-        // Thêm sản phẩm vào giỏ hàng
-        product.AddRange(lstPhonedt);
-
-        // Lưu giỏ hàng vào phiên
-        SessionCartDetail.SetobjTojson(HttpContext.Session, product, "Cart");
-        
-        // Sau khi thêm sản phẩm vào giỏ hàng, bạn có thể thực hiện chuyển hướng hoặc trả về một trạng thái tương ứng.
-
         return RedirectToAction("Cart");
 
 
