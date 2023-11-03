@@ -148,7 +148,7 @@ public class AccountsController : Controller
                          group a by new
                          {
                              a.Phones.PhoneName,
-                             a.Phones.Id,
+                             a.Id,
                              a.Phones.Image,
                              a.Phones.Description,
                              a.Phones.ProductionCompanies.Name,
@@ -160,9 +160,9 @@ public class AccountsController : Controller
                          } into b
                          select new ProductDetailView()
                          {
-                             IdProductDetail = b.Select(c => c.Id).ToList(),
+                             IdProductDetail = b.Key.Id,
                              Description = b.Key.Description,
-                             IdProduct = b.Key.Id,
+                            
                              Brand = b.Key.Name,
                              Price = b.Key.Price,
                              ProductName = b.Key.PhoneName,
