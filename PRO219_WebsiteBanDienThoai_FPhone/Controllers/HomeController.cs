@@ -35,6 +35,7 @@ public class HomeController : Controller
             select new ProductView
             {
                 IdPhoneDetail = b.Key.Id,
+                IdProduct = b.Key.Id,
                 ProductName = b.Key.PhoneName,
                 Price = b.Select(c => c.Price).Min().ToString("C0") + " - " +
                         b.Select(c => c.Price).Max().ToString("C0"),
