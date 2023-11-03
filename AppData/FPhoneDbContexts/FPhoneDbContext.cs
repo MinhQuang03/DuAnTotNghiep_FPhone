@@ -53,9 +53,7 @@ public class FPhoneDbContext : IdentityDbContext<ApplicationUser>
     // Ko cần sửa file này
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-
         optionsBuilder.UseSqlServer(@"Data Source=.;Initial Catalog=PRO219_WebsiteBanDienThoai;Integrated Security=True;TrustServerCertificate=True");
-
     }
     protected override void OnModelCreating(ModelBuilder builder)
     {
