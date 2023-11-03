@@ -32,6 +32,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Services
         }
     }
 }
+//var userId = HttpContext.Session.GetString("UserId");
 //Guid accountId = Guid.Parse(acout);
 //var datajson = await _client.GetStringAsync($"api/Cart/getById/{accountId}");
 //var obj = JsonConvert.DeserializeObject<Cart>(datajson);

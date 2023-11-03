@@ -8,14 +8,19 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using PRO219_WebsiteBanDienThoai_FPhone.Services;
 using PRO219_WebsiteBanDienThoai_FPhone.Models;
+using System.Text;
+using System.Net.Http;
+using AppData.FPhoneDbContexts;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers;
 
 public class AccountsController : Controller
 {
+    private FPhoneDbContext _context;
     private readonly HttpClient _client;
     public AccountsController(HttpClient client)
     {
+        _context = new FPhoneDbContext();
         _client = client;
     }
     //Khi đã đăng nhập ấn nút có biểu tượng user sẽ hiện ra profile của người dùng
@@ -100,7 +105,7 @@ public class AccountsController : Controller
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-
+       
             // chuyển hướng đế trang admin
             if (respo.Roles.Contains("Admin") || respo.Roles.Contains("Staff")) return RedirectPermanent("/admin/accounts/index");
 
@@ -127,18 +132,21 @@ public class AccountsController : Controller
 
     public async Task<IActionResult> Cart()
     {
+      
         var product = SessionCartDetail.GetObjFromSession(HttpContext.Session, "Cart");
+  
         return View(product);
     }
+
     public async Task<IActionResult> AddToCard(Guid id)
     {
-
+        var userId = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
         var product = SessionCartDetail.GetObjFromSession(HttpContext.Session, "Cart");
-
-        if (product == null)
+        if (userId == null)
         {
-            // Nếu không có giỏ hàng trong phiên, bạn nên tạo một giỏ hàng mới
-            product = new List<ProductDetailView>();
+            product.Add(new CartDetailModel { phoneDetaild = _context.PhoneDetailds.Find(id),quantity = 1  });
+            SessionCartDetail.SetobjTojson(HttpContext.Session, product, "Cart");
+            return RedirectToAction("Cart");
         }
 
         // Tiến hành lấy dữ liệu sản phẩm từ API
@@ -178,7 +186,9 @@ public class AccountsController : Controller
         SessionCartDetail.SetobjTojson(HttpContext.Session, product, "Cart");
         
         // Sau khi thêm sản phẩm vào giỏ hàng, bạn có thể thực hiện chuyển hướng hoặc trả về một trạng thái tương ứng.
+
         return RedirectToAction("Cart");
+
 
     }
 }
