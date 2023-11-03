@@ -9,7 +9,7 @@ namespace AppData.ViewModels.Accounts
 {
     public class LoginInputVM
     {
-        public ApplicationUser? ApplicationUser { get; set; }
-        public Account? Account { get; set; }       
+        public ApplicationUser? ApplicationUser { get; set; } = new ApplicationUser();
+        public Account? Account { get; set; } = new Account();
     }
 }

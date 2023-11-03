@@ -54,5 +54,67 @@ namespace AppApi.Controllers
             return Ok(a);
         }
 
+        [HttpGet("Ram/{IdRam}")]
+        public async Task<IActionResult> GetPhoneByRam(Guid IdRam)
+        {
+            var a = await _iIPhoneDetailService.GetPhoneByRam(IdRam);
+            return Ok(a);
+        }
+
+        [HttpGet("Color/{IdColor}")]
+        public async Task<IActionResult> GetPhoneByColor(Guid IdColor)
+        {
+            var a = await _iIPhoneDetailService.GetPhoneByColor(IdColor);
+            return Ok(a);
+        }
+
+        [HttpGet("ChipCPUs/{IdChipCPU}")]
+        public async Task<IActionResult> GetPhoneByChipCPUs(Guid IdChipCPU)
+        {
+            var a = await _iIPhoneDetailService.GetPhoneByChipCPUs(IdChipCPU);
+            return Ok(a);
+        }
+        [HttpGet("DESC")]
+        public async Task<IActionResult> GetPhoneDESC()
+        {
+            var a = await _iIPhoneDetailService.GetPhoneDESC();
+            return Ok(a);
+        }
+        [HttpGet("ASC")]
+        public async Task<IActionResult> GetPhoneASC()
+        {
+            var a = await _iIPhoneDetailService.GetPhoneASC();
+            return Ok(a);
+        }
+        [HttpGet("5tr")]
+        public async Task<IActionResult> GetPhone5tr()
+        {
+            var a = await _iIPhoneDetailService.GetPhone5tr();
+            return Ok(a);
+        }
+        [HttpGet("10tr")]
+        public async Task<IActionResult> GetPhone10tr()
+        {
+            var a = await _iIPhoneDetailService.GetPhone10tr();
+            return Ok(a);
+        }
+        [HttpGet("15tr")]
+        public async Task<IActionResult> GetPhone15tr()
+        {
+            var a = await _iIPhoneDetailService.GetPhone15tr();
+            return Ok(a);
+        }
+        [HttpGet("25tr")]
+        public async Task<IActionResult> GetPhone25tr()
+        {
+            var a = await _iIPhoneDetailService.GetPhone25tr();
+            return Ok(a);
+        }
+        [HttpGet("50tr")]
+        public async Task<IActionResult> GetPhone50tr()
+        {
+            var a = await _iIPhoneDetailService.GetPhone50tr();
+            return Ok(a);
+        }
     }
 }
