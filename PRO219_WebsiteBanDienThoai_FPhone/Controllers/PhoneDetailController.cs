@@ -22,7 +22,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
                              group a by new
                              {
                                  a.Phones.PhoneName,
-                                 a.Id,
+                                 a.Phones.Id,
                                  a.Phones.Image,
                                  a.Phones.Description,
                                  a.Phones.ProductionCompanies.Name,
@@ -34,11 +34,12 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
                              } into b
                              select new ProductDetailView()
                              {
-                                IdProductDetail = b.Key.Id,
-                                 Description = b.Key.Description,
+                                IdProductDetail = b.Select(c =>c.Id).ToList(),
+                                Description = b.Key.Description,
+                                IdProduct = b.Key.Id,
                                 Brand = b.Key.Name,
-                                Price = b.Key.Price,
-                                ProductName = b.Key.PhoneName,
+                                 Price = b.Key.Price,
+                                 ProductName = b.Key.PhoneName,
                                 Color = b.Select(c =>c.Colors).ToList(),
                                 Image = b.Key.Image,
                                 Ram = b.Key.Rams,
