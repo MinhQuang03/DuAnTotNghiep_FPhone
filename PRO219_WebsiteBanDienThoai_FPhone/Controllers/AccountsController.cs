@@ -7,7 +7,6 @@ using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using PRO219_WebsiteBanDienThoai_FPhone.Services;
-using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
 using PRO219_WebsiteBanDienThoai_FPhone.Models;
 using System.Text;
 using System.Net.Http;
@@ -111,17 +110,25 @@ public class AccountsController : Controller
             if (respo.Roles.Contains("Admin") || respo.Roles.Contains("Staff")) return RedirectPermanent("/admin/accounts/index");
 
             //chuyển hướng đến trang chủ của web
-            if (respo.Roles.Contains("User")) return RedirectToAction("Index","Home");
+            if (respo.Roles.Contains("User"))
+            {
+                DataError error = new DataError();
+                error.Success = true;
+                error.Msg = "Đăng nhập thành công";
+                return RedirectToAction("Profile");
+            }
         }
         else
         {
-            ModelState.AddModelError(model.UserName, "Tài khoản hoặc mật khẩu sai");
+            DataError error = new DataError();
+            error.Success = false;
+            error.Msg = "Đăng nhập không thành công";
+            ModelState.AddModelError("UserName", "Tài khoản hoặc mật khẩu sai");
+          return  RedirectToAction("Index", "Home");
         }
 
         return NoContent();
     }
-
-
 
     public async Task<IActionResult> Cart()
     {
