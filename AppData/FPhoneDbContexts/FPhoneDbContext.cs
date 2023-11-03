@@ -49,15 +49,11 @@ public class FPhoneDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<SalePhoneDetaild> SalePhoneDetailds { get; set; }
     public DbSet<ApplicationUser> AspNetUsers { get; set; }
     //MSI\SQLEXPRESS
-    //LKK\SQLEXPRESS
+    //LKK\SQLEXPRESS123
     // Ko cần sửa file này
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-<<<<<<<<< Temporary merge branch 1
-        optionsBuilder.UseSqlServer(@"Data Source=TAINQ\SQLEXPRESS;Initial Catalog=PRO219_WebsiteBanDienThoai;Integrated Security=True;TrustServerCertificate=True");
-=========
         optionsBuilder.UseSqlServer(@"Data Source=LKK\SQLEXPRESS;Initial Catalog=PRO219_WebsiteBanDienThoai;Integrated Security=True;TrustServerCertificate=True");
->>>>>>>>> Temporary merge branch 2
     }
     protected override void OnModelCreating(ModelBuilder builder)
     {
