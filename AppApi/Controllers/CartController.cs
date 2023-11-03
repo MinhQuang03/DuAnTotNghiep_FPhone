@@ -8,7 +8,7 @@ namespace AppApi.Controllers
 {
     [Route("api/Cart")]
     [ApiController]
-    public class CartController : ControllerBase
+    public class CartController : Controller
     {
         private IcartRepository _icartRepository;
         public CartController(IcartRepository icartRepository)
@@ -24,10 +24,10 @@ namespace AppApi.Controllers
             return Ok(a);
         }
         [HttpGet("getById/{id}")]
-        public async Task<Cart> GetById(Guid id)
+        public async Task<IActionResult> GetById(Guid id)
         {
             var a = await _icartRepository.GetById(id);
-            return a;
+            return Ok(a);
         }
         [HttpPost("add")]
         public async Task<IActionResult> Post(Cart obj)

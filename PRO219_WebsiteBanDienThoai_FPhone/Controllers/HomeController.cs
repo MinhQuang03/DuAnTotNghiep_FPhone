@@ -54,7 +54,6 @@ public class HomeController : Controller
             ExpiresUtc = DateTimeOffset.UtcNow.AddSeconds(20) // Thiết lập thời gian hết hạn sau khi đăng xuất
         };
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme, authenticationProperties);
-        
         return RedirectToAction("Index");
     }
 

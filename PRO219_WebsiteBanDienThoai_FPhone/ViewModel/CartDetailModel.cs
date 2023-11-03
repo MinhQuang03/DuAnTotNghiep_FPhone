@@ -1,5 +1,5 @@
 ﻿using AppData.Models;
-namespace PRO219_WebsiteBanDienThoai_FPhone.Models
+namespace PRO219_WebsiteBanDienThoai_FPhone.ViewModel
 {
     public class CartDetailModel
     {
