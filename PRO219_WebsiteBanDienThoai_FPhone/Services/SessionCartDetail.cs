@@ -13,23 +13,23 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Services
             var jsonString = JsonConvert.SerializeObject(value);
             session.SetString(key, jsonString);
         }
-        public static List<ProductDetailView> GetObjFromSession(ISession session, string key)
+        public static List<CartDetailModel> GetObjFromSession(ISession session, string key)
         {
             var data = session.GetString(key); // doc du lieu tu ss
             if (data != null)
             {
-                var listobj = JsonConvert.DeserializeObject<List<ProductDetailView>>(data);
+                var listobj = JsonConvert.DeserializeObject<List<CartDetailModel>>(data);
                 return listobj;
             }
             else
             {
-                return new List<ProductDetailView>();
+                return new List<CartDetailModel>();
             }
         }
 
-        public static bool CheckProductIncart(Guid Id, List<ProductDetailView> cartpd)
+        public static bool CheckProductIncart(Guid Id, List<CartDetailModel> cartpd)
         {
-            return cartpd.Any(p => p.IdProduct == Id);
+            return cartpd.Any(p => p.phoneDetaild.Id == Id);
         }
     }
 }

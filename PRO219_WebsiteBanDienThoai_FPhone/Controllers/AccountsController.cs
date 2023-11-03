@@ -9,14 +9,19 @@ using System.Security.Claims;
 using PRO219_WebsiteBanDienThoai_FPhone.Services;
 using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
 using PRO219_WebsiteBanDienThoai_FPhone.Models;
+using System.Text;
+using System.Net.Http;
+using AppData.FPhoneDbContexts;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers;
 
 public class AccountsController : Controller
 {
+    private FPhoneDbContext _context;
     private readonly HttpClient _client;
     public AccountsController(HttpClient client)
     {
+        _context = new FPhoneDbContext();
         _client = client;
     }
     //Khi đã đăng nhập ấn nút có biểu tượng user sẽ hiện ra profile của người dùng
@@ -101,7 +106,7 @@ public class AccountsController : Controller
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-
+       
             // chuyển hướng đế trang admin
             if (respo.Roles.Contains("Admin") || respo.Roles.Contains("Staff")) return RedirectPermanent("/admin/accounts/index");
 
@@ -120,58 +125,25 @@ public class AccountsController : Controller
 
     public async Task<IActionResult> Cart()
     {
+      
         var product = SessionCartDetail.GetObjFromSession(HttpContext.Session, "Cart");
+  
         return View(product);
     }
+
     public async Task<IActionResult> AddToCard(Guid id)
     {
-
+        var userId = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
         var product = SessionCartDetail.GetObjFromSession(HttpContext.Session, "Cart");
-
-        if (product == null)
+        if (userId == null)
         {
-            // Nếu không có giỏ hàng trong phiên, bạn nên tạo một giỏ hàng mới
-            product = new List<ProductDetailView>();
+            product.Add(new CartDetailModel { phoneDetaild = _context.PhoneDetailds.Find(id),quantity = 1  });
+            SessionCartDetail.SetobjTojson(HttpContext.Session, product, "Cart");
+            return RedirectToAction("Cart");
         }
 
-        // Tiến hành lấy dữ liệu sản phẩm từ API
-        var datajson = await _client.GetStringAsync($"api/PhoneDetaild/get-detail/{id}");
-        var cartList = JsonConvert.DeserializeObject<List<PhoneDetaild>>(datajson);
-        var lstPhonedt = from a in cartList
-                         group a by new
-                         {
-                             a.Phones.PhoneName,
-                             a.Phones.Id,
-                             a.Phones.Image,
-                             a.Phones.Description,
-                             a.Phones.ProductionCompanies.Name,
-                             a.Images,
-                             a.Price,
-                             a.Rams,
-                             a.Roms,
-
-                         } into b
-                         select new ProductDetailView()
-                         {
-                             IdProductDetail = b.Select(c => c.Id).ToList(),
-                             Description = b.Key.Description,
-                             IdProduct = b.Key.Id,
-                             Brand = b.Key.Name,
-                             Price = b.Key.Price,
-                             ProductName = b.Key.PhoneName,
-                             Color = b.Select(c => c.Colors).ToList(),
-                             Image = b.Key.Image,
-                             Ram = b.Key.Rams,
-                             Rom = b.Key.Roms
-                         };
-        // Thêm sản phẩm vào giỏ hàng
-        product.AddRange(lstPhonedt);
-
-        // Lưu giỏ hàng vào phiên
-        SessionCartDetail.SetobjTojson(HttpContext.Session, product, "Cart");
-        
-        // Sau khi thêm sản phẩm vào giỏ hàng, bạn có thể thực hiện chuyển hướng hoặc trả về một trạng thái tương ứng.
         return RedirectToAction("Cart");
+
 
     }
 }
