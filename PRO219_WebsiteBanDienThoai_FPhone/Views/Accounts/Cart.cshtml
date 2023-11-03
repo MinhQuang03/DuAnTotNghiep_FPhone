@@ -1,9 +1,12 @@
-﻿@model IEnumerable<PRO219_WebsiteBanDienThoai_FPhone.Models.ProductDetailView>
+﻿@model IEnumerable<PRO219_WebsiteBanDienThoai_FPhone.Models.CartDetailModel>
+
+@using AppData.FPhoneDbContexts;
 
 @{
     ViewData["Title"] = "Cart";
+    FPhoneDbContext dbContext = new FPhoneDbContext();
 }
-@Model.Count();
+
 <main id="main">
     <section class="section cart__area">
         <div class="container">
@@ -13,7 +16,7 @@
                         <table width="100%" class="table">
                             <thead>
                                 <tr>
-                                    <th>PRODUCT</th>
+                                    <th>PRODUCTs</th>
                                     <th>NAME</th>
                                     <th>UNIT PRICE</th>
                                     <th>QUANTITY</th>
@@ -23,29 +26,34 @@
                             <tbody>
                                 @foreach (var item in Model)
                                 {
+                                    var idsp = dbContext.PhoneDetailds.FirstOrDefault(p => p.Id == item.phoneDetaild.Id).IdPhone;
+                                    var gia = dbContext.PhoneDetailds.FirstOrDefault(p => p.Id == item.phoneDetaild.Id);
+                                    string anhsp = dbContext.Phones.FirstOrDefault(p => p.Id == idsp).Image;
+                                    var tensp = dbContext.Phones.FirstOrDefault(p => p.Id == idsp).PhoneName;
+
                                     <tr>
                                         <td class="product__thumbnail">
                                             <a href="#">
-                                                <img src="@item.Image" id="pic" />
+                                                <img src="@Url.Content(anhsp)" id="pic" />
                                             </a>
                                         </td>
                                         <td class="product__name">
-                                            @item.ProductName
+                                            @tensp;
                                             <br><br>
                                         </td>
                                         <td class="product__price">
                                             <div class="price">
-                                                <span class="new__price">$@item.Price</span>
+                                                <span class="new__price">$@gia.Price</span>
                                             </div>
                                         </td>
                                         <td class="product__quantity">
-                                            <!-- Hiển thị số lượng sản phẩm ở đây -->
+                                           
                                             <p>1</p>
                                         </td>
                                         <td class="product__subtotal">
-                                            <!-- Hiển thị tổng giá trị cho sản phẩm này ở đây -->
+                                          
                                             <div class="price">
-                                                <span class="new__price">$@(item.Price)</span>
+                                                <span class="new__price">$@(gia.Price)</span>
                                             </div>
                                             <a href="#" class="remove__cart-item">
                                                 <svg>
@@ -74,7 +82,7 @@
                         <ul>
                             <li>
                                 Subtotal
-                                <span class="new__price">$@(Model.Sum(item => item.Price))</span>
+                                <span class="new__price">$</span>
                             </li>
                             <li>
                                 Shipping
@@ -82,7 +90,7 @@
                             </li>
                             <li>
                                 Total
-                                <span class="new__price">$@(Model.Sum(item => item.Price))</span>
+                                <span class="new__price">$</span>
                             </li>
                         </ul>
                         <a href="">PROCEED TO CHECKOUT</a>

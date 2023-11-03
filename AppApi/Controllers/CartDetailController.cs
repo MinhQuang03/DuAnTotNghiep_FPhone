@@ -37,10 +37,10 @@ namespace AppApi.Controllers
         }
 
         [HttpGet("getByIdAcout/{id}")]
-        public async Task<IActionResult> GetByIdAcout(Guid id)
+        public async Task<List<CartDetails>> GetByIdAcout(Guid id)
         {
             var a = await _icartDetailRepository.GetByIdAcout(id);
-            return Ok(a);
+            return a ;
         }
         [HttpPut("update")]
         public async Task<IActionResult> Put(CartDetails obj)
