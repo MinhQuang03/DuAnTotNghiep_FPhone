@@ -6,7 +6,6 @@
 @functions {
 
     public LoginModel? LoginModel { get; set; }
-    
 }
 
 @{
@@ -24,7 +23,7 @@
 
                 <div class="nav__logo">
                     <a asp-action="Index" asp-controller="Home">
-                        PHONE
+                        FPHONE
                     </a>
                 </div>
 
@@ -39,7 +38,7 @@
                     </div>
                     <ul class="nav__list">
                         <li class="nav__item">
-                            <a href="#header" class="nav__link scroll-link">Home</a>
+                            <a href="/home/index" class="nav__link scroll-link">Home</a>
                         </li>
                         <li class="nav__item">
                             <a asp-action="Index" asp-controller="ListPhone">Category</a>
@@ -89,15 +88,14 @@
 
 
     <div class="auth">
-       
         <form asp-action="Login" asp-controller="Accounts" class="login-form">
-            <h3>Login Now</h3>
+            <h3>Đăng nhập</h3>
             <partial name="DataError"/>
-            <input required type="text" asp-for="@LoginModel.UserName" name="UserName" placeholder="User name" class="box">
-            <input required type="password" asp-for="@LoginModel.Password" name="Password" placeholder="your password" class="box">
-            <p>forget your password <a href="#">Click Here</a></p>
-            <p>don't have an account <a asp-controller="Accounts" asp-action="CreateAccount">Create now</a></p>
-            <input type="submit" value="Login now" class="btn">
+            <input required type="text" asp-for="@LoginModel.UserName" name="UserName" placeholder="Tên đăng nhập" class="box">
+            <input required type="password" asp-for="@LoginModel.Password" name="Password" placeholder="Mật khẩu" class="box">
+            <p>Quên mật khẩu <a href="#">Click Here</a></p>
+            <p>Không có tài khoản ? <a asp-controller="Accounts" asp-action="CreateAccount">Tạo mới</a></p>
+            <input type="submit" value="Đăng nhập" class="btn">
         </form>
     </div>
     <div class="searchF">
