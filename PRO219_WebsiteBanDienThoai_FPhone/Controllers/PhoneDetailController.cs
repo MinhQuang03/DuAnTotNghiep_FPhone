@@ -26,7 +26,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
                                  a.Phones.Image,
                                  a.Phones.Description,
                                  a.Phones.ProductionCompanies.Name,
-                                 a.Images,
+                                
                                  a.Price,
                                  a.Rams,
                                  a.Roms,
