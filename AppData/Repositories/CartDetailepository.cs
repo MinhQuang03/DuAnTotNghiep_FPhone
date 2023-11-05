@@ -13,6 +13,10 @@ namespace AppData.Repositories
     public class CartDetailepository : ICartDetailRepository
     {
         public readonly FPhoneDbContext _dbContext;
+        public CartDetailepository()
+        {
+                
+        }
         public CartDetailepository(FPhoneDbContext dbContext)
         {
             _dbContext = dbContext;

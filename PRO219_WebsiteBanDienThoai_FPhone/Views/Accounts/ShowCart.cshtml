@@ -1,0 +1,102 @@
+﻿@model IEnumerable<AppData.Models.CartDetails>
+
+@using AppData.FPhoneDbContexts;
+
+@{
+    ViewData["Title"] = "ShowCart";
+    FPhoneDbContext dbContext = new FPhoneDbContext();
+}
+
+<main id="main">
+    <section class="section cart__area">
+        <div class="container">
+            <div class="responsive__cart-area">
+                <form class="cart__form">
+                    <div class="cart__table table-responsive">
+                        <table width="100%" class="table">
+                            <thead>
+                                <tr>
+                                    <th>PRODUCTs</th>
+                                    <th>NAME</th>
+                                    <th>UNIT PRICE</th>
+                                    <th>QUANTITY</th>
+                                    <th>TOTAL</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    var idsp = dbContext.PhoneDetailds.FirstOrDefault(p => p.Id == item.IdPhoneDetaild).IdPhone;
+                                    var gia = dbContext.PhoneDetailds.FirstOrDefault(p => p.Id == item.IdPhoneDetaild);
+                                    string anhsp = dbContext.Phones.FirstOrDefault(p => p.Id == idsp).Image;
+                                    var tensp = dbContext.Phones.FirstOrDefault(p => p.Id == idsp).PhoneName;
+
+                                    <tr>
+                                        <td class="product__thumbnail">
+                                            <a href="#">
+                                                <img src="@Url.Content(anhsp)" id="pic" />
+                                            </a>
+                                        </td>
+                                        <td class="product__name">
+                                            @tensp;
+                                            <br><br>
+                                        </td>
+                                        <td class="product__price">
+                                            <div class="price">
+                                                <span class="new__price">$@gia.Price</span>
+                                            </div>
+                                        </td>
+                                        <td class="product__quantity">
+
+                                            <p>1</p>
+                                        </td>
+                                        <td class="product__subtotal">
+
+                                            <div class="price">
+                                                <span class="new__price">$@(gia.Price)</span>
+                                            </div>
+                                            <a href="#" class="remove__cart-item">
+                                                <svg>
+                                                    <use xlink:href="~~/images/sprite.svg#icon-trash"></use>
+                                                </svg>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="cart-btns">
+                        <div class="continue__shopping">
+                            <a href="/">Continue Shopping</a>
+                        </div>
+                        <div class="check__shipping">
+                            <input type="checkbox">
+                            <span>Shipping(+7$)</span>
+                        </div>
+                    </div>
+
+                    <div class="cart__totals">
+                        <h3>Cart Totals</h3>
+                        <ul>
+                            <li>
+                                Subtotal
+                                <span class="new__price">$</span>
+                            </li>
+                            <li>
+                                Shipping
+                                <span>$0</span>
+                            </li>
+                            <li>
+                                Total
+                                <span class="new__price">$</span>
+                            </li>
+                        </ul>
+                        <a href="">PROCEED TO CHECKOUT</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
