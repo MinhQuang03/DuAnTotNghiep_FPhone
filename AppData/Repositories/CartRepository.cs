@@ -13,6 +13,10 @@ namespace AppData.Repositories
     public class CartRepository : IcartRepository
     {
         public readonly FPhoneDbContext _dbContext;
+        public CartRepository()
+        {
+                
+        }
         public CartRepository(FPhoneDbContext dbContext)
         {
             _dbContext = dbContext;
