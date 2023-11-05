@@ -20,6 +20,8 @@ namespace AppApi
             services.AddTransient<IPhoneRepository, PhoneRepository>();
             services.AddTransient<IProductionCompanyRepository, ProductionCompanyRepository>();
             services.AddTransient<IBlogRepository,BlogRepository>();
+            services.AddTransient<ICartDetailRepository,CartDetailepository>();
+            services.AddTransient<IcartRepository, CartRepository>();
             services.AddTransient<IBatteryRepository, BatteryRepository>();
             services.AddTransient<IMaterialRepository, MaterialRepository>();
             services.AddTransient<IOpertingRepository, OperatingRepository>();

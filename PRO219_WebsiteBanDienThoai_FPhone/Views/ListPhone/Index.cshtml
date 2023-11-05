@@ -1,0 +1,126 @@
+﻿@using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
+@{
+    ViewData["Title"] = "Phone List";
+}
+<!-- Breadcrumb Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-12">
+            <nav class="breadcrumb bg-light mb-30">
+                <a class="breadcrumb-item text-dark" href="#">Home</a>
+                <a class="breadcrumb-item text-dark" href="#">Shop</a>
+                <span class="breadcrumb-item active">Shop List</span>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+<!-- Shop Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-12">
+            <h4>Chọn theo tiêu chí</h4>
+        </div>
+    </div>
+    <div class="px-xl-5">
+        <!-- Large button groups (default and split) -->
+        @*<div class="btn-group">
+            <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Hãng sản xuất
+            </button>
+            <ul class="dropdown-menu">
+                ...
+            </ul>
+        </div>*@
+        <div class="btn-group">
+            <button class="btn btn-secondary btn-lg" type="button">
+                Ram
+            </button>
+            <button type="button" class="btn btn-lg btn-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="visually-hidden">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu">
+                ...
+            </ul>
+        </div>
+        
+
+    </div>
+    <div class="row px-xl-5">
+        <div class="col-12">
+            <h4>Sắp xếp theo</h4>
+        </div>
+    </div>
+</div>
+<!-- Shop End -->
+<section class="category__section section">
+    <div class="row container" id="productList">
+        @foreach (ProductView item in Model)
+        {
+            
+            <div class="product category__products">
+                <div class="product__header">
+                    <img src="@item.Image" alt="product">
+                </div>
+                <div class="product__footer">
+                    <h3>@item.ProductName</h3>
+                    <div class="rating">
+                        <svg>
+                            <use xlink:href="./images/sprite.svg#icon-star-full"></use>
+                        </svg>
+                        <svg>
+                            <use xlink:href="./images/sprite.svg#icon-star-full"></use>
+                        </svg>
+                        <svg>
+                            <use xlink:href="./images/sprite.svg#icon-star-full"></use>
+                        </svg>
+                        <svg>
+                            <use xlink:href="./images/sprite.svg#icon-star-full"></use>
+                        </svg>
+                        <svg>
+                            <use xlink:href="./images/sprite.svg#icon-star-empty"></use>
+                        </svg>
+                    </div>
+                    <div class="product__price mt-2">
+                        <h4 style="color:#da152b">@item.Price</h4>
+                    </div>
+                    <a href="#">
+                        @Html.ActionLink("Add To Cart", "PhoneDetail", "PhoneDetail", new { id = item.IdProduct }, new { @class = "product__btn", type = "submit" })
+
+                    </a>
+                </div>
+                <ul>
+                    <li>
+                        <a data-tip="Quick View" data-place="left" href="#">
+                            <svg>
+                                <use xlink:href="./images/sprite.svg#icon-eye"></use>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a data-tip="Add To Wishlist" data-place="left" href="#">
+                            <svg>
+                                <use xlink:href="./images/sprite.svg#icon-heart-o"></use>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a data-tip="Add To Compare" data-place="left" href="#">
+                            <svg>
+                                <use xlink:href="./images/sprite.svg#icon-loop2"></use>
+                            </svg>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        }
+    </div>
+</section>
+
+<div class="pagination">
+    <a href="#" id="backpage">&laquo;</a>
+    <div class="paging_auto">
+    </div>
+    <a href="#" id="nextpage">&raquo;</a>
+</div>
+

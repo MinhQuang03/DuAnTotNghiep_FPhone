@@ -1,12 +1,9 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using AppData.Models;
-using AppData.ViewModels.Accounts;
+﻿using AppData.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using PRO219_WebsiteBanDienThoai_FPhone.Models;
+using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers;
 
@@ -28,16 +25,16 @@ public class HomeController : Controller
         var ctsp = JsonConvert.DeserializeObject<List<PhoneDetaild>>(datajson);
 
         var lstspView = from a in ctsp
-            group a by new
+            group a by new 
             {
                 a.Phones.PhoneName,
-                a.Phones.Id,
+                a.Id,
                 a.Phones.Image
             }
             into b
             select new ProductView
             {
-                IdProduct = b.Key.Id,
+                IdPhoneDetail = b.Key.Id,
                 ProductName = b.Key.PhoneName,
                 Price = b.Select(c => c.Price).Min().ToString("C0") + " - " +
                         b.Select(c => c.Price).Max().ToString("C0"),
@@ -56,6 +53,7 @@ public class HomeController : Controller
             ExpiresUtc = DateTimeOffset.UtcNow.AddSeconds(20) // Thiết lập thời gian hết hạn sau khi đăng xuất
         };
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme, authenticationProperties);
+        
         return RedirectToAction("Index");
     }
 

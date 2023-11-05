@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Filters;
 using System.Text;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [AuthenFilter]
     public class PhoneController : Controller
     {
         public readonly HttpClient _httpClient;

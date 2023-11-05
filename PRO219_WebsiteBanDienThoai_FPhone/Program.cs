@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +19,6 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddAuthentication(options =>
     {
-
         options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -28,6 +28,7 @@ builder.Services.AddAuthentication(options =>
         options.LoginPath = "/Admin/Login";
         options.LogoutPath = new PathString("/home");
     });
+
 
 var app = builder.Build();
 

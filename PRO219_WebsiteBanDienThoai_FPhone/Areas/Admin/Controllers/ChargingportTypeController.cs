@@ -1,6 +1,7 @@
 ﻿using AppData.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Filters;
 using System.Text;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
@@ -14,7 +15,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             _httpClient = httpClient;
 
         }
-
+       
         public async Task<IActionResult> Index()
         {
             var datajson = await _httpClient.GetStringAsync("api/ChargingportType/get");

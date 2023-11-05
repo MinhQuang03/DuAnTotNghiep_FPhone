@@ -54,6 +54,10 @@ public class FPhoneDbContext : IdentityDbContext<ApplicationUser>
     {
         optionsBuilder.UseSqlServer(@"Data Source=TAINQ\SQLEXPRESS;Initial Catalog=TestWebsiteBanDienThoai;Integrated Security=True;TrustServerCertificate=True");
     }
+    //MSI\SQLEXPRESS
+    //LKK\SQLEXPRESS
+    // Ko cần sửa file này
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

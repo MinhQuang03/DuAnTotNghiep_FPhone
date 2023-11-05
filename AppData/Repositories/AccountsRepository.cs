@@ -4,11 +4,13 @@ using System.Text;
 using AppData.FPhoneDbContexts;
 using AppData.IRepositories;
 using AppData.Models;
+using AppData.Utilities;
 using AppData.ViewModels.Accounts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Utility = AppData.Utilities.Utility;
 
 namespace AppData.Repositories
 {
@@ -36,7 +38,6 @@ namespace AppData.Repositories
 
         public async Task<IdentityResult> SignUpAdmin(AdSignUpViewModel model)
         {
-            
             var user = new ApplicationUser
             {
                 Name = model.FullName,
@@ -63,6 +64,8 @@ namespace AppData.Repositories
 
         public async Task<bool> SignUpCl(ClAccountsViewModel model)
         {
+            Security security = new Security();
+            
             try
             {
                 Account ac = new Account()
@@ -71,7 +74,7 @@ namespace AppData.Repositories
                     Email = model.Email,
                     ImageUrl = model.ImageUrl,
                     Name = model.Name,
-                    Password = model.Password,
+                    Password = security.Encrypt("B3C1035D5744220E", model.Password),
                     Username = model.Username,
                     PhoneNumber = model.PhoneNumber,
                     Points = model.Points,
@@ -79,8 +82,18 @@ namespace AppData.Repositories
                 };
                 if (!_dbContext.AspNetUsers.Any(c => c.UserName == model.Username) && !_dbContext.Accounts.Any(c =>c.Username == model.Username))
                 {
-                    await _dbContext.Accounts.AddAsync(ac);
-                    await _dbContext.SaveChangesAsync();
+               
+                        await _dbContext.Accounts.AddAsync(ac);
+                        await _dbContext.SaveChangesAsync();
+                   
+                    ObjectEmailInput email = new ObjectEmailInput();
+                    //Gửi email
+                    email.UserName = model.Username;
+                    email.FullName = model.Name;
+                    email.Subject = "Thông báo tạo tài khoản thành công";
+                    email.Message = Utility.EmailCreateAccountTemplate;
+                    email.SendTo = model.Email;
+                    await Utility.SendEmail(email);
                     return true;
                 }
                 return false;
@@ -93,28 +106,53 @@ namespace AppData.Repositories
             }
         }
 
-        public async Task<LoginResponseVM> Login(LoginModel model)
+        public async Task<LoginResponseVM> AdLogin(LoginModel model)
         {
             LoginInputVM x = new LoginInputVM();
             var adminResult = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, false, false);
-            var userResult = _dbContext.Accounts.AsNoTracking()
-                .FirstOrDefault(c => c.Username == model.UserName && c.Password == model.Password);
-           
             if (adminResult.Succeeded)
             {
                 var staff = _dbContext.AspNetUsers.FirstOrDefault(c => c.UserName == model.UserName);
                 x.ApplicationUser = staff;
                 return await GenerateToken(x);
             }
+            return await GenerateToken(x);
+        }
 
+        public async Task<LoginResponseVM> ClLogin(LoginModel model)
+        {
+            LoginInputVM x = new LoginInputVM();
+            Security security = new Security();
+            var userResult = _dbContext.Accounts.AsNoTracking().FirstOrDefault(c => c.Username == model.UserName && c.Password == security.Encrypt("B3C1035D5744220E", model.Password));
             if (userResult != null)
             {
                 x.Account = userResult;
                 return await GenerateToken(x);
             }
-
             return await GenerateToken(x);
         }
+
+        //public async Task<LoginResponseVM> Login(LoginModel model)
+        //{
+        //    LoginInputVM x = new LoginInputVM();
+        //    var adminResult = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, false, false);
+        //    var userResult = _dbContext.Accounts.AsNoTracking().FirstOrDefault(c => c.Username == model.UserName && c.Password == model.Password);
+           
+        //    if (adminResult.Succeeded)
+        //    {
+        //        var staff = _dbContext.AspNetUsers.FirstOrDefault(c => c.UserName == model.UserName);
+        //        x.ApplicationUser = staff;
+        //        return await GenerateToken(x);
+        //    }
+
+        //    if (userResult != null)
+        //    {
+        //        x.Account = userResult;
+        //        return await GenerateToken(x);
+        //    }
+
+        //    return await GenerateToken(x);
+        //}
 
         private async Task<LoginResponseVM> GenerateToken(LoginInputVM model)
         {
@@ -128,7 +166,7 @@ namespace AppData.Repositories
                 return result;
             }
 
-            if (model is { ApplicationUser: not null, Account: null })
+            if (model is { ApplicationUser.UserName: not null, Account.Username: null })
             {
                 var role = await _userManager.GetRolesAsync(model.ApplicationUser);
                 var tokenDescriptor = new SecurityTokenDescriptor()
@@ -151,7 +189,7 @@ namespace AppData.Repositories
                  return result;
             }
 
-            if (model is { Account: not null, ApplicationUser: null })
+            if (model is { Account.Username: not null, ApplicationUser.UserName: null })
             {
                 var tokenDescriptor = new SecurityTokenDescriptor()
                 {
