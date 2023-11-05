@@ -1,0 +1,44 @@
+﻿@using AppData.Models;
+@model List<BlogView>
+
+<section class="section news" id="news">
+    <div class="container">
+        <div class="title__container">
+            <div class="section__titles">
+                <div class="section__title active">
+                    <span class="dot"></span>
+                    <h1 class="primary__title">Blog</h1>
+                </div>
+            </div>
+        </div>
+        <div class="news__container">
+            <div class="glide" id="glide_5">
+                <div class="glide__track" data-glide-el="track">
+                    <ul class="glide__slides">
+                        @foreach (var item in Model)
+                        {
+                            <li class="glide__slide">
+                                <div class="new__card">
+                                    <div class="card__header">
+                                        <img src="~/images/products/iPhone/iphone1.jpeg" alt="">
+                                    </div>
+                                    <div class="card__footer">
+                                        <h3>@item.Title</h3>
+                                        <span>@item.Content</span>
+                                        <p>
+                                            @item.CreatedDate
+                                        </p>
+                                        <a href="#">
+                                            <button>Chi tiết</button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppApi", "AppApi\AppApi.csproj", "{01F19B6B-B759-475B-8AC9-6FE8B7C31E13}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppApi", "AppApi\AppApi.csproj", "{01F19B6B-B759-475B-8AC9-6FE8B7C31E13}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PRO219_WebsiteBanDienThoai_FPhone", "PRO219_WebsiteBanDienThoai_FPhone\PRO219_WebsiteBanDienThoai_FPhone.csproj", "{98BD1769-C54C-485C-ACEE-871CFAD2E66E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PRO219_WebsiteBanDienThoai_FPhone", "PRO219_WebsiteBanDienThoai_FPhone\PRO219_WebsiteBanDienThoai_FPhone.csproj", "{98BD1769-C54C-485C-ACEE-871CFAD2E66E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppData", "AppData\AppData.csproj", "{1F14B10F-6702-40F9-89F0-6DFF3A05A47B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppData", "AppData\AppData.csproj", "{1F14B10F-6702-40F9-89F0-6DFF3A05A47B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

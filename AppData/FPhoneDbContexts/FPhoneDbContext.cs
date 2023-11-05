@@ -48,13 +48,16 @@ public class FPhoneDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Sales> Sales { get; set; }
     public DbSet<SalePhoneDetaild> SalePhoneDetailds { get; set; }
     public DbSet<ApplicationUser> AspNetUsers { get; set; }
+
+    // có thể comment OnConfigurating này và k cần dùng nếu k sửa gì trong db nữa
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlServer(@"Data Source=TAINQ\SQLEXPRESS;Initial Catalog=TestWebsiteBanDienThoai;Integrated Security=True;TrustServerCertificate=True");
+    }
     //MSI\SQLEXPRESS
     //LKK\SQLEXPRESS
     // Ko cần sửa file này
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlServer(@"Data Source=.;Initial Catalog=PRO219_WebsiteBanDienThoai;Integrated Security=True;TrustServerCertificate=True");
-    }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
