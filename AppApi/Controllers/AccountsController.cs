@@ -55,7 +55,7 @@ public class AccountsController : ControllerBase
             return Ok(clLogin);
         }
 
-        return BadRequest();
+        return BadRequest("Sai tài khoản hoặc mật khẩu. Vui lòng thử lại");
     }
 
     //[HttpPost("Login/Client/")]
@@ -92,4 +92,5 @@ public class AccountsController : ControllerBase
         var result = await _userRepository.GetById(id);
         return result;
     }
+
 }

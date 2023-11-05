@@ -2,6 +2,7 @@
 using AppData.IRepositories;
 using AppData.IServices;
 using AppData.Models;
+using AppData.ViewModels.Phones;
 using Microsoft.EntityFrameworkCore;
 
 namespace AppData.Services
@@ -14,6 +15,7 @@ namespace AppData.Services
         private IProductionCompanyRepository _productionCompanyRepository;
         private IRamRepository _ramRepository;
         private IRomRepository _romRepository;
+       
         public readonly FPhoneDbContext _dbContext;
         public PhoneDetailService(IPhoneDetaildRepository iPhoneDetaildRepository, IPhoneRepository phoneRepository,FPhoneDbContext dbContext,IColorRepository colorRepository,IProductionCompanyRepository productionCompanyRepository,IRamRepository ramRepository, IRomRepository romRepository)    
         {
@@ -139,5 +141,7 @@ namespace AppData.Services
         {
             return _iPhoneDetaildRepository.GetPhone50tr();
         }
+
+       
     }
 }

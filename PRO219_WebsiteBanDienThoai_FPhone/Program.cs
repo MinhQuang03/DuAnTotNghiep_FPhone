@@ -1,11 +1,17 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using AppData.FPhoneDbContexts;
+using AppData.IServices;
+using AppData.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddTransient<IVwPhoneService, VwPhoneService>();
+builder.Services.AddTransient<FPhoneDbContext>();
+builder.Services.AddTransient<IVwPhoneDetailService,VwPhoneDetailService>();
+builder.Services.AddTransient<IListImageService,ListImageService>();
+
 builder.Services.AddScoped(sp => new HttpClient()
 {
     BaseAddress = new Uri("https://localhost:7129/")
