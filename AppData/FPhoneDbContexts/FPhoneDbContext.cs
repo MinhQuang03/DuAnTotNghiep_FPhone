@@ -52,7 +52,8 @@ public class FPhoneDbContext : IdentityDbContext<ApplicationUser>
     // có thể comment OnConfigurating này và k cần dùng nếu k sửa gì trong db nữa
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer(@"Data Source=TAINQ\SQLEXPRESS;Initial Catalog=TestWebsiteBanDienThoai;Integrated Security=True;TrustServerCertificate=True");
+        // connection string của server trên azure cloud. Để connect hãy liên hệ cho Thành
+        optionsBuilder.UseSqlServer(@"Data Source=dongnama.database.windows.net;Initial Catalog=PRO219_WebsiteBanDienThoai;User ID=fphoneAdmin;Password=123456aA@");
     }
     //MSI\SQLEXPRESS
     //LKK\SQLEXPRESS
