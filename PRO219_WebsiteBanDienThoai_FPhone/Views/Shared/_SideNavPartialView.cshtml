@@ -61,7 +61,7 @@
                             </svg>
                         </a>
                     }
-                    @if (!UserClaim.HasRole(User, "User"))
+                    else if (!UserClaim.HasRole(User, "User"))
                     {
                         <a href="#" class="icon__item" id="login-btn">
                             <svg class="icon__user">

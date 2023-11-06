@@ -1,4 +1,5 @@
-﻿using AppData.Models;
+﻿using AppData.IServices;
+using AppData.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -11,38 +12,22 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers;
 public class HomeController : Controller
 {
     private readonly HttpClient _client;
+    private IVwPhoneService _phoneService;
     private readonly ILogger<HomeController> _logger;
 
-    public HomeController(ILogger<HomeController> logger, HttpClient client)
+    public HomeController(ILogger<HomeController> logger, HttpClient client, IVwPhoneService phoneService)
     {
         _logger = logger;
         _client = client;
+        _phoneService = phoneService;
     }
 
 
     public async Task<IActionResult> Index()
     {
-        var datajson = await _client.GetStringAsync("api/PhoneDetaild/get");
-        var ctsp = JsonConvert.DeserializeObject<List<PhoneDetaild>>(datajson);
-
-        var lstspView = from a in ctsp
-            group a by new 
-            {
-                a.Phones.PhoneName,
-                a.Id,
-                a.Phones.Image
-            }
-            into b
-            select new ProductView
-            {
-                IdPhoneDetail = b.Key.Id,
-                ProductName = b.Key.PhoneName,
-                Price = b.Select(c => c.Price).Min().ToString("C0") + " - " +
-                        b.Select(c => c.Price).Max().ToString("C0"),
-                Image = b.Key.Image
-            };
+       var data= _phoneService.listVwPhoneGroup();
         
-        return View(lstspView);
+        return View(data);
     }
 
    

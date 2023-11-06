@@ -1,4 +1,5 @@
-@using PRO219_WebsiteBanDienThoai_FPhone.ViewModel
+@using AppData.ViewModels.Phones
+@model List<AppData.ViewModels.Phones.VW_Phone_Group>
 ﻿@using AppData.Models;
 
 @{
@@ -16,9 +17,7 @@
                             <span class="">New Inspiration 2020</span>
                             <h1 class="">PHONES MADE FOR YOU!</h1>
                             <p>Trending from mobile and headphone style collection</p>
-                            <a href="#">
-                                <button class="hero__btn">SHOP NOW</button>
-                            </a>
+                            <a href="#"><button class="hero__btn">SHOP NOW</button></a>
                         </div>
                         <div class="hero__right">
                             <div class="hero__img-container">
@@ -33,9 +32,7 @@
                             <span>New Inspiration 2020</span>
                             <h1>PHONES MADE FOR YOU!</h1>
                             <p>Trending from mobile and headphone style collection</p>
-                            <a href="#">
-                                <button class="hero__btn">SHOP NOW</button>
-                            </a>
+                            <a href="#"><button class="hero__btn">SHOP NOW</button></a>
                         </div>
                         <div class="hero__right">
                             <img class="banner_02" src="~/images/banner_02.png" alt="banner2"/>
@@ -63,6 +60,7 @@
         </div>
     </div>
 </div>
+
 
 
 <!-- Collection -->
@@ -664,14 +662,14 @@
     </div>
 
     <div class="row container">
-        @foreach (ProductView item in Model)
+        @foreach (VW_Phone_Group item in Model)
         {
             <div class="product category__products">
                 <div class="product__header">
                     <img src="@item.Image" alt="product">
                 </div>
                 <div class="product__footer">
-                    <h3>@item.ProductName</h3>
+                    <h3>@item.PhoneName</h3>
                     <div class="rating">
                         <svg>
                             <use xlink:href="./images/sprite.svg#icon-star-full"></use>
@@ -693,11 +691,11 @@
                         <h4 style="color:#da152b">@item.Price</h4>
                     </div>
                     <a href="#">
-                        @Html.ActionLink("Chi tiet", "PhoneDetail", "PhoneDetail", new { id = item.IdPhoneDetail }, new { @class = "product__btn", type = "submit" })
+                        @Html.ActionLink("Chi tiet", "PhoneDetail", "PhoneDetail", new { id = item.IdPhone }, new { @class = "product__btn", type = "submit" })
 
                     </a>
                 </div>
-                <ul>
+                 <ul>
                     <li>
                         <a data-tip="Quick View" data-place="left" href="#">
                             <svg>
@@ -719,7 +717,7 @@
                             </svg>
                         </a>
                     </li>
-                </ul>
+                </ul> 
             </div>
         }
     </div>
@@ -766,11 +764,9 @@
                     <svg>
                         <use xlink:href="/images/sprite.svg#icon-headphones"></use>
                     </svg>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+                </div></div></div></div>
 
+
+</section>
+     @*  @await Component.InvokeAsync("BlogView") *@
 <!--New Section  -->
-@await Component.InvokeAsync("BlogView")

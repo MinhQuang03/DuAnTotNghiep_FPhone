@@ -31,6 +31,7 @@ namespace AppApi
             services.AddTransient<IImeiRepository, ImeiRepository>();
             services.AddTransient<IUserRepository, UserRepostitory>();
             services.AddTransient<IAddressRepository, AddressRepostitory>();
+            services.AddTransient<IVwPhoneService, VwPhoneService>();
         }
     }
 }

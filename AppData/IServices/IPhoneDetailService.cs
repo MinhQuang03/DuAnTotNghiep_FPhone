@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AppData.ViewModels.Phones;
 
 namespace AppData.IServices
 {
@@ -35,5 +36,6 @@ namespace AppData.IServices
         Task<List<PhoneDetaild>> GetPhone25tr();
 
         Task<List<PhoneDetaild>> GetPhone50tr();
+       
     }
 }

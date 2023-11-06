@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using AppData.ViewModels.Phones;
 
 namespace AppData.FPhoneDbContexts;
 
@@ -48,17 +49,15 @@ public class FPhoneDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Sales> Sales { get; set; }
     public DbSet<SalePhoneDetaild> SalePhoneDetailds { get; set; }
     public DbSet<ApplicationUser> AspNetUsers { get; set; }
-
-    // có thể comment OnConfigurating này và k cần dùng nếu k sửa gì trong db nữa
+    public DbSet<VW_Phone> VW_Phone { get; set; }
+    public DbSet<VW_PhoneDetail> VW_PhoneDetail { get; set; }       
+    public DbSet<VW_Phone_Group> VW_Phone_Group { get; set; }   
+    //LKK\SQLEXPRESS    
+    // Ko cần sửa file này
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        // connection string của server trên azure cloud. Để connect hãy liên hệ cho Thành
         optionsBuilder.UseSqlServer(@"Data Source=dongnama.database.windows.net;Initial Catalog=PRO219_WebsiteBanDienThoai;User ID=fphoneAdmin;Password=123456aA@");
     }
-    //MSI\SQLEXPRESS
-    //LKK\SQLEXPRESS
-    // Ko cần sửa file này
-
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
