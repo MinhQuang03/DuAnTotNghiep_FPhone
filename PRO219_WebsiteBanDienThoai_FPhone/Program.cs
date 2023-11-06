@@ -15,6 +15,7 @@ builder.Services.AddTransient<IVwPhoneDetailService,VwPhoneDetailService>();
 builder.Services.AddTransient<IListImageService,ListImageService>();
 builder.Services.AddTransient<IBlogRepository,BlogRepository>();
 
+
 builder.Services.AddScoped(sp => new HttpClient()
 {
     BaseAddress = new Uri("https://localhost:7129/")
