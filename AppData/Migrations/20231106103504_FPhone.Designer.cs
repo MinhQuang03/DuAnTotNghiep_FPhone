@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppData.Migrations
 {
     [DbContext(typeof(FPhoneDbContext))]
-    [Migration("20231007162854_init-database")]
-    partial class initdatabase
+    [Migration("20231106103504_FPhone")]
+    partial class FPhone
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -237,6 +237,9 @@ namespace AppData.Migrations
                     b.Property<Guid?>("IdDiscount")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("IdPhoneDetail")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("NameImei")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -256,22 +259,9 @@ namespace AppData.Migrations
 
                     b.HasIndex("IdDiscount");
 
+                    b.HasIndex("IdPhoneDetail");
+
                     b.ToTable("BillDetails");
-                });
-
-            modelBuilder.Entity("AppData.Models.BillPhoneDetail", b =>
-                {
-                    b.Property<Guid>("BillDetailId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("PhoneDetailId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("BillDetailId", "PhoneDetailId");
-
-                    b.HasIndex("PhoneDetailId");
-
-                    b.ToTable("BillPhoneDetails");
                 });
 
             modelBuilder.Entity("AppData.Models.Blog", b =>
@@ -457,14 +447,9 @@ namespace AppData.Migrations
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("PhoneDetaildId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
                     b.HasIndex("IdPhoneDetaild");
-
-                    b.HasIndex("PhoneDetaildId");
 
                     b.ToTable("ListImage");
                 });
@@ -882,6 +867,130 @@ namespace AppData.Migrations
                     b.ToTable("WarrantyCards");
                 });
 
+            modelBuilder.Entity("AppData.ViewModels.Phones.VW_Phone", b =>
+                {
+                    b.Property<Guid>("IdPhone")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("IdProductionComany")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProductionComanyName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IdPhone");
+
+                    b.ToTable("VW_Phone");
+                });
+
+            modelBuilder.Entity("AppData.ViewModels.Phones.VW_Phone_Group", b =>
+                {
+                    b.Property<Guid>("IdPhone")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Price")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProductionComanyName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IdPhone");
+
+                    b.ToTable("VW_Phone_Group");
+                });
+
+            modelBuilder.Entity("AppData.ViewModels.Phones.VW_PhoneDetail", b =>
+                {
+                    b.Property<Guid>("IdPhoneDetail")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("BatteryName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ChargingportTypeName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ChipCPUName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ChipGPUName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ColorName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FrontCamera")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("IdPhone")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("MaterialName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OperatingSystemName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("RamName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("ReducedAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("Resolution")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RomName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SimName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Size")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Weight")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IdPhoneDetail");
+
+                    b.ToTable("VW_PhoneDetail");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -1047,26 +1156,15 @@ namespace AppData.Migrations
                         .WithMany()
                         .HasForeignKey("IdDiscount");
 
+                    b.HasOne("AppData.Models.PhoneDetaild", "PhoneDetaild")
+                        .WithMany()
+                        .HasForeignKey("IdPhoneDetail")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Bills");
 
                     b.Navigation("Discounts");
-                });
-
-            modelBuilder.Entity("AppData.Models.BillPhoneDetail", b =>
-                {
-                    b.HasOne("AppData.Models.BillDetails", "BillDetails")
-                        .WithMany()
-                        .HasForeignKey("BillDetailId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AppData.Models.PhoneDetaild", "PhoneDetaild")
-                        .WithMany()
-                        .HasForeignKey("PhoneDetailId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("BillDetails");
 
                     b.Navigation("PhoneDetaild");
                 });
@@ -1113,10 +1211,6 @@ namespace AppData.Migrations
                     b.HasOne("AppData.Models.PhoneDetaild", "PhoneDetailds")
                         .WithMany()
                         .HasForeignKey("IdPhoneDetaild");
-
-                    b.HasOne("AppData.Models.PhoneDetaild", null)
-                        .WithMany("Images")
-                        .HasForeignKey("PhoneDetaildId");
 
                     b.Navigation("PhoneDetailds");
                 });
@@ -1362,11 +1456,6 @@ namespace AppData.Migrations
             modelBuilder.Entity("AppData.Models.Account", b =>
                 {
                     b.Navigation("Carts");
-                });
-
-            modelBuilder.Entity("AppData.Models.PhoneDetaild", b =>
-                {
-                    b.Navigation("Images");
                 });
 #pragma warning restore 612, 618
         }

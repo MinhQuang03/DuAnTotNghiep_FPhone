@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppData.Migrations
 {
-    public partial class initdatabase : Migration
+    public partial class FPhone : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -284,6 +284,66 @@ namespace AppData.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "VW_Phone",
+                columns: table => new
+                {
+                    IdPhone = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PhoneName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IdProductionComany = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductionComanyName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_VW_Phone", x => x.IdPhone);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "VW_Phone_Group",
+                columns: table => new
+                {
+                    IdPhone = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PhoneName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProductionComanyName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Price = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_VW_Phone_Group", x => x.IdPhone);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "VW_PhoneDetail",
+                columns: table => new
+                {
+                    IdPhoneDetail = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IdPhone = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PhoneName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ReducedAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    MaterialName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RomName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RamName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OperatingSystemName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BatteryName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SimName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ChipCPUName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ChipGPUName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ColorName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ChargingportTypeName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Weight = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FrontCamera = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Resolution = table.Column<int>(type: "int", nullable: true),
+                    Size = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_VW_PhoneDetail", x => x.IdPhoneDetail);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Address",
                 columns: table => new
                 {
@@ -475,34 +535,6 @@ namespace AppData.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BillDetails",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IdBill = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IdDiscount = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Number = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
-                    NameImei = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BillDetails", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_BillDetails_Bill_IdBill",
-                        column: x => x.IdBill,
-                        principalTable: "Bill",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_BillDetails_Discount_IdDiscount",
-                        column: x => x.IdDiscount,
-                        principalTable: "Discount",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Transactions",
                 columns: table => new
                 {
@@ -652,45 +684,35 @@ namespace AppData.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "WarrantyCards",
+                name: "BillDetails",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IdBillDetail = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AppointmentDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    IdBill = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IdDiscount = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    IdPhoneDetail = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Number = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    NameImei = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_WarrantyCards", x => x.Id);
+                    table.PrimaryKey("PK_BillDetails", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_WarrantyCards_BillDetails_IdBillDetail",
-                        column: x => x.IdBillDetail,
-                        principalTable: "BillDetails",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "BillPhoneDetails",
-                columns: table => new
-                {
-                    BillDetailId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PhoneDetailId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BillPhoneDetails", x => new { x.BillDetailId, x.PhoneDetailId });
-                    table.ForeignKey(
-                        name: "FK_BillPhoneDetails_BillDetails_BillDetailId",
-                        column: x => x.BillDetailId,
-                        principalTable: "BillDetails",
+                        name: "FK_BillDetails_Bill_IdBill",
+                        column: x => x.IdBill,
+                        principalTable: "Bill",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_BillPhoneDetails_PhoneDetailds_PhoneDetailId",
-                        column: x => x.PhoneDetailId,
+                        name: "FK_BillDetails_Discount_IdDiscount",
+                        column: x => x.IdDiscount,
+                        principalTable: "Discount",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_BillDetails_PhoneDetailds_IdPhoneDetail",
+                        column: x => x.IdPhoneDetail,
                         principalTable: "PhoneDetailds",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -748,8 +770,7 @@ namespace AppData.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IdPhoneDetaild = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    IdColor = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    PhoneDetaildId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    IdColor = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -757,11 +778,6 @@ namespace AppData.Migrations
                     table.ForeignKey(
                         name: "FK_ListImage_PhoneDetailds_IdPhoneDetaild",
                         column: x => x.IdPhoneDetaild,
-                        principalTable: "PhoneDetailds",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_ListImage_PhoneDetailds_PhoneDetaildId",
-                        column: x => x.PhoneDetaildId,
                         principalTable: "PhoneDetailds",
                         principalColumn: "Id");
                 });
@@ -816,6 +832,27 @@ namespace AppData.Migrations
                         name: "FK_SalePhoneDetailds_Sales_IdSales",
                         column: x => x.IdSales,
                         principalTable: "Sales",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WarrantyCards",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IdBillDetail = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AppointmentDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WarrantyCards", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WarrantyCards_BillDetails_IdBillDetail",
+                        column: x => x.IdBillDetail,
+                        principalTable: "BillDetails",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -880,9 +917,9 @@ namespace AppData.Migrations
                 column: "IdDiscount");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BillPhoneDetails_PhoneDetailId",
-                table: "BillPhoneDetails",
-                column: "PhoneDetailId");
+                name: "IX_BillDetails_IdPhoneDetail",
+                table: "BillDetails",
+                column: "IdPhoneDetail");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CartsDetails_IdAccount",
@@ -903,11 +940,6 @@ namespace AppData.Migrations
                 name: "IX_ListImage_IdPhoneDetaild",
                 table: "ListImage",
                 column: "IdPhoneDetaild");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ListImage_PhoneDetaildId",
-                table: "ListImage",
-                column: "PhoneDetaildId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PhoneDetailds_IdBattery",
@@ -1036,9 +1068,6 @@ namespace AppData.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "BillPhoneDetails");
-
-            migrationBuilder.DropTable(
                 name: "Blogs");
 
             migrationBuilder.DropTable(
@@ -1063,6 +1092,15 @@ namespace AppData.Migrations
                 name: "Transactions");
 
             migrationBuilder.DropTable(
+                name: "VW_Phone");
+
+            migrationBuilder.DropTable(
+                name: "VW_Phone_Group");
+
+            migrationBuilder.DropTable(
+                name: "VW_PhoneDetail");
+
+            migrationBuilder.DropTable(
                 name: "Warranty");
 
             migrationBuilder.DropTable(
@@ -1078,9 +1116,6 @@ namespace AppData.Migrations
                 name: "Carts");
 
             migrationBuilder.DropTable(
-                name: "PhoneDetailds");
-
-            migrationBuilder.DropTable(
                 name: "Sales");
 
             migrationBuilder.DropTable(
@@ -1088,6 +1123,15 @@ namespace AppData.Migrations
 
             migrationBuilder.DropTable(
                 name: "BillDetails");
+
+            migrationBuilder.DropTable(
+                name: "Bill");
+
+            migrationBuilder.DropTable(
+                name: "PhoneDetailds");
+
+            migrationBuilder.DropTable(
+                name: "Accounts");
 
             migrationBuilder.DropTable(
                 name: "Battery");
@@ -1103,6 +1147,9 @@ namespace AppData.Migrations
 
             migrationBuilder.DropTable(
                 name: "Colors");
+
+            migrationBuilder.DropTable(
+                name: "Discount");
 
             migrationBuilder.DropTable(
                 name: "Material");
@@ -1123,16 +1170,7 @@ namespace AppData.Migrations
                 name: "Sim");
 
             migrationBuilder.DropTable(
-                name: "Bill");
-
-            migrationBuilder.DropTable(
-                name: "Discount");
-
-            migrationBuilder.DropTable(
                 name: "ProductionCompany");
-
-            migrationBuilder.DropTable(
-                name: "Accounts");
         }
     }
 }

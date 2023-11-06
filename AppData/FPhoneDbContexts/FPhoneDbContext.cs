@@ -1,4 +1,5 @@
-﻿using AppData.Models;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using AppData.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -45,12 +46,14 @@ public class FPhoneDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Transaction> Transactions { get; set; }
     public DbSet<Warranty> Warranty { get; set; }
     public DbSet<WarrantyCard> WarrantyCards { get; set; }
-    public DbSet<BillPhoneDetail> BillPhoneDetails { get; set; }
     public DbSet<Sales> Sales { get; set; }
     public DbSet<SalePhoneDetaild> SalePhoneDetailds { get; set; }
     public DbSet<ApplicationUser> AspNetUsers { get; set; }
+    [NotMapped]
     public DbSet<VW_Phone> VW_Phone { get; set; }
-    public DbSet<VW_PhoneDetail> VW_PhoneDetail { get; set; }       
+    [NotMapped]
+    public DbSet<VW_PhoneDetail> VW_PhoneDetail { get; set; }
+    [NotMapped]
     public DbSet<VW_Phone_Group> VW_Phone_Group { get; set; }   
     //LKK\SQLEXPRESS    
     // Ko cần sửa file này
