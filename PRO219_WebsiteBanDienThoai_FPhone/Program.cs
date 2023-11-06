@@ -1,5 +1,7 @@
 ﻿using AppData.FPhoneDbContexts;
+using AppData.IRepositories;
 using AppData.IServices;
+using AppData.Repositories;
 using AppData.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
@@ -11,6 +13,7 @@ builder.Services.AddTransient<IVwPhoneService, VwPhoneService>();
 builder.Services.AddTransient<FPhoneDbContext>();
 builder.Services.AddTransient<IVwPhoneDetailService,VwPhoneDetailService>();
 builder.Services.AddTransient<IListImageService,ListImageService>();
+builder.Services.AddTransient<IBlogRepository,BlogRepository>();
 
 builder.Services.AddScoped(sp => new HttpClient()
 {

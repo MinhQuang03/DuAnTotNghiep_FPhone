@@ -1,4 +1,5 @@
-
+@using AppData.ViewModels.Phones
+@model List<AppData.ViewModels.Phones.VW_Phone_Group>
 ﻿@using AppData.Models;
 
 @{
@@ -661,14 +662,14 @@
     </div>
 
     <div class="row container">
-        @foreach (ProductView item in Model)
+        @foreach (VW_Phone_Group item in Model)
         {
             <div class="product category__products">
                 <div class="product__header">
                     <img src="@item.Image" alt="product">
                 </div>
                 <div class="product__footer">
-                    <h3>@item.ProductName</h3>
+                    <h3>@item.PhoneName</h3>
                     <div class="rating">
                         <svg>
                             <use xlink:href="./images/sprite.svg#icon-star-full"></use>
@@ -690,7 +691,7 @@
                         <h4 style="color:#da152b">@item.Price</h4>
                     </div>
                     <a href="#">
-                        @Html.ActionLink("Chi tiet", "PhoneDetail", "PhoneDetail", new { id = item.IdPhoneDetail }, new { @class = "product__btn", type = "submit" })
+                        @Html.ActionLink("Chi tiet", "PhoneDetail", "PhoneDetail", new { id = item.IdPhone }, new { @class = "product__btn", type = "submit" })
 
                     </a>
                 </div>
@@ -763,9 +764,9 @@
                     <svg>
                         <use xlink:href="/images/sprite.svg#icon-headphones"></use>
                     </svg>
-                </div>
- 
+                </div></div></div></div>
 
-      </section>
-      @await Component.InvokeAsync("BlogView")
+
+</section>
+     @*  @await Component.InvokeAsync("BlogView") *@
 <!--New Section  -->

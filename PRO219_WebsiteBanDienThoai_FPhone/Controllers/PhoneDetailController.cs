@@ -23,7 +23,6 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
         {
             var data = new VwProductDetailViewModel();
             data.Records = _phoneDetailService.getListPhoneDetailByIdPhone(IdPhone);
-            //data.lstImage = _imageService.GetListImagesByIdPhoneDetail();
             return View(data);
         }
     }
