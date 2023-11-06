@@ -1,10 +1,9 @@
-﻿using AppData.IRepositories;
-using AppData.IServices;
-using AppData.Models;
+﻿using AppData.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using PRO219_WebsiteBanDienThoai_FPhone.Models;
 using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers;
@@ -13,21 +12,37 @@ public class HomeController : Controller
 {
     private readonly HttpClient _client;
     private readonly ILogger<HomeController> _logger;
-    private IVwPhoneService _VwPhoneService;
 
-    public HomeController(ILogger<HomeController> logger, HttpClient client,IVwPhoneService VwPhoneService)
+    public HomeController(ILogger<HomeController> logger, HttpClient client)
     {
         _logger = logger;
         _client = client;
-        _VwPhoneService = VwPhoneService;
     }
 
 
     public async Task<IActionResult> Index()
     {
-    
-        var data = _VwPhoneService.listVwPhoneGroup();
-        return View(data);
+        var datajson = await _client.GetStringAsync("api/PhoneDetaild/get");
+        var ctsp = JsonConvert.DeserializeObject<List<PhoneDetaild>>(datajson);
+
+        var lstspView = from a in ctsp
+            group a by new 
+            {
+                a.Phones.PhoneName,
+                a.Id,
+                a.Phones.Image
+            }
+            into b
+            select new ProductView
+            {
+                IdPhoneDetail = b.Key.Id,
+                ProductName = b.Key.PhoneName,
+                Price = b.Select(c => c.Price).Min().ToString("C0") + " - " +
+                        b.Select(c => c.Price).Max().ToString("C0"),
+                Image = b.Key.Image
+            };
+        
+        return View(lstspView);
     }
 
    
@@ -39,6 +54,7 @@ public class HomeController : Controller
             ExpiresUtc = DateTimeOffset.UtcNow.AddSeconds(20) // Thiết lập thời gian hết hạn sau khi đăng xuất
         };
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme, authenticationProperties);
+        
         return RedirectToAction("Index");
     }
 
@@ -54,7 +70,12 @@ public class HomeController : Controller
         return View(ctsp);
     }
 
-   
+    //public async Task<IActionResult> BlogDetail(Guid id)
+    //{
+    //    var datajson = await _client.GetStringAsync("api/Blog/getById/{id}");
+    //    var detail = JsonConvert.DeserializeObject<List<Blog>>(datajson);
+    //    return View(detail);
+    //}
 
     //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     //public IActionResult Error()

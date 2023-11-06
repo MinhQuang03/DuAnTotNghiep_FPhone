@@ -11,15 +11,21 @@ using PRO219_WebsiteBanDienThoai_FPhone.Models;
 using System.Text;
 using System.Net.Http;
 using AppData.FPhoneDbContexts;
+using AppData.Repositories;
+using AppData.IRepositories;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers;
 
 public class AccountsController : Controller
 {
+    private ICartDetailRepository _cartDetailepository;
+    private IcartRepository _cartRepository;
     private FPhoneDbContext _context;
     private readonly HttpClient _client;
     public AccountsController(HttpClient client)
     {
+        _cartDetailepository = new CartDetailepository();
+        _cartRepository = new CartRepository();
         _context = new FPhoneDbContext();
         _client = client;
     }
@@ -132,10 +138,21 @@ public class AccountsController : Controller
 
     public async Task<IActionResult> Cart()
     {
-      
-        var product = SessionCartDetail.GetObjFromSession(HttpContext.Session, "Cart");
-  
-        return View(product);
+        var userId = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
+        if (userId == null)
+        {
+            var product = SessionCartDetail.GetObjFromSession(HttpContext.Session, "Cart");
+            return View(product);
+        }
+       return RedirectToAction("ShowCart");
+    }
+
+
+    public async Task<IActionResult> ShowCart()
+    {
+        var userId = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
+        var Cart = _context.CartsDetails.Where(a => a.IdAccount == (Guid.Parse(userId))).ToList(); 
+        return View(Cart);
     }
 
     public async Task<IActionResult> AddToCard(Guid id)
@@ -148,8 +165,43 @@ public class AccountsController : Controller
             SessionCartDetail.SetobjTojson(HttpContext.Session, product, "Cart");
             return RedirectToAction("Cart");
         }
+        else
+        {
 
-        return RedirectToAction("Cart");
+            var idcartss = _context.Carts.FirstOrDefault(a => a.IdAccount == (Guid.Parse(userId)));
+            if (idcartss != null)
+            {
+             
+                CartDetails cartDetails = new CartDetails();
+                cartDetails.Id = new Guid();
+                cartDetails.IdPhoneDetaild = id;
+                cartDetails.IdAccount = Guid.Parse(userId);
+                cartDetails.Status = 1;
+                _context.CartsDetails.Add(cartDetails);
+                _context.SaveChanges();
+                return RedirectToAction("ShowCart");
+            }
+            else
+
+            {
+                Cart cart = new Cart();
+                cart.IdAccount = Guid.Parse(userId);
+                _context.Carts.Add(cart);
+                _context.SaveChanges();
+
+                CartDetails cartDetails = new CartDetails();
+                cartDetails.Id = new Guid();
+                cartDetails.IdPhoneDetaild = id;
+                cartDetails.IdAccount = Guid.Parse(userId);
+                cartDetails.Status = 1;
+                _context.CartsDetails.Add(cartDetails);
+                _context.SaveChanges();
+                return RedirectToAction("ShowCart");
+            }
+          
+        }
+
+        
 
 
     }

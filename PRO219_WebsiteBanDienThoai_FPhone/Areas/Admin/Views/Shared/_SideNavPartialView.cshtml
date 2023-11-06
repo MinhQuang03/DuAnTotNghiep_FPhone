@@ -185,7 +185,7 @@
                     <span class="icon-holder">
                         <i class="anticon anticon-appstore"></i>
                     </span>
-                    <span class="title">Apps</span>
+                    <span class="title">Quản lý sản phẩm</span>
                     <span class="arrow">
                         <i class="arrow-icon"></i>
                     </span>
@@ -195,7 +195,7 @@
                         <a asp-area="Admin" asp-controller="Phone" asp-action="Index">Phone</a>
                     </li>
                     <li>
-                        <a asp-area="Admin" asp-controller="PhoneDetaild" asp-action="Index">Quản lý sản phẩm</a>
+                        <a asp-area="Admin" asp-controller="PhoneDetaild" asp-action="Index">Danh sách sản phẩm</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a href="javascript:void(0);">
@@ -206,28 +206,28 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a asp-area="Admin" asp-controller="ChargingportType" asp-action="Index">ChargingportType</a>
+                                <a asp-area="Admin" asp-controller="ChargingportType" asp-action="Index">Cổng sach</a>
                             </li>
                             <li>
-                                <a asp-area="Admin" asp-controller="Color" asp-action="Index">Color</a>
+                                <a asp-area="Admin" asp-controller="Color" asp-action="Index">Màu sắc</a>
                             </li>
                             <li>
-                                <a asp-area="Admin" asp-controller="ProductionCompany" asp-action="Index">ProductionCompany</a>
+                                <a asp-area="Admin" asp-controller="ProductionCompany" asp-action="Index">Nhà sản xuất</a>
                             </li>
                             <li>
-                                <a asp-area="Admin" asp-controller="ChipCPUs" asp-action="Index">ChipCPUs</a>
+                                <a asp-area="Admin" asp-controller="ChipCPUs" asp-action="Index">Chip CPU</a>
                             </li>
                             <li>
-                                <a asp-area="Admin" asp-controller="ChipGPUs" asp-action="Index">ChipGPUs</a>
+                                <a asp-area="Admin" asp-controller="ChipGPUs" asp-action="Index">Chip GPU</a>
                             </li>
                             <li>
-                                <a asp-area="Admin" asp-controller="Battery" asp-action="Index">Battery</a>
+                                <a asp-area="Admin" asp-controller="Battery" asp-action="Index">Pin</a>
                             </li>
                             <li>
-                                <a asp-area="Admin" asp-controller="Material" asp-action="Index">Material</a>
+                                <a asp-area="Admin" asp-controller="Material" asp-action="Index">Chất liệu</a>
                             </li>
                             <li>
-                                <a asp-area="Admin" asp-controller="Operating" asp-action="Index">Operating System</a>
+                                <a asp-area="Admin" asp-controller="Operating" asp-action="Index">Hệ điều hành</a>
                             </li>
                             <li>
                                 <a asp-area="Admin" asp-controller="Ram" asp-action="Index">Ram</a>
@@ -311,8 +311,24 @@
                     <li>
                         <a href="setting.html">Setting</a>
                     </li>
-                    <li>
-                        <a asp-area="Admin" asp-controller="Blog" asp-action="Index">Blog</a>
+                    <li class="nav-item dropdown">
+                        <a href="javascript:void(0);">
+                            <span>Blog</span>
+                            <span class="arrow">
+                                <i class="arrow-icon"></i>
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="blog-grid.html">Blog Grid</a>
+                            </li>
+                            <li>
+                                <a href="blog-list.html">Blog List</a>
+                            </li>
+                            <li>
+                                <a href="blog-post.html">Blog Post</a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </li>
