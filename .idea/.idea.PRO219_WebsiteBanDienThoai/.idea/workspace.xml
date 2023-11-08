@@ -12,7 +12,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9b693db3-9b40-488b-a8af-b1c2268ffaa5" name="Changes" comment="" />
+    <list default="true" id="9b693db3-9b40-488b-a8af-b1c2268ffaa5" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.PRO219_WebsiteBanDienThoai/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.PRO219_WebsiteBanDienThoai/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AppData/IServices/IListImageService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/AppData/IServices/IListImageService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AppData/Services/ListImageService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/AppData/Services/ListImageService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Controllers/PhoneDetailController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Controllers/PhoneDetailController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/ViewModel/VwProductDetailViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/ViewModel/VwProductDetailViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Views/PhoneDetail/PhoneDetail.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Views/PhoneDetail/PhoneDetail.cshtml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -147,6 +154,8 @@
       <workItem from="1697887202504" duration="30000" />
       <workItem from="1697887248310" duration="1592000" />
       <workItem from="1699352047454" duration="11000" />
+      <workItem from="1699409333038" duration="458000" />
+      <workItem from="1699436115286" duration="464000" />
     </task>
     <servers />
   </component>

@@ -14,6 +14,7 @@ builder.Services.AddTransient<FPhoneDbContext>();
 builder.Services.AddTransient<IVwPhoneDetailService,VwPhoneDetailService>();
 builder.Services.AddTransient<IListImageService,ListImageService>();
 builder.Services.AddTransient<IBlogRepository,BlogRepository>();
+builder.Services.AddTransient<IPhoneRepository,PhoneRepository>();
 
 
 builder.Services.AddScoped(sp => new HttpClient()

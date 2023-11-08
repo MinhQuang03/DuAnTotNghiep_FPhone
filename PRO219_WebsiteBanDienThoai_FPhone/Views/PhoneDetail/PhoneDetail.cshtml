@@ -1,4 +1,5 @@
 ﻿@using PRO219_WebsiteBanDienThoai_FPhone.ViewModel
+@model VwProductDetailViewModel;
 @{
     ViewData["Title"] = "PhoneDetail";
 }
@@ -29,7 +30,7 @@
                 <div class="product__picture" id="product__picture">
                     <!-- <div class="rect" id="rect"></div> -->
                     <div class="picture__container">
-                        <img src="#" id="pic" />
+                        <img src="@Model.Image" id="pic"  />
                     </div>
                 </div>
                 <div class="zoom" id="zoom"></div>
