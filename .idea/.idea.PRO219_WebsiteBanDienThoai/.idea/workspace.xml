@@ -12,31 +12,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9b693db3-9b40-488b-a8af-b1c2268ffaa5" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/AppApi/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/AppApi/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AppData/FPhoneDbContexts/FPhoneDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/AppData/FPhoneDbContexts/FPhoneDbContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Areas/Admin/Controllers/AccountsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Areas/Admin/Controllers/AccountsController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Areas/Admin/Controllers/BatteryController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Areas/Admin/Controllers/BatteryController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Areas/Admin/Controllers/BlogController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Areas/Admin/Controllers/BlogController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Areas/Admin/Controllers/ChargingportTypeController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Areas/Admin/Controllers/ChargingportTypeController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Areas/Admin/Controllers/ChipCPUsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Areas/Admin/Controllers/ChipCPUsController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Areas/Admin/Controllers/ChipGPUsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Areas/Admin/Controllers/ChipGPUsController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Areas/Admin/Controllers/ColorController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Areas/Admin/Controllers/ColorController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Areas/Admin/Controllers/ImeiController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Areas/Admin/Controllers/ImeiController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Areas/Admin/Controllers/MaterialController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Areas/Admin/Controllers/MaterialController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Areas/Admin/Controllers/OperatingController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Areas/Admin/Controllers/OperatingController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Areas/Admin/Controllers/PhoneController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Areas/Admin/Controllers/PhoneController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Areas/Admin/Controllers/PhoneDetaildController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Areas/Admin/Controllers/PhoneDetaildController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Areas/Admin/Controllers/ProductionCompanyController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Areas/Admin/Controllers/ProductionCompanyController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Areas/Admin/Controllers/RamController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Areas/Admin/Controllers/RamController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Areas/Admin/Controllers/RomController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Areas/Admin/Controllers/RomController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Areas/Admin/Controllers/SignUpController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Areas/Admin/Controllers/SignUpController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Areas/Admin/Controllers/SimController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Areas/Admin/Controllers/SimController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Areas/Admin/Filters/AuthorizationFilter.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Controllers/AccountsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Controllers/AccountsController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/PRO219_WebsiteBanDienThoai_FPhone.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/PRO219_WebsiteBanDienThoai_FPhone.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Program.cs" afterDir="false" />
-    </list>
+    <list default="true" id="9b693db3-9b40-488b-a8af-b1c2268ffaa5" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -58,29 +34,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "thanhnx51",
-    "ignore.virus.scanning.warn.message": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "settings.editor.selected.configurable": "reference.settings.ide.settings.new.ui",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;thanhnx51&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.new.ui&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "rider.external.source.directories": [
-      "C:\\Users\\03953\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\DecompilerCache",
-      "C:\\Users\\03953\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\SourcesCache",
-      "C:\\Users\\03953\\AppData\\Local\\Symbols\\src"
+  &quot;keyToStringList&quot;: {
+    &quot;rider.external.source.directories&quot;: [
+      &quot;C:\\Users\\03953\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\DecompilerCache&quot;,
+      &quot;C:\\Users\\03953\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\SourcesCache&quot;,
+      &quot;C:\\Users\\03953\\AppData\\Local\\Symbols\\src&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected=".NET Launch Settings Profile.PRO219_WebsiteBanDienThoai_FPhone">
     <configuration name="AppApi: IISProfile" type="DotNetMsBuildPublish" factoryName="Publish to IIS">
       <riderPublish configuration="Release" platform="Any CPU" publish_profile="IISProfile.pubxml" pubxml_path="$PROJECT_DIR$/AppApi/Properties/PublishProfiles/IISProfile.pubxml" uuid_high="140063950365083483" uuid_low="-8446096580850541037" />
@@ -170,6 +146,7 @@
       <workItem from="1697886566686" duration="189000" />
       <workItem from="1697887202504" duration="30000" />
       <workItem from="1697887248310" duration="1592000" />
+      <workItem from="1699352047454" duration="11000" />
     </task>
     <servers />
   </component>
@@ -178,24 +155,5 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/PRO219_WebsiteBanDienThoai_FPhone/Areas/Admin/Filters/AuthenFilter.cs</url>
-          <line>9</line>
-          <properties documentPath="C:\Users\03953\OneDrive\Desktop\FPhone\DuAnTotNghiep_FPhone\PRO219_WebsiteBanDienThoai_FPhone\Areas\Admin\Filters\AuthenFilter.cs" initialLine="9" containingFunctionPresentation="Method 'OnActionExecuting'">
-            <startOffsets>
-              <option value="265" />
-            </startOffsets>
-            <endOffsets>
-              <option value="266" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
