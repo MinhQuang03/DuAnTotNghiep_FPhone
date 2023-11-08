@@ -19,11 +19,30 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
             _phoneDetailService = phoneDetailService;
             _imageService = ImageService;
         }
-        public async Task<IActionResult> PhoneDetail(Guid IdPhone)
+        public ActionResult PhoneDetail(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return NotFound();
+            }
+            var data = new VwProductDetailViewModel()
+            {
+                Records = _phoneDetailService.getListPhoneDetailByIdPhone(Guid.Parse(id)),
+                lstImage = null
+            };
+            return View(data);
+        }
+        [HttpGet]
+        public ActionResult GetDetailPhones(string id)
         {
             var data = new VwProductDetailViewModel();
-            data.Records = _phoneDetailService.getListPhoneDetailByIdPhone(IdPhone);
-            return View(data);
+            data.Records = _phoneDetailService.getListPhoneDetailByIdPhone(Guid.Parse(id));
+
+            return Json(new
+            {
+                Items = data.Records,
+                Success = true
+            });
         }
     }
 }
