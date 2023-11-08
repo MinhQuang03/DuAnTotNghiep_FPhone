@@ -9,6 +9,6 @@ namespace AppData.IServices
 {
     public interface IListImageService
     {
-        List<ListImage> GetListImagesByIdPhoneDetail(Guid IdPhoneDetail);   
+        List<ListImage> GetListImagesByIdPhoneDetail(Guid IdPhoneDetail);
     }   
 }

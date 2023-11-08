@@ -1,4 +1,5 @@
-﻿using AppData.IServices;
+﻿using AppData.IRepositories;
+using AppData.IServices;
 using AppData.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -12,12 +13,14 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
         private HttpClient _client;
         private IVwPhoneDetailService _phoneDetailService;
         private IListImageService _imageService;
+        private IPhoneRepository _phoneRepo;
 
-        public PhoneDetailController(HttpClient client,IVwPhoneDetailService phoneDetailService,IListImageService ImageService)
+        public PhoneDetailController(HttpClient client,IVwPhoneDetailService phoneDetailService,IListImageService ImageService, IPhoneRepository phoneRepo)
         {
             _client = client;
             _phoneDetailService = phoneDetailService;
             _imageService = ImageService;
+            _phoneRepo = phoneRepo;
         }
         public ActionResult PhoneDetail(string id)
         {
@@ -28,7 +31,8 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
             var data = new VwProductDetailViewModel()
             {
                 Records = _phoneDetailService.getListPhoneDetailByIdPhone(Guid.Parse(id)),
-                lstImage = null
+                lstImage = null,
+                Image = _phoneRepo.GetById(Guid.Parse(id)).Result.Image
             };
             return View(data);
         }
