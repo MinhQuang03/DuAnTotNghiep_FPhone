@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿
+@model PRO219_WebsiteBanDienThoai_FPhone.ViewModel.CheckOutViewModel
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -73,21 +75,16 @@
                             <input class="form-control" type="text" placeholder="123 Street">
                         </div>
                         <div class="col-md-6 form-group">
-                            <label>Country</label>
-                            <select class="custom-select">
-                                <option selected>United States</option>
-                                <option>Afghanistan</option>
-                                <option>Albania</option>
-                                <option>Algeria</option>
-                            </select>
+                            <label>Tỉnh/Thành phố</label>
+                            @Html.DropDownListFor(model => model.Provinces, new SelectList(Model.Provinces, "ProvinceID", "ProvinceName"), "--Lựa chọn--", new { @class = "form-control", @id = "ProvinceName", onchange="JCheckOut.ChangeProvince()"})
                         </div>
                         <div class="col-md-6 form-group">
-                            <label>City</label>
-                            <input class="form-control" type="text" placeholder="New York">
+                            <label>Quận/Huyện</label>
+                            @Html.DropDownListFor(model => model.Provinces, Enumerable.Empty<SelectListItem>(), "--Lựa chọn--", new { @class = "form-control", @id = "District", onchange = "JCheckOut.ChangeDistrict()" })
                         </div>
                         <div class="col-md-6 form-group">
-                            <label>State</label>
-                            <input class="form-control" type="text" placeholder="New York">
+                            <label>Xã/Phường</label>
+                            @Html.DropDownListFor(model => model.Provinces, Enumerable.Empty<SelectListItem>(), "--Lựa chọn--", new { @class = "form-control", @id = "Ward",/*  onchange = "JCheckOut.ChangeDistrict()" */ })
                         </div>
                         <div class="col-md-6 form-group">
                             <label>ZIP Code</label>
@@ -172,7 +169,14 @@
     <script src="~/Checkout/mail/contact.js"></script>
 
     <!-- Template Javascript -->
-    <script src="~/Checkout/js/main.js"></script>
+<script src="~/Checkout/js/main.js"></script>
+<script src="~/js/JChechOut.js"></script>
+<script>
+    $(document).ready(function () {
+        JCheckOut.init();
+
+    })
+</script>
 </body>
 
 </html>

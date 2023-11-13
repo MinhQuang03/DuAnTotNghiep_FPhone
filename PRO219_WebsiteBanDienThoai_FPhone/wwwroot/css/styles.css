@@ -197,8 +197,8 @@ Navigation
   position: absolute;
   top: 2px;
   right: -6px;
-  background-color: var(--orange);
-  padding: 0.2rem 0.4rem;
+/*  background-color: var(--orange);
+*/  padding: 0.2rem 0.4rem;
   border-radius: 100%;
   color: var(--primaryColor);
 }
