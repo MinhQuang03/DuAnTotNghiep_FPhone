@@ -144,7 +144,8 @@ public class AccountsController : Controller
             var product = SessionCartDetail.GetObjFromSession(HttpContext.Session, "Cart");
             return View(product);
         }
-       return RedirectToAction("ShowCart");
+
+        return RedirectToAction("ShowCart");
     }
 
 
@@ -200,9 +201,6 @@ public class AccountsController : Controller
             }
           
         }
-
-        
-
 
     }
 }
