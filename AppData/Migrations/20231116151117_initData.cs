@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppData.Migrations
 {
-    public partial class initdatabase : Migration
+    public partial class initData : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -719,7 +719,7 @@ namespace AppData.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CartsDetails",
+                name: "CartDetails",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -730,14 +730,14 @@ namespace AppData.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CartsDetails", x => x.Id);
+                    table.PrimaryKey("PK_CartDetails", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CartsDetails_Carts_IdAccount",
+                        name: "FK_CartDetails_Carts_IdAccount",
                         column: x => x.IdAccount,
                         principalTable: "Carts",
                         principalColumn: "IdAccount");
                     table.ForeignKey(
-                        name: "FK_CartsDetails_PhoneDetailds_IdPhoneDetaild",
+                        name: "FK_CartDetails_PhoneDetailds_IdPhoneDetaild",
                         column: x => x.IdPhoneDetaild,
                         principalTable: "PhoneDetailds",
                         principalColumn: "Id",
@@ -922,13 +922,13 @@ namespace AppData.Migrations
                 column: "IdPhoneDetail");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CartsDetails_IdAccount",
-                table: "CartsDetails",
+                name: "IX_CartDetails_IdAccount",
+                table: "CartDetails",
                 column: "IdAccount");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CartsDetails_IdPhoneDetaild",
-                table: "CartsDetails",
+                name: "IX_CartDetails_IdPhoneDetaild",
+                table: "CartDetails",
                 column: "IdPhoneDetaild");
 
             migrationBuilder.CreateIndex(
@@ -1071,7 +1071,7 @@ namespace AppData.Migrations
                 name: "Blogs");
 
             migrationBuilder.DropTable(
-                name: "CartsDetails");
+                name: "CartDetails");
 
             migrationBuilder.DropTable(
                 name: "Imei");

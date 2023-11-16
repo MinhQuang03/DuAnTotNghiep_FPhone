@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppData.Migrations
 {
     [DbContext(typeof(FPhoneDbContext))]
-    [Migration("20231116141330_init-database")]
-    partial class initdatabase
+    [Migration("20231116151117_initData")]
+    partial class initData
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -327,7 +327,7 @@ namespace AppData.Migrations
 
                     b.HasIndex("IdPhoneDetaild");
 
-                    b.ToTable("CartsDetails");
+                    b.ToTable("CartDetails");
                 });
 
             modelBuilder.Entity("AppData.Models.ChargingportType", b =>
