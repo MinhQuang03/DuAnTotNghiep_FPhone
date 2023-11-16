@@ -29,19 +29,7 @@ public class HomeController : Controller
     public async Task<IActionResult> Index()
     {
 
-        var sl = 0;
-
-        var userId = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
-        if (userId == null)
-        {
-            var product = SessionCartDetail.GetObjFromSession(HttpContext.Session, "Cart");
-            ViewBag.sl = product.Count;
-        }
-        else
-        {
-            var Cart = _context.CartDetails.Where(a => a.IdAccount == (Guid.Parse(userId))).ToList();
-            ViewBag.sl = Cart.Count;
-        }
+     
       
         var data= _phoneService.listVwPhoneGroup();
         
