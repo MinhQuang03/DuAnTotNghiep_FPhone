@@ -7,7 +7,7 @@ using System.Text;
 namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [AuthenFilter]
+    //[AuthenFilter]
     public class BlogController : Controller
     {
         private readonly HttpClient _httpClient;
