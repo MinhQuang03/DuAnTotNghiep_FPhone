@@ -141,7 +141,9 @@ public class AccountsController : Controller
         var userId = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
         if (userId == null)
         {
+            var sl = 0;
             var product = SessionCartDetail.GetObjFromSession(HttpContext.Session, "Cart");
+            ViewBag.sl = product.Count;
             return View(product);
         }
 
@@ -152,7 +154,8 @@ public class AccountsController : Controller
     public async Task<IActionResult> ShowCart()
     {
         var userId = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
-        var Cart = _context.CartsDetails.Where(a => a.IdAccount == (Guid.Parse(userId))).ToList(); 
+        var Cart = _context.CartsDetails.Where(a => a.IdAccount == (Guid.Parse(userId))).ToList();
+        ViewBag.sl = Cart.Count;
         return View(Cart);
     }
 
@@ -164,6 +167,7 @@ public class AccountsController : Controller
         {
             product.Add(new CartDetailModel { phoneDetaild = _context.PhoneDetailds.Find(id),quantity = 1  });
             SessionCartDetail.SetobjTojson(HttpContext.Session, product, "Cart");
+            
             return RedirectToAction("Cart");
         }
         else
@@ -180,6 +184,8 @@ public class AccountsController : Controller
                 cartDetails.Status = 1;
                 _context.CartsDetails.Add(cartDetails);
                 _context.SaveChanges();
+                HttpContext.Session.SetString("SuccessMessage", "Thêm vào giỏ hàng thành công!");
+                HttpContext.Session.SetString("CssClass", "success");
                 return RedirectToAction("ShowCart");
             }
             else
@@ -189,7 +195,6 @@ public class AccountsController : Controller
                 cart.IdAccount = Guid.Parse(userId);
                 _context.Carts.Add(cart);
                 _context.SaveChanges();
-
                 CartDetails cartDetails = new CartDetails();
                 cartDetails.Id = new Guid();
                 cartDetails.IdPhoneDetaild = id;
@@ -197,6 +202,8 @@ public class AccountsController : Controller
                 cartDetails.Status = 1;
                 _context.CartsDetails.Add(cartDetails);
                 _context.SaveChanges();
+                HttpContext.Session.SetString("SuccessMessage", "Thêm vào giỏ hàng thành công!");
+                HttpContext.Session.SetString("CssClass", "success");
                 return RedirectToAction("ShowCart");
             }
           

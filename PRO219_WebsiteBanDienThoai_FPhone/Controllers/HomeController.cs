@@ -1,10 +1,12 @@
-﻿using AppData.IServices;
+﻿using AppData.FPhoneDbContexts;
+using AppData.IServices;
 using AppData.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PRO219_WebsiteBanDienThoai_FPhone.Models;
+using PRO219_WebsiteBanDienThoai_FPhone.Services;
 using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers;
@@ -14,9 +16,10 @@ public class HomeController : Controller
     private readonly HttpClient _client;
     private IVwPhoneService _phoneService;
     private readonly ILogger<HomeController> _logger;
-
+    private FPhoneDbContext _context;
     public HomeController(ILogger<HomeController> logger, HttpClient client, IVwPhoneService phoneService)
     {
+        _context = new FPhoneDbContext();
         _logger = logger;
         _client = client;
         _phoneService = phoneService;
@@ -25,7 +28,22 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-       var data= _phoneService.listVwPhoneGroup();
+
+        var sl = 0;
+
+        var userId = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
+        if (userId == null)
+        {
+            var product = SessionCartDetail.GetObjFromSession(HttpContext.Session, "Cart");
+            ViewBag.sl = product.Count;
+        }
+        else
+        {
+            var Cart = _context.CartsDetails.Where(a => a.IdAccount == (Guid.Parse(userId))).ToList();
+            ViewBag.sl = Cart.Count;
+        }
+      
+        var data= _phoneService.listVwPhoneGroup();
         
         return View(data);
     }
@@ -50,6 +68,7 @@ public class HomeController : Controller
 
     public async Task<IActionResult> ShowPhone()
     {
+
         var datajson = await _client.GetStringAsync("api/PhoneDetaild/get");
         var ctsp = JsonConvert.DeserializeObject<List<PhoneDetaild>>(datajson);
         return View(ctsp);

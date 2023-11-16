@@ -3,8 +3,10 @@
 @using AppData.FPhoneDbContexts;
 
 @{
+    
     ViewData["Title"] = "Cart";
     FPhoneDbContext dbContext = new FPhoneDbContext();
+
 }
 
 <main id="main">
@@ -18,7 +20,7 @@
                                 <tr>
                                     <th>PRODUCTs</th>
                                     <th>NAME</th>
-                                    <th>UNIT PRICE</th>
+                                    <th>COLOR</th>
                                     <th>QUANTITY</th>
                                     <th>TOTAL</th>
                                 </tr>
@@ -30,6 +32,8 @@
                                     var gia = dbContext.PhoneDetailds.FirstOrDefault(p => p.Id == item.phoneDetaild.Id);
                                     string anhsp = dbContext.Phones.FirstOrDefault(p => p.Id == idsp).Image;
                                     var tensp = dbContext.Phones.FirstOrDefault(p => p.Id == idsp).PhoneName;
+                                    var idcolor = dbContext.PhoneDetailds.FirstOrDefault(p => p.Id == item.phoneDetaild.Id).IdColor;
+                                    var color = dbContext.Colors.FirstOrDefault(p => p.Id == idcolor).Name;
 
                                     <tr>
                                         <td class="product__thumbnail">
@@ -38,13 +42,12 @@
                                             </a>
                                         </td>
                                         <td class="product__name">
-                                            @tensp;
+                                            @tensp
                                             <br><br>
                                         </td>
-                                        <td class="product__price">
-                                            <div class="price">
-                                                <span class="new__price">$@gia.Price</span>
-                                            </div>
+                                        <td class="product__name">
+                                            @color
+                                             <br></br>
                                         </td>
                                         <td class="product__quantity">
                                            
@@ -62,6 +65,7 @@
                                             </a>
                                         </td>
                                     </tr>
+
                                 }
                             </tbody>
                         </table>
@@ -71,30 +75,11 @@
                         <div class="continue__shopping">
                             <a href="/">Continue Shopping</a>
                         </div>
-                        <div class="check__shipping">
-                            <input type="checkbox">
-                            <span>Shipping(+7$)</span>
+                        <div class="continue__shopping">
+                        <a asp-action="Index" asp-controller="Checkout">PROCEED TO CHECKOUT</a>
                         </div>
                     </div>
 
-                    <div class="cart__totals">
-                        <h3>Cart Totals</h3>
-                        <ul>
-                            <li>
-                                Subtotal
-                                <span class="new__price">$</span>
-                            </li>
-                            <li>
-                                Shipping
-                                <span>$0</span>
-                            </li>
-                            <li>
-                                Total
-                                <span class="new__price">$</span>
-                            </li>
-                        </ul>
-                        <a asp-action="Index" asp-controller="Checkout">PROCEED TO CHECKOUT</a>
-                    </div>
                 </form>
             </div>
         </div>
