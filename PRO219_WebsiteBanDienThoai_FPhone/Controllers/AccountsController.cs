@@ -146,7 +146,8 @@ public class AccountsController : Controller
             ViewBag.sl = product.Count;
             return View(product);
         }
-       return RedirectToAction("ShowCart");
+
+        return RedirectToAction("ShowCart");
     }
 
 
@@ -207,9 +208,6 @@ public class AccountsController : Controller
             }
           
         }
-
-        
-
 
     }
 }

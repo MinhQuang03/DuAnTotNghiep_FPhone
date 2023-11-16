@@ -45,4 +45,15 @@ public class VwPhoneDetailService : IVwPhoneDetailService
 
         return lst;
     }
+
+    public VW_PhoneDetail getPhoneDetailByIdPhoneDetail(Guid id)
+    {
+       var lst = _dbContext.VW_PhoneDetail.FirstOrDefault(c => c.IdPhoneDetail == id);
+       return lst;
+    }
+
+    public int CheckPhoneDetail(Guid id)
+    {
+        return _dbContext.VW_PhoneDetail.Where(c => c.IdPhoneDetail == id).Count();
+    }
 }

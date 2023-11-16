@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using AppData.ViewModels.Phones;
+using System.Reflection.Emit;
 
 namespace AppData.FPhoneDbContexts;
 
@@ -49,22 +50,22 @@ public class FPhoneDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Sales> Sales { get; set; }
     public DbSet<SalePhoneDetaild> SalePhoneDetailds { get; set; }
     public DbSet<ApplicationUser> AspNetUsers { get; set; }
-    [NotMapped]
     public DbSet<VW_Phone> VW_Phone { get; set; }
-    [NotMapped]
     public DbSet<VW_PhoneDetail> VW_PhoneDetail { get; set; }
-    [NotMapped]
     public DbSet<VW_Phone_Group> VW_Phone_Group { get; set; }   
     //LKK\SQLEXPRESS    
     // Ko cần sửa file này
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer(@"Data Source=dongnama.database.windows.net;Initial Catalog=PRO219_WebsiteBanDienThoai;User ID=fphoneAdmin;Password=123456aA@");
+        optionsBuilder.UseSqlServer(@"Data Source=fphone.database.windows.net;Initial Catalog=PRO219_WebsiteBanDienThoai;User ID=thanhnx;Password=123456aA@");
     }
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
         builder.Entity<Cart>().HasOne(c => c.Accounts).WithOne(p => p.Carts).HasForeignKey<Cart>();
+        builder.Entity<VW_Phone>().ToView("VW_Phone").HasNoKey();
+        builder.Entity<VW_PhoneDetail>().ToView("VW_PhoneDetail").HasNoKey();
+        builder.Entity<VW_Phone_Group>().ToView("VW_Phone_Group").HasNoKey();
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 }

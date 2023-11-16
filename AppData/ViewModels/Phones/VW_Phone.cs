@@ -12,7 +12,7 @@ namespace AppData.ViewModels.Phones
     [Table(name: "VW_Phone")]
     public class VW_Phone
     {
-        [Key]
+     
         public Guid IdPhone { get; set; }
         public string PhoneName { get; set; }
         public string Image { get; set; }

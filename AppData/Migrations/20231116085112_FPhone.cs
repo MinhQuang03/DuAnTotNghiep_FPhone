@@ -295,7 +295,6 @@ namespace AppData.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_VW_Phone", x => x.IdPhone);
                 });
 
             migrationBuilder.CreateTable(
@@ -306,11 +305,11 @@ namespace AppData.Migrations
                     PhoneName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProductionComanyName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Price = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Price = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_VW_Phone_Group", x => x.IdPhone);
                 });
 
             migrationBuilder.CreateTable(
@@ -335,12 +334,11 @@ namespace AppData.Migrations
                     FrontCamera = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Resolution = table.Column<int>(type: "int", nullable: true),
                     Size = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_VW_PhoneDetail", x => x.IdPhoneDetail);
                 });
 
             migrationBuilder.CreateTable(
@@ -521,7 +519,8 @@ namespace AppData.Migrations
                     PhoneName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IdProductionCompany = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    IdProductionCompany = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {

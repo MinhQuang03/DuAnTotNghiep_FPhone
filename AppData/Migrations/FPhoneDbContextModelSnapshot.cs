@@ -516,6 +516,9 @@ namespace AppData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -868,7 +871,6 @@ namespace AppData.Migrations
             modelBuilder.Entity("AppData.ViewModels.Phones.VW_Phone", b =>
                 {
                     b.Property<Guid>("IdPhone")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("IdProductionComany")
@@ -886,15 +888,17 @@ namespace AppData.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("IdPhone");
-
                     b.ToTable("VW_Phone");
+
+                    b.ToView("VW_Phone");
                 });
 
             modelBuilder.Entity("AppData.ViewModels.Phones.VW_Phone_Group", b =>
                 {
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<Guid>("IdPhone")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Image")
@@ -913,17 +917,13 @@ namespace AppData.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("IdPhone");
-
                     b.ToTable("VW_Phone_Group");
+
+                    b.ToView("VW_Phone_Group");
                 });
 
             modelBuilder.Entity("AppData.ViewModels.Phones.VW_PhoneDetail", b =>
                 {
-                    b.Property<Guid>("IdPhoneDetail")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("BatteryName")
                         .HasColumnType("nvarchar(max)");
 
@@ -946,6 +946,9 @@ namespace AppData.Migrations
                     b.Property<Guid>("IdPhone")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("IdPhoneDetail")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("MaterialName")
                         .HasColumnType("nvarchar(max)");
 
@@ -955,7 +958,7 @@ namespace AppData.Migrations
                     b.Property<string>("PhoneName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal?>("Price")
+                    b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("RamName")
@@ -984,9 +987,9 @@ namespace AppData.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("IdPhoneDetail");
-
                     b.ToTable("VW_PhoneDetail");
+
+                    b.ToView("VW_PhoneDetail");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
