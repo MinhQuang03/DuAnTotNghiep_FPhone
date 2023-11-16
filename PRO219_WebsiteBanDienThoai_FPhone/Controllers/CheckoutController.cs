@@ -14,15 +14,18 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
     {
 	    private HttpClient _client;
         private IVwPhoneDetailService _service;
+        private ICartDetailService _cartDetailService;
      
-	    public CheckoutController(HttpClient client,IVwPhoneDetailService service)
+	    public CheckoutController(HttpClient client,IVwPhoneDetailService service,ICartDetailService cartDetailService)
 	    {
 		    _client = client;
             _client.DefaultRequestHeaders.Add("token", "a799ced2-febc-11ed-a967-deea53ba3605");
             _service = service;
+            _cartDetailService = cartDetailService;
         }
 	    public async Task<IActionResult> Index()
         {
+            //user id = user cart
             var userId = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
             CheckOutViewModel model = new CheckOutViewModel();
             //lấy dữ liệu tỉnh thành phố
@@ -44,10 +47,18 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
                         }
                     }
                 }
-                
+
                 if (string.IsNullOrEmpty(userId)) //Đã đăng nhập
                 {
-                    
+                    //lấy thông tin giỏ hàng từ database theo IdAccount
+                    var datas = _cartDetailService.GetCartDetailsByIdAccount(Guid.Parse(userId));
+                    foreach (var item in datas)
+                    {
+                        if (_service.CheckPhoneDetail(item.IdPhoneDetaild) >= 1)
+                        {
+                            model.lstCartDetail.Add(_service.getPhoneDetailByIdPhoneDetail(item.IdPhoneDetaild));
+                        }
+                    }
                 }
 
                 return View(model);
