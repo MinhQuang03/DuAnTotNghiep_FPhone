@@ -9,9 +9,22 @@
         background-color: #FFFFCC;
     }
 
+  /*  .selected {
+        background-color: #33FF33;
+        border-radius: 2px;
+    }
+*/
+
     .selected {
         background-color: #33FF33;
         border-radius: 2px;
+        border: 1px solid #33FF33; /* Add this line to set the border color to green */
+    }
+
+    #ramButtons {
+        width: 500px;
+        height: 120px;
+        gap: 5px;
     }
 </style>
 
@@ -93,9 +106,17 @@
                 </p>
                 <div class="product__info-container">
                     <ul class="product__info">
+
                         <li class=" row" id="listPhone">
 
                         </li>
+                        @*<li>
+                            <span>RAM Type:</span>
+                            <div id="ramOptions"></div>
+                        </li>
+                        <li class="row" id="colorList"></li>*@
+                        <li class="row" id="ramButtons"></li>
+                        <li class="row" id="colorList"></li>
                         <li>
 
                             <div class="input-counter">
@@ -153,29 +174,87 @@
             .then(response => response.json())
             .then(response => {
                 console.log(response);
-                let html = '';
+
                 if (response.success) {
                     localStorage.setItem("phoneDetails", JSON.stringify(response));
+
+                    // Group items by RAM type
+                    let groupedByRam = {};
                     response.items.forEach(item => {
-                        html += `
-                                <a class="btn col-4 border rounded phone-hover mt-2"
-                                   onclick="loadPhoneDetail('${item.idPhoneDetail}', this)"> <!-- Pass 'this' to the function -->
-                                    <div>
-                                        <strong>${item.romName} - ${item.ramName}</strong>
-                                    </div>
-                                    <p>
-                                        ${item.colorName}
-                                    </p>
-                                    <span >${item.price} đ</span>
-                                </a>
-                            `;
+                        if (!groupedByRam[item.ramName]) {
+                            groupedByRam[item.ramName] = [];
+                        }
+                        groupedByRam[item.ramName].push(item);
                     });
-                    document.querySelector("#listPhone").innerHTML = html;
-                    loadPhoneDetail(response.items[0].idPhoneDetail, document.querySelector("#listPhone a")); // Pass the first button
+
+                    // Sort RAM types by GB
+                    let sortedRamTypes = Object.keys(groupedByRam).sort((a, b) => {
+                        // Extract GB value from RAM type (assuming RAM type is in the format "X GB")
+                        const getGBValue = ramType => parseInt(ramType.split(' ')[0]);
+
+                        return getGBValue(a) - getGBValue(b);
+                    });
+
+                    // Display RAM buttons
+                    let ramButtonsHtml = '';
+                    sortedRamTypes.forEach(ramName => {
+                        ramButtonsHtml += `
+                            <button class="btn col-4 border rounded phone-hover mt-2" onclick="loadColorsByRam('${ramName}')">${ramName}</button>
+                `;
+                    });
+
+                    document.querySelector("#ramButtons").innerHTML = ramButtonsHtml;
+
+                    // Call loadColorsByRam with the first RAM
+                    loadColorsByRam(sortedRamTypes[0]);
+
+                    // Call loadPhoneDetail with the first item
+                    loadPhoneDetail(response.items[0].idPhoneDetail, document.querySelector("#listPhone a"));
                 }
             })
             .catch(error => console.log(error));
     }
+
+    function loadColorsByRam(selectedRam) {
+        let phoneDetails = JSON.parse(localStorage.getItem("phoneDetails"));
+        let colorsHtml = '';
+
+        if (phoneDetails) {
+            let itemsWithSelectedRam = phoneDetails.items.filter(item => item.ramName === selectedRam);
+
+            itemsWithSelectedRam.forEach(item => {
+                colorsHtml += `
+                    <a class="btn col-4 border rounded phone-hover mt-2"
+                        onclick="loadPhoneDetail('${item.idPhoneDetail}', this)">
+                        <div>
+                            <strong>${item.colorName}</strong>
+                        </div>
+                        <span>${item.price} đ</span>
+                    </a>
+                `;
+            });
+
+            // Keep track of the previously selected button
+            let previouslySelectedButton = document.querySelector("#colorList .selected");
+
+            document.querySelector("#colorList").innerHTML = colorsHtml;
+
+            // Add the "selected" class to the newly clicked button
+            let newlyClickedButton = document.querySelector("#colorList a");
+            if (previouslySelectedButton) {
+                newlyClickedButton.classList.add("selected");
+
+                // Remove "selected" class from the previously selected button
+                previouslySelectedButton.classList.remove("selected");
+            }
+
+            // Call loadPhoneDetail with the first item
+            loadPhoneDetail(itemsWithSelectedRam[0].idPhoneDetail, newlyClickedButton);
+        }
+    }
+
+
+
 
     function loadPhoneDetail(id, button) {
         let phoneDetails = JSON.parse(localStorage.getItem("phoneDetails"));
@@ -190,7 +269,7 @@
         localStorage.setItem("idPhoneDetail", phone.idPhoneDetail);
 
         // Remove "selected" class from all buttons
-        document.querySelectorAll("#listPhone a").forEach(btn => {
+        document.querySelectorAll("#listPhone a, #colorList a").forEach(btn => {
             btn.classList.remove("selected");
         });
 
