@@ -39,7 +39,7 @@ public class HomeController : Controller
         }
         else
         {
-            var Cart = _context.CartsDetails.Where(a => a.IdAccount == (Guid.Parse(userId))).ToList();
+            var Cart = _context.CartDetails.Where(a => a.IdAccount == (Guid.Parse(userId))).ToList();
             ViewBag.sl = Cart.Count;
         }
       

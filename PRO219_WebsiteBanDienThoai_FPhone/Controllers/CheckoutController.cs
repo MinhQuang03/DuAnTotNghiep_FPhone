@@ -48,7 +48,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
                     }
                 }
 
-                if (string.IsNullOrEmpty(userId)) //Đã đăng nhập
+                if (userId != null) //Đã đăng nhập
                 {
                     //lấy thông tin giỏ hàng từ database theo IdAccount
                     var datas = _cartDetailService.GetCartDetailsByIdAccount(Guid.Parse(userId));

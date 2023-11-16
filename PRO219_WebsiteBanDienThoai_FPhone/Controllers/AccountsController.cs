@@ -154,7 +154,7 @@ public class AccountsController : Controller
     public async Task<IActionResult> ShowCart()
     {
         var userId = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
-        var Cart = _context.CartsDetails.Where(a => a.IdAccount == (Guid.Parse(userId))).ToList();
+        var Cart = _context.CartDetails.Where(a => a.IdAccount == (Guid.Parse(userId))).ToList();
         ViewBag.sl = Cart.Count;
         return View(Cart);
     }
@@ -182,7 +182,7 @@ public class AccountsController : Controller
                 cartDetails.IdPhoneDetaild = id;
                 cartDetails.IdAccount = Guid.Parse(userId);
                 cartDetails.Status = 1;
-                _context.CartsDetails.Add(cartDetails);
+                _context.CartDetails.Add(cartDetails);
                 _context.SaveChanges();
                 HttpContext.Session.SetString("SuccessMessage", "Thêm vào giỏ hàng thành công!");
                 HttpContext.Session.SetString("CssClass", "success");
@@ -200,7 +200,7 @@ public class AccountsController : Controller
                 cartDetails.IdPhoneDetaild = id;
                 cartDetails.IdAccount = Guid.Parse(userId);
                 cartDetails.Status = 1;
-                _context.CartsDetails.Add(cartDetails);
+                _context.CartDetails.Add(cartDetails);
                 _context.SaveChanges();
                 HttpContext.Session.SetString("SuccessMessage", "Thêm vào giỏ hàng thành công!");
                 HttpContext.Session.SetString("CssClass", "success");

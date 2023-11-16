@@ -25,7 +25,7 @@ public class FPhoneDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<BillDetails> BillDetails { get; set; }
     public DbSet<Blog> Blogs { get; set; }
     public DbSet<Cart> Carts { get; set; }
-    public DbSet<CartDetails> CartsDetails { get; set; }
+    public DbSet<CartDetails> CartDetails { get; set; }
     public DbSet<ChargingportType> ChargingportType { get; set; }
     public DbSet<ChipCPUs> ChipCPUs { get; set; }
     public DbSet<ChipGPUs> ChipGPUs { get; set; }

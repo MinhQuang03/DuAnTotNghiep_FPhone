@@ -22,7 +22,7 @@ namespace AppData.Services
             var lst = new List<CartDetails>();
             try
             {
-                _dbContext.CartsDetails.Where(c => c.IdAccount == id);
+               lst = _dbContext.CartDetails.Where(c => c.IdAccount == id).ToList();
             }
             catch (Exception e)
             {

@@ -30,7 +30,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
             }
             else
             {
-                var Cart = _context.CartsDetails.Where(a => a.IdAccount == (Guid.Parse(userId))).ToList();
+                var Cart = _context.CartDetails.Where(a => a.IdAccount == (Guid.Parse(userId))).ToList();
                 ViewBag.sl = Cart.Count;
             }
             var datajson = await _client.GetStringAsync("api/PhoneDetaild/get");
