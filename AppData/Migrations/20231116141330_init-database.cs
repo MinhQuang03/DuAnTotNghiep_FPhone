@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppData.Migrations
 {
-    public partial class FPhone : Migration
+    public partial class initdatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -306,7 +306,7 @@ namespace AppData.Migrations
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProductionComanyName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -375,6 +375,7 @@ namespace AppData.Migrations
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
+                    StatusPayment = table.Column<int>(type: "int", nullable: false),
                     IdAccount = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
@@ -520,7 +521,7 @@ namespace AppData.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IdProductionCompany = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
