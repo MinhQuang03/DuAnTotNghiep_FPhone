@@ -2,15 +2,13 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Microsoft.Build.Framework
 @using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Filters
-@using AppData.FPhoneDbContexts;
+
 @functions {
 
     public LoginModel? LoginModel { get; set; }
-
 }
 
 @{
-    FPhoneDbContext dbContext = new FPhoneDbContext();
     ViewData["Title"] = "_SideNavPartialView";
 }
 <header id="header" class="header">
@@ -77,12 +75,11 @@
                         </svg>
                     </a>
 
-                    <a asp-action="Cart" asp-controller="Accounts" class="icon__item" id="cart-btn">
+                    <a href="#" class="icon__item" id="cart-btn">
                         <svg class="icon__cart">
                             <use xlink:href="/images/sprite.svg#icon-shopping-basket"></use>
                         </svg>
-
-                        <span id="cart__total">@ViewBag.sl</span>
+                        <span style="background-color: chocolate; " id="cart__total">3</span>
                     </a>
                 </div>
             </nav>
@@ -99,7 +96,6 @@
             <p>Quên mật khẩu <a href="#">Click Here</a></p>
             <p>Không có tài khoản ? <a asp-controller="Accounts" asp-action="CreateAccount">Tạo mới</a></p>
             <input type="submit" value="Đăng nhập" class="btn">
-
         </form>
     </div>
     <div class="searchF">
@@ -109,5 +105,38 @@
         </form>
     </div>
 
+    <div class="shopping-cart">
+        <div class="box">
+            <i class="fas fa-trash"></i>
+            <img src="~/images/products/iPhone/iphone1.jpeg">
+            <div class="content">
+                <h3>iPhone</h3>
+                <span class="price">$800.99/-</span>
+                <span class="quantity">qty : 1</span>
+            </div>
+        </div>
+        <div class="box">
+            <i class="fas fa-trash"></i>
+            <img src="~/images/products/sumsung/samsung3.jpeg">
+            <div class="content">
+                <h3>Samsung A22</h3>
+                <span class="price">$350.99/-</span>
+                <span class="quantity">qty : 1</span>
+            </div>
+        </div>
+        <div class="box">
+            <i class="fas fa-trash"></i>
+            <img src="~/images/products/headphone/headphone3.jpeg">
+            <div class="content">
+                <h3>Boat</h3>
+                <span class="price">$54.99/-</span>
+                <span class="quantity">qty : 1</span>
+            </div>
+        </div>
+        <div class="total">Total : $1354.69/-</div>
+        <a asp-action="Cart" asp-controller="Accounts">
+            PHONE
+        </a>
+    </div>
 
 </header>
