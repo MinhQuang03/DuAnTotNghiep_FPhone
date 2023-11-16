@@ -127,6 +127,12 @@
         const width = 10; //chiều rộng
         const height = 3; // chiều cao
 
+        if (parseInt(sumPhone) > 1) {
+            weight *= parseInt(sumPhone);
+            height *= parseInt(sumPhone);
+            width *= parseInt(sumPhone);
+            length *= parseInt(sumPhone);
+        };
         const header = {
             token: "a799ced2-febc-11ed-a967-deea53ba3605",
             shop_id: shopId
@@ -151,10 +157,12 @@
                 headers: header,
                 data: data,
                 success: (data) => {
-                    $("#TotalShip").text(data.data.total);
+                    $("#TotalShip").text((data.data.total).toLocaleString('vi', { style: 'currency', currency: 'VND' }));
+                    $("#TotalPayment").text((parseFloat(data.data.total) + parseFloat(insurance)).toLocaleString('vi', { style: 'currency', currency: 'VND' }));
                 },
                 error: (error) => {
                     $("#TotalShip").empty();
+                    $("#TotalPayment").empty();
                     Swal.fire({
                         icon: "error",
                         title: "Có lỗi xảy ra!",
@@ -174,6 +182,7 @@
             ins.TotalShip();
         } else {
             $("#TotalShip").empty();
+            $("#TotalPayment").val('0');
         }
     };
 
