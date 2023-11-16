@@ -53,7 +53,7 @@
 <!-- Breadcrumb End -->
 <!-- Checkout Start -->
 <div class="container-fluid">
-    <form asp-action="Index" method="post">
+        <form id="checkoutForm" asp-action="Index" method="post">
         <div class="row px-xl-5">
             <div class="col-lg-8">
                 <h5 class="section-title position-relative text-uppercase mb-3">
@@ -174,6 +174,27 @@
 <script>
     $(document).ready(function () {
         JCheckOut.init();
+
+            // Handle form submission
+            $("#checkoutForm").submit(function (e) {
+                e.preventDefault(); // Prevent the default form submission
+
+                // Get the ID of the selected payment radio button
+                var selectedPaymentId = $("input[name='payment']:checked").attr('id');
+
+                // Set the action attribute of the form based on the selected payment method
+                switch (selectedPaymentId) {
+                    case "paypal":
+                        $("#checkoutForm").attr("action", "/VnPay/Index");
+                        break;
+                    case "banktransfer":
+                        $("#checkoutForm").attr("action", "/BankTransferController/ProcessPayment");
+                        break;
+                }
+
+                // Continue with the form submission
+                $("#checkoutForm")[0].submit();
+            });
     })
 </script>
 </body>
