@@ -133,6 +133,7 @@
             width *= parseInt(sumPhone);
             length *= parseInt(sumPhone);
         };
+
         const header = {
             token: "a799ced2-febc-11ed-a967-deea53ba3605",
             shop_id: shopId
@@ -157,8 +158,7 @@
                 headers: header,
                 data: data,
                 success: (data) => {
-                    $("#TotalShip").text((data.data.total).toLocaleString('vi', { style: 'currency', currency: 'VND' }));
-                    $("#TotalPayment").text((parseFloat(data.data.total) + parseFloat(insurance)).toLocaleString('vi', { style: 'currency', currency: 'VND' }));
+                    $("#TotalShip").text(data.data.total);
                 },
                 error: (error) => {
                     $("#TotalShip").empty();
