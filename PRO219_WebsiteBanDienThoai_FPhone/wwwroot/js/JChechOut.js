@@ -111,6 +111,7 @@
                 for (let i = 0; i < data.data.length; i++) {
                     stringHtml += `<option value="${data.data[i].service_id}" >${data.data[i].short_name}</option>`;
                 }
+              
                 $("#AvailableService").html(stringHtml);
             }
         });
@@ -128,6 +129,12 @@
         var width = 10; //chiều rộng
         var height = 3; // chiều cao
 
+        if (parseInt(sumPhone)>1) {
+            weight *= parseInt(sumPhone);
+            height *= parseInt(sumPhone);
+            width *= parseInt(sumPhone);
+            length *= parseInt(sumPhone);
+        }
         const url = "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee";
         const header = {
             token: "a799ced2-febc-11ed-a967-deea53ba3605",
@@ -152,7 +159,8 @@
                 headers: header,
                 data: data,
                 success: (data) => {
-                    $("#TotalShip").text(data.data.total);
+                    $("#TotalShip").text((data.data.total).toLocaleString('vi', { style: 'currency', currency: 'VND' }));
+                    $("#TotalPayment").text((parseFloat(data.data.total) + parseFloat(insurance)).toLocaleString('vi', { style: 'currency', currency: 'VND' }));
                 },
                 error: (error) => {
                     $("#TotalShip").empty();
