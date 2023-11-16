@@ -23,7 +23,7 @@ namespace AppData.Repositories
         }
         public async Task<CartDetails> Add(CartDetails obj)
         {
-            await _dbContext.CartsDetails.AddAsync(obj);
+            await _dbContext.CartDetails.AddAsync(obj);
             await _dbContext.SaveChangesAsync();
             return obj;
 
@@ -31,32 +31,32 @@ namespace AppData.Repositories
 
         public async Task Delete(Guid id)
         {
-            var a = await _dbContext.CartsDetails.FindAsync(id);
-            _dbContext.CartsDetails.Remove(a);
+            var a = await _dbContext.CartDetails.FindAsync(id);
+            _dbContext.CartDetails.Remove(a);
             await _dbContext.SaveChangesAsync();
         }
 
         public async Task<List<CartDetails>> GetAll()
         {
-            return await _dbContext.CartsDetails.ToListAsync();
+            return await _dbContext.CartDetails.ToListAsync();
         }
 
         public async Task<CartDetails> GetById(Guid id)
         {
-            return await _dbContext.CartsDetails.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbContext.CartDetails.FirstOrDefaultAsync(p => p.Id == id);
         }
         public async Task<List<CartDetails>> GetByIdAcout(Guid id)
         {
-            return await _dbContext.CartsDetails.Where(p => p.IdAccount == id).ToListAsync();
+            return await _dbContext.CartDetails.Where(p => p.IdAccount == id).ToListAsync();
         }
         public async Task<CartDetails> Update(CartDetails obj)
         {
-            var a = await _dbContext.CartsDetails.FindAsync(obj.Id);
+            var a = await _dbContext.CartDetails.FindAsync(obj.Id);
             a.IdAccount = obj.IdAccount;
             a.IdPhoneDetaild = obj.IdPhoneDetaild;
             a.Quantity = obj.Quantity;
             a.Status = obj.Status;
-            _dbContext.CartsDetails.Update(a);
+            _dbContext.CartDetails.Update(a);
             await _dbContext.SaveChangesAsync();
             return obj;
         }
