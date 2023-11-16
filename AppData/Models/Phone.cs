@@ -11,7 +11,6 @@
         public string? Image { get; set; }
 
         public Guid IdProductionCompany { get; set; }
-        public DateTime  CreateDate { get; set; } = DateTime.Now;
 
         public virtual ProductionCompany? ProductionCompanies { get; set; }
     }
