@@ -325,7 +325,7 @@ namespace AppData.Migrations
 
                     b.HasIndex("IdPhoneDetaild");
 
-                    b.ToTable("CartsDetails");
+                    b.ToTable("CartDetails");
                 });
 
             modelBuilder.Entity("AppData.Models.ChargingportType", b =>
