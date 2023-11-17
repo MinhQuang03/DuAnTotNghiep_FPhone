@@ -1,9 +1,11 @@
-﻿using AppData.IRepositories;
+﻿using AppData.FPhoneDbContexts;
+using AppData.IRepositories;
 using AppData.IServices;
 using AppData.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PRO219_WebsiteBanDienThoai_FPhone.Models;
+using PRO219_WebsiteBanDienThoai_FPhone.Services;
 using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
@@ -14,16 +16,18 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
         private IVwPhoneDetailService _phoneDetailService;
         private IListImageService _imageService;
         private IPhoneRepository _phoneRepo;
-
+        private FPhoneDbContext _context;
         public PhoneDetailController(HttpClient client,IVwPhoneDetailService phoneDetailService,IListImageService ImageService, IPhoneRepository phoneRepo)
         {
-            _client = client;
+            _context = new FPhoneDbContext();
+           _client = client;
             _phoneDetailService = phoneDetailService;
             _imageService = ImageService;
             _phoneRepo = phoneRepo;
         }
         public ActionResult PhoneDetail(string id)
         {
+           
             if (string.IsNullOrWhiteSpace(id))
             {
                 return NotFound();

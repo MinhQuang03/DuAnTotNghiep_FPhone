@@ -13,6 +13,7 @@ namespace AppData.ViewModels.Phones
         public string Image { get; set; }
         public string ProductionComanyName { get; set; }
         public string Price { get; set; }
+        public DateTime? CreateDate { get; set; } = DateTime.Now;
 
     }
 }

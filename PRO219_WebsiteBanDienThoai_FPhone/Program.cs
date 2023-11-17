@@ -15,6 +15,7 @@ builder.Services.AddTransient<IVwPhoneDetailService,VwPhoneDetailService>();
 builder.Services.AddTransient<IListImageService,ListImageService>();
 builder.Services.AddTransient<IBlogRepository,BlogRepository>();
 builder.Services.AddTransient<IPhoneRepository,PhoneRepository>();
+builder.Services.AddTransient<ICartDetailService, CartDetailService>();
 
 
 builder.Services.AddScoped(sp => new HttpClient()
@@ -54,6 +55,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseSession();
+
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();

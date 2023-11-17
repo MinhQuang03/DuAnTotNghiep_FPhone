@@ -121,7 +121,7 @@ public class AccountsController : Controller
                 DataError error = new DataError();
                 error.Success = true;
                 error.Msg = "Đăng nhập thành công";
-                return RedirectToAction("Profile");
+                return RedirectToAction("AddCart");
             }
         }
         else
@@ -135,23 +135,84 @@ public class AccountsController : Controller
 
         return NoContent();
     }
+    public IActionResult checkoutID()
+    {
+        var userId = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
 
-    public async Task<IActionResult> Cart()
+        if (userId == null)
+        {
+            TempData["SuccessMessage"] = "Bạn Phải Đăng nhập trước!";
+            return RedirectToAction("Cart");
+        }
+
+        return RedirectToAction("Cart");
+    }
+
+    public async Task<IActionResult> AddCart()
+    {
+        var userId = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
+        var product = SessionCartDetail.GetObjFromSession(HttpContext.Session, "Cart");
+        if (product != null)
+        {
+            var idcartss = _context.Carts.FirstOrDefault(a => a.IdAccount == (Guid.Parse(userId)));
+            if (idcartss != null)
+            {
+                foreach (var item in product)
+                {
+                    CartDetails cartDetails = new CartDetails();
+                    cartDetails.Id = new Guid();
+                    cartDetails.IdPhoneDetaild = item.phoneDetaild.Id;
+                    cartDetails.IdAccount = Guid.Parse(userId);
+                    cartDetails.Status = 1;
+                    _context.CartDetails.Add(cartDetails);
+                    _context.SaveChanges();
+                }
+            }
+            else
+
+            {
+                Cart cart = new Cart();
+                cart.IdAccount = Guid.Parse(userId);
+                _context.Carts.Add(cart);
+                _context.SaveChanges();
+                foreach (var item in product)
+                {
+                    CartDetails cartDetails = new CartDetails();
+                    cartDetails.Id = new Guid();
+                    cartDetails.IdPhoneDetaild = item.phoneDetaild.Id;
+                    cartDetails.IdAccount = Guid.Parse(userId);
+                    cartDetails.Status = 1;
+                    _context.CartDetails.Add(cartDetails);
+                    _context.SaveChanges();
+                }
+            }
+        }
+        HttpContext.Session.Remove("Cart");
+        return RedirectToAction("ShowCart");
+
+
+    }
+
+        public async Task<IActionResult> Cart()
     {
         var userId = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
         if (userId == null)
         {
+            var sl = 0;
             var product = SessionCartDetail.GetObjFromSession(HttpContext.Session, "Cart");
+            ViewBag.sl = product.Count;
             return View(product);
         }
-       return RedirectToAction("ShowCart");
+
+        return RedirectToAction("ShowCart");
     }
 
 
     public async Task<IActionResult> ShowCart()
     {
         var userId = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
-        var Cart = _context.CartsDetails.Where(a => a.IdAccount == (Guid.Parse(userId))).ToList(); 
+        var Cart = _context.CartDetails.Where(a => a.IdAccount == (Guid.Parse(userId))).ToList();
+        ViewBag.sl = Cart.Count;
         return View(Cart);
     }
 
@@ -163,6 +224,7 @@ public class AccountsController : Controller
         {
             product.Add(new CartDetailModel { phoneDetaild = _context.PhoneDetailds.Find(id),quantity = 1  });
             SessionCartDetail.SetobjTojson(HttpContext.Session, product, "Cart");
+            
             return RedirectToAction("Cart");
         }
         else
@@ -177,8 +239,9 @@ public class AccountsController : Controller
                 cartDetails.IdPhoneDetaild = id;
                 cartDetails.IdAccount = Guid.Parse(userId);
                 cartDetails.Status = 1;
-                _context.CartsDetails.Add(cartDetails);
+                _context.CartDetails.Add(cartDetails);
                 _context.SaveChanges();
+             
                 return RedirectToAction("ShowCart");
             }
             else
@@ -188,21 +251,18 @@ public class AccountsController : Controller
                 cart.IdAccount = Guid.Parse(userId);
                 _context.Carts.Add(cart);
                 _context.SaveChanges();
-
                 CartDetails cartDetails = new CartDetails();
                 cartDetails.Id = new Guid();
                 cartDetails.IdPhoneDetaild = id;
                 cartDetails.IdAccount = Guid.Parse(userId);
                 cartDetails.Status = 1;
-                _context.CartsDetails.Add(cartDetails);
+                _context.CartDetails.Add(cartDetails);
                 _context.SaveChanges();
+             
                 return RedirectToAction("ShowCart");
             }
           
         }
-
-        
-
 
     }
 }
