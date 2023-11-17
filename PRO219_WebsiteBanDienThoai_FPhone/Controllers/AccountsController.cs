@@ -215,7 +215,13 @@ public class AccountsController : Controller
         ViewBag.sl = Cart.Count;
         return View(Cart);
     }
-
+    public IActionResult DeleteCartAccount(Guid id)
+    {
+        var cart = _context.CartDetails.FirstOrDefault(a => a.Id == id);
+        _context.CartDetails.Remove(cart);
+        _context.SaveChanges();
+        return RedirectToAction("ShowCart");
+    }
     public async Task<IActionResult> AddToCard(Guid id)
     {
         var userId = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
@@ -264,5 +270,20 @@ public class AccountsController : Controller
           
         }
 
+    }
+
+    public IActionResult DeleteCart(Guid id)
+    {
+        var cart = SessionCartDetail.GetObjFromSession(HttpContext.Session, "Cart");
+
+        // Tìm và xóa sản phẩm có ID tương ứng
+        var productToRemove = cart.FirstOrDefault(p => p.phoneDetaild.Id == id);
+        if (productToRemove != null)
+        {
+            cart.Remove(productToRemove);
+            var jsonString = JsonConvert.SerializeObject(cart);
+            HttpContext.Session.SetString("Cart", jsonString);
+        }
+       return RedirectToAction("Cart");
     }
 }
