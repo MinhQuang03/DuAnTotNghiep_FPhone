@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppData.Migrations
 {
     [DbContext(typeof(FPhoneDbContext))]
-    [Migration("20231106103504_FPhone")]
-    partial class FPhone
+    [Migration("20231113155552_DATN202")]
+    partial class DATN202
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -275,6 +275,9 @@ namespace AppData.Migrations
 
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Images")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");

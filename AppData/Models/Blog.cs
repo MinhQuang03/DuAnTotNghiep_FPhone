@@ -10,6 +10,8 @@
 
         public DateTime? CreatedDate { get; set; }
 
+        public string? Images { get; set; }
+
         public int Status { get; set; }
     }
 }
