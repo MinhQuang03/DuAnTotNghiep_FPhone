@@ -70,6 +70,7 @@ namespace AppData.Repositories
             a.Title = obj.Title;
             a.Content = obj.Content;
             a.CreatedDate = obj.CreatedDate;
+            a.Images = obj.Images;
             a.Status = obj.Status;
             _dbContext.Blogs.Update(a);
             await _dbContext.SaveChangesAsync();

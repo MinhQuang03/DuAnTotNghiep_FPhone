@@ -10,7 +10,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
     //[AuthenFilter]
     public class BlogController : Controller
     {
-        private readonly HttpClient _httpClient;
+        public readonly HttpClient _httpClient;
         public BlogController(HttpClient httpClient)
         {
             _httpClient = httpClient;
@@ -28,26 +28,27 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Blog obj)
+        public async Task<IActionResult> Create(Blog obj, IFormFile file)
         {
-            try
+            if (file != null && file.Length > 0) // khong null va khong trong 
             {
-                var jsonData = JsonConvert.SerializeObject(obj);
-                HttpContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-                var response = await _httpClient.PostAsync("api/Blog/add", content);
-                if (response.IsSuccessStatusCode)
+                var fileName = Path.GetFileName(file.FileName);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", fileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                    TempData["successMessage"] = "Them thanh cong";
-                    return RedirectToAction("Index");
+                    await file.CopyToAsync(stream);
                 }
-            }
-            catch (Exception ex)
-            {
-                TempData["errorMessage"] = ex.Message;
-                return View();
-            }
 
-            return View();
+                obj.Images = "/img/" + fileName;
+            }
+            var jsonData = JsonConvert.SerializeObject(obj);
+            HttpContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync("api/Blog/add", content);
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+            return View(jsonData);
         }
 
         [HttpGet]
@@ -59,14 +60,27 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(Guid id, Blog obj)
+        public async Task<IActionResult> Edit(Guid id, Blog obj, IFormFile file)
         {
+            if (file != null && file.Length > 0) // khong null va khong trong 
+            {
+                var fileName = Path.GetFileName(file.FileName);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", fileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    file.CopyTo(stream);
+                }
+
+                obj.Images = "/img/" + fileName;
+            }
             var jsonData = JsonConvert.SerializeObject(obj);
-
             HttpContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-
             var response = await _httpClient.PutAsync("api/Blog/update", content);
-            return RedirectToAction("Index");
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+            return BadRequest(response.Content.ReadAsStringAsync());
         }
 
 

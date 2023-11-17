@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AppData.Models;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
 {
-    public class BlogController : Controller
+    public class BlogsController : Controller
     {
         private readonly HttpClient _httpClient;
-        public BlogController(HttpClient httpClient)
+        public BlogsController(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
@@ -14,6 +17,14 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
             return View();
         }
         [HttpGet]
+
+        public async Task<IActionResult> BlogDetail(Guid Id)
+        {
+            var datajson = await _httpClient.GetStringAsync($"api/Blog/get");
+            var ctblog = JsonConvert.DeserializeObject<List<Blog>>(datajson);
+            var lst = ctblog.Where(c => c.Id == Id).ToList();
+            return View(lst);
+        }
         public IActionResult BlogManagement()
         {
             return View();

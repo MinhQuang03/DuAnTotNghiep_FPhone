@@ -4,6 +4,7 @@ using AppData.FPhoneDbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppData.Migrations
 {
     [DbContext(typeof(FPhoneDbContext))]
-    partial class FPhoneDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231113155552_DATN202")]
+    partial class DATN202
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -216,9 +218,6 @@ namespace AppData.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int>("StatusPayment")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("IdAccount");
@@ -328,7 +327,7 @@ namespace AppData.Migrations
 
                     b.HasIndex("IdPhoneDetaild");
 
-                    b.ToTable("CartDetails");
+                    b.ToTable("CartsDetails");
                 });
 
             modelBuilder.Entity("AppData.Models.ChargingportType", b =>
@@ -521,9 +520,6 @@ namespace AppData.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("CreateDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -877,6 +873,7 @@ namespace AppData.Migrations
             modelBuilder.Entity("AppData.ViewModels.Phones.VW_Phone", b =>
                 {
                     b.Property<Guid>("IdPhone")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("IdProductionComany")
@@ -894,17 +891,15 @@ namespace AppData.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("VW_Phone");
+                    b.HasKey("IdPhone");
 
-                    b.ToView("VW_Phone");
+                    b.ToTable("VW_Phone");
                 });
 
             modelBuilder.Entity("AppData.ViewModels.Phones.VW_Phone_Group", b =>
                 {
-                    b.Property<DateTime?>("CreateDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<Guid>("IdPhone")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Image")
@@ -923,13 +918,17 @@ namespace AppData.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("VW_Phone_Group");
+                    b.HasKey("IdPhone");
 
-                    b.ToView("VW_Phone_Group");
+                    b.ToTable("VW_Phone_Group");
                 });
 
             modelBuilder.Entity("AppData.ViewModels.Phones.VW_PhoneDetail", b =>
                 {
+                    b.Property<Guid>("IdPhoneDetail")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("BatteryName")
                         .HasColumnType("nvarchar(max)");
 
@@ -952,9 +951,6 @@ namespace AppData.Migrations
                     b.Property<Guid>("IdPhone")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("IdPhoneDetail")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("MaterialName")
                         .HasColumnType("nvarchar(max)");
 
@@ -964,7 +960,7 @@ namespace AppData.Migrations
                     b.Property<string>("PhoneName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Price")
+                    b.Property<decimal?>("Price")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("RamName")
@@ -993,9 +989,9 @@ namespace AppData.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("VW_PhoneDetail");
+                    b.HasKey("IdPhoneDetail");
 
-                    b.ToView("VW_PhoneDetail");
+                    b.ToTable("VW_PhoneDetail");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
