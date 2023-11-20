@@ -13,6 +13,7 @@ using System.Net.Http;
 using AppData.FPhoneDbContexts;
 using AppData.Repositories;
 using AppData.IRepositories;
+using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers;
 
@@ -198,9 +199,7 @@ public class AccountsController : Controller
         var userId = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
         if (userId == null)
         {
-            var sl = 0;
             var product = SessionCartDetail.GetObjFromSession(HttpContext.Session, "Cart");
-            ViewBag.sl = product.Count;
             return View(product);
         }
 
@@ -285,5 +284,48 @@ public class AccountsController : Controller
             HttpContext.Session.SetString("Cart", jsonString);
         }
        return RedirectToAction("Cart");
+    }
+
+    public async Task<IActionResult> ORDER(CheckOutViewModel order)
+    {
+        var userId = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
+        Bill bill = new Bill();
+        bill.Id = new Guid();
+        bill.Address = order.Address+","+ order.Province + "," + order.District + "," + order.Ward;
+        bill.Name = order.Name;
+        bill.Status = 0; 
+        bill.CreatedTime = DateTime.Now;
+        bill.PaymentDate = DateTime.Now;
+        bill.IdAccount = Guid.Parse(userId);
+        bill.Phone = order.Phone;
+        bill.StatusPayment = 0;
+        _context.Bill.Add(bill);
+        _context.SaveChanges();
+        Guid idhd = bill.Id;
+        var product = _context.CartDetails.Where(a => a.IdAccount == Guid.Parse(userId)).ToList();
+       
+            List<BillDetails> Listbill = new List<BillDetails>();
+
+            foreach (var item in product)
+            {
+                BillDetails billDetail = new BillDetails();
+                billDetail.IdBill = idhd;
+                billDetail.Id = new Guid();
+                billDetail.IdPhoneDetail = item.IdPhoneDetaild;
+                billDetail.Price = _context.PhoneDetailds.Find(item.IdPhoneDetaild).Price;
+                billDetail.Status = 0;
+                billDetail.NameImei = "a";
+                Listbill.Add(billDetail);
+            }
+            foreach (var item in product)
+            {
+                var cart = _context.CartDetails.Find(item.Id);
+                _context.CartDetails.Remove(cart);
+
+            }
+            _context.BillDetails.AddRange(Listbill);
+            _context.SaveChanges();
+
+      return RedirectToAction("Index", "Home");
     }
 }

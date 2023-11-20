@@ -75,7 +75,7 @@
                         </svg>
                     </a>
 
-                    <a href="#" class="icon__item" id="cart-btn">
+                    <a asp-action="Cart" asp-controller="Accounts" class="icon__item" id="cart-btn">
                         <svg class="icon__cart">
                             <use xlink:href="/images/sprite.svg#icon-shopping-basket"></use>
                         </svg>
@@ -105,38 +105,6 @@
         </form>
     </div>
 
-    <div class="shopping-cart">
-        <div class="box">
-            <i class="fas fa-trash"></i>
-            <img src="~/images/products/iPhone/iphone1.jpeg">
-            <div class="content">
-                <h3>iPhone</h3>
-                <span class="price">$800.99/-</span>
-                <span class="quantity">qty : 1</span>
-            </div>
-        </div>
-        <div class="box">
-            <i class="fas fa-trash"></i>
-            <img src="~/images/products/sumsung/samsung3.jpeg">
-            <div class="content">
-                <h3>Samsung A22</h3>
-                <span class="price">$350.99/-</span>
-                <span class="quantity">qty : 1</span>
-            </div>
-        </div>
-        <div class="box">
-            <i class="fas fa-trash"></i>
-            <img src="~/images/products/headphone/headphone3.jpeg">
-            <div class="content">
-                <h3>Boat</h3>
-                <span class="price">$54.99/-</span>
-                <span class="quantity">qty : 1</span>
-            </div>
-        </div>
-        <div class="total">Total : $1354.69/-</div>
-        <a asp-action="Cart" asp-controller="Accounts">
-            PHONE
-        </a>
-    </div>
+  
 
 </header>
