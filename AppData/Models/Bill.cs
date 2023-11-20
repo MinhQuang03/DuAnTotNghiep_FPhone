@@ -15,6 +15,8 @@
         public string Address { get; set; }    
 
         public int Status { get; set; }
+        public string? BillCode { get; set; }
+        public decimal TotalMoney { get; set; }
 
         public int StatusPayment { get; set; }
 

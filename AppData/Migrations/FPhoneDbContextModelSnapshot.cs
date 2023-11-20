@@ -196,6 +196,9 @@ namespace AppData.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("BillCode")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime2");
 
@@ -218,6 +221,9 @@ namespace AppData.Migrations
 
                     b.Property<int>("StatusPayment")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("TotalMoney")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -242,7 +248,6 @@ namespace AppData.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("NameImei")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Number")
