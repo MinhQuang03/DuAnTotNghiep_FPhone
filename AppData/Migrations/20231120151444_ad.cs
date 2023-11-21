@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppData.Migrations
 {
-    public partial class DATN202 : Migration
+    public partial class ad : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -296,7 +296,6 @@ namespace AppData.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_VW_Phone", x => x.IdPhone);
                 });
 
             migrationBuilder.CreateTable(
@@ -307,11 +306,11 @@ namespace AppData.Migrations
                     PhoneName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProductionComanyName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Price = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Price = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_VW_Phone_Group", x => x.IdPhone);
                 });
 
             migrationBuilder.CreateTable(
@@ -336,12 +335,11 @@ namespace AppData.Migrations
                     FrontCamera = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Resolution = table.Column<int>(type: "int", nullable: true),
                     Size = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_VW_PhoneDetail", x => x.IdPhoneDetail);
                 });
 
             migrationBuilder.CreateTable(
@@ -378,6 +376,9 @@ namespace AppData.Migrations
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
+                    BillCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TotalMoney = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    StatusPayment = table.Column<int>(type: "int", nullable: false),
                     IdAccount = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
@@ -522,7 +523,8 @@ namespace AppData.Migrations
                     PhoneName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IdProductionCompany = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    IdProductionCompany = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -695,7 +697,7 @@ namespace AppData.Migrations
                     Number = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
-                    NameImei = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    NameImei = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -720,7 +722,7 @@ namespace AppData.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CartsDetails",
+                name: "CartDetails",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -731,14 +733,14 @@ namespace AppData.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CartsDetails", x => x.Id);
+                    table.PrimaryKey("PK_CartDetails", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CartsDetails_Carts_IdAccount",
+                        name: "FK_CartDetails_Carts_IdAccount",
                         column: x => x.IdAccount,
                         principalTable: "Carts",
                         principalColumn: "IdAccount");
                     table.ForeignKey(
-                        name: "FK_CartsDetails_PhoneDetailds_IdPhoneDetaild",
+                        name: "FK_CartDetails_PhoneDetailds_IdPhoneDetaild",
                         column: x => x.IdPhoneDetaild,
                         principalTable: "PhoneDetailds",
                         principalColumn: "Id",
@@ -923,13 +925,13 @@ namespace AppData.Migrations
                 column: "IdPhoneDetail");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CartsDetails_IdAccount",
-                table: "CartsDetails",
+                name: "IX_CartDetails_IdAccount",
+                table: "CartDetails",
                 column: "IdAccount");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CartsDetails_IdPhoneDetaild",
-                table: "CartsDetails",
+                name: "IX_CartDetails_IdPhoneDetaild",
+                table: "CartDetails",
                 column: "IdPhoneDetaild");
 
             migrationBuilder.CreateIndex(
@@ -1072,7 +1074,7 @@ namespace AppData.Migrations
                 name: "Blogs");
 
             migrationBuilder.DropTable(
-                name: "CartsDetails");
+                name: "CartDetails");
 
             migrationBuilder.DropTable(
                 name: "Imei");
