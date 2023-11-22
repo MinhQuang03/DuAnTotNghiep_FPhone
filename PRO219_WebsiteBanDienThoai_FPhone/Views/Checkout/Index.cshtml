@@ -84,11 +84,11 @@
                         <div class="col-md-6 form-group">
                             <label>Xã/Phường</label>
                             <input id="WardName" hidden="" asp-for="Ward"/>
-                @Html.DropDownListFor(model => model.id, Enumerable.Empty<SelectListItem>(), "--Lựa chọn--", new { @class = "form-control", id = "Ward", onchange = "JCheckOut.ChangeWard()" })
+                            @Html.DropDownListFor(model => model.id, Enumerable.Empty<SelectListItem>(), "--Lựa chọn--", new { @class = "form-control", id = "Ward", onchange = "JCheckOut.ChangeWard()" })
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Địa chỉ chi tiết</label>
-                            <input asp-for="DetailedAddress" class="form-control" type="text" placeholder="123">
+                                <input asp-for="Address" class="form-control" type="text" placeholder="123">
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Phương thức vận chuyển</label>
