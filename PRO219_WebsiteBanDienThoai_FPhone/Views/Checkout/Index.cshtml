@@ -125,7 +125,8 @@
                     <div class="pt-2">
                         <div class="d-flex justify-content-between mt-2">
                             <h5>Tổng tiền thanh toán</h5>
-                            <h5 id="TotalPayment" >
+                                <input hidden="" asp-for="TotalMoney" id="TotalMoney" />
+                            <h5 id="TotalPayment">
                                 @{ (total + totalShip).ToString("C0");}
                             </h5>
                         </div>

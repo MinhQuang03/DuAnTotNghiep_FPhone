@@ -161,6 +161,7 @@
                 success: (data) => {
                     $("#TotalShip").text((data.data.total).toLocaleString('vi', { style: 'currency', currency: 'VND' }));
                     $("#TotalPayment").text((parseFloat(data.data.total) + parseFloat(insurance)).toLocaleString('vi', { style: 'currency', currency: 'VND' }));
+                    $("#TotalMoney").val((data.data.total) + parseFloat(insurance));
                 },
                 error: (error) => {
                     $("#TotalShip").empty();
