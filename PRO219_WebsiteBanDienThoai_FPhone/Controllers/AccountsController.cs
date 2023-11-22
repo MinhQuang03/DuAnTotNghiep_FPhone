@@ -285,7 +285,7 @@ public class AccountsController : Controller
         }
        return RedirectToAction("Cart");
     }
-
+    [HttpPost]
     public async Task<IActionResult> ORDER(CheckOutViewModel order)
     {
         var userId = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
@@ -293,7 +293,8 @@ public class AccountsController : Controller
         bill.Id = new Guid();
         bill.Address = order.Address+","+ order.Province + "," + order.District + "," + order.Ward;
         bill.Name = order.Name;
-        bill.Status = 0; 
+        bill.Status = 0;
+        bill.TotalMoney = order.totalmeny;
         bill.CreatedTime = DateTime.Now;
         bill.PaymentDate = DateTime.Now;
         bill.IdAccount = Guid.Parse(userId);
