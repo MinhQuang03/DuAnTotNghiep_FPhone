@@ -30,6 +30,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.ViewModel
         public DateTime PaymentDate { get; set; }
         [Display(Name = "Số điện thoại")]
         public string Phone { get; set; }
+        public decimal TotalMoney { get; set; } 
         public string Address { get; set; }
         public int Status { get; set; }
         public Guid IdAccount { get; set; } 
