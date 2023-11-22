@@ -296,11 +296,13 @@ public class AccountsController : Controller
             {
                 return BadRequest("User Id is not available.");
             }
-
+            var currentBillNumber = _context.Bill.Count() + 1;
+            var billCode = "HD" + currentBillNumber.ToString("D5");
             Bill bill = new Bill();
             bill.Id = Guid.NewGuid();
             bill.Address = $"{order.Address},{order.Province},{order.District},{order.Ward}";
             bill.Name = order.Name;
+            bill.BillCode = billCode;
             bill.Status = 0;
             bill.TotalMoney = order.TotalMoney;
             bill.CreatedTime = DateTime.Now;
