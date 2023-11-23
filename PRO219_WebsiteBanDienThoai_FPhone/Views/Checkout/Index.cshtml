@@ -185,16 +185,31 @@
 
                 // Set the action attribute of the form based on the selected payment method
                 switch (selectedPaymentId) {
-                    case "paypal":
-                        $("#checkoutForm").attr("action", "/VnPay/Index");
-                        break;
                     case "banktransfer":
                         $("#checkoutForm").attr("action", "/Accounts/ORDER");
                         break;
+                    case "paypal":
+                        // Gửi yêu cầu thanh toán đến server
+                        $.ajax({
+                            type: "POST",
+                            url: "/VnPay/Payment", // Đặt đúng đường dẫn của phương thức xử lý thanh toán trên server
+                            data: $("#checkoutForm").serialize(),
+                            success: function (response) {
+                                if (response.success) {
+                                    // Chuyển hướng đến trang thanh toán của VNPAY
+                                    window.location.href = response.data;
+                                } else {
+                                    // Xử lý lỗi nếu cần
+                                    console.error("Payment request failed.");
+                                }
+                            },
+                            error: function () {
+                                // Xử lý lỗi nếu cần
+                                console.error("Error sending payment request.");
+                            }
+                        });
+                        break;
                 }
-
-                // Continue with the form submission
-                $("#checkoutForm")[0].submit();
             });
     })
 </script>
