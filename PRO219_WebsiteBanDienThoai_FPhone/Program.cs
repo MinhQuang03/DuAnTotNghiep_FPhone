@@ -16,6 +16,11 @@ builder.Services.AddTransient<IListImageService,ListImageService>();
 builder.Services.AddTransient<IBlogRepository,BlogRepository>();
 builder.Services.AddTransient<IPhoneRepository,PhoneRepository>();
 builder.Services.AddTransient<ICartDetailService, CartDetailService>();
+builder.Services.AddTransient<IProductionCompanyRepository, ProductionCompanyRepository>();
+builder.Services.AddTransient<IRamRepository, RamRepository>();
+builder.Services.AddTransient<IRomRepository, RomRepository>();
+builder.Services.AddTransient<IChipCPURepository, ChipCPURepository>();
+builder.Services.AddTransient<IMaterialRepository, MaterialRepository>();
 
 
 builder.Services.AddScoped(sp => new HttpClient()

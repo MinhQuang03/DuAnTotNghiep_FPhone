@@ -1,8 +1,7 @@
 ﻿using AppData.FPhoneDbContexts;
-using AppData.Models;
+using AppData.IRepositories;
+using AppData.IServices;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using PRO219_WebsiteBanDienThoai_FPhone.Services;
 using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
 
 
@@ -12,36 +11,73 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
     {
         private readonly HttpClient _client;
         private FPhoneDbContext _context;
-        public ListPhoneController(HttpClient client)
+        private IVwPhoneService _phoneService;
+        private IProductionCompanyRepository _companyRepository;
+        private IRamRepository _ramRepository;
+        private IChipCPURepository _chipCpuRepository;
+        private IRomRepository _romRepository;
+        private IMaterialRepository _materialRepository;
+        private IVwPhoneDetailService _phoneDetailService;
+
+        public ListPhoneController(HttpClient client, FPhoneDbContext context, IVwPhoneService phoneService, IProductionCompanyRepository companyRepository, IRamRepository ramRepository, IChipCPURepository chipCpuRepository, IRomRepository romRepository, IMaterialRepository materialRepository, IVwPhoneDetailService phoneDetailService)
         {
-            _context = new FPhoneDbContext();
             _client = client;
-            
+            _context = context;
+            _phoneService = phoneService;
+            _companyRepository = companyRepository;
+            _ramRepository = ramRepository;
+            _chipCpuRepository = chipCpuRepository;
+            _romRepository = romRepository;
+            _materialRepository = materialRepository;
+            _phoneDetailService = phoneDetailService;
         }
         public async Task<IActionResult> Index()
-        {
+        { 
+            ListPhoneViewModel model = new ListPhoneViewModel();
+            model.ListvVwPhoneDetails = _phoneDetailService.listVwPhoneDetails(model.SearchData, model.Options);
+	       model.Brand = await _companyRepository.GetAll();
+           model.listRam = await _ramRepository.GetAll();
+           model.listChipCPU = await _chipCpuRepository.GetAll();
+           model.listRom = await _romRepository.GetAll();
+           model.listMaterial = await _materialRepository.GetAll();
+	        return View(model);
+		}
 
-           
-            var datajson = await _client.GetStringAsync("api/PhoneDetaild/get");
-            var ctsp = JsonConvert.DeserializeObject<List<PhoneDetaild>>(datajson);
-            
-            var lstspView = from a in ctsp
-                            group a by new
-                            {
-                                a.Phones.PhoneName,
-                                a.Phones.Id,
-                                a.Phones.Image
-                            }
-                into b
-                            select new ProductView
-                            {
-                                IdProduct = b.Key.Id,
-                                ProductName = b.Key.PhoneName,
-                                Price = b.Select(c => c.Price).Min().ToString("C0") + " - " +
-                                        b.Select(c => c.Price).Max().ToString("C0"),
-                                Image = b.Key.Image
-                            };
-            return View(lstspView);
+        [HttpPost]
+        public async Task<IActionResult> Index(ListPhoneViewModel model)
+        {
+            model.ListvVwPhoneDetails = _phoneDetailService.listVwPhoneDetails(model.SearchData, model.Options);
+            model.Brand = await _companyRepository.GetAll();
+            model.listRam = await _ramRepository.GetAll();
+            model.listChipCPU = await _chipCpuRepository.GetAll();
+            model.listRom = await _romRepository.GetAll();
+            model.listMaterial = await _materialRepository.GetAll();
+            return View(model);
+        }
+       
+        public async Task<IActionResult> OrderByDes()
+        {
+            ListPhoneViewModel model = new ListPhoneViewModel();
+            model.ListvVwPhoneDetails = _phoneDetailService.listVwPhoneDetails(model.SearchData, model.Options).OrderByDescending(c =>c.Price).ToList();
+            model.Brand = await _companyRepository.GetAll();
+            model.listRam = await _ramRepository.GetAll();
+            model.listChipCPU = await _chipCpuRepository.GetAll();
+            model.listRom = await _romRepository.GetAll();
+            model.listMaterial = await _materialRepository.GetAll();
+            return View("Index", model);
+        }
+
+        public async Task<IActionResult> OrderByAsc()
+        {
+            ListPhoneViewModel model = new ListPhoneViewModel();
+            model.ListvVwPhoneDetails = _phoneDetailService.listVwPhoneDetails(model.SearchData, model.Options)
+                .OrderBy(c => c.Price).ToList();
+            model.Brand = await _companyRepository.GetAll();
+            model.listRam = await _ramRepository.GetAll();
+            model.listChipCPU = await _chipCpuRepository.GetAll();
+            model.listRom = await _romRepository.GetAll();
+            model.listMaterial = await _materialRepository.GetAll();
+            return View("Index", model);
         }
     }
 }

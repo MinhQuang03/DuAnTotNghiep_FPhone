@@ -1,7 +1,16 @@
-﻿@using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
+﻿@model PRO219_WebsiteBanDienThoai_FPhone.ViewModel.ListPhoneViewModel
 @{
     ViewData["Title"] = "Phone List";
 }
+<style>
+    .form-control {
+        font-size: 1.5rem;
+    }
+    .btn {
+        --bs-btn-font-size: 1.5rem;
+    }
+    
+</style>
 <!-- Breadcrumb Start -->
 <div class="container-fluid">
     <div class="row px-xl-5">
@@ -19,51 +28,67 @@
 <div class="container-fluid">
     <div class="row px-xl-5">
         <div class="col-12">
-            <h4>Chọn theo tiêu chí</h4>
+            <h3>Chọn theo tiêu chí</h3>
         </div>
     </div>
-    <div class="px-xl-5">
-        <!-- Large button groups (default and split) -->
-        @*<div class="btn-group">
-            <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Hãng sản xuất
-            </button>
-            <ul class="dropdown-menu">
-                ...
-            </ul>
-        </div>*@
-        <div class="btn-group">
-            <button class="btn btn-secondary btn-lg" type="button">
-                Ram
-            </button>
-            <button type="button" class="btn btn-lg btn-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-                <span class="visually-hidden">Toggle Dropdown</span>
-            </button>
-            <ul class="dropdown-menu">
-                ...
-            </ul>
-        </div>
-        
+    <div class="row">
+        <form method="post" class="col-12 px-xl-5 mx-5 row">
+            <div class="col">
+                @Html.DropDownListFor(model => model.SearchData.ProductionCompanyName, new SelectList(Model.Brand, "Name", "Name"), "Loại điện thoại", new { @class = "form-control", id = "Province" })
+            </div>
+            <div class="col">
+                @Html.DropDownListFor(model => model.SearchData.RamName, new SelectList(Model.listRam, "Name", "Name"), "Dung lượng RAM", new { @class = "form-control", id = "Province" })
+            </div>
+            <div class="col">
+                @Html.DropDownListFor(model => model.SearchData.RomName, new SelectList(Model.listRom, "Name", "Name"), "Bộ nhớ trong", new { @class = "form-control", id = "Province" })
+            </div>
+            <div class="col">
+                @Html.DropDownListFor(model => model.SearchData.ChipCPUName, new SelectList(Model.listChipCPU, "Name", "Name"), "Chip xử lý", new { @class = "form-control", id = "Province" })
+            </div>
+            <div class="col">
+                @Html.DropDownListFor(model => model.SearchData.MaterialName, new SelectList(Model.listMaterial, "Name", "Name"), "Chất liệu", new { @class = "form-control", id = "Province" })
+            </div>
+            <div class="col">
+                <input type="submit" value="Tìm kiếm" class="btn btn-primary"/>
+            </div>
+        </form>
+    </div>
 
-    </div>
-    <div class="row px-xl-5">
+    <div class="row px-xl-5 mt-2">
         <div class="col-12">
-            <h4>Sắp xếp theo</h4>
+            <h3>Sắp xếp theo</h3>
+        </div>
+    </div>
+    <div class="row col-xl-5">
+        <div class="px-5 mx-5 col">
+            <a asp-action="OrderByDes" class="text-decoration-none btn border col-xl-2"style="width: 90%">
+                Giá Cao - Thấp
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-bar-down" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1 3.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13a.5.5 0 0 1-.5-.5M8 6a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 .708-.708L7.5 12.293V6.5A.5.5 0 0 1 8 6"></path>
+                </svg>
+            </a>
+        </div>
+        <div class="col">
+            <a asp-action="OrderByAsc" class="text-decoration-none btn border col-xl-2" style="width: 90%">
+                Giá Thấp - Cao
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-bar-up" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 10a.5.5 0 0 0 .5-.5V3.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 3.707V9.5a.5.5 0 0 0 .5.5m-7 2.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13a.5.5 0 0 1-.5-.5"/>
+                </svg>
+            </a>
         </div>
     </div>
 </div>
 <!-- Shop End -->
 <section class="category__section section">
     <div class="row container" id="productList">
-        @foreach (ProductView item in Model)
+        @foreach (var item in Model.ListvVwPhoneDetails)
         {
-            
             <div class="product category__products">
                 <div class="product__header">
-                    <img src="@item.Image" alt="product">
+                    <img src="" alt="product">
                 </div>
                 <div class="product__footer">
-                    <h3>@item.ProductName</h3>
+                    <h3>@item.PhoneName</h3>
                     <div class="rating">
                         <svg>
                             <use xlink:href="./images/sprite.svg#icon-star-full"></use>
@@ -85,7 +110,7 @@
                         <h4 style="color:#da152b">@item.Price</h4>
                     </div>
                     <a href="#">
-                        @Html.ActionLink("Add To Cart", "PhoneDetail", "PhoneDetail", new { id = item.IdProduct }, new { @class = "product__btn", type = "submit" })
+                        @Html.ActionLink("Add To Cart", "PhoneDetail", "PhoneDetail", new { id = item.IdPhone }, new { @class = "product__btn", type = "submit" })
 
                     </a>
                 </div>
