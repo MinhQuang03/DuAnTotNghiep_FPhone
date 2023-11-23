@@ -9,10 +9,12 @@ namespace AppData.ViewModels.Phones
     {
         [Key]
         public Guid IdPhone { get; set; }
-        public string PhoneName { get; set; }
-        public string Image { get; set; }
-        public string ProductionComanyName { get; set; }
-        public string Price { get; set; }
+        public string? PhoneName { get; set; }
+        public string? Image { get; set; }
+        public string? ProductionComanyName { get; set; }
+        public string? Price { get; set; }
+        public string? RamName { get; set; } 
+        public decimal? PriceMax { get; set; }  
         public DateTime? CreateDate { get; set; } = DateTime.Now;
 
     }
