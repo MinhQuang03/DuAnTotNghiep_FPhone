@@ -79,5 +79,18 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
             model.listMaterial = await _materialRepository.GetAll();
             return View("Index", model);
         }
+
+        public async Task<IActionResult> MorePhone()
+        {
+            ListPhoneViewModel model = new ListPhoneViewModel();
+            model.Options.PageSize += 10;
+            model.ListvVwPhoneDetails = _phoneDetailService.listVwPhoneDetails(model.SearchData, model.Options);
+            model.Brand = await _companyRepository.GetAll();
+            model.listRam = await _ramRepository.GetAll();
+            model.listChipCPU = await _chipCpuRepository.GetAll();
+            model.listRom = await _romRepository.GetAll();
+            model.listMaterial = await _materialRepository.GetAll();
+            return View("Index", model);
+        }
     }
 }

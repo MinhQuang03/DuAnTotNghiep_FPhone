@@ -34,6 +34,12 @@ public class VwPhoneDetailService : IVwPhoneDetailService
     public List<VW_PhoneDetail> listVwPhoneDetails(VW_PhoneDetail model, ListOptions options)
     {
         var lst = new List<VW_PhoneDetail>();
+        var countRecords = _dbContext.VW_PhoneDetail.Count();
+        //nếu pagesize lớn hơn số lượng bản ghi thì lấy ra rất cả bản ghi
+        if (options.PageSize >= countRecords)
+        {
+            options.PageSize = countRecords;
+        }
         try
         {
             lst = _dbContext.VW_PhoneDetail.Where(c =>
