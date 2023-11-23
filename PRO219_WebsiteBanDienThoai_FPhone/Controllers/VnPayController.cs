@@ -48,7 +48,8 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
             pay.AddRequestData("vnp_OrderInfo", "Thanh toan hoa don"); //Thông tin mô tả nội dung thanh toán
             pay.AddRequestData("vnp_OrderType", "other"); //topup: Nạp tiền điện thoại - billpayment: Thanh toán hóa đơn - fashion: Thời trang - other: Thanh toán trực tuyến
             pay.AddRequestData("vnp_ReturnUrl", vnpay.ReturnUrl); //URL thông báo kết quả giao dịch khi Khách hàng kết thúc thanh toán
-            pay.AddRequestData("vnp_TxnRef", DateTime.Now.Ticks.ToString()); //mã hóa đơn
+            string billCode = DateTime.Now.Ticks.ToString();
+            pay.AddRequestData("vnp_TxnRef", billCode); //mã hóa đơn
 
             string paymentUrl = pay.CreateRequestUrl(vnpay.Url, vnpay.HashSecret);
 
@@ -96,6 +97,10 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
 
 
             var userId = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
+            if (userId == null)
+            {
+                return BadRequest("User Id is not available.");
+            }
             Bill bill = new Bill();
             bill.Id = new Guid();
             bill.Address = request.Address + "," + request.Province + "," + request.District + "," + request.Ward;
@@ -107,7 +112,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
             bill.IdAccount = Guid.Parse(userId);
             bill.Phone = request.Phone;
             bill.StatusPayment = 1;
-            bill.BillCode = pay.GetResponseData("vnp_TxnRef");
+            bill.BillCode = billCode;
             _dbContext.Bill.Add(bill);
             _dbContext.SaveChanges();
             Guid idhd = bill.Id;
@@ -156,7 +161,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
                     }
                 }
 
-                long orderId = Convert.ToInt64(pay.GetResponseData("vnp_TxnRef")); //mã hóa đơn
+                string orderId = pay.GetResponseData("vnp_TxnRef"); //mã hóa đơn
                 long vnpayTranId = Convert.ToInt64(pay.GetResponseData("vnp_TransactionNo")); //mã giao dịch tại hệ thống VNPAY
                 string vnp_ResponseCode = pay.GetResponseData("vnp_ResponseCode"); //response code: 00 - thành công, khác 00 - xem thêm https://sandbox.vnpayment.vn/apis/docs/bang-ma-loi/
                 string vnp_SecureHash = HttpContext.Request.Query["vnp_SecureHash"]; //hash của dữ liệu trả về
@@ -173,7 +178,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
                         /// Xử lý update lại trang thái đơn hàng đã thanh toán thành công.. theo Mã bill
                         //var orderIdString = orderId.ToString();
                         /// Thêm db ok thì mở cái này. để change status
-                        var bill = _dbContext.Bill.FirstOrDefault(x => x.BillCode == orderId.ToString());
+                        var bill = _dbContext.Bill.FirstOrDefault(x => x.BillCode == orderId);
                         if (bill != null)
                         {
                             bill.Status = 5; // đã thanh toán
