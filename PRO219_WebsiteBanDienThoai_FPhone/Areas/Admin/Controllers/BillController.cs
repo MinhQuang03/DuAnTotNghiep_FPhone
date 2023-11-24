@@ -1,6 +1,7 @@
 ﻿using AppData.FPhoneDbContexts;
 using Microsoft.AspNetCore.Mvc;
 using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Filters;
+using System.Net;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
 {
@@ -26,7 +27,16 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                 return BadRequest("NoBills");
             }
         }
+        public ActionResult Detail(Guid id)
+        {
+            if (id == null)
+            {
+                return BadRequest("NoDetaild");
+            }
+            ViewBag.customer = _context.Bill.Where(m => m.Id == id).First();
+            var lisst = _context.BillDetails.Where(m => m.IdBill == id).ToList();
+            return View("BillDetail", lisst);
+        }
 
-      
     }
 }
