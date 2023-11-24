@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppData.Migrations
 {
-    public partial class ad : Migration
+    public partial class initdatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -303,10 +303,12 @@ namespace AppData.Migrations
                 columns: table => new
                 {
                     IdPhone = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PhoneName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProductionComanyName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Price = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProductionComanyName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Price = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RamName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PriceMax = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -331,12 +333,13 @@ namespace AppData.Migrations
                     ChipGPUName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ColorName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ChargingportTypeName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Weight = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FrontCamera = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Weight = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FrontCamera = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Resolution = table.Column<int>(type: "int", nullable: true),
-                    Size = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false)
+                    Size = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: true),
+                    ProductionCompanyName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -377,7 +380,8 @@ namespace AppData.Migrations
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     BillCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TotalMoney = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    deliveryPaymentMethod = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TotalMoney = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     StatusPayment = table.Column<int>(type: "int", nullable: false),
                     IdAccount = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },

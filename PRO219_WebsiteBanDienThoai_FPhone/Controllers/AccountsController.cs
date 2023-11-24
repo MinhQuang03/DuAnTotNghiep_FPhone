@@ -303,13 +303,14 @@ public class AccountsController : Controller
             bill.Address = $"{order.Address},{order.Province},{order.District},{order.Ward}";
             bill.Name = order.Name;
             bill.BillCode = billCode;
-            bill.Status = 0;
+            bill.Status = 2; // Chờ xác nhận 
             bill.TotalMoney = order.TotalMoney;
             bill.CreatedTime = DateTime.Now;
             bill.PaymentDate = DateTime.Now;
             bill.IdAccount = Guid.Parse(userId);
             bill.Phone = order.Phone;
-            bill.StatusPayment = 0;
+            bill.StatusPayment = 0; // Chưa thanh toán 
+            bill.deliveryPaymentMethod = "COD";
 
             _context.Bill.Add(bill);
             _context.SaveChanges();

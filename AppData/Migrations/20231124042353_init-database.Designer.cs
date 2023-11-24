@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppData.Migrations
 {
     [DbContext(typeof(FPhoneDbContext))]
-    [Migration("20231120151444_ad")]
-    partial class ad
+    [Migration("20231124042353_init-database")]
+    partial class initdatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -224,8 +224,12 @@ namespace AppData.Migrations
                     b.Property<int>("StatusPayment")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("TotalMoney")
+                    b.Property<decimal?>("TotalMoney")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("deliveryPaymentMethod")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -915,19 +919,21 @@ namespace AppData.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Image")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Price")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal?>("PriceMax")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("ProductionComanyName")
-                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RamName")
                         .HasColumnType("nvarchar(max)");
 
                     b.ToTable("VW_Phone_Group");
@@ -953,7 +959,6 @@ namespace AppData.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FrontCamera")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("IdPhone")
@@ -971,8 +976,11 @@ namespace AppData.Migrations
                     b.Property<string>("PhoneName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Price")
+                    b.Property<decimal?>("Price")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("ProductionCompanyName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RamName")
                         .HasColumnType("nvarchar(max)");
@@ -990,14 +998,12 @@ namespace AppData.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Size")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Status")
+                    b.Property<int?>("Status")
                         .HasColumnType("int");
 
                     b.Property<string>("Weight")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.ToTable("VW_PhoneDetail");
