@@ -105,13 +105,14 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
             bill.Id = new Guid();
             bill.Address = request.Address + "," + request.Province + "," + request.District + "," + request.Ward;
             bill.Name = request.Name;
-            bill.Status = 3;
+            bill.Status = 0;
             bill.TotalMoney = request.TotalMoney;
             bill.CreatedTime = DateTime.Now;
             bill.PaymentDate = DateTime.Now;
             bill.IdAccount = Guid.Parse(userId);
             bill.Phone = request.Phone;
-            bill.StatusPayment = 1;
+            bill.StatusPayment = 0; // Chưa thanh toán 
+            bill.deliveryPaymentMethod = "VNPAY";
             bill.BillCode = billCode;
             _dbContext.Bill.Add(bill);
             _dbContext.SaveChanges();
@@ -181,7 +182,9 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
                         var bill = _dbContext.Bill.FirstOrDefault(x => x.BillCode == orderId);
                         if (bill != null)
                         {
-                            bill.Status = 5; // đã thanh toán
+                            bill.Status = 1; // đã xác nhận toán
+                            bill.StatusPayment = 1; // Đã thanh toán 
+                            bill.PaymentDate = DateTime.Now;
                             _dbContext.SaveChanges();
                         }
                     }
