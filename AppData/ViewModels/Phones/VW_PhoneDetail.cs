@@ -28,6 +28,8 @@ namespace AppData.ViewModels.Phones
         public string? Size { get; set; }    
         public decimal? Price { get; set; }    
         public int? Status { get; set; }    
-        public string? ProductionCompanyName { get; set; }    
+        public string? ProductionCompanyName { get; set; }
+        [NotMapped]
+        public string? FirstImage { get; set; } 
     }
 }

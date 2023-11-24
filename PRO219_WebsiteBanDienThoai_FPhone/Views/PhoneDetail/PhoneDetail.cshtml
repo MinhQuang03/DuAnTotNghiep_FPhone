@@ -33,11 +33,12 @@
         <div class="product-detail__left">
             <div class="details__container--left">
                 <div class="product__pictures">
-
-                    @*list ảnh sản phẩm *@
-                    <div class="pictures__container">
-                        <img class="picture" src="#" id="pic1" />
-                    </div>
+                    @foreach (var item in Model.listImageByIdPhone)
+                    {
+                        <div class="pictures__container">
+                            <img class="picture" src="@item.Image" id="pic1" />
+                        </div>
+                    }
 
                 </div>
                 <div class="product__picture" id="product__picture">

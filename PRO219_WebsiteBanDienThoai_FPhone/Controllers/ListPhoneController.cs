@@ -18,8 +18,9 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
         private IRomRepository _romRepository;
         private IMaterialRepository _materialRepository;
         private IVwPhoneDetailService _phoneDetailService;
+        private IListImageService _imageService;
 
-        public ListPhoneController(HttpClient client, FPhoneDbContext context, IVwPhoneService phoneService, IProductionCompanyRepository companyRepository, IRamRepository ramRepository, IChipCPURepository chipCpuRepository, IRomRepository romRepository, IMaterialRepository materialRepository, IVwPhoneDetailService phoneDetailService)
+        public ListPhoneController(HttpClient client, FPhoneDbContext context, IVwPhoneService phoneService, IProductionCompanyRepository companyRepository, IRamRepository ramRepository, IChipCPURepository chipCpuRepository, IRomRepository romRepository, IMaterialRepository materialRepository, IVwPhoneDetailService phoneDetailService, IListImageService imageService)
         {
             _client = client;
             _context = context;
@@ -30,12 +31,20 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
             _romRepository = romRepository;
             _materialRepository = materialRepository;
             _phoneDetailService = phoneDetailService;
+            _imageService = imageService;
         }
         public async Task<IActionResult> Index()
         { 
             ListPhoneViewModel model = new ListPhoneViewModel();
             model.ListvVwPhoneDetails = _phoneDetailService.listVwPhoneDetails(model.SearchData, model.Options);
-	       model.Brand = await _companyRepository.GetAll();
+            //Gán ảnh cho sản phẩm(avatar)
+            foreach (var item in model.ListvVwPhoneDetails)
+            {
+                item.FirstImage = _imageService.GetFirstImageByIdPhondDetail(item.IdPhoneDetail) == ""
+                    ? " "
+                    : _imageService.GetFirstImageByIdPhondDetail(item.IdPhoneDetail);
+            }
+            model.Brand = await _companyRepository.GetAll();
            model.listRam = await _ramRepository.GetAll();
            model.listChipCPU = await _chipCpuRepository.GetAll();
            model.listRom = await _romRepository.GetAll();
@@ -47,6 +56,12 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
         public async Task<IActionResult> Index(ListPhoneViewModel model)
         {
             model.ListvVwPhoneDetails = _phoneDetailService.listVwPhoneDetails(model.SearchData, model.Options);
+            foreach (var item in model.ListvVwPhoneDetails)
+            {
+                item.FirstImage = _imageService.GetFirstImageByIdPhondDetail(item.IdPhoneDetail) == ""
+                    ? " "
+                    : _imageService.GetFirstImageByIdPhondDetail(item.IdPhoneDetail);
+            }
             model.Brand = await _companyRepository.GetAll();
             model.listRam = await _ramRepository.GetAll();
             model.listChipCPU = await _chipCpuRepository.GetAll();
@@ -59,6 +74,12 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
         {
             ListPhoneViewModel model = new ListPhoneViewModel();
             model.ListvVwPhoneDetails = _phoneDetailService.listVwPhoneDetails(model.SearchData, model.Options).OrderByDescending(c =>c.Price).ToList();
+            foreach (var item in model.ListvVwPhoneDetails)
+            {
+                item.FirstImage = _imageService.GetFirstImageByIdPhondDetail(item.IdPhoneDetail) == ""
+                    ? " "
+                    : _imageService.GetFirstImageByIdPhondDetail(item.IdPhoneDetail);
+            }
             model.Brand = await _companyRepository.GetAll();
             model.listRam = await _ramRepository.GetAll();
             model.listChipCPU = await _chipCpuRepository.GetAll();
@@ -72,6 +93,12 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
             ListPhoneViewModel model = new ListPhoneViewModel();
             model.ListvVwPhoneDetails = _phoneDetailService.listVwPhoneDetails(model.SearchData, model.Options)
                 .OrderBy(c => c.Price).ToList();
+            foreach (var item in model.ListvVwPhoneDetails)
+            {
+                item.FirstImage = _imageService.GetFirstImageByIdPhondDetail(item.IdPhoneDetail) == ""
+                    ? " "
+                    : _imageService.GetFirstImageByIdPhondDetail(item.IdPhoneDetail);
+            }
             model.Brand = await _companyRepository.GetAll();
             model.listRam = await _ramRepository.GetAll();
             model.listChipCPU = await _chipCpuRepository.GetAll();
@@ -85,6 +112,12 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
             ListPhoneViewModel model = new ListPhoneViewModel();
             model.Options.PageSize += 10;
             model.ListvVwPhoneDetails = _phoneDetailService.listVwPhoneDetails(model.SearchData, model.Options);
+            foreach (var item in model.ListvVwPhoneDetails)
+            {
+                item.FirstImage = _imageService.GetFirstImageByIdPhondDetail(item.IdPhoneDetail) == ""
+                    ? " "
+                    : _imageService.GetFirstImageByIdPhondDetail(item.IdPhoneDetail);
+            }
             model.Brand = await _companyRepository.GetAll();
             model.listRam = await _ramRepository.GetAll();
             model.listChipCPU = await _chipCpuRepository.GetAll();

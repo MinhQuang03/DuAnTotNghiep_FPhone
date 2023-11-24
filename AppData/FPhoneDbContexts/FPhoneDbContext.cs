@@ -53,6 +53,7 @@ public class FPhoneDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<VW_Phone> VW_Phone { get; set; }
     public DbSet<VW_PhoneDetail> VW_PhoneDetail { get; set; }
     public DbSet<VW_Phone_Group> VW_Phone_Group { get; set; }   
+    public DbSet<VW_List_By_IdPhone> VW_List_By_IdPhone { get; set; }   
     //LKK\SQLEXPRESS    
     // Ko cần sửa file này
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -66,6 +67,7 @@ public class FPhoneDbContext : IdentityDbContext<ApplicationUser>
         builder.Entity<VW_Phone>().ToView("VW_Phone").HasNoKey();
         builder.Entity<VW_PhoneDetail>().ToView("VW_PhoneDetail").HasNoKey();
         builder.Entity<VW_Phone_Group>().ToView("VW_Phone_Group").HasNoKey();
+        builder.Entity<VW_List_By_IdPhone>().ToView("VW_List_By_IdPhone").HasNoKey();
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 }
