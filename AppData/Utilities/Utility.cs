@@ -3,12 +3,50 @@ using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
 using AppData.Models;
+using AppData.ViewModels;
 using Newtonsoft.Json;
 
 namespace AppData.Utilities
 {
+
     public static class Utility
     {
+        
+        public static DataError GetDataErrror(Exception ex)
+        {
+            // 1. trả về DataError false không có msg nếu không có exception
+            if (ex == null) return new DataError() { Success = false };
+
+            // 2. in ra nội dung lỗi từ Exception bao gồm Message và InnerException Message
+            StringBuilder content = new StringBuilder();
+            content.Append(ex.Message);
+            if (ex.InnerException != null)
+            {
+                content.Append($". {ex.InnerException.Message}");
+            }
+            if (ex.StackTrace != null)
+            {
+                content.Append($". {ex.StackTrace.ToString()}");
+            }
+
+            return new DataError()
+            {
+                Success = false,
+                Msg = content.ToString()
+            };
+        }
+        public static string ConvertObjectToJson(object obj)
+        {
+            if (obj == null) return null;
+            try
+            {
+                return JsonConvert.SerializeObject(obj);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
         public static T ConvertJsonToObject<T>(string json)
         {
             if (string.IsNullOrEmpty(json)) return default;
@@ -50,7 +88,7 @@ namespace AppData.Utilities
             return output;
         }
     }
-
+   
     public class ObjectEmailInput
     {
         /// <summary>

@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 using AppData.FPhoneDbContexts;
 using AppData.IServices;
 using AppData.Models;
+using AppData.Utilities;
+using AppData.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using Utility = Microsoft.IdentityModel.Tokens.Utility;
 
 namespace AppData.Services
 {
@@ -34,6 +37,44 @@ namespace AppData.Services
             return lst;
         }
 
-        
+        public ListImage Create(ListImage model, out DataError error)
+        {
+            error = new DataError() { Success = true };
+            try
+            {
+                _dbContext.ListImage.Add(model);
+                _dbContext.SaveChanges();
+                error.Msg = "Thêm mới thành công";
+                return model;
+            }
+            catch (Exception e)
+            {
+                error = Utilities.Utility.GetDataErrror(e);
+                return null;
+            }
+            
+          
+        }
+
+        public bool Delete(Guid Id)
+        {
+            try
+            {
+                var detail = _dbContext.ListImage.FirstOrDefault(c => c.Id == Id);
+                _dbContext.Remove(detail);
+                _dbContext.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+
+            return false;
+        }
+
+        public int CheckExits(string imageUrl, Guid idPhoneDetail)
+        {
+            return _dbContext.ListImage.Count(c => c.Image == imageUrl && c.IdPhoneDetaild == idPhoneDetail);
+        }
     }
 }
