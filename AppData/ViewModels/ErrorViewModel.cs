@@ -1,4 +1,4 @@
-﻿namespace PRO219_WebsiteBanDienThoai_FPhone.Models
+﻿namespace AppData.ViewModels
 {
     public class ErrorViewModel
     {

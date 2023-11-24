@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AppData.Models;
+﻿using AppData.Models;
+using AppData.ViewModels;
 
 namespace AppData.IServices
 {
     public interface IListImageService
     {
         List<ListImage> GetListImagesByIdPhoneDetail(Guid IdPhoneDetail);
+        ListImage Create(ListImage model, out DataError error);
+        bool Delete(Guid Id);
+        int CheckExits(string imageUrl,Guid idPhoneDetail);
+
     }   
 }

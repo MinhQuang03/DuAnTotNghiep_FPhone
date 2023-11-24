@@ -1,0 +1,45 @@
+﻿@using PRO219_WebsiteBanDienThoai_FPhone.ViewModel
+@model ListPhoneViewModel
+@{
+    string? errorMessage = TempData["ErrorMessage"] as string;
+}
+<style>
+    .field-validation-error {
+        color: red;
+    }
+</style>
+<h2>Thêm ảnh sản phẩm</h2>
+<hr/>
+<div class="justify-content-around container-fluid">
+ 
+   
+   <input hidden value="@Model.Record.IdPhoneDetail"/>
+    <h2>Thông tin sản phẩm</h2>
+   <p readonly class="form-control">@Model.Record.PhoneName - @Model.Record.RamName - @Model.Record.RomName - @Model.Record.ColorName</p>
+    @foreach (var item in @Model.listImage)
+    {
+        <img src="@item.Image" style="width: 150px; height: 150px;margin-left:10px" />
+    }
+    <hr/>
+   <span asp-validation-for="Images"></span>
+    <h3>Thêm ảnh</h3>
+   <form method="POST" enctype="multipart/form-data">
+  
+       <input hidden asp-for="Record.IdPhoneDetail"/>
+       <label class="form-label mr-1">Chọn file</label>
+       <input name="Images" accept=".jpg,.png,.gif,.svg" type="file" id="fileInput" multiple accept="image/*">
+       <div class="border" id="imagePreview"></div>
+       <input type="submit" value="Lưu ảnh" class="btn btn-primary mt-3"/>
+       <a onclick="JAdListImage.ClearImage()" class="btn btn-primary text-white mt-3">Xoá ảnh</a>
+   </form>
+</div>
+<script src="~/js/JAdListImage.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#fileInput').change(function () {
+            JAdListImage.previewImages();
+        });
+    });
+
+</script>
+
