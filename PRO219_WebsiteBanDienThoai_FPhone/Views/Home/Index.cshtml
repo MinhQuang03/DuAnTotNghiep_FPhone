@@ -664,11 +664,11 @@
     <div class="row container">
         @foreach (VW_Phone_Group item in Model)
         {
-            <div class="product category__products">
-                <div class="product__header">
+            <div class="product category__products mt-2" style="width: 250px;height: 414.8px">
+                <div class="product__header" style="width: 235px;height: 250px">
                     <img src="@item.Image" alt="product">
                 </div>
-                <div class="product__footer">
+                <div class="product__footer" >
                     <h3>@item.PhoneName</h3>
                     <div class="rating">
                         <svg>
@@ -687,7 +687,7 @@
                             <use xlink:href="./images/sprite.svg#icon-star-empty"></use>
                         </svg>
                     </div>
-                    <div class="product__price mt-2">
+                    <div class="product__price mt-2" style="width: 235px;height: 18px">
                         <h4 style="color:#da152b">@item.Price</h4>
                     </div>
                     <a href="#">

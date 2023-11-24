@@ -8,6 +8,7 @@ using AppData.IServices;
 using AppData.Models;
 using AppData.Utilities;
 using AppData.ViewModels;
+using AppData.ViewModels.Phones;
 using Microsoft.EntityFrameworkCore;
 using Utility = Microsoft.IdentityModel.Tokens.Utility;
 
@@ -75,6 +76,37 @@ namespace AppData.Services
         public int CheckExits(string imageUrl, Guid idPhoneDetail)
         {
             return _dbContext.ListImage.Count(c => c.Image == imageUrl && c.IdPhoneDetaild == idPhoneDetail);
+        }
+
+        public string GetFirstImageByIdPhondDetail(Guid id)
+        {
+            var data = "";
+            try
+            {
+                data = _dbContext.ListImage.FirstOrDefault(c => c.IdPhoneDetaild == id).Image;
+            }
+            catch (Exception e)
+            {
+                data = "";
+            }
+
+            return data;
+        }
+
+        public List<VW_List_By_IdPhone> GetListImageByIdPhone(Guid idPhone)
+        {
+            var lst  = new List<VW_List_By_IdPhone>();
+            try
+            {
+                return _dbContext.VW_List_By_IdPhone.Where(c => c.IdPhone == idPhone).ToList();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            return lst;
         }
     }
 }

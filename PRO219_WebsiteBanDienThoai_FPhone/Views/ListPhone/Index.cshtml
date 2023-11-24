@@ -83,12 +83,12 @@
     <div class="row container" id="productList">
         @foreach (var item in Model.ListvVwPhoneDetails)
         {
-            <div class="product category__products">
+            <div class="product category__products" style="width: 250px;height: 450px">
                 <div class="product__header">
-                    <img src="" alt="product">
+                    <img src="@item.FirstImage" alt="product">
                 </div>
                 <div class="product__footer">
-                    <h3>@item.PhoneName</h3>
+                    <h3 style="width: 235px;height: 39px">@item.PhoneName @item.RamName @item.RomName</h3>
                     <div class="rating">
                         <svg>
                             <use xlink:href="./images/sprite.svg#icon-star-full"></use>

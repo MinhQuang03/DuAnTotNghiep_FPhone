@@ -8,7 +8,6 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.ViewModel
 	{
         public ListOptions Options { get; set; } = new ListOptions();
         public VW_PhoneDetail SearchData { get; set; } = new VW_PhoneDetail();
-        public List<VW_Phone_Group> listVwPhoneGroup { get; set; } = new List<VW_Phone_Group>();
         public VW_PhoneDetail Record { get; set; } = new VW_PhoneDetail();
         public List<VW_PhoneDetail> ListvVwPhoneDetails { get; set; } = new List<VW_PhoneDetail>();
 		public List<ProductionCompany> Brand { get; set; } = new List<ProductionCompany>();
@@ -18,6 +17,9 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.ViewModel
 		public List<Material> listMaterial { get; set; } = new List<Material>();
         public List<IFormFile> Images { get; set; } = new List<IFormFile>();
         public List<ListImage> listImage { get; set; } = new List<ListImage>();
+        public List<VW_List_By_IdPhone> listImageByIdPhone { get; set; } = new List<VW_List_By_IdPhone>();
+        public string FirstImage { get; set; }
+        
     }
 }
         

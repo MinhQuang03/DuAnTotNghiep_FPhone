@@ -28,6 +28,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
         public ActionResult PhoneDetail(string id)
         {
            
+          
             if (string.IsNullOrWhiteSpace(id))
             {
                 return NotFound();
@@ -36,8 +37,9 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
             {
                 Records = _phoneDetailService.getListPhoneDetailByIdPhone(Guid.Parse(id)),
                 lstImage = null,
-                Image = _phoneRepo.GetById(Guid.Parse(id)).Result.Image
-            };
+                Image = _phoneRepo.GetById(Guid.Parse(id)).Result.Image,
+                listImageByIdPhone = _imageService.GetListImageByIdPhone(Guid.Parse(id))
+        };
             return View(data);
         }
         [HttpGet]
