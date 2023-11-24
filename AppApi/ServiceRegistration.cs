@@ -28,6 +28,7 @@ namespace AppApi
             services.AddTransient<IRamRepository, RamRepository>();
             services.AddTransient<IRomRepository, RomRepository>();
             services.AddTransient<ISimRepository, SimRepository>();
+            services.AddTransient<IBillRepository, BillRepository>();
             services.AddTransient<IImeiRepository, ImeiRepository>();
             services.AddTransient<IUserRepository, UserRepostitory>();
             services.AddTransient<IAddressRepository, AddressRepostitory>();
