@@ -1,4 +1,5 @@
 ﻿using AppData.FPhoneDbContexts;
+using AppData.Models;
 using Microsoft.AspNetCore.Mvc;
 using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Filters;
 using System.Net;
@@ -33,6 +34,15 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             {
                 return BadRequest("NoDetaild");
             }
+            var phoneNames = (from bd in _context.BillDetails
+                             join pdp in _context.PhoneDetailds on bd.IdPhoneDetail equals pdp.Id
+                             join ph in _context.Phones on pdp.IdPhone equals ph.Id
+                             where bd.IdBill == id
+                             select ph.PhoneName).FirstOrDefault();
+
+            // Lấy danh sách các PhoneName và gán vào ViewBag
+            ViewBag.PhoneNames = phoneNames;
+
             ViewBag.customer = _context.Bill.Where(m => m.Id == id).First();
             var lisst = _context.BillDetails.Where(m => m.IdBill == id).ToList();
             return View("BillDetail", lisst);

@@ -17,7 +17,7 @@
 
         public int Status { get; set; }
         public string? BillCode { get; set; }
-        public string deliveryPaymentMethod { get; set; }
+        public string? deliveryPaymentMethod { get; set; }
         public decimal? TotalMoney { get; set; }
 
         public int StatusPayment { get; set; }
