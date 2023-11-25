@@ -226,7 +226,6 @@ namespace AppData.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("deliveryPaymentMethod")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -251,9 +250,6 @@ namespace AppData.Migrations
                     b.Property<Guid>("IdPhoneDetail")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("NameImei")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("Number")
                         .HasColumnType("int");
 
@@ -262,6 +258,9 @@ namespace AppData.Migrations
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("Update_at")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -428,6 +427,9 @@ namespace AppData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("IdBillDetail")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid?>("IdPhoneDetaild")
                         .HasColumnType("uniqueidentifier");
 
@@ -440,7 +442,7 @@ namespace AppData.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdPhoneDetaild");
+                    b.HasIndex("IdBillDetail");
 
                     b.ToTable("Imei");
                 });
@@ -883,6 +885,18 @@ namespace AppData.Migrations
                     b.ToTable("WarrantyCards");
                 });
 
+            modelBuilder.Entity("AppData.ViewModels.Phones.VW_List_By_IdPhone", b =>
+                {
+                    b.Property<Guid>("IdPhone")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToView("VW_List_By_IdPhone");
+                });
+
             modelBuilder.Entity("AppData.ViewModels.Phones.VW_Phone", b =>
                 {
                     b.Property<Guid>("IdPhone")
@@ -1217,11 +1231,11 @@ namespace AppData.Migrations
 
             modelBuilder.Entity("AppData.Models.Imei", b =>
                 {
-                    b.HasOne("AppData.Models.PhoneDetaild", "PhoneDetailds")
+                    b.HasOne("AppData.Models.BillDetails", "BillDetails")
                         .WithMany()
-                        .HasForeignKey("IdPhoneDetaild");
+                        .HasForeignKey("IdBillDetail");
 
-                    b.Navigation("PhoneDetailds");
+                    b.Navigation("BillDetails");
                 });
 
             modelBuilder.Entity("AppData.Models.ListImage", b =>

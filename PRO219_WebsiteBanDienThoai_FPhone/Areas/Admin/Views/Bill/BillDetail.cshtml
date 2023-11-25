@@ -120,9 +120,7 @@
                         <th>
                             @Html.DisplayNameFor(model => model.Status)
                         </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.NameImei)
-                        </th>
+
                         <th></th>
                     </tr>
                 </thead>
@@ -138,13 +136,10 @@
                                 @Html.DisplayFor(modelItem => item.Number)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Price)
+                                @Html.DisplayFor(modelItem => item.Price) 
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Status)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.NameImei)
                             </td>
                         </tr>
                     }

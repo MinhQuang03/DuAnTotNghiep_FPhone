@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppData.Migrations
 {
-    public partial class initdatabase : Migration
+    public partial class abcc : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -380,7 +380,7 @@ namespace AppData.Migrations
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     BillCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    deliveryPaymentMethod = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    deliveryPaymentMethod = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TotalMoney = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     StatusPayment = table.Column<int>(type: "int", nullable: false),
                     IdAccount = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
@@ -701,7 +701,7 @@ namespace AppData.Migrations
                     Number = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
-                    NameImei = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Update_at = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -749,25 +749,6 @@ namespace AppData.Migrations
                         principalTable: "PhoneDetailds",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Imei",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    NameImei = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: true),
-                    IdPhoneDetaild = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Imei", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Imei_PhoneDetailds_IdPhoneDetaild",
-                        column: x => x.IdPhoneDetaild,
-                        principalTable: "PhoneDetailds",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -841,6 +822,26 @@ namespace AppData.Migrations
                         principalTable: "Sales",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Imei",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IdBillDetail = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    NameImei = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: true),
+                    IdPhoneDetaild = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Imei", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Imei_BillDetails_IdBillDetail",
+                        column: x => x.IdBillDetail,
+                        principalTable: "BillDetails",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -939,9 +940,9 @@ namespace AppData.Migrations
                 column: "IdPhoneDetaild");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Imei_IdPhoneDetaild",
+                name: "IX_Imei_IdBillDetail",
                 table: "Imei",
-                column: "IdPhoneDetaild");
+                column: "IdBillDetail");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ListImage_IdPhoneDetaild",
