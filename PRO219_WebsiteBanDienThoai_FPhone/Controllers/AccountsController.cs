@@ -331,7 +331,6 @@ public class AccountsController : Controller
                     billDetail.IdPhoneDetail = item.IdPhoneDetaild;
                     billDetail.Price = _context.PhoneDetailds.Find(item.IdPhoneDetaild).Price;
                     billDetail.Status = 0;
-                    billDetail.NameImei = "a";
                     Listbill.Add(billDetail);
                 }
 

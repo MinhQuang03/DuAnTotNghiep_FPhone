@@ -84,18 +84,18 @@
                 @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
                     @if (item.Status == 1)
                     {
-                        <a class="btn btn-sm btn-light text-success border a33" href=""> <i class="fas fa-toggle-on"></i> </a>
+                        <a class="btn btn-sm btn-light text-success border a33" href="@Url.Action("Status", "Bill", new { id = item.Id })"> <i class="fas fa-toggle-on"></i> </a>
                     }
                     else if ((item.Status == 2))
                     {
-                        <a class="btn btn-sm btn-light text-danger border a33" href=""> <i class="fas fa-toggle-off"></i> </a>
+                        <a class="btn btn-sm btn-light text-danger border a33" href="@Url.Action("Status", "Bill", new { id = item.Id })"> <i class="fas fa-toggle-off"></i> </a>
                     }
 
                     <a class="btn btn-sm btn-light text-danger border" href=""> <i class="fas fa-trash-alt"></i></a>
 
-                    <a class="btn btn-sm btn-light text-orange border" href=""> <i class="fas fa-ban "></i></a>
-                    <a class="btn btn-sm btn-light text-success border" href=""> Đang giao</a>
-                    <a class="btn btn-sm btn-light text-success border" href=""> Đã giao</a>
+                    <a class="btn btn-sm btn-light text-orange border" href="@Url.Action("Dahuy", "Bill", new { id = item.Id })"> <i class="fas fa-ban "></i></a>
+                    <a class="btn btn-sm btn-light text-success border" href="@Url.Action("DangGiao", "Bill", new { id = item.Id })"> Đang giao</a>
+                    <a class="btn btn-sm btn-light text-success border" href="@Url.Action("Dagiao", "Bill", new { id = item.Id })"> Đã giao</a>
             </td>
         </tr>
 }

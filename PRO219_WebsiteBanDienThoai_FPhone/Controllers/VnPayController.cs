@@ -129,7 +129,6 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
                 billDetail.IdPhoneDetail = item.IdPhoneDetaild;
                 billDetail.Price = _dbContext.PhoneDetailds.Find(item.IdPhoneDetaild).Price;
                 billDetail.Status = 0;
-                billDetail.NameImei = "a";
                 Listbill.Add(billDetail);
             }
             foreach (var item in product)
