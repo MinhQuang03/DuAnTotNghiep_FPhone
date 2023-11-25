@@ -1,4 +1,6 @@
-﻿using AppData.Models;
+﻿using System.Data.Entity.Infrastructure;
+using AppData.IRepositories;
+using AppData.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +14,12 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers;
 public class AccountsController : Controller
 {
     private readonly HttpClient _client;
+    private IAccountsRepository _accountsRepository;
 
-    public AccountsController(HttpClient client)
+    public AccountsController(HttpClient client, IAccountsRepository accountsRepository)
     {
         _client = client;
+        _accountsRepository = accountsRepository;
     }
 
     public IActionResult Index()
@@ -35,6 +39,13 @@ public class AccountsController : Controller
             }
 
         return BadRequest();
+    }
+
+    public async Task<IActionResult> EditAccount(Guid id)
+    {
+        var data = await _accountsRepository.GetAllAsync();
+        var model = data.FirstOrDefault(c => c.Id == id.ToString());
+        return View(model);
     }
 
     public async Task<RedirectResult> LogOut()
