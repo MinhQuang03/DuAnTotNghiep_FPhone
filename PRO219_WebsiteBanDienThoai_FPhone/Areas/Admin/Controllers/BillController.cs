@@ -68,6 +68,12 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             bill.Status = (bill.Status == 1) ? 2 : 1;
             _context.Entry(bill).State = EntityState.Modified;
             _context.SaveChanges();
+
+            var soldImeis = (from billDetail in _context.BillDetails
+                             join imei in _context.Imei on billDetail.Id equals imei.IdBillDetail
+                             where billDetail.IdBill == id && imei.Status == 2
+                             select imei).ToList();
+
             return RedirectToAction("Index");
         }
 

@@ -759,6 +759,9 @@ namespace AppData.Migrations
                     b.Property<Guid>("IdSales")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("IdPhoneDetaild");
