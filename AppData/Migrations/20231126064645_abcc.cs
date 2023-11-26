@@ -805,7 +805,8 @@ namespace AppData.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IdSales = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IdPhoneDetaild = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    IdPhoneDetaild = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

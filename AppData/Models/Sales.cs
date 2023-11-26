@@ -9,7 +9,7 @@ namespace AppData.Models
     public class Sales
     {
         public Guid Id { get; set; }
-        public Decimal ReducedAmount { get; set; }
+        public decimal ReducedAmount { get; set; }
 
         public DateTime? TimeForm { get; set; }
 
