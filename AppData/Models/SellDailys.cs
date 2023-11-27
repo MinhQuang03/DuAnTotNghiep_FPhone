@@ -6,17 +6,19 @@ using System.Threading.Tasks;
 
 namespace AppData.Models
 {
-    public class Sales
+    public class SellDailys
     {
         public Guid Id { get; set; }
-        public Decimal ReducedAmount { get; set; }
 
-        public DateTime? TimeForm { get; set; }
+        public DateTime CreateTime { get; set; }
+        public decimal? TotalMoneys { get; set; }
+        public decimal? Refund { get; set; }
+        public int? TotalQuantity { get; set; }
+        public int? SellOnl { get; set; }
+        public int? SellOff { get; set; }
+        public string? BestSeller { get; set; }
+        public string? Status { get; set; }
 
-        public DateTime? TimeTo { get; set; }
-
-        public string? Note { get; set; }
-
-        public int Status { get; set; }
     }
 }
+
