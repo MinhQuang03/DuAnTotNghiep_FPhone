@@ -1,13 +1,11 @@
 ﻿using AppData.FPhoneDbContexts;
 using AppData.IServices;
 using AppData.Models;
+using AppData.ViewModels.Phones;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using PRO219_WebsiteBanDienThoai_FPhone.Models;
-using PRO219_WebsiteBanDienThoai_FPhone.Services;
-using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers;
 
@@ -28,16 +26,12 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-
-     
-      
-        var data= _phoneService.listVwPhoneGroup();
-        
+        VW_Phone_Group model = new VW_Phone_Group();
+	    var data= _phoneService.listVwPhoneGroup(model);
         return View(data);
     }
 
-   
-
+    
     public async Task<IActionResult> LogOut()
     {
         var authenticationProperties = new AuthenticationProperties

@@ -14,6 +14,8 @@ namespace AppData.Models
 
         public Guid IdPhoneDetaild { get; set; }
 
+        public int Status { get; set; }
+
         public virtual PhoneDetaild? PhoneDetaild { get; set; }
 
         public virtual Sales? Sales { get; set; }

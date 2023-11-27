@@ -1,0 +1,74 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row m-0 bg-light">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">Thêm Ảnh Bìa</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/Admin">Home</a></li>
+                        <li class="breadcrumb-item active">Thêm ảnh bìa</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+
+    <section class="pt-2 container">
+        
+        <div class="container bg-white p-4 ">
+
+     
+                <div class=" row ">
+                    <div class="col-md-4">  </div>
+                    <div class="col-md-4"> <h3 class="text-center font-weight-bold text-success "> THÊM ẢNH BÌA</h3> </div>
+                    <div class="col-md-4 ">
+                        <div class="float-right">
+                            <button class="btn btn-sm bg-success text-white"><i class="far fa-save"></i> Lưu</button>
+                            <a href="~/admin/category" class="btn btn-sm
+                               text-white"><i class="far fa-window-close"></i> Hủy</a>
+                        </div>
+                    </div>
+                </div>
+                <div class=" row ">
+                    <div class="col-md-8">
+                        <div>
+                            <label for="psw"><span>Tên Slider</span></label>
+                            
+                        </div>
+                        <div>
+                            <label for="psw"><span>Loại Slider</span></label>
+                            
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div>
+                            <label for="psw"><span>Chọn vị trí hiển thị</span></label>
+                            
+                        </div>
+                        <label for="psw"><span>Hình ảnh Slider</span></label>
+                        <input type="file" name="img" class="form-control" />
+                       
+                        <div>
+                            <label for="psw"><span>Trang Thái</span></label>
+                           
+                        </div>
+                    </div>
+
+
+                </div>
+  
+        </div>
+    </section>
+    <script>
+        $("#slider").addClass("active");
+    </script>

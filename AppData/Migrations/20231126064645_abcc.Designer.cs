@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppData.Migrations
 {
     [DbContext(typeof(FPhoneDbContext))]
-    [Migration("20231120151444_ad")]
-    partial class ad
+    [Migration("20231126064645_abcc")]
+    partial class abcc
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -224,8 +224,11 @@ namespace AppData.Migrations
                     b.Property<int>("StatusPayment")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("TotalMoney")
+                    b.Property<decimal?>("TotalMoney")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("deliveryPaymentMethod")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -249,9 +252,6 @@ namespace AppData.Migrations
                     b.Property<Guid>("IdPhoneDetail")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("NameImei")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("Number")
                         .HasColumnType("int");
 
@@ -260,6 +260,9 @@ namespace AppData.Migrations
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("Update_at")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -426,6 +429,9 @@ namespace AppData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("IdBillDetail")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid?>("IdPhoneDetaild")
                         .HasColumnType("uniqueidentifier");
 
@@ -438,7 +444,7 @@ namespace AppData.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdPhoneDetaild");
+                    b.HasIndex("IdBillDetail");
 
                     b.ToTable("Imei");
                 });
@@ -755,6 +761,9 @@ namespace AppData.Migrations
                     b.Property<Guid>("IdSales")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("IdPhoneDetaild");
@@ -881,6 +890,18 @@ namespace AppData.Migrations
                     b.ToTable("WarrantyCards");
                 });
 
+            modelBuilder.Entity("AppData.ViewModels.Phones.VW_List_By_IdPhone", b =>
+                {
+                    b.Property<Guid>("IdPhone")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToView("VW_List_By_IdPhone");
+                });
+
             modelBuilder.Entity("AppData.ViewModels.Phones.VW_Phone", b =>
                 {
                     b.Property<Guid>("IdPhone")
@@ -915,19 +936,21 @@ namespace AppData.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Image")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Price")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal?>("PriceMax")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("ProductionComanyName")
-                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RamName")
                         .HasColumnType("nvarchar(max)");
 
                     b.ToTable("VW_Phone_Group");
@@ -953,7 +976,6 @@ namespace AppData.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FrontCamera")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("IdPhone")
@@ -971,8 +993,11 @@ namespace AppData.Migrations
                     b.Property<string>("PhoneName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Price")
+                    b.Property<decimal?>("Price")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("ProductionCompanyName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RamName")
                         .HasColumnType("nvarchar(max)");
@@ -990,14 +1015,12 @@ namespace AppData.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Size")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Status")
+                    b.Property<int?>("Status")
                         .HasColumnType("int");
 
                     b.Property<string>("Weight")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.ToTable("VW_PhoneDetail");
@@ -1213,11 +1236,11 @@ namespace AppData.Migrations
 
             modelBuilder.Entity("AppData.Models.Imei", b =>
                 {
-                    b.HasOne("AppData.Models.PhoneDetaild", "PhoneDetailds")
+                    b.HasOne("AppData.Models.BillDetails", "BillDetails")
                         .WithMany()
-                        .HasForeignKey("IdPhoneDetaild");
+                        .HasForeignKey("IdBillDetail");
 
-                    b.Navigation("PhoneDetailds");
+                    b.Navigation("BillDetails");
                 });
 
             modelBuilder.Entity("AppData.Models.ListImage", b =>

@@ -22,11 +22,14 @@ namespace AppData.ViewModels.Phones
         public string? ChipGPUName { get; set; }
         public string? ColorName { get; set; }
         public string? ChargingportTypeName { get; set; }
-        public string Weight { get; set; }    
-        public string FrontCamera { get; set; }    
+        public string? Weight { get; set; }    
+        public string? FrontCamera { get; set; }    
         public int? Resolution { get; set; }    
-        public string Size { get; set; }    
-        public decimal Price { get; set; }    
-        public int Status { get; set; }    
+        public string? Size { get; set; }    
+        public decimal? Price { get; set; }    
+        public int? Status { get; set; }    
+        public string? ProductionCompanyName { get; set; }
+        [NotMapped]
+        public string? FirstImage { get; set; } 
     }
 }

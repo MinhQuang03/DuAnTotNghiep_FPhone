@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppData.Migrations
 {
-    public partial class ad : Migration
+    public partial class abcc : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -303,10 +303,12 @@ namespace AppData.Migrations
                 columns: table => new
                 {
                     IdPhone = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PhoneName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProductionComanyName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Price = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProductionComanyName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Price = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RamName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PriceMax = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -331,12 +333,13 @@ namespace AppData.Migrations
                     ChipGPUName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ColorName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ChargingportTypeName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Weight = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FrontCamera = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Weight = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FrontCamera = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Resolution = table.Column<int>(type: "int", nullable: true),
-                    Size = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false)
+                    Size = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: true),
+                    ProductionCompanyName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -377,7 +380,8 @@ namespace AppData.Migrations
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     BillCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TotalMoney = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    deliveryPaymentMethod = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TotalMoney = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     StatusPayment = table.Column<int>(type: "int", nullable: false),
                     IdAccount = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
@@ -697,7 +701,7 @@ namespace AppData.Migrations
                     Number = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
-                    NameImei = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Update_at = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -745,25 +749,6 @@ namespace AppData.Migrations
                         principalTable: "PhoneDetailds",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Imei",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    NameImei = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: true),
-                    IdPhoneDetaild = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Imei", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Imei_PhoneDetailds_IdPhoneDetaild",
-                        column: x => x.IdPhoneDetaild,
-                        principalTable: "PhoneDetailds",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -820,7 +805,8 @@ namespace AppData.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IdSales = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IdPhoneDetaild = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    IdPhoneDetaild = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -837,6 +823,26 @@ namespace AppData.Migrations
                         principalTable: "Sales",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Imei",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IdBillDetail = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    NameImei = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: true),
+                    IdPhoneDetaild = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Imei", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Imei_BillDetails_IdBillDetail",
+                        column: x => x.IdBillDetail,
+                        principalTable: "BillDetails",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -935,9 +941,9 @@ namespace AppData.Migrations
                 column: "IdPhoneDetaild");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Imei_IdPhoneDetaild",
+                name: "IX_Imei_IdBillDetail",
                 table: "Imei",
-                column: "IdPhoneDetaild");
+                column: "IdBillDetail");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ListImage_IdPhoneDetaild",
