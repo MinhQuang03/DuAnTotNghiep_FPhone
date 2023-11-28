@@ -610,6 +610,9 @@ namespace AppData.Migrations
                     b.Property<int?>("Resolution")
                         .HasColumnType("int");
 
+                    b.Property<decimal?>("Sale")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("Size")
                         .HasColumnType("nvarchar(max)");
 
