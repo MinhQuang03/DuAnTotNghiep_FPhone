@@ -35,7 +35,9 @@
                        
                     </div>
                 </div>
-                <a class="btn btn-primary fs-2" asp-action="Logout" asp-controller="Home">Đăng xuất</a>
+                
+               @* <a class="btn btn-primary fs-2" asp-action="Logout" asp-controller="Home">Đăng xuất</a>
+                <a href="#" class="fs-2 ms-1">Lịch sử mua hàng</a>*@
             </div>
             <div class="col-lg-8">
                 <div class="card mb-4">
@@ -80,6 +82,14 @@
                     </div>
                 </div>
                 
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <!-- Left button -->
+                <a class="btn btn-secondary fs-2" asp-action="Logout" asp-controller="Home">Đăng xuất</a>
+
+                <!-- Right button -->
+                <a href="@Url.Action("PurchaseHistory", "Accounts", new { idAccount = Model.Id })" class="fs-2 ms-1">Lịch sử mua hàng</a>
             </div>
         </div>
     </div>

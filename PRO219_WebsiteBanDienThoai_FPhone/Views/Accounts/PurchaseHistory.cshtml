@@ -1,0 +1,45 @@
+﻿@model IEnumerable<AppData.Models.BillDetails>
+
+@{
+    ViewData["Title"] = "PurchaseHistory";
+}
+
+<h1>PurchaseHistory</h1>
+
+<table class="table table-bordered container">
+    <thead>
+        <tr>
+            <th>
+                PhoneName
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Number)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                Hành động
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                    @ViewBag.PhoneNames
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Number)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+
+            <td>
+                <button type="button" class="btn btn-outline-success" href="@Url.Action("TraHang", "Accounts", new { id = item.Id })">Trả hàng</button>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
