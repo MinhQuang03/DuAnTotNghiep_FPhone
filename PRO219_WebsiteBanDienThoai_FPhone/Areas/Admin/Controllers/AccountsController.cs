@@ -60,4 +60,9 @@ public class AccountsController : Controller
         Response.Cookies.Delete(CookieAuthenticationDefaults.AuthenticationScheme);
         return RedirectPermanent("/home");
     }
+
+    public IActionResult AddSildeShow()
+    {
+        return View();
+    }
 }

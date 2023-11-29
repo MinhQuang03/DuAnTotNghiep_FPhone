@@ -40,6 +40,10 @@
 
         public decimal Price { get; set; }
 
+        
+        public decimal? Sale { get; set; }
+
+
         public int Status { get; set; }
         //public virtual List<ListImage>? Images { get; set; }
 

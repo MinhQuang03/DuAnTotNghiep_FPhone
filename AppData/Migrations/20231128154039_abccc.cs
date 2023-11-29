@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppData.Migrations
 {
-    public partial class abcc : Migration
+    public partial class abccc : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -592,6 +592,7 @@ namespace AppData.Migrations
                     Resolution = table.Column<int>(type: "int", nullable: true),
                     Size = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Sale = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -805,7 +806,8 @@ namespace AppData.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IdSales = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IdPhoneDetaild = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    IdPhoneDetaild = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

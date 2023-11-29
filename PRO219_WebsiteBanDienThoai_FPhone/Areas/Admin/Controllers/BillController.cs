@@ -18,7 +18,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var bills = _context.Bill.ToList();
+            var bills = _context.Bill.Where(b => b.Status != 0).ToList();
             if (bills != null && bills.Any())
             {
                 return View(bills);
@@ -85,18 +85,49 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         public ActionResult DangGiao(Guid id)
         {
             Bill bill = _context.Bill.Find(id);
-            bill.Status = 3;
-            _context.Entry(bill).State = EntityState.Modified;
-            _context.SaveChanges();
+            if(bill.Status == 2)
+            {
+                //Loii
+            }
+            else
+            {
+                bill.Status = 3;
+                _context.Entry(bill).State = EntityState.Modified;
+                _context.SaveChanges();
+
+                var soldImeis = (from billDetail in _context.BillDetails
+                                 join imei in _context.Imei on billDetail.IdPhoneDetail equals imei.IdPhoneDetaild
+                                 where billDetail.IdBill == id && imei.Status == 1
+                                 select imei).ToList();
+                var bd = _context.BillDetails.FirstOrDefault(bd => bd.IdBill == id);
+
+                if (soldImeis.Any())
+                {
+                    // 1 = chua ban, 2 = da ban
+                    var imeiToGet = soldImeis.FirstOrDefault();
+                    imeiToGet.Status = 2;
+                    imeiToGet.IdBillDetail = bd.Id;
+                    _context.Entry(imeiToGet).State = EntityState.Modified;
+                    _context.SaveChanges();
+                }
+            }
             return RedirectToAction("Index");
         }
         // thay đổi trạng thái thành đã giao
         public ActionResult Dagiao(Guid id)
         {
             Bill bill = _context.Bill.Find(id);
-            bill.Status = 4;
-            _context.Entry(bill).State = EntityState.Modified;
-            _context.SaveChanges();
+            if(bill.Status == 2)
+            {
+                // loi
+            }
+            else
+            {
+                bill.Status = 4;
+                _context.Entry(bill).State = EntityState.Modified;
+                _context.SaveChanges();
+            }
+            
             return RedirectToAction("Index");
         }
         // xoá đơn hàng , cập nhật lưu thay đổi

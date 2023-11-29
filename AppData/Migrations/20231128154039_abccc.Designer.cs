@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppData.Migrations
 {
     [DbContext(typeof(FPhoneDbContext))]
-    [Migration("20231125144833_abcc")]
-    partial class abcc
+    [Migration("20231128154039_abccc")]
+    partial class abccc
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -612,6 +612,9 @@ namespace AppData.Migrations
                     b.Property<int?>("Resolution")
                         .HasColumnType("int");
 
+                    b.Property<decimal?>("Sale")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("Size")
                         .HasColumnType("nvarchar(max)");
 
@@ -760,6 +763,9 @@ namespace AppData.Migrations
 
                     b.Property<Guid>("IdSales")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
