@@ -9,7 +9,7 @@ namespace AppData.Configuration
         {
             builder.HasKey(p => p.Id);
 
-            builder.HasOne(p => p.BillDetails).WithMany().HasForeignKey(p => p.IdBillDetail);
+            
         }
     }
 }

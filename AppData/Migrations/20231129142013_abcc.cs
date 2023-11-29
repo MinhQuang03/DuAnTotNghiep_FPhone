@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppData.Migrations
 {
-    public partial class abccc : Migration
+    public partial class abcc : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -343,6 +343,24 @@ namespace AppData.Migrations
                 },
                 constraints: table =>
                 {
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WarrantyCards",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IdBillDetail = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    IdAccount = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    IdImei = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AppointmentDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WarrantyCards", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -846,27 +864,6 @@ namespace AppData.Migrations
                         principalColumn: "Id");
                 });
 
-            migrationBuilder.CreateTable(
-                name: "WarrantyCards",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IdBillDetail = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AppointmentDate = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_WarrantyCards", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_WarrantyCards_BillDetails_IdBillDetail",
-                        column: x => x.IdBillDetail,
-                        principalTable: "BillDetails",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Address_IdAccount",
                 table: "Address",
@@ -1050,11 +1047,6 @@ namespace AppData.Migrations
                 name: "IX_Warranty_IdPhone",
                 table: "Warranty",
                 column: "IdPhone");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_WarrantyCards_IdBillDetail",
-                table: "WarrantyCards",
-                column: "IdBillDetail");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -1126,13 +1118,13 @@ namespace AppData.Migrations
                 name: "Carts");
 
             migrationBuilder.DropTable(
+                name: "BillDetails");
+
+            migrationBuilder.DropTable(
                 name: "Sales");
 
             migrationBuilder.DropTable(
                 name: "Payments");
-
-            migrationBuilder.DropTable(
-                name: "BillDetails");
 
             migrationBuilder.DropTable(
                 name: "Bill");
