@@ -19,7 +19,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
         private IMaterialRepository _materialRepository;
         private IVwPhoneDetailService _phoneDetailService;
         private IListImageService _imageService;
-
+        
         public ListPhoneController(HttpClient client, FPhoneDbContext context, IVwPhoneService phoneService, IProductionCompanyRepository companyRepository, IRamRepository ramRepository, IChipCPURepository chipCpuRepository, IRomRepository romRepository, IMaterialRepository materialRepository, IVwPhoneDetailService phoneDetailService, IListImageService imageService)
         {
             _client = client;
