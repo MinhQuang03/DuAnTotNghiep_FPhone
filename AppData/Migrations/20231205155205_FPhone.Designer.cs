@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppData.Migrations
 {
     [DbContext(typeof(FPhoneDbContext))]
-    [Migration("20231205152310_abc")]
-    partial class abc
+    [Migration("20231205155205_FPhone")]
+    partial class FPhone
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
