@@ -610,6 +610,9 @@ namespace AppData.Migrations
                     b.Property<int?>("Resolution")
                         .HasColumnType("int");
 
+                    b.Property<decimal?>("Sale")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("Size")
                         .HasColumnType("nvarchar(max)");
 
@@ -878,12 +881,19 @@ namespace AppData.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("IdBillDetail")
+                    b.Property<Guid?>("IdAccount")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                    b.Property<Guid?>("IdBillDetail")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasIndex("IdBillDetail");
+                    b.Property<Guid?>("IdImei")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int?>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
 
                     b.ToTable("WarrantyCards");
                 });
@@ -1424,17 +1434,6 @@ namespace AppData.Migrations
                         .IsRequired();
 
                     b.Navigation("Phones");
-                });
-
-            modelBuilder.Entity("AppData.Models.WarrantyCard", b =>
-                {
-                    b.HasOne("AppData.Models.BillDetails", "BillDetails")
-                        .WithMany()
-                        .HasForeignKey("IdBillDetail")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("BillDetails");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

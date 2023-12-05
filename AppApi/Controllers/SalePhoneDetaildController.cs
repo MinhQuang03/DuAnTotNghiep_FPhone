@@ -1,4 +1,5 @@
 ﻿using AppData.IRepositories;
+using AppData.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppApi.Controllers
@@ -8,8 +9,12 @@ namespace AppApi.Controllers
     public class SalePhoneDetaildController : Controller
     {
         private ISalePhoneDetaildRepository _salePhoneDetaildRepository;
-        public SalePhoneDetaildController(ISalePhoneDetaildRepository salePhoneDetaildRepository)
+        private IPhoneDetaildRepository _phoneDetaild;
+        private ISaleRepository _sale;
+        public SalePhoneDetaildController(ISalePhoneDetaildRepository salePhoneDetaildRepository, IPhoneDetaildRepository phoneDetaild, ISaleRepository saleRepository)
         {
+            _sale = saleRepository;
+            _phoneDetaild = phoneDetaild;
             _salePhoneDetaildRepository = salePhoneDetaildRepository;
         }
         [HttpGet("get")]
@@ -20,15 +25,22 @@ namespace AppApi.Controllers
             return Ok(a);
         }
         [HttpPost("add")]
-        public async Task<IActionResult> Post(Guid idsp, Guid sale)
+        public async Task<IActionResult> Post(Guid idphonedetail, Guid idSale)
         {
-            if (await _salePhoneDetaildRepository.Add(idsp, sale))
+            if (await _salePhoneDetaildRepository.Add(idphonedetail, idSale) == true)
             {
+                var phondetaill = (await _phoneDetaild.GetAll()).FirstOrDefault(p => p.Id == idphonedetail);
+                var sale = (await _sale.GetAll()).FirstOrDefault(p => p.Id == idSale);
+                if (phondetaill != null && sale != null)
+                {
+                    //phondetaill.sale = phondetaill.Price - sale.ReducedAmount;
+                    await _phoneDetaild.Update(phondetaill);
+                }
                 return Ok();
             }
             return Ok();
-
         }
+
 
         // PUT api/<ProductionCompanyController>/5
         [HttpPut("update")]

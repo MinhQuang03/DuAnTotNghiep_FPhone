@@ -348,4 +348,34 @@ public class AccountsController : Controller
         
       
     }
+
+    public async Task<IActionResult> PurchaseHistory(Guid idAccount)
+    {
+        var accBill = _context.Bill.FirstOrDefault(p => p.IdAccount == idAccount);
+
+        var phoneNames = (from bd in _context.BillDetails
+                          join pdp in _context.PhoneDetailds on bd.IdPhoneDetail equals pdp.Id
+                          join ph in _context.Phones on pdp.IdPhone equals ph.Id
+                          where bd.IdBill == accBill.Id
+                          select ph.PhoneName).FirstOrDefault();
+
+        var ramName = (from bd in _context.BillDetails
+                       join pdp in _context.PhoneDetailds on bd.IdPhoneDetail equals pdp.Id
+                       join ph in _context.Ram on pdp.IdRam equals ph.Id
+                       where bd.IdBill == accBill.Id
+                       select ph.Name).FirstOrDefault();
+
+        var colorName = (from bd in _context.BillDetails
+                         join pdp in _context.PhoneDetailds on bd.IdPhoneDetail equals pdp.Id
+                         join ph in _context.Colors on pdp.IdColor equals ph.Id
+                         where bd.IdBill == accBill.Id
+                         select ph.Name).FirstOrDefault();
+
+        // Lấy danh sách các PhoneName và gán vào ViewBag
+        ViewBag.PhoneNames = phoneNames + " " + ramName + " " + colorName;
+
+        var lisst = _context.BillDetails.Where(m => m.IdBill == accBill.Id).ToList();
+
+        return View(lisst);
+    }
 }
