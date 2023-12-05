@@ -4,13 +4,18 @@
     {
         public Guid Id { get; set; }
 
-        public string Username { get; set; }    
+        public string Username { get; set; }
 
-        public decimal? Requirement { get; set; }
+        public string IdAccount { get; set; }
+
+        public decimal? Point { get; set; }
+        public decimal? TotalPoint { get; set; }
+        public string? Ranking { get; set; }
 
         public DateTime? DateRank { get; set; }
 
 
-        public string? Policies { get; set; }
+        public int? Policies { get; set; }
+        public int? Benefits { get; set; }
     }
 }

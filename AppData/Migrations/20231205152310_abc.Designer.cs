@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppData.Migrations
 {
     [DbContext(typeof(FPhoneDbContext))]
-    [Migration("20231129142013_abcc")]
-    partial class abcc
+    [Migration("20231205152310_abc")]
+    partial class abc
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -687,13 +687,26 @@ namespace AppData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int?>("Benefits")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("DateRank")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Policies")
+                    b.Property<string>("IdAccount")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal?>("Requirement")
+                    b.Property<decimal?>("Point")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("Policies")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Ranking")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("TotalPoint")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Username")
@@ -800,6 +813,41 @@ namespace AppData.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Sales");
+                });
+
+            modelBuilder.Entity("AppData.Models.SellDailys", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("BestSeller")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal?>("Refund")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("SellOff")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SellOnl")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("TotalMoneys")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("TotalQuantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SellDaily");
                 });
 
             modelBuilder.Entity("AppData.Models.Sim", b =>
