@@ -689,7 +689,7 @@ namespace AppData.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("DateRank")
-                        .HasColumnType("date");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("IdAccount")
                         .IsRequired()

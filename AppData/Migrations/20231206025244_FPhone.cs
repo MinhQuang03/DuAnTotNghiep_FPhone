@@ -236,10 +236,10 @@ namespace AppData.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IdAccount = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Point = table.Column<decimal>(type: "int", nullable: true),
-                    TotalPoint = table.Column<decimal>(type: "int", nullable: true),
+                    Point = table.Column<int>(type: "int", nullable: true),
+                    TotalPoint = table.Column<int>(type: "int", nullable: true),
                     Ranking = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DateRank = table.Column<DateOnly>(type: "date", nullable: true),
+                    DateRank = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Policies = table.Column<int>(type: "int", nullable: true),
                     Benefits = table.Column<int>(type: "int", nullable: true)
                 },
