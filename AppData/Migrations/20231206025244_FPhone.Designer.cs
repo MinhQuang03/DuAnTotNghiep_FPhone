@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppData.Migrations
 {
     [DbContext(typeof(FPhoneDbContext))]
-    [Migration("20231205155205_FPhone")]
+    [Migration("20231206025244_FPhone")]
     partial class FPhone
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -697,8 +697,8 @@ namespace AppData.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal?>("Point")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int?>("Point")
+                        .HasColumnType("int");
 
                     b.Property<int?>("Policies")
                         .HasColumnType("int");
@@ -706,8 +706,8 @@ namespace AppData.Migrations
                     b.Property<string>("Ranking")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal?>("TotalPoint")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int?>("TotalPoint")
+                        .HasColumnType("int");
 
                     b.Property<string>("Username")
                         .IsRequired()

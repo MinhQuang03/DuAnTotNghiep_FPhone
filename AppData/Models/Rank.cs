@@ -8,8 +8,8 @@
 
         public string IdAccount { get; set; }
 
-        public decimal? Point { get; set; }
-        public decimal? TotalPoint { get; set; }
+        public int? Point { get; set; }
+        public int? TotalPoint { get; set; }
         public string? Ranking { get; set; }
 
         public DateTime? DateRank { get; set; }
