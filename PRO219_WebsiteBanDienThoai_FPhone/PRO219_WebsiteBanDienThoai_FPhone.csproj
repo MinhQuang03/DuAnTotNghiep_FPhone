@@ -26,6 +26,7 @@
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="System\" />
+    <Folder Include="Views\Thong Ke\" />
     <Folder Include="wwwroot\img\" />
   </ItemGroup>
 

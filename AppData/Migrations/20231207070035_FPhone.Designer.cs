@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppData.Migrations
 {
     [DbContext(typeof(FPhoneDbContext))]
-    [Migration("20231206025244_FPhone")]
+    [Migration("20231207070035_FPhone")]
     partial class FPhone
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -706,6 +706,9 @@ namespace AppData.Migrations
                     b.Property<string>("Ranking")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("STT")
+                        .HasColumnType("int");
+
                     b.Property<int?>("TotalPoint")
                         .HasColumnType("int");
 
@@ -716,6 +719,32 @@ namespace AppData.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Ranks");
+                });
+
+            modelBuilder.Entity("AppData.Models.Refund", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Imei")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("StatusDetail")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Refund");
                 });
 
             modelBuilder.Entity("AppData.Models.Review", b =>
