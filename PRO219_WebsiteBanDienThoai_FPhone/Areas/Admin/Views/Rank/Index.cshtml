@@ -1,0 +1,146 @@
+﻿@model IEnumerable<AppData.Models.Rank>
+
+@{
+    var index = 1;
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+
+}
+ 
+
+<h1>Biểu đồ</h1>
+<div class="container">
+    <div class="row my-3">
+    </div>
+    <div class="row my-2">
+        <div class="col-md-8 py-1">
+            <div class="card">
+                <div class="-chart">
+                    <canvas id="chBar"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<h2>Bảng chi tiết</h2>
+
+@* <table class="table">
+    <thead>
+        <tr>
+          @*   <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th> *
+            <th>
+                @Html.DisplayNameFor(model => model.Username)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Point)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalPoint)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ranking)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateRank)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Policies)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Benefits)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+           @*  <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td> 
+            <td>
+                @Html.DisplayFor(modelItem => item.Username)
+            </td>
+     
+            <td>
+                @Html.DisplayFor(modelItem => item.Point)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalPoint)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ranking)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateRank)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Policies)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Benefits)
+            </td>
+           
+        </tr>
+}
+    </tbody> *@
+</table>
+<div class="table-responsive">
+    <table class="table table-hover e-commerce-table">
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>UserName</th>
+                <th>Point</th>
+                <th>Total Poitn</th>
+                <th>Ranking</th>
+                <th>Policies</th>
+                <th>Benefits</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <div class="d-flex align-items-center">
+
+                            <div class="badge badge-success badge-diamond m-r-10"></div>
+                            <div>@Html.DisplayFor(modelItem => item.STT)</div>
+                        </div>
+                    </td>
+
+                    <td>
+                        <div class="d-flex align-items-center">
+                                @Html.DisplayFor(modelItem => item.Username)          
+                        </div>
+                    </td>
+                    <td>@item.Point</td>
+
+                    <td>@item.TotalPoint</td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                          
+                            <div class="badge badge-success badge-diamond m-r-10"></div>
+                            <div>@Html.DisplayFor(modelItem => item.Ranking)</div>
+                        </div>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Policies)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Benefits)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script src="~/js/adminchart.js"></script>

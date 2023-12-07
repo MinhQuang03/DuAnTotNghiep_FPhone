@@ -234,6 +234,7 @@ namespace AppData.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    STT = table.Column<int>(type: "int", nullable: false),
                     Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IdAccount = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Point = table.Column<int>(type: "int", nullable: true),
@@ -246,6 +247,22 @@ namespace AppData.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Ranks", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Refund",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Imei = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StatusDetail = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Refund", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -1106,6 +1123,9 @@ namespace AppData.Migrations
 
             migrationBuilder.DropTable(
                 name: "Ranks");
+
+            migrationBuilder.DropTable(
+                name: "Refund");
 
             migrationBuilder.DropTable(
                 name: "Reviews");

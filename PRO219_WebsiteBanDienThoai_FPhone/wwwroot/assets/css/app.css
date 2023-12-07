@@ -2661,6 +2661,10 @@ button.disabled, button:disabled { opacity: 0.5; cursor: not-allowed; }
 .card-header:first-child { border-radius: 0px; }
 
 .card-body { padding: 25px; position: relative; }
+.card-body-chart {
+    padding: 15px;
+    position: relative;
+}
 
 .card-footer { position: relative; padding: 10px 15px 10px 15px; min-height: 55px; border-top: 1px solid #e9eaec; background-color: transparent; }
 

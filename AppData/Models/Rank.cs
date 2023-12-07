@@ -3,6 +3,7 @@
     public class Rank
     {
         public Guid Id { get; set; }
+        public  int STT { get; set; }
 
         public string Username { get; set; }
 
