@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppData.Migrations
 {
     [DbContext(typeof(FPhoneDbContext))]
-    [Migration("20231207070035_FPhone")]
+    [Migration("20231208082913_FPhone")]
     partial class FPhone
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -403,20 +403,32 @@ namespace AppData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Note")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("DateEnd")
+                        .HasColumnType("datetime2");
 
-                    b.Property<decimal>("ReducedAmount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<DateTime>("DateStart")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int>("Status")
+                    b.Property<int?>("DieuKien")
+                        .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("TimeForm")
-                        .HasColumnType("datetime2");
+                    b.Property<double?>("MucUuDai")
+                        .HasColumnType("float");
 
-                    b.Property<DateTime?>("TimeTo")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("NameVoucher")
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.Property<int?>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StatusVoucher")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("TypeVoucher")
+                        .IsRequired()
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
