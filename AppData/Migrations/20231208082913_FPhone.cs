@@ -153,11 +153,14 @@ namespace AppData.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ReducedAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    TimeForm = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    TimeTo = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Status = table.Column<int>(type: "int", nullable: false)
+                    NameVoucher = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: true),
+                    DieuKien = table.Column<int>(type: "int", nullable: false),
+                    TypeVoucher = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: true),
+                    MucUuDai = table.Column<double>(type: "float", nullable: true),
+                    DateStart = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateEnd = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StatusVoucher = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
