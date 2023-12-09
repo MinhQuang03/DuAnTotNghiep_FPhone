@@ -1,27 +1,31 @@
 ﻿using System.Data.Entity.Infrastructure;
 using AppData.IRepositories;
+using AppData.IServices;
 using AppData.Models;
+using AppData.Utilities;
+using AppData.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Filters;
+using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers;
 
 [Area("Admin")]
 [AuthenFilter]
+
 public class AccountsController : Controller
 {
     private readonly HttpClient _client;
-    private IAccountsRepository _accountsRepository;
+    private IAccountService _accountsService;
 
-    public AccountsController(HttpClient client, IAccountsRepository accountsRepository)
+    public AccountsController(HttpClient client, IAccountService accountsService)
     {
         _client = client;
-        _accountsRepository = accountsRepository;
+        _accountsService = accountsService;
     }
-
     public IActionResult Index()
     {
         return View();
@@ -29,22 +33,59 @@ public class AccountsController : Controller
 
     public async Task<IActionResult> Account()
     {
-        var response = await _client.GetAsync("/api/Accounts/get-all-staff");
-        if (response.IsSuccessStatusCode)
-            if (UserClaim.HasRole(User, "Admin"))
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                var accounts = JsonConvert.DeserializeObject<List<ApplicationUser>>(content);
-                return View(accounts);
-            }
+        AccountViewModel model = new AccountViewModel();
+        if (UserClaim.HasRole(User, "Admin"))
+        {
+            model.LstUser = _accountsService.GetAllAsync(model.SearchData, model.Options);
+            return View(model);
+        }
 
         return BadRequest();
     }
-
-    public async Task<IActionResult> EditAccount(Guid id)
+    [HttpPost]
+    public async Task<IActionResult> Account(AccountViewModel model)
     {
-        var data = await _accountsRepository.GetAllAsync();
-        var model = data.FirstOrDefault(c => c.Id == id.ToString());
+        if (UserClaim.HasRole(User, "Admin"))
+        {
+            model.LstUser = _accountsService.GetAllAsync(model.SearchData, model.Options);
+            return View(model);
+        }
+        return BadRequest();
+    }
+    [HttpGet]
+    public async Task<IActionResult> EditAccount(string id)
+    {
+        if (id == null)
+        {
+            return RedirectToAction("Account");
+        }
+        var model = _accountsService.GetById(id);
+        return View(model);
+    }
+
+    [HttpPost]
+    public IActionResult EditAccount(ApplicationUser model)
+    {
+          var result =  _accountsService.Update(model.Id, model,out DataError error);
+          if (error != null)
+          {
+              TempData["DataError"] = Utility.ConvertObjectToJson(error);
+          }
+          if (result!=null)
+          {
+              return RedirectToAction("Account");
+          }
+
+          return View(model);
+    }
+    [HttpGet]
+    public IActionResult DetailAccount(string id)
+    {
+        if (id == null)
+        {
+            return RedirectToAction("Account");
+        }
+        var model = _accountsService.GetById(id);
         return View(model);
     }
 
