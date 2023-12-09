@@ -72,6 +72,7 @@ namespace AppData.Services
                 dbo.Name = user.Name;
                 dbo.CitizenId = user.CitizenId;
                 dbo.Address = user.Address;
+                dbo.ImageUrl = user.ImageUrl;
                 _dbContext.AspNetUsers.Update(dbo);
                _dbContext.SaveChanges();
             }

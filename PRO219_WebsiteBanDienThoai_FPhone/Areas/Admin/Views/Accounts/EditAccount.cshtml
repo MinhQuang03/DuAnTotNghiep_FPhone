@@ -13,7 +13,7 @@
                 <h3>Thông tin nhân viên</h3>
             </label>
         </div>
-        <form asp-action="EditAccount" method="post">
+        <form asp-action="EditAccount" method="post" enctype="multipart/form-data">
            
             <input hidden asp-for="PasswordHash"/>
             <input hidden asp-for="UserName"/>
@@ -23,11 +23,16 @@
             <input hidden asp-for="LockoutEnabled"/>
             <input hidden asp-for="AccessFailedCount"/>
             <input hidden asp-for="PhoneNumberConfirmed"/>
+            <input hidden asp-for="ImageUrl"/>
+            <input hidden asp-for="ImageUrl"></input>
             <div class="row justify-content-center mb-3">
-                <img src="@(Model.ImageUrl == null ? "" : Model.ImageUrl)" width="200px" height="200px" class="rounded-circle">
+                <img id="imagePreview" src="@(Model.ImageUrl ?? "")" width="200px" height="200px" class="rounded-circle">
             </div>
-
             <div class="row">
+                <label class="col-4"></label>
+                <input name="Images" id="fileInput" accept=".jpg,.png,.gif,.svg" class="col" type="file" />
+            </div>
+            <div class="row mt-4">
                 <label class="text-end col-form-label col-2 field-required">Username</label>
                 <div class="col-sm-9">
                     <input class="form-control" type="text" readonly asp-for="UserName"/>
@@ -69,8 +74,8 @@
                 </div>
 
             </div>
-            <div class="row mt-4">
-                <input type="submit" class="btn btn-primary" value="Lưu"/>
+            <div class="row mt-4 justify-content-center">
+                    <input type="submit" class="btn btn-primary " value="Lưu"/>
             </div>
         </form>
     </div>
@@ -83,3 +88,28 @@
     </div>
 </div>
 
+<script>
+    $(document).ready(function () {
+        $('#fileInput').change(function () {
+            previewImage();
+        });
+
+        function previewImage() {
+            var preview = $("#imagePreview");
+            const fileInput = $("#fileInput")[0];
+
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    preview.attr({
+                        'src': e.target.result
+                    });
+                };
+
+                reader.readAsDataURL(fileInput.files[0]);
+            }
+        }
+    });
+
+</script>

@@ -1,12 +1,12 @@
-﻿var JAdAccount = (function (window, $) {
-    var ins = {};
-    ins.initList = function () {
+﻿var JAdAccount = (function(window, $) {
+    const ins = {};
+    ins.initList = function() {
         const $form = $("#JAdAccount_list_form");
         $form.find('*[id="Options_PageSize"]').val();
-        var pageSize = ("#Options_PageSize").val();
+        const pageSize = ("#Options_PageSize").val();
         $("#page_size_select").val(pageSize);
     };
-    ins.submitListForm = function (page, event) {
+    ins.submitListForm = function(page, event) {
         event.preventDefault();
         const $form = $("#JAdAccount_list_form");
         //$form.find('*[name="ListOptions.PageSize"]').val(localStorage.getItem('pageSize'));
@@ -15,7 +15,7 @@
         $form.submit();
     };
 
-    ins.changePageSize = function (event) {
+    ins.changePageSize = function(event) {
         event.preventDefault();
         const $form = $("#JAdAccount_list_form");
         // 1. cập nhật lại pageIndex
@@ -26,6 +26,7 @@
         //localStorage.setItem('pageSize', pageSize)
         $form.submit();
     };
+
 
     return ins;
 })(window, jQuery);
