@@ -22,11 +22,7 @@ namespace AppData.Repositories
         private readonly IConfiguration _configuration;
         private FPhoneDbContext _dbContext;
 
-        public AccountsRepository()
-        {
-
-        }
-
+        
         public AccountsRepository(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IConfiguration configuration, RoleManager<IdentityRole> roleManager,FPhoneDbContext dbContext)
         {
             _userManager = userManager;
@@ -113,8 +109,11 @@ namespace AppData.Repositories
             if (adminResult.Succeeded)
             {
                 var staff = _dbContext.AspNetUsers.FirstOrDefault(c => c.UserName == model.UserName);
-                x.ApplicationUser = staff;
-                return await GenerateToken(x);
+                if (staff.Status ==1)
+                {
+                    x.ApplicationUser = staff;
+                    return await GenerateToken(x);
+                }
             }
             return await GenerateToken(x);
         }
@@ -124,7 +123,7 @@ namespace AppData.Repositories
             LoginInputVM x = new LoginInputVM();
             Security security = new Security();
             var userResult = _dbContext.Accounts.AsNoTracking().FirstOrDefault(c => c.Username == model.UserName && c.Password == security.Encrypt("B3C1035D5744220E", model.Password));
-            if (userResult != null)
+            if (userResult != null && userResult.Status == 1)
             {
                 x.Account = userResult;
                 return await GenerateToken(x);
