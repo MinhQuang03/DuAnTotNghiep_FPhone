@@ -64,20 +64,36 @@ public class AccountsController : Controller
     }
 
     [HttpPost]
-    public IActionResult EditAccount(ApplicationUser model)
+    public async Task<IActionResult> EditAccount(ApplicationUser model)
     {
-          var result =  _accountsService.Update(model.Id, model,out DataError error);
-          if (error != null)
-          {
-              TempData["DataError"] = Utility.ConvertObjectToJson(error);
-          }
-          if (result!=null)
-          {
-              return RedirectToAction("Account");
-          }
+        if (model.Images != null)
+        {
+            if (model.Images.FileName.Length > 0)
+            {
+                var fileName = Path.GetFileName(model.Images.FileName);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", fileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await model.Images.CopyToAsync(stream);
+                }
+                model.ImageUrl = "/img/" + fileName;
+            }
+        }
 
-          return View(model);
+        var result = _accountsService.Update(model.Id, model, out DataError error);
+        if (error != null)
+        {
+            TempData["DataError"] = Utility.ConvertObjectToJson(error);
+        }
+
+        if (result != null)
+        {
+            return RedirectToAction("Account");
+        }
+
+        return View(model);
     }
+
     [HttpGet]
     public IActionResult DetailAccount(string id)
     {
