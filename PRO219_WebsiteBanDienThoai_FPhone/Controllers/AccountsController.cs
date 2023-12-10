@@ -16,9 +16,11 @@ public class AccountsController : Controller
 {
     private readonly HttpClient _client;
 
+
     public AccountsController(HttpClient client)
     {
         _client = client;
+
     }
 
     //Khi đã đăng nhập ấn nút có biểu tượng user sẽ hiện ra profile của người dùng
@@ -29,6 +31,7 @@ public class AccountsController : Controller
         // lấy ra thông tin người dùng thông qua id
         var datajson = await _client.GetStringAsync($"api/Accounts/get-user/{id}");
         var user = JsonConvert.DeserializeObject<Account>(datajson);
+        TempData["UserId"] = id;
         if (user != null)
         {
             var jsondata = await _client.GetStringAsync($"api/Address/get-address/{id}");
@@ -37,6 +40,8 @@ public class AccountsController : Controller
             if (address != null)
                 ViewBag.Address = address.HomeAddress + ", " + address.District + ", " + address.City + ", " +
                                   address.Country;
+            TempData["UserProfile"] = user;
+            TempData["UserAddress"] = address;
             return View(user);
         }
 
@@ -51,6 +56,26 @@ public class AccountsController : Controller
     [HttpPost]
     public async Task<IActionResult> CreateAccount(ClAccountsViewModel model)
     {
+        //if (!_valid.CheckString(model.Name))
+        //{
+        //    ModelState.AddModelError("Username", "Tên không thể chứa ký tự đặc biệt");
+        //    return View(model);
+        //}
+        //if (!_valid.CheckString(model.Username))
+        //{
+        //    ModelState.AddModelError("Username", "Tên đăng nhập không thể chứa ký tự đặc biệt");
+        //    return View(model);
+        //}
+        //if (!_valid.CheckString(model.Password))
+        //{
+        //    ModelState.AddModelError("Password", "Mật khẩu không thể chứa ký tự đặc biệt");
+        //    return View(model);
+        //}
+        //if (!_valid.CheckString(model.CfPassword))
+        //{
+        //    ModelState.AddModelError("CfPassword", "Mật khẩu không thể chứa ký tự đặc biệt");
+        //    return View(model);
+        //}
         // lấy ra tài khoản admin để kiểm tra username có trùng hay không
         var result = await _client.GetStringAsync("/api/Accounts/get-all-staff");
         var userName = JsonConvert.DeserializeObject<List<ApplicationUser>>(result);
@@ -174,6 +199,46 @@ public class AccountsController : Controller
         
         // Sau khi thêm sản phẩm vào giỏ hàng, bạn có thể thực hiện chuyển hướng hoặc trả về một trạng thái tương ứng.
         return RedirectToAction("Cart");
-
+        
     }
+    public  IActionResult ResetPassword()
+    {
+        return View();
+    }
+    public IActionResult ResetPasswordSucces()
+    {
+        return View();
+    }
+    public  IActionResult Profile_Update() 
+    {
+        var user = TempData["UserProfile"] as Account;
+        var address = TempData["UserAddress"] as Address;
+        if (address != null)
+        {
+            ViewBag.HomeAddress = address.HomeAddress ?? "N/A";
+            ViewBag.District = address.District ?? "N/A";
+            ViewBag.City = address.City ?? "N/A";
+            ViewBag.Country = address.Country ?? "N/A";
+        }
+        return View(user);     
+    }
+    [HttpPost]
+    public async Task<IActionResult> Profile_Update(ClAccountsViewModel model,Address address)
+    {
+        var id = TempData["UserId"]?.ToString();
+        if (id != null)
+        {
+            var datajson = await _client.GetStringAsync($"api/Accounts/get-user/{id}");
+            var user = JsonConvert.DeserializeObject<Account>(datajson);
+            if (user != null)
+            {
+                user.Name = model.Name;
+                user.Email = model.Email;
+                user.PhoneNumber = model.PhoneNumber;
+                user.Password = model.Password;
+            }
+        }
+    }
+
+
 }

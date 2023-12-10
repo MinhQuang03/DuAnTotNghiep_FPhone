@@ -2,6 +2,7 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Microsoft.Build.Framework
 @using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Filters
+@using Microsoft.AspNetCore.Http.Extensions
 
 @functions {
 
@@ -12,6 +13,7 @@
 @{
     ViewData["Title"] = "_SideNavPartialView";
 }
+
 <header id="header" class="header">
     <div class="navigation">
         <div class="container">
@@ -24,7 +26,7 @@
 
                 <div class="nav__logo">
                     <a asp-action="Index" asp-controller="Home">
-                        PHONE
+                        FPHONE Mobile
                     </a>
                 </div>
 
@@ -37,21 +39,21 @@
                             </svg>
                         </a>
                     </div>
-                    <ul class="nav__list">
-                        <li class="nav__item">
-                            <a href="#header" class="nav__link scroll-link">Home</a>
-                        </li>
-                        <li class="nav__item">
-                            <a href="#category" class="nav__link scroll-link">Category</a>
-                        </li>
-                        <li class="nav__item">
-                            <a href="#news" class="nav__link scroll-link">Blog</a>
-                        </li>
-                        <li class="nav__item">
-                            <a href="#contact" class="nav__link scroll-link">Contact</a>
-                        </li>
-                    </ul>
-                </div>
+                        <ul class="nav__list">
+                            <li class="nav__item">
+                                <a href="#header" class="nav__link scroll-link">Home</a>
+                            </li>
+                            <li class="nav__item">
+                                <a href="#category" class="nav__link scroll-link">Category</a>
+                            </li>
+                            <li class="nav__item">
+                                <a href="#news" class="nav__link scroll-link">Blog</a>
+                            </li>
+                            <li class="nav__item">
+                                <a href="#contact" class="nav__link scroll-link">Contact</a>
+                            </li>
+                        </ul>
+                    </div>
 
                 <div class="nav__icons">
                     @if (UserClaim.HasRole(User, "User"))
@@ -98,16 +100,16 @@
                     @TempData["ErrorMessage"]
                 </div>
             }
-            <input required type="text" asp-for="@LoginModel.UserName" name="UserName" placeholder="User name" class="box">
-            <input required type="password" asp-for="@LoginModel.Password" name="Password" placeholder="your password" class="box">
-            <p>forget your password <a href="#">Click Here</a></p>
-            <p>don't have an account <a asp-controller="Accounts" asp-action="CreateAccount">Create now</a></p>
-            <input type="submit" value="Login now" class="btn">
+            <input required type="text" asp-for="@LoginModel.UserName" name="UserName" placeholder="Tên đăng nhập" class="box">
+            <input required type="password" asp-for="@LoginModel.Password" name="Password" placeholder="Mật khẩu" class="box">
+            <a asp-controller="Accounts" asp-action="ResetPassword">Quên mật khẩu</a></p>
+            <a asp-controller="Accounts" asp-action="CreateAccount">Đăng ký</a></p>
+            <input type="submit" value="Đăng nhập" class="btn btn-primary btn-lg">
         </form>
     </div>
     <div class="searchF">
         <form action="" class="search-form">
-            <input type="search" id="search-box" placeholder="Search here..">
+            <input type="search" id="search-box" placeholder="Tìm kiếm..">
             <label for="search-box" class="fas fa-search"></label>
         </form>
     </div>

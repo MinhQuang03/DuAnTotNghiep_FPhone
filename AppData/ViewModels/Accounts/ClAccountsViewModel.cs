@@ -13,11 +13,11 @@ public class ClAccountsViewModel
 
     [Display(Name = "Mật khẩu")]
     [Required(ErrorMessage = "Mật khẩu không được để trống")]
-    [MinLength(8,ErrorMessage = "Mật khẩu tối thiểu 8 kí tự bao gồm kí tự viết thường, viết hoa, kí tự đặc biệt")]
+    [MinLength(8,ErrorMessage = "Mật khẩu cần dài tối thiểu 8 kí tự bao gồm kí tự viết thường, viết hoa và chữ số")]
     public string Password { get; set; }
 
     [Display(Name = "Xác nhận mật khẩu")]
-    [Required(ErrorMessage = "Mật khẩu không được để trống")]
+    [Required(ErrorMessage = "Mật khẩu xác nhận không được để trống")]
     public string CfPassword { get; set; }
 
     [Display(Name = "Họ và tên")]

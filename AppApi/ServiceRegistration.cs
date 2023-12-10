@@ -3,6 +3,7 @@ using AppData.Repositories;
 using AppData.Services;
 using AppData.IServices;
 
+
 namespace AppApi
 {
     public static class ServiceRegistration
@@ -29,6 +30,7 @@ namespace AppApi
             services.AddTransient<IImeiRepository, ImeiRepository>();
             services.AddTransient<IUserRepository, UserRepostitory>();
             services.AddTransient<IAddressRepository, AddressRepostitory>();
+
         }
     }
 }
