@@ -1,10 +1,31 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using AppData.FPhoneDbContexts;
+using AppData.IRepositories;
+using AppData.IServices;
+using AppData.Repositories;
+using AppData.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddTransient<IVwPhoneService, VwPhoneService>();
+builder.Services.AddTransient<FPhoneDbContext>();
+builder.Services.AddTransient<IVwPhoneDetailService,VwPhoneDetailService>();
+builder.Services.AddTransient<IListImageService,ListImageService>();
+builder.Services.AddTransient<IBlogRepository,BlogRepository>();
+builder.Services.AddTransient<IPhoneRepository,PhoneRepository>();
+builder.Services.AddTransient<ICartDetailService, CartDetailService>();
+builder.Services.AddTransient<IProductionCompanyRepository, ProductionCompanyRepository>();
+builder.Services.AddTransient<IRamRepository, RamRepository>();
+builder.Services.AddTransient<IRomRepository, RomRepository>();
+builder.Services.AddTransient<IRanksRepositories, RankRepositories>();
+builder.Services.AddTransient<IChipCPURepository, ChipCPURepository>();
+builder.Services.AddTransient<IMaterialRepository, MaterialRepository>();
+builder.Services.AddTransient<IAccountService, AccountService>();
+
+
+
 builder.Services.AddScoped(sp => new HttpClient()
 {
     BaseAddress = new Uri("https://localhost:7129/")
@@ -18,7 +39,6 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddAuthentication(options =>
     {
-
         options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -28,6 +48,7 @@ builder.Services.AddAuthentication(options =>
         options.LoginPath = "/Admin/Login";
         options.LogoutPath = new PathString("/home");
     });
+
 
 var app = builder.Build();
 
@@ -42,6 +63,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseSession();
+
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();

@@ -196,6 +196,9 @@ namespace AppData.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("BillCode")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime2");
 
@@ -216,6 +219,15 @@ namespace AppData.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
+                    b.Property<int>("StatusPayment")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("TotalMoney")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("deliveryPaymentMethod")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("IdAccount");
@@ -235,9 +247,8 @@ namespace AppData.Migrations
                     b.Property<Guid?>("IdDiscount")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("NameImei")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("IdPhoneDetail")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Number")
                         .HasColumnType("int");
@@ -248,28 +259,18 @@ namespace AppData.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("Update_at")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.HasIndex("IdBill");
 
                     b.HasIndex("IdDiscount");
 
+                    b.HasIndex("IdPhoneDetail");
+
                     b.ToTable("BillDetails");
-                });
-
-            modelBuilder.Entity("AppData.Models.BillPhoneDetail", b =>
-                {
-                    b.Property<Guid>("BillDetailId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("PhoneDetailId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("BillDetailId", "PhoneDetailId");
-
-                    b.HasIndex("PhoneDetailId");
-
-                    b.ToTable("BillPhoneDetails");
                 });
 
             modelBuilder.Entity("AppData.Models.Blog", b =>
@@ -283,6 +284,9 @@ namespace AppData.Migrations
 
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Images")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -332,7 +336,7 @@ namespace AppData.Migrations
 
                     b.HasIndex("IdPhoneDetaild");
 
-                    b.ToTable("CartsDetails");
+                    b.ToTable("CartDetails");
                 });
 
             modelBuilder.Entity("AppData.Models.ChargingportType", b =>
@@ -397,20 +401,32 @@ namespace AppData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Note")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("DateEnd")
+                        .HasColumnType("datetime2");
 
-                    b.Property<decimal>("ReducedAmount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<DateTime>("DateStart")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int>("Status")
+                    b.Property<int?>("DieuKien")
+                        .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("TimeForm")
-                        .HasColumnType("datetime2");
+                    b.Property<double?>("MucUuDai")
+                        .HasColumnType("float");
 
-                    b.Property<DateTime?>("TimeTo")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("NameVoucher")
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.Property<int?>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StatusVoucher")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("TypeVoucher")
+                        .IsRequired()
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -421,6 +437,9 @@ namespace AppData.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("IdBillDetail")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("IdPhoneDetaild")
@@ -435,7 +454,7 @@ namespace AppData.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdPhoneDetaild");
+                    b.HasIndex("IdBillDetail");
 
                     b.ToTable("Imei");
                 });
@@ -455,14 +474,9 @@ namespace AppData.Migrations
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("PhoneDetaildId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
                     b.HasIndex("IdPhoneDetaild");
-
-                    b.HasIndex("PhoneDetaildId");
 
                     b.ToTable("ListImage");
                 });
@@ -530,6 +544,9 @@ namespace AppData.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("CreateDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -605,6 +622,9 @@ namespace AppData.Migrations
                     b.Property<int?>("Resolution")
                         .HasColumnType("int");
 
+                    b.Property<decimal?>("Sale")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("Size")
                         .HasColumnType("nvarchar(max)");
 
@@ -677,14 +697,30 @@ namespace AppData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int?>("Benefits")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("DateRank")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Policies")
+                    b.Property<string>("IdAccount")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal?>("Requirement")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int?>("Point")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Policies")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Ranking")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("STT")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TotalPoint")
+                        .HasColumnType("int");
 
                     b.Property<string>("Username")
                         .IsRequired()
@@ -693,6 +729,32 @@ namespace AppData.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Ranks");
+                });
+
+            modelBuilder.Entity("AppData.Models.Refund", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Imei")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("StatusDetail")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Refund");
                 });
 
             modelBuilder.Entity("AppData.Models.Review", b =>
@@ -754,6 +816,9 @@ namespace AppData.Migrations
                     b.Property<Guid>("IdSales")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("IdPhoneDetaild");
@@ -787,6 +852,41 @@ namespace AppData.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Sales");
+                });
+
+            modelBuilder.Entity("AppData.Models.SellDailys", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("BestSeller")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal?>("Refund")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("SellOff")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SellOnl")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("TotalMoneys")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("TotalQuantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SellDaily");
                 });
 
             modelBuilder.Entity("AppData.Models.Sim", b =>
@@ -870,14 +970,159 @@ namespace AppData.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("IdBillDetail")
+                    b.Property<Guid?>("IdAccount")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("IdBillDetail")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("IdImei")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int?>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdBillDetail");
-
                     b.ToTable("WarrantyCards");
+                });
+
+            modelBuilder.Entity("AppData.ViewModels.Phones.VW_List_By_IdPhone", b =>
+                {
+                    b.Property<Guid>("IdPhone")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToView("VW_List_By_IdPhone");
+                });
+
+            modelBuilder.Entity("AppData.ViewModels.Phones.VW_Phone", b =>
+                {
+                    b.Property<Guid>("IdPhone")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("IdProductionComany")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProductionComanyName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("VW_Phone");
+
+                    b.ToView("VW_Phone");
+                });
+
+            modelBuilder.Entity("AppData.ViewModels.Phones.VW_Phone_Group", b =>
+                {
+                    b.Property<DateTime?>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("IdPhone")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Price")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("PriceMax")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("ProductionComanyName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RamName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("VW_Phone_Group");
+
+                    b.ToView("VW_Phone_Group");
+                });
+
+            modelBuilder.Entity("AppData.ViewModels.Phones.VW_PhoneDetail", b =>
+                {
+                    b.Property<string>("BatteryName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ChargingportTypeName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ChipCPUName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ChipGPUName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ColorName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FrontCamera")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("IdPhone")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("IdPhoneDetail")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("MaterialName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OperatingSystemName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("ProductionCompanyName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RamName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("ReducedAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("Resolution")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RomName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SimName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Size")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Weight")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("VW_PhoneDetail");
+
+                    b.ToView("VW_PhoneDetail");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -1045,26 +1290,15 @@ namespace AppData.Migrations
                         .WithMany()
                         .HasForeignKey("IdDiscount");
 
+                    b.HasOne("AppData.Models.PhoneDetaild", "PhoneDetaild")
+                        .WithMany()
+                        .HasForeignKey("IdPhoneDetail")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Bills");
 
                     b.Navigation("Discounts");
-                });
-
-            modelBuilder.Entity("AppData.Models.BillPhoneDetail", b =>
-                {
-                    b.HasOne("AppData.Models.BillDetails", "BillDetails")
-                        .WithMany()
-                        .HasForeignKey("BillDetailId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AppData.Models.PhoneDetaild", "PhoneDetaild")
-                        .WithMany()
-                        .HasForeignKey("PhoneDetailId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("BillDetails");
 
                     b.Navigation("PhoneDetaild");
                 });
@@ -1099,11 +1333,11 @@ namespace AppData.Migrations
 
             modelBuilder.Entity("AppData.Models.Imei", b =>
                 {
-                    b.HasOne("AppData.Models.PhoneDetaild", "PhoneDetailds")
+                    b.HasOne("AppData.Models.BillDetails", "BillDetails")
                         .WithMany()
-                        .HasForeignKey("IdPhoneDetaild");
+                        .HasForeignKey("IdBillDetail");
 
-                    b.Navigation("PhoneDetailds");
+                    b.Navigation("BillDetails");
                 });
 
             modelBuilder.Entity("AppData.Models.ListImage", b =>
@@ -1111,10 +1345,6 @@ namespace AppData.Migrations
                     b.HasOne("AppData.Models.PhoneDetaild", "PhoneDetailds")
                         .WithMany()
                         .HasForeignKey("IdPhoneDetaild");
-
-                    b.HasOne("AppData.Models.PhoneDetaild", null)
-                        .WithMany("Images")
-                        .HasForeignKey("PhoneDetaildId");
 
                     b.Navigation("PhoneDetailds");
                 });
@@ -1295,17 +1525,6 @@ namespace AppData.Migrations
                     b.Navigation("Phones");
                 });
 
-            modelBuilder.Entity("AppData.Models.WarrantyCard", b =>
-                {
-                    b.HasOne("AppData.Models.BillDetails", "BillDetails")
-                        .WithMany()
-                        .HasForeignKey("IdBillDetail")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("BillDetails");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -1360,11 +1579,6 @@ namespace AppData.Migrations
             modelBuilder.Entity("AppData.Models.Account", b =>
                 {
                     b.Navigation("Carts");
-                });
-
-            modelBuilder.Entity("AppData.Models.PhoneDetaild", b =>
-                {
-                    b.Navigation("Images");
                 });
 #pragma warning restore 612, 618
         }

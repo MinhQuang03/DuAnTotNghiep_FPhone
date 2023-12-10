@@ -6,6 +6,7 @@ using AppData.FPhoneDbContexts;
 using AppData.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +20,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<FPhoneDbContext>().AddDefaultTokenProviders();
 
 builder.Services.AddDbContext<FPhoneDbContext>(options => {
-    options.UseSqlServer(@builder.Configuration.GetConnectionString("PRO219_WebsiteBanDienThoai"));
+    options.UseSqlServer(@builder.Configuration.GetConnectionString("PRO219_WebsiteBanDienThoai"), opt =>opt.EnableRetryOnFailure());
 });
 
 
@@ -41,8 +42,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
         ClockSkew = TimeSpan.Zero
     };
+    //opt.Authority = "https://login.microsoftonline.com/5ac07b9d-f4eb-4eca-9eb0-9dcf18c3dcc8";
+    //opt.Audience = "adc439cf-7627-4a2c-8ef4-67bcc2975b55";
 
 });
+
+
+
 
 var app = builder.Build();
 

@@ -8,9 +8,11 @@ namespace AppData.IRepositories
     {
         public Task<IdentityResult> SignUpAdmin(AdSignUpViewModel model);
         public Task<bool> SignUpCl(ClAccountsViewModel model);  
-        public Task<LoginResponseVM> Login(LoginModel model);
+        public Task<LoginResponseVM> AdLogin(LoginModel model);  
+        public Task<LoginResponseVM> ClLogin(LoginModel model); 
 
         //protected Task<LoginResponseVM> GenerateToken(LoginInputVM model);
         public Task<List<ApplicationUser>> GetAllAsync();
+      
     }
 }

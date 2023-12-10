@@ -8,6 +8,7 @@
 
         public DateTime PaymentDate { get; set; }
 
+     
         public string Name { get; set; }
 
         public string Phone { get; set; }
@@ -15,6 +16,11 @@
         public string Address { get; set; }    
 
         public int Status { get; set; }
+        public string? BillCode { get; set; }
+        public string? deliveryPaymentMethod { get; set; }
+        public decimal? TotalMoney { get; set; }
+
+        public int StatusPayment { get; set; }
 
         public Guid? IdAccount { get; set; }
 

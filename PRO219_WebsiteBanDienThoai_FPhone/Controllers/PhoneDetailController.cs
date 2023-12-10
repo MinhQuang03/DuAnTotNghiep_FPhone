@@ -1,51 +1,58 @@
-﻿using AppData.Models;
+﻿using AppData.FPhoneDbContexts;
+using AppData.IRepositories;
+using AppData.IServices;
+using AppData.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PRO219_WebsiteBanDienThoai_FPhone.Models;
+using PRO219_WebsiteBanDienThoai_FPhone.Services;
+using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
 {
     public class PhoneDetailController : Controller
     {
         private HttpClient _client;
-
-        public PhoneDetailController(HttpClient client)
+        private IVwPhoneDetailService _phoneDetailService;
+        private IListImageService _imageService;
+        private IPhoneRepository _phoneRepo;
+        private FPhoneDbContext _context;
+        public PhoneDetailController(HttpClient client,IVwPhoneDetailService phoneDetailService,IListImageService ImageService, IPhoneRepository phoneRepo)
         {
-            _client = client;
+            _context = new FPhoneDbContext();
+           _client = client;
+            _phoneDetailService = phoneDetailService;
+            _imageService = ImageService;
+            _phoneRepo = phoneRepo;
         }
-        public async Task<IActionResult> PhoneDetail(Guid Id)   
+        public ActionResult PhoneDetail(string id)
         {
-            var datajson = await _client.GetStringAsync($"api/PhoneDetaild/get-detail/{Id}");
-            var ctsp = JsonConvert.DeserializeObject<List<PhoneDetaild>>(datajson);
-            var lstPhonedt = from a in ctsp 
-                             group a by new
-                             {
-                                 a.Phones.PhoneName,
-                                 a.Phones.Id,
-                                 a.Phones.Image,
-                                 a.Phones.Description,
-                                 a.Phones.ProductionCompanies.Name,
-                                 a.Images,
-                                 a.Price,
-                                 a.Rams,
-                                 a.Roms,
-                              
-                             } into b
-                             select new ProductDetailView()
-                             {
-                                IdProductDetail = b.Select(c =>c.Id).ToList(),
-                                Description = b.Key.Description,
-                                IdProduct = b.Key.Id,
-                                Brand = b.Key.Name,
-                                 Price = b.Key.Price,
-                                 ProductName = b.Key.PhoneName,
-                                Color = b.Select(c =>c.Colors).ToList(),
-                                Image = b.Key.Image,
-                                Ram = b.Key.Rams,
-                                Rom = b.Key.Roms
-                             };
-            var lst = lstPhonedt.ToList();
-            return View(lst);
+           
+          
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return NotFound();
+            }
+            var data = new VwProductDetailViewModel()
+            {
+                Records = _phoneDetailService.getListPhoneDetailByIdPhone(Guid.Parse(id)),
+                lstImage = null,
+                Image = _phoneRepo.GetById(Guid.Parse(id)).Result.Image,
+                listImageByIdPhone = _imageService.GetListImageByIdPhone(Guid.Parse(id))
+        };
+            return View(data);
+        }
+        [HttpGet]
+        public ActionResult GetDetailPhones(string id)
+        {
+            var data = new VwProductDetailViewModel();
+            data.Records = _phoneDetailService.getListPhoneDetailByIdPhone(Guid.Parse(id));
+
+            return Json(new
+            {
+                Items = data.Records,
+                Success = true
+            });
         }
     }
 }

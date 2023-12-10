@@ -9,6 +9,7 @@ using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Filters;
 namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers;
 
 [Area("Admin")]
+[AuthenFilter]
 public class SignUpController : Controller
 {
     private readonly HttpClient _client;
@@ -20,7 +21,7 @@ public class SignUpController : Controller
         _contextAccessor = contextAccessor;
     }
 
-    [AuthorizationFilter("Admin")]
+
     public async Task<IActionResult> SignUp()
     {
         return View();

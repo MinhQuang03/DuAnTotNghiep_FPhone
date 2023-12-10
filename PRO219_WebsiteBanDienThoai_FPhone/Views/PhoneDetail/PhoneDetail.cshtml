@@ -1,49 +1,86 @@
-﻿@{
+﻿@using PRO219_WebsiteBanDienThoai_FPhone.ViewModel
+@model VwProductDetailViewModel;
+@{
     ViewData["Title"] = "PhoneDetail";
 }
 
-@foreach (ProductDetailView item in Model)
-{
-    <section class="section product-details__section container">
+<style>
+    .phone-hover:hover {
+        background-color: #FFFFCC;
+    }
+
+  /*  .selected {
+        background-color: #33FF33;
+        border-radius: 2px;
+    }
+*/
+
+    .selected {
+        background-color: #33FF33;
+        border-radius: 2px;
+        border: 1px solid #33FF33; /* Add this line to set the border color to green */
+    }
+
+    #ramButtons {
+        width: 500px;
+        height: 120px;
+        gap: 5px;
+    }
+</style>
+
+<section class="section product-details__section container">
     <div class="product-detail__container">
         <div class="product-detail__left">
             <div class="details__container--left">
                 <div class="product__pictures">
-
-                    @*list ảnh sản phẩm *@
-                    <div class="pictures__container">
-                        <img class="picture" src="@item.Image" id="pic1"/>
-                    </div>
+                    @foreach (var item in Model.listImageByIdPhone)
+                    {
+                        <div class="pictures__container">
+                            <img class="picture" src="@item.Image" id="pic1" />
+                        </div>
+                    }
 
                 </div>
                 <div class="product__picture" id="product__picture">
                     <!-- <div class="rect" id="rect"></div> -->
                     <div class="picture__container">
-                        <img src="@item.Image" id="pic"/>
+                        <img src="@Model.Image" id="pic"  />
                     </div>
                 </div>
                 <div class="zoom" id="zoom"></div>
             </div>
+            <form action="" id="AddToCart" method="get">
+                <div class="product-details__btn">
+                    <button type="submit" class="add" name="addToCart">
+                        <span>
+                            <svg>
+                                <use xlink:href="/images/sprite.svg#icon-cart-plus"></use>
+                            </svg>
+                        </span>
+                        ADD TO CART
+                    </button>
+                </div>
+            </form>
 
-                <form action="@Url.Action("AddToCard", "Accounts", new { id = item.IdProduct })" method="get">
-                    <div class="product-details__btn">
-                        <button type="submit" class="add" name="addToCart">
-                            <span>
-                                <svg>
-                                    <use xlink:href="/images/sprite.svg#icon-cart-plus"></use>
-                                </svg>
-                            </span>
-                            ADD TO CART
-                        </button>
-                    </div>
-                </form>
+            <form action="@Url.Action("Additem", "FavoritePhone", new { id = '1' })" method="get">
+                <div class="product-details__btn">
+                    <button type="submit" class="add" name="Additem">
+                        <span>
+                            <svg>
+                                <use xlink:href="/images/sprite.svg#icon-cart-plus"></use>
+                            </svg>
+                        </span>
+                        FAVORITE
+                    </button>
+                </div>
+            </form>
         </div>
 
         <div class="product-detail__right">
             <div class="product-detail__content">
-                <h3>@item.ProductName</h3>
+                <h3 id="phoneName"></h3>
                 <div class="price">
-                    <span class="new__price">@item.Price</span>
+                    <span id="phonePrice" class="new__price"></span>
                 </div>
                 <div class="product__review">
                     <div class="rating">
@@ -66,19 +103,21 @@
                     <a href="#" class="rating__quatity">3 reviews</a>
                 </div>
                 <p>
-                    @item.Description
+                    @* @item.Description *@
                 </p>
                 <div class="product__info-container">
                     <ul class="product__info">
-                        <li class=" row">
-                            <a class="btn col-4 border rounded  mt-2">
-                                <div>
-                                    <strong>@item.Ram.Name - @item.Rom.Name</strong>
-                                </div>
-                                <span >@item.Price đ</span>
-                            </a>
+
+                        <li class=" row" id="listPhone">
 
                         </li>
+                        @*<li>
+                            <span>RAM Type:</span>
+                            <div id="ramOptions"></div>
+                        </li>
+                        <li class="row" id="colorList"></li>*@
+                        <li class="row" id="ramButtons"></li>
+                        <li class="row" id="colorList"></li>
                         <li>
 
                             <div class="input-counter">
@@ -100,27 +139,145 @@
                         </li>
 
                         <li>
-                            <span>Subtotal:</span>
-                            <a href="#" class="new__price">$250.99</a>
-                        </li>
-                        <li>
                             <span>Brand:</span>
-                            <a href="#">@item.Brand</a>
+                            @* <a href="#">@item.Brand</a> *@
                         </li>
                         <li>
                             <span>Product Type:</span>
-                            <a href="#">@item.Color</a>
+                            <a id="colorName" href="#">Mau den</a>
                         </li>
                         <li>
                             <span>Availability:</span>
                             <a href="#" class="in-stock">In Stock (7 Items)</a>
                         </li>
                     </ul>
-                  
+
                 </div>
             </div>
         </div>
     </div>
 
-    </section>
-}
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var id = window.location.href.split("/")[5];
+        console.log(id);
+        if (id == null) {
+            alert("Không tìm thấy sản phẩm");
+        }
+        loadPhoneDetails(id);
+    });
+
+    function loadPhoneDetails(id) {
+        let api = "/PhoneDetail/GetDetailPhones/" + id;
+        fetch(api)
+            .then(response => response.json())
+            .then(response => {
+                console.log(response);
+
+                if (response.success) {
+                    localStorage.setItem("phoneDetails", JSON.stringify(response));
+
+                    // Group items by RAM type
+                    let groupedByRam = {};
+                    response.items.forEach(item => {
+                        if (!groupedByRam[item.ramName]) {
+                            groupedByRam[item.ramName] = [];
+                        }
+                        groupedByRam[item.ramName].push(item);
+                    });
+
+                    // Sort RAM types by GB
+                    let sortedRamTypes = Object.keys(groupedByRam).sort((a, b) => {
+                        // Extract GB value from RAM type (assuming RAM type is in the format "X GB")
+                        const getGBValue = ramType => parseInt(ramType.split(' ')[0]);
+
+                        return getGBValue(a) - getGBValue(b);
+                    });
+
+                    // Display RAM buttons
+                    let ramButtonsHtml = '';
+                    sortedRamTypes.forEach(ramName => {
+                        ramButtonsHtml += `
+                            <button class="btn col-4 border rounded phone-hover mt-2" onclick="loadColorsByRam('${ramName}')">${ramName}</button>
+                `;
+                    });
+
+                    document.querySelector("#ramButtons").innerHTML = ramButtonsHtml;
+
+                    // Call loadColorsByRam with the first RAM
+                    loadColorsByRam(sortedRamTypes[0]);
+
+                    // Call loadPhoneDetail with the first item
+                    loadPhoneDetail(response.items[0].idPhoneDetail, document.querySelector("#listPhone a"));
+                }
+            })
+            .catch(error => console.log(error));
+    }
+
+    function loadColorsByRam(selectedRam) {
+        let phoneDetails = JSON.parse(localStorage.getItem("phoneDetails"));
+        let colorsHtml = '';
+
+        if (phoneDetails) {
+            let itemsWithSelectedRam = phoneDetails.items.filter(item => item.ramName === selectedRam);
+
+            itemsWithSelectedRam.forEach(item => {
+                colorsHtml += `
+                    <a class="btn col-4 border rounded phone-hover mt-2"
+                        onclick="loadPhoneDetail('${item.idPhoneDetail}', this)">
+                        <div>
+                            <strong>${item.colorName}</strong>
+                        </div>
+                        <span>${item.price} đ</span>
+                    </a>
+                `;
+            });
+
+            // Keep track of the previously selected button
+            let previouslySelectedButton = document.querySelector("#colorList .selected");
+
+            document.querySelector("#colorList").innerHTML = colorsHtml;
+
+            // Add the "selected" class to the newly clicked button
+            let newlyClickedButton = document.querySelector("#colorList a");
+            if (previouslySelectedButton) {
+                newlyClickedButton.classList.add("selected");
+
+                // Remove "selected" class from the previously selected button
+                previouslySelectedButton.classList.remove("selected");
+            }
+
+            // Call loadPhoneDetail with the first item
+            loadPhoneDetail(itemsWithSelectedRam[0].idPhoneDetail, newlyClickedButton);
+        }
+    }
+
+
+
+
+    function loadPhoneDetail(id, button) {
+        let phoneDetails = JSON.parse(localStorage.getItem("phoneDetails"));
+        if (phoneDetails == null) {
+            alert("Không tìm thấy sản phẩm");
+        }
+        let phone = phoneDetails.items.find(x => x.idPhoneDetail == id);
+        document.getElementById("phoneName").innerHTML = phone.phoneName;
+        document.getElementById("phonePrice").innerHTML = phone.price + " đ";
+        document.getElementById("colorName").innerHTML = phone.colorName;
+
+        localStorage.setItem("idPhoneDetail", phone.idPhoneDetail);
+
+        // Remove "selected" class from all buttons
+        document.querySelectorAll("#listPhone a, #colorList a").forEach(btn => {
+            btn.classList.remove("selected");
+        });
+
+        // Add the "selected" class to the clicked button
+        button.classList.add("selected");
+
+        document.getElementById("AddToCart").action = "@Url.Action("AddToCard", "Accounts")/" + phone.idPhoneDetail;
+    }
+</script>
+

@@ -34,12 +34,34 @@ namespace AppData.Repositories
 
         public async Task<List<Blog>> GetAll()
         {
-            return await _dbContext.Blogs.ToListAsync();
+            var lst = new List<Blog>();
+            try
+            {
+                lst = await _dbContext.Blogs.ToListAsync();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            return lst;
         }
 
         public async Task<Blog> GetById(Guid id)
         {
-            return await _dbContext.Blogs.FirstOrDefaultAsync(p => p.Id == id);
+            var blogs = new Blog();
+            try
+            {
+                blogs = await _dbContext.Blogs.FirstOrDefaultAsync(p => p.Id == id);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            return blogs;
         }
 
         public async Task<Blog> Update(Blog obj)
@@ -48,6 +70,7 @@ namespace AppData.Repositories
             a.Title = obj.Title;
             a.Content = obj.Content;
             a.CreatedDate = obj.CreatedDate;
+            a.Images = obj.Images;
             a.Status = obj.Status;
             _dbContext.Blogs.Update(a);
             await _dbContext.SaveChangesAsync();

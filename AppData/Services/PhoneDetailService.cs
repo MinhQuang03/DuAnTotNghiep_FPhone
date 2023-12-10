@@ -2,6 +2,7 @@
 using AppData.IRepositories;
 using AppData.IServices;
 using AppData.Models;
+using AppData.ViewModels.Phones;
 using Microsoft.EntityFrameworkCore;
 
 namespace AppData.Services
@@ -14,6 +15,7 @@ namespace AppData.Services
         private IProductionCompanyRepository _productionCompanyRepository;
         private IRamRepository _ramRepository;
         private IRomRepository _romRepository;
+       
         public readonly FPhoneDbContext _dbContext;
         public PhoneDetailService(IPhoneDetaildRepository iPhoneDetaildRepository, IPhoneRepository phoneRepository,FPhoneDbContext dbContext,IColorRepository colorRepository,IProductionCompanyRepository productionCompanyRepository,IRamRepository ramRepository, IRomRepository romRepository)    
         {
@@ -89,5 +91,57 @@ namespace AppData.Services
             await _dbContext.SaveChangesAsync();
             return obj;
         }
+
+        public Task<PhoneDetaild> GetPhoneByColor(Guid IdColor)
+        {
+            return _iPhoneDetaildRepository.GetPhoneByColor(IdColor);
+        }
+
+        public Task<PhoneDetaild> GetPhoneByRam(Guid IdRam)
+        {
+            return _iPhoneDetaildRepository.GetPhoneByRam(IdRam);
+        }
+
+        public Task<PhoneDetaild> GetPhoneByChipCPUs(Guid IdChipCPUs)
+        {
+            return _iPhoneDetaildRepository.GetPhoneByChipCPUs(IdChipCPUs);
+        }
+
+        public Task<List<PhoneDetaild>> GetPhoneDESC()
+        {
+            return _iPhoneDetaildRepository.GetPhoneDESC();
+        }
+
+        public Task<List<PhoneDetaild>> GetPhoneASC()
+        {
+            return _iPhoneDetaildRepository.GetPhoneASC();
+        }
+
+        public Task<List<PhoneDetaild>> GetPhone5tr()
+        {
+            return _iPhoneDetaildRepository.GetPhone5tr();
+        }
+
+        public Task<List<PhoneDetaild>> GetPhone10tr()
+        {
+            return _iPhoneDetaildRepository.GetPhone10tr();
+        }
+
+        public Task<List<PhoneDetaild>> GetPhone15tr()
+        {
+            return _iPhoneDetaildRepository.GetPhone15tr();
+        }
+
+        public Task<List<PhoneDetaild>> GetPhone25tr()
+        {
+            return _iPhoneDetaildRepository.GetPhone25tr();
+        }
+
+        public Task<List<PhoneDetaild>> GetPhone50tr()
+        {
+            return _iPhoneDetaildRepository.GetPhone50tr();
+        }
+
+       
     }
 }
