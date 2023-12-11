@@ -23,6 +23,15 @@ builder.Services.AddDbContext<FPhoneDbContext>(options => {
     options.UseSqlServer(@builder.Configuration.GetConnectionString("PRO219_WebsiteBanDienThoai"), opt =>opt.EnableRetryOnFailure());
 });
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      builder =>
+                      {
+                          builder.WithOrigins("https://localhost:7171/");
+                      });
+});
 
 ServiceRegistration.Configure(builder.Services);
 
@@ -51,7 +60,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
 
 var app = builder.Build();
-
+app.UseCors(options =>
+{
+	options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+});
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
