@@ -1,4 +1,5 @@
-﻿@model IEnumerable<AppData.Models.SellDailys>
+﻿@using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
+@model SellDailyViewModel
 
 @{
     var index = 1;
@@ -19,6 +20,21 @@
         <canvas id="chBar1"></canvas>
     </div>
 </div>
+
+    <form method="post" class="col-12 px-xl-5 mx-5 row" asp-action="Index">
+        <div class="col">
+            <span>Chọn Tháng </span>
+            <input id="selection_month" asp-for="Search.Month" type="number" min="1" max="12" step="1" value="1" />
+        </div>
+    <div class="col">
+        <span>Chọn Năm </span>
+        <input id="selection_year" asp-for="Search.Year" type="number" min="1900" max="@(DateTime.Now.Year)" step="1" value="2023" />
+    </div>
+        <div class="col">
+            <input type="submit" placeholder="Tìm kiếm" value="Tìm kiếm" class="btn btn-primary" />
+        </div>
+    </form>
+
 <table class="table">
     <thead>
         <tr>
@@ -26,7 +42,7 @@
                 STT
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CreateTime)
+                Ngày Tạo
             </th>
             <th>
                 Tổng Tiền
@@ -41,7 +57,7 @@
                 Bán Offline
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BestSeller)
+                Bán Chạy Nhất
             </th>
             @*<th>
                 @Html.DisplayNameFor(model => model.Refund)
@@ -53,7 +69,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.LstSellDailys)
         {
             <tr>
                 <td>
@@ -88,5 +104,6 @@
         }
     </tbody>
 </table>
+
 
 <script src="~/js/adminchart.js"></script>
