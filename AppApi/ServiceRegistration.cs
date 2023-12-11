@@ -3,7 +3,6 @@ using AppData.Repositories;
 using AppData.Services;
 using AppData.IServices;
 
-
 namespace AppApi
 {
     public static class ServiceRegistration
@@ -20,17 +19,24 @@ namespace AppApi
             services.AddTransient<IColorRepository, ColorRepository>();
             services.AddTransient<IPhoneRepository, PhoneRepository>();
             services.AddTransient<IProductionCompanyRepository, ProductionCompanyRepository>();
-            services.AddTransient<IBlogRepository,BlogRepository>();
+            services.AddTransient<IBlogRepository, BlogRepository>();
+            services.AddTransient<ICartDetailRepository, CartDetailepository>();
+            services.AddTransient<IcartRepository, CartRepository>();
             services.AddTransient<IBatteryRepository, BatteryRepository>();
             services.AddTransient<IMaterialRepository, MaterialRepository>();
             services.AddTransient<IOpertingRepository, OperatingRepository>();
             services.AddTransient<IRamRepository, RamRepository>();
             services.AddTransient<IRomRepository, RomRepository>();
             services.AddTransient<ISimRepository, SimRepository>();
+            services.AddTransient<IRanksRepositories, RankRepositories>();
+            services.AddTransient<IBillRepository, BillRepository>();
             services.AddTransient<IImeiRepository, ImeiRepository>();
             services.AddTransient<IUserRepository, UserRepostitory>();
             services.AddTransient<IAddressRepository, AddressRepostitory>();
-
+            services.AddTransient<IVwPhoneService, VwPhoneService>();
+            services.AddTransient<IBillRepository, BillRepository>();
+            services.AddTransient<ISaleRepository, SaleRepository>();
+            services.AddTransient<ISalePhoneDetaildRepository, SalePhoneDetaildRepository>();
         }
     }
 }
