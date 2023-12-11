@@ -55,7 +55,14 @@ public class AccountsController : ControllerBase
             return Ok(clLogin);
         }
 
-        return BadRequest("Sai tài khoản hoặc mật khẩu. Vui lòng thử lại");
+        return BadRequest(new LoginResponseVM()
+        {
+            Valid = false,
+            ListErrorMessage = new List<string>()
+            {
+                "Sai tài khoản hoặc mật khẩu"
+            }
+        });
     }
 
     //[HttpPost("Login/Client/")]

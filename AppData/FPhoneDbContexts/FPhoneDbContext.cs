@@ -48,6 +48,7 @@ public class FPhoneDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Warranty> Warranty { get; set; }
     public DbSet<WarrantyCard> WarrantyCards { get; set; }
     public DbSet<Sales> Sales { get; set; }
+    public DbSet<SellDailys> SellDaily { get; set; }
     public DbSet<SalePhoneDetaild> SalePhoneDetailds { get; set; }
 
     public DbSet<SellDailys> SellDailys { get; set; }

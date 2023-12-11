@@ -13,5 +13,6 @@ namespace AppData.IRepositories
 
         //protected Task<LoginResponseVM> GenerateToken(LoginInputVM model);
         public Task<List<ApplicationUser>> GetAllAsync();
+      
     }
 }
