@@ -280,14 +280,14 @@
                     <span class="icon-holder">
                         <i class="anticon anticon-pie-chart"></i>
                     </span>
-                    <span class="title">Charts</span>
+                    <span class="title">Thống Kê</span>
                     <span class="arrow">
                         <i class="arrow-icon"></i>
                     </span>
                 </a>
                 <ul class="dropdown-menu">
                     <li>
-                        <a href="chartist.html">Chartist</a>
+                        <a asp-area="Admin" asp-controller="Rank" asp-action="Index">Ranking Member</a>
                     </li>
                     <li>
                         <a href="chartjs.html">ChartJs</a>
@@ -322,6 +322,23 @@
                     </li>
                     <li>
                         <a asp-area="Admin" asp-controller="Blog" asp-action="Index">Blog</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="dropdown-toggle" href="javascript:void(0);">
+                    <span class="icon-holder">
+                        <i class="anticon anticon-file"></i>
+                    </span>
+                    <span class="title">Thống Kê</span>
+                    <span class="arrow">
+                        <i class="arrow-icon"></i>
+                    </span>
+                </a>
+                <ul class="dropdown-menu">
+
+                    <li>
+                        <a asp-area="Admin" asp-controller="Statics" asp-action="Index">SellDailys</a>
                     </li>
                 </ul>
             </li>

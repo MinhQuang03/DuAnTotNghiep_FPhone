@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppData.Migrations
 {
-    public partial class abcc : Migration
+    public partial class FPhone : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -153,11 +153,14 @@ namespace AppData.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ReducedAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    TimeForm = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    TimeTo = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Status = table.Column<int>(type: "int", nullable: false)
+                    NameVoucher = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: true),
+                    DieuKien = table.Column<int>(type: "int", nullable: false),
+                    TypeVoucher = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: true),
+                    MucUuDai = table.Column<double>(type: "float", nullable: true),
+                    DateStart = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateEnd = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StatusVoucher = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -234,14 +237,35 @@ namespace AppData.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    STT = table.Column<int>(type: "int", nullable: false),
                     Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Requirement = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    IdAccount = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Point = table.Column<int>(type: "int", nullable: true),
+                    TotalPoint = table.Column<int>(type: "int", nullable: true),
+                    Ranking = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateRank = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Policies = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Policies = table.Column<int>(type: "int", nullable: true),
+                    Benefits = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Ranks", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Refund",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Imei = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StatusDetail = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Refund", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -270,6 +294,25 @@ namespace AppData.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Sales", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SellDaily",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TotalMoneys = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    Refund = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    TotalQuantity = table.Column<int>(type: "int", nullable: true),
+                    SellOnl = table.Column<int>(type: "int", nullable: true),
+                    SellOff = table.Column<int>(type: "int", nullable: true),
+                    BestSeller = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SellDaily", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -1085,10 +1128,16 @@ namespace AppData.Migrations
                 name: "Ranks");
 
             migrationBuilder.DropTable(
+                name: "Refund");
+
+            migrationBuilder.DropTable(
                 name: "Reviews");
 
             migrationBuilder.DropTable(
                 name: "SalePhoneDetailds");
+
+            migrationBuilder.DropTable(
+                name: "SellDaily");
 
             migrationBuilder.DropTable(
                 name: "Transactions");

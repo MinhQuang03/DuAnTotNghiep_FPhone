@@ -2,119 +2,121 @@
 @model List<Blog>
 <link rel="stylesheet" href="https://cellphones.com.vn/sforum/jw-styles/themes/default/assets/css/app.min.css" />
 
+<link rel="stylesheet" href="https://cellphones.com.vn/sforum/jw-styles/themes/default/assets/css/app.min.css">
 
-<div class="jeg-body-container home">
-    <div>
-        <div class="elementor-row">
-            <div class="home_page_featured_news sf_featured_post swiper-container swiper-container-initialized swiper-container-horizontal">
-                <div class="swiper-wrapper" style="transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;">
-                    @foreach (var item in Model)
-                    {
-                        if (item.Status == 1)
-                        {
-                            <div id="slide-1" class="swiper-slide swiper-slide-active" style="width: 962px; display: none;">
-                                <div class="featured-box">
-                                    <div class="jfeatured-box--thumb">
-                                        <a class="jfeatured-box--thumbnail_link" href="https://cellphones.com.vn/sforum/tren-tay-harman-kardon-go-play-3">
-                                            <img class="lazy" src="@item.Images" alt="Trên tay Harman Kardon Go + Play 3: Loa di động 3 đường tiếng, công suất khủng 160W, giá 7.49 triệu">
-                                        </a>
-                                    </div>
-                                    <div class="jfeatured-box--box-info">
-                                        <h3>
-                                            <a href="https://cellphones.com.vn/sforum/tren-tay-harman-kardon-go-play-3">@item.Title</a>
-                                        </h3>
-                                        <div class="jfeatured-box--excerpt">@item.Content</div>
-                                        <div class="featured-box--cate">
-                                            <a href="https://cellphones.com.vn/sforum/tren-tay">Trên tay</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    }
-                </div><div class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets">
-                    <span class="swiper-pagination-bullet swiper-pagination-bullet-active" tabindex="0" role="button" aria-label="Go to slide 1">
-                    </span>
-                    <span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 2">
-                    </span>
-                    <span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 3">
-                    </span>
-                    <span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 4">
-                    </span>
-                    <span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 5">
-                    </span>
-                </div>
-                <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
-            </div>
-        </div>
-        <div class="elementor-widget-container_tintuccapnhat__index">
-            <h2 class="elementor-heading-title">Tin tức cập nhật</h2>
-        </div>
-        <div class="">
-            <div class="" style="width: 100%">
-                <div style="width: 100%">
-                    <div id="" class="">
-                        <div class="">
-                            <div class="">
-                                <div class="">
-                                    <!--Duplicate here-->
-									@foreach (var item in Model)
+
+
+
+<div class="container">
+	<div class="elementor-row">
+		<div class="home_page_featured_news sf_featured_post swiper-container swiper-container-initialized swiper-container-horizontal">
+			<div class="swiper-wrapper" style="transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;">
+				@foreach (var item in Model)
+				{
+					if (item.Status == 1)
+					{
+						<div id="slide-1" class="swiper-slide swiper-slide-active" style="width: 962px; display: none;">
+							<div class="featured-box">
+								<div class="jfeatured-box--thumb">
+									<a class="jfeatured-box--thumbnail_link" href="https://cellphones.com.vn/sforum/tren-tay-harman-kardon-go-play-3">
+										<img class="lazy" src="@item.Images" alt="Trên tay Harman Kardon Go + Play 3: Loa di động 3 đường tiếng, công suất khủng 160W, giá 7.49 triệu">
+									</a>
+								</div>
+								<div class="jfeatured-box--box-info">
+									<h3>
+										<a href="https://cellphones.com.vn/sforum/tren-tay-harman-kardon-go-play-3">@item.Title</a>
+									</h3>
+									<div class="jfeatured-box--excerpt">@item.Content</div>
+									<div class="featured-box--cate">
+										<a href="https://cellphones.com.vn/sforum/tren-tay">Trên tay</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					}
+				}
+			</div><div class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets">
+				<span class="swiper-pagination-bullet swiper-pagination-bullet-active" tabindex="0" role="button" aria-label="Go to slide 1">
+				</span>
+				<span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 2">
+				</span>
+				<span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 3">
+				</span>
+				<span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 4">
+				</span>
+				<span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 5">
+				</span>
+			</div>
+			<span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+		</div>
+	</div>
+	<div class="elementor-widget-container_tintuccapnhat__index">
+		<h2 class="elementor-heading-title">Tin tức cập nhật</h2>
+	</div>
+	<div class="">
+		<div class="" style="width: 100%">
+			<div style="width: 100%">
+				<div id="" class="">
+					<div class="">
+						<div class="">
+							<div class="">
+								<!--Duplicate here-->
+								@foreach (var item in Model)
+								{
+									if (item.Status == 2)
 									{
-										if (item.Status == 2)
-										{
-											<article class="jeg_post jeg_pl_md_2 format-standard post">
-												<div class="jeg_thumb">
-													<a data-wpel-link="exclude" asp-action="BlogDetail" asp-route-value="@item.Id">
-														<div class="thumbnail-container  size-715 "><img loading="lazy" width="350" height="250" src="@item.Images" class=" wp-post-image lazy" alt=""></div>
+										<article class="jeg_post jeg_pl_md_2 format-standard post">
+											<div class="jeg_thumb">
+												<a data-wpel-link="exclude" asp-action="BlogDetail" asp-route-value="@item.Id">
+													<div class="thumbnail-container  size-715 "><img loading="lazy" width="350" height="250" src="@item.Images" class=" wp-post-image lazy" alt=""></div>
+												</a>
+											</div>
+											<div class="jeg_postblock_content">
+												<h3 class="jeg_post_title">
+													<a data-wpel-link="exclude" asp-action="BlogDetail" asp-route-value="@item.Id">@item.Title</a>
+												</h3>
+												<div class="jeg_meta_date">
+													<a href="https://cellphones.com.vn/sforum/chinh-sua-lien-quan-ao-mong-gioi" data-wpel-link="exclude">
+														<i class="fa fa-clock-o"></i>
+														@item.CreatedDate
 													</a>
 												</div>
-												<div class="jeg_postblock_content">
-													<h3 class="jeg_post_title">
-														<a data-wpel-link="exclude" asp-action="BlogDetail" asp-route-value="@item.Id">@item.Title</a>
-													</h3>
-													<div class="jeg_meta_date">
-														<a href="https://cellphones.com.vn/sforum/chinh-sua-lien-quan-ao-mong-gioi" data-wpel-link="exclude">
-															<i class="fa fa-clock-o"></i>
-															@item.CreatedDate
-														</a>
-													</div>
-													<div class="sf_post_category">
-														<a href="https://cellphones.com.vn/sforum/s-games" data-wpel-link="exclude">F-Phone</a>
-													</div>
+												<div class="sf_post_category">
+													<a href="https://cellphones.com.vn/sforum/s-games" data-wpel-link="exclude">F-Phone</a>
 												</div>
-											</article>
-										}
+											</div>
+										</article>
 									}
-									
-                                    
-                                    
-                                </div>
-                            </div>
-                            <div class="navigation_overlay">
-                                <div class="module-preloader jeg_preloader">
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                </div>
-                            </div>
-                            <div class="elementor-row gap-eles hot_slide_bottom">
-                                <div class="sf_right_featured"><div class="sf_right_featured--header mt-20"><h2>Đánh giá nổi bật</h2></div><div class="sf_right_featured--boxs"><div class="sf_right_featured--box sf_right_featured--first-box"><div class="sf_right_featured--box-thumb"><a href="https://cellphones.com.vn/sforum/danh-gia-galaxy-z-fold5"><div class="sf_right_featured--thumbnail-container"><img class="lazy" src="https://cdn.sforum.vn/sforum/wp-content/uploads/2023/10/Danh-gia-Galaxy-Z-Fold5-5-cover.jpg" alt="Đánh giá Galaxy Z Fold5 sau 3 tháng: Điện thoại gập Samsung đã có tên, bây giờ là khẳng định tuổi!"><div class="sf_right_featured--thumb-overlay"></div></div></a></div><div class="sf_right_featured--box-content"><a href="https://cellphones.com.vn/sforum/danh-gia-galaxy-z-fold5">Đánh giá Galaxy Z Fold5 sau 3 tháng: Điện thoại gập Samsung đã có tên, bây giờ là khẳng định tuổi!</a></div></div><div class="sf_right_featured--box sf_right_featured--small-box"><div class="sf_right_featured--box-thumb"><a href="https://cellphones.com.vn/sforum/danh-gia-xiaomi-watch-2-pro"><div class="sf_right_featured--thumbnail-container"><img class="lazy" src="https://cdn.sforum.vn/sforum/wp-content/uploads/2023/10/Xiaomi-watch-2-pro-danh-gia-24-e1698918244303.jpg" alt="Đánh giá Xiaomi Watch 2 Pro: Một chiếc smartwatch tiềm năng nhưng cần cải thiện nhiều hơn!"><div class="sf_right_featured--thumb-overlay"></div></div></a></div><div class="sf_right_featured--box-content"><a href="https://cellphones.com.vn/sforum/danh-gia-xiaomi-watch-2-pro">Đánh giá Xiaomi Watch 2 Pro: Một chiếc smartwatch tiềm năng nhưng cần cải thiện nhiều hơn!</a></div></div><div class="sf_right_featured--box sf_right_featured--small-box"><div class="sf_right_featured--box-thumb"><a href="https://cellphones.com.vn/sforum/danh-gia-camera-xiaomi-13t-pro"><div class="sf_right_featured--thumbnail-container"><img class="lazy" src="https://cdn.sforum.vn/sforum/wp-content/uploads/2023/10/xiaomi-13t-pro-cover.jpg" alt="Đánh giá camera Xiaomi 13T Pro: Không để cho vui, camera Leica này " nghệ"="" thật="" sự"=""><div class="sf_right_featured--thumb-overlay"></div></div></a></div><div class="sf_right_featured--box-content"><a href="https://cellphones.com.vn/sforum/danh-gia-camera-xiaomi-13t-pro">Đánh giá camera Xiaomi 13T Pro: Không để cho vui, camera Leica này "nghệ" thật sự</a></div></div><div class="sf_right_featured--box sf_right_featured--small-box"><div class="sf_right_featured--box-thumb"><a href="https://cellphones.com.vn/sforum/danh-gia-pin-oppo-find-n3-flip"><div class="sf_right_featured--thumbnail-container"><img class="lazy" src="https://cdn.sforum.vn/sforum/wp-content/uploads/2023/10/Infinix_Note_30_5G_2-1-e1698735283981.jpg" alt="Đánh giá pin OPPO Find N3 Flip: Điện thoại gập nhưng pin lại không hề yếu chút nào!"><div class="sf_right_featured--thumb-overlay"></div></div></a></div><div class="sf_right_featured--box-content"><a href="https://cellphones.com.vn/sforum/danh-gia-pin-oppo-find-n3-flip">Đánh giá pin OPPO Find N3 Flip: Điện thoại gập nhưng pin lại không hề yếu chút nào!</a></div></div><div class="sf_right_featured--box sf_right_featured--small-box"><div class="sf_right_featured--box-thumb"><a href="https://cellphones.com.vn/sforum/danh-gia-hieu-nang-oppo-find-n3-flip"><div class="sf_right_featured--thumbnail-container"><img class="lazy" src="https://cdn.sforum.vn/sforum/wp-content/uploads/2023/10/OPPO_Find_N3_Flip_3-1-e1698509404901.jpg" alt="Đánh giá hiệu năng OPPO Find N3 Flip: Dimensity 9200 trên máy gập chiến game có ổn áp, nhiệt độ thế nào?"><div class="sf_right_featured--thumb-overlay"></div></div></a></div><div class="sf_right_featured--box-content"><a href="https://cellphones.com.vn/sforum/danh-gia-hieu-nang-oppo-find-n3-flip">Đánh giá hiệu năng OPPO Find N3 Flip: Dimensity 9200 trên máy gập chiến game có ổn áp, nhiệt độ thế nào?</a></div></div></div></div>
-                            </div>
-                        </div>
-                        <div class="jeg_block_navigation">
-                            <div class="navigation_overlay">
-                                <div class="module-preloader jeg_preloader">
-                                    <span></span><span></span><span></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+								}
+
+
+
+							</div>
+						</div>
+						<div class="navigation_overlay">
+							<div class="module-preloader jeg_preloader">
+								<span></span>
+								<span></span>
+								<span></span>
+							</div>
+						</div>
+						<div class="elementor-row gap-eles hot_slide_bottom">
+							<div class="sf_right_featured"><div class="sf_right_featured--header mt-20"><h2>Đánh giá nổi bật</h2></div><div class="sf_right_featured--boxs"><div class="sf_right_featured--box sf_right_featured--first-box"><div class="sf_right_featured--box-thumb"><a href="https://cellphones.com.vn/sforum/danh-gia-galaxy-z-fold5"><div class="sf_right_featured--thumbnail-container"><img class="lazy" src="https://cdn.sforum.vn/sforum/wp-content/uploads/2023/10/Danh-gia-Galaxy-Z-Fold5-5-cover.jpg" alt="Đánh giá Galaxy Z Fold5 sau 3 tháng: Điện thoại gập Samsung đã có tên, bây giờ là khẳng định tuổi!"><div class="sf_right_featured--thumb-overlay"></div></div></a></div><div class="sf_right_featured--box-content"><a href="https://cellphones.com.vn/sforum/danh-gia-galaxy-z-fold5">Đánh giá Galaxy Z Fold5 sau 3 tháng: Điện thoại gập Samsung đã có tên, bây giờ là khẳng định tuổi!</a></div></div><div class="sf_right_featured--box sf_right_featured--small-box"><div class="sf_right_featured--box-thumb"><a href="https://cellphones.com.vn/sforum/danh-gia-xiaomi-watch-2-pro"><div class="sf_right_featured--thumbnail-container"><img class="lazy" src="https://cdn.sforum.vn/sforum/wp-content/uploads/2023/10/Xiaomi-watch-2-pro-danh-gia-24-e1698918244303.jpg" alt="Đánh giá Xiaomi Watch 2 Pro: Một chiếc smartwatch tiềm năng nhưng cần cải thiện nhiều hơn!"><div class="sf_right_featured--thumb-overlay"></div></div></a></div><div class="sf_right_featured--box-content"><a href="https://cellphones.com.vn/sforum/danh-gia-xiaomi-watch-2-pro">Đánh giá Xiaomi Watch 2 Pro: Một chiếc smartwatch tiềm năng nhưng cần cải thiện nhiều hơn!</a></div></div><div class="sf_right_featured--box sf_right_featured--small-box"><div class="sf_right_featured--box-thumb"><a href="https://cellphones.com.vn/sforum/danh-gia-camera-xiaomi-13t-pro"><div class="sf_right_featured--thumbnail-container"><img class="lazy" src="https://cdn.sforum.vn/sforum/wp-content/uploads/2023/10/xiaomi-13t-pro-cover.jpg" alt="Đánh giá camera Xiaomi 13T Pro: Không để cho vui, camera Leica này " nghệ"="" thật="" sự"=""><div class="sf_right_featured--thumb-overlay"></div></div></a></div><div class="sf_right_featured--box-content"><a href="https://cellphones.com.vn/sforum/danh-gia-camera-xiaomi-13t-pro">Đánh giá camera Xiaomi 13T Pro: Không để cho vui, camera Leica này "nghệ" thật sự</a></div></div><div class="sf_right_featured--box sf_right_featured--small-box"><div class="sf_right_featured--box-thumb"><a href="https://cellphones.com.vn/sforum/danh-gia-pin-oppo-find-n3-flip"><div class="sf_right_featured--thumbnail-container"><img class="lazy" src="https://cdn.sforum.vn/sforum/wp-content/uploads/2023/10/Infinix_Note_30_5G_2-1-e1698735283981.jpg" alt="Đánh giá pin OPPO Find N3 Flip: Điện thoại gập nhưng pin lại không hề yếu chút nào!"><div class="sf_right_featured--thumb-overlay"></div></div></a></div><div class="sf_right_featured--box-content"><a href="https://cellphones.com.vn/sforum/danh-gia-pin-oppo-find-n3-flip">Đánh giá pin OPPO Find N3 Flip: Điện thoại gập nhưng pin lại không hề yếu chút nào!</a></div></div><div class="sf_right_featured--box sf_right_featured--small-box"><div class="sf_right_featured--box-thumb"><a href="https://cellphones.com.vn/sforum/danh-gia-hieu-nang-oppo-find-n3-flip"><div class="sf_right_featured--thumbnail-container"><img class="lazy" src="https://cdn.sforum.vn/sforum/wp-content/uploads/2023/10/OPPO_Find_N3_Flip_3-1-e1698509404901.jpg" alt="Đánh giá hiệu năng OPPO Find N3 Flip: Dimensity 9200 trên máy gập chiến game có ổn áp, nhiệt độ thế nào?"><div class="sf_right_featured--thumb-overlay"></div></div></a></div><div class="sf_right_featured--box-content"><a href="https://cellphones.com.vn/sforum/danh-gia-hieu-nang-oppo-find-n3-flip">Đánh giá hiệu năng OPPO Find N3 Flip: Dimensity 9200 trên máy gập chiến game có ổn áp, nhiệt độ thế nào?</a></div></div></div></div>
+						</div>
+					</div>
+					<div class="jeg_block_navigation">
+						<div class="navigation_overlay">
+							<div class="module-preloader jeg_preloader">
+								<span></span><span></span><span></span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 
 
-<script src="./js/blog.js"></script>
+<script src="~/js/blog.js"></script>

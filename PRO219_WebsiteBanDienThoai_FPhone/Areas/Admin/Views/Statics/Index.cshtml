@@ -1,0 +1,92 @@
+﻿@model IEnumerable<AppData.Models.SellDailys>
+
+@{
+    var index = 1;
+    ViewData["Title"] = "Index";
+}
+
+<h1>Thống Kê</h1>
+
+<div>
+    <span>Chọn năm</span>
+    <input id="select_year" type="number" min="1900" max="2099" step="1" value="2023" />
+</div>
+<div class="w-100">
+    <div class="inline-block w-45 float-left">
+        <canvas id="chBar"></canvas>
+    </div>
+    <div class="inline-block w-45 float-right">
+        <canvas id="chBar1"></canvas>
+    </div>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                STT
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalMoneys)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalQuantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SellOnl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SellOff)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BestSeller)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.Refund)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @(index++)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalMoneys)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalQuantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SellOnl)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SellOff)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BestSeller)
+                </td>
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.Refund)
+                </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script src="~/js/adminchart.js"></script>
