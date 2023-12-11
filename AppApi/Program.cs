@@ -20,7 +20,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<FPhoneDbContext>().AddDefaultTokenProviders();
 
 builder.Services.AddDbContext<FPhoneDbContext>(options => {
-    options.UseSqlServer(@builder.Configuration.GetConnectionString("PRO219_WebsiteBanDienThoai"));
+    options.UseSqlServer(@builder.Configuration.GetConnectionString("PRO219_WebsiteBanDienThoai"), opt =>opt.EnableRetryOnFailure());
 });
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";

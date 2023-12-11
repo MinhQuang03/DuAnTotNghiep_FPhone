@@ -11,6 +11,9 @@
     }
     
 </style>
+
+
+
 <!-- Breadcrumb Start -->
 <div class="container-fluid">
     <div class="row px-xl-5">
@@ -48,8 +51,11 @@
             <div class="col">
                 @Html.DropDownListFor(model => model.SearchData.MaterialName, new SelectList(Model.listMaterial, "Name", "Name"), "Chất liệu", new { @class = "form-control", id = "Province" })
             </div>
+             <div class="col">
+                 <input type="text" asp-for="SearchData.PhoneName" placeholder="Search here..." class="form-control"/>
+            </div>  
             <div class="col">
-                <input type="submit" value="Tìm kiếm" class="btn btn-primary"/>
+                <input type="submit" placeholder="Tìm kiếm" value="Tìm kiếm" class="btn btn-primary"/>
             </div>
         </form>
     </div>

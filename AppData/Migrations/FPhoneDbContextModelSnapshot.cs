@@ -401,20 +401,32 @@ namespace AppData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Note")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("DateEnd")
+                        .HasColumnType("datetime2");
 
-                    b.Property<decimal>("ReducedAmount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<DateTime>("DateStart")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int>("Status")
+                    b.Property<int?>("DieuKien")
+                        .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("TimeForm")
-                        .HasColumnType("datetime2");
+                    b.Property<double?>("MucUuDai")
+                        .HasColumnType("float");
 
-                    b.Property<DateTime?>("TimeTo")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("NameVoucher")
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.Property<int?>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StatusVoucher")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("TypeVoucher")
+                        .IsRequired()
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -685,14 +697,30 @@ namespace AppData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int?>("Benefits")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("DateRank")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Policies")
+                    b.Property<string>("IdAccount")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal?>("Requirement")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int?>("Point")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Policies")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Ranking")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("STT")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TotalPoint")
+                        .HasColumnType("int");
 
                     b.Property<string>("Username")
                         .IsRequired()
@@ -701,6 +729,32 @@ namespace AppData.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Ranks");
+                });
+
+            modelBuilder.Entity("AppData.Models.Refund", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Imei")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("StatusDetail")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Refund");
                 });
 
             modelBuilder.Entity("AppData.Models.Review", b =>
@@ -798,6 +852,41 @@ namespace AppData.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Sales");
+                });
+
+            modelBuilder.Entity("AppData.Models.SellDailys", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("BestSeller")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal?>("Refund")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("SellOff")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SellOnl")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("TotalMoneys")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("TotalQuantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SellDaily");
                 });
 
             modelBuilder.Entity("AppData.Models.Sim", b =>
