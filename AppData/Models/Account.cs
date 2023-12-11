@@ -23,6 +23,7 @@ namespace AppData.Models
         public string? ImageUrl { get; set; }
 
         public int Status { get; set; }
+        public DateTime? CreateDate { get; set; }
 
         public int? Points { get; set; }
 

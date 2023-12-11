@@ -21,11 +21,33 @@ namespace AppData.Migrations
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Points = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Accounts", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AccountStatitics",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DateModified = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TotalAccount = table.Column<int>(type: "int", nullable: true),
+                    NewAccount = table.Column<int>(type: "int", nullable: true),
+                    VVIP = table.Column<int>(type: "int", nullable: true),
+                    Diamond = table.Column<int>(type: "int", nullable: true),
+                    Gold = table.Column<int>(type: "int", nullable: true),
+                    Silver = table.Column<int>(type: "int", nullable: true),
+                    Bzone = table.Column<int>(type: "int", nullable: true),
+                    Blacklist = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AccountStatitics", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -297,7 +319,25 @@ namespace AppData.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SellDaily",
+                name: "SellDailys",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TotalMoneys = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    TotalQuantity = table.Column<int>(type: "int", nullable: true),
+                    SellOnl = table.Column<int>(type: "int", nullable: true),
+                    SellOff = table.Column<int>(type: "int", nullable: true),
+                    BestSeller = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SellDailys", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SellMonthly",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -312,7 +352,26 @@ namespace AppData.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SellDaily", x => x.Id);
+                    table.PrimaryKey("PK_SellMonthly", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SellYearly",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TotalMoneys = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    Refund = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    TotalQuantity = table.Column<int>(type: "int", nullable: true),
+                    SellOnl = table.Column<int>(type: "int", nullable: true),
+                    SellOff = table.Column<int>(type: "int", nullable: true),
+                    BestSeller = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SellYearly", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -1095,6 +1154,9 @@ namespace AppData.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AccountStatitics");
+
+            migrationBuilder.DropTable(
                 name: "Address");
 
             migrationBuilder.DropTable(
@@ -1137,7 +1199,13 @@ namespace AppData.Migrations
                 name: "SalePhoneDetailds");
 
             migrationBuilder.DropTable(
-                name: "SellDaily");
+                name: "SellDailys");
+
+            migrationBuilder.DropTable(
+                name: "SellMonthly");
+
+            migrationBuilder.DropTable(
+                name: "SellYearly");
 
             migrationBuilder.DropTable(
                 name: "Transactions");

@@ -45,6 +45,7 @@ namespace AppData.Repositories
                 ImageUrl = model.ImageUrl,
                 PasswordHash = model.Password,
                 UserName = model.UserName,
+                
             };
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
@@ -75,6 +76,7 @@ namespace AppData.Repositories
                     PhoneNumber = model.PhoneNumber,
                     Points = model.Points,
                     Status = model.Status,
+                    CreateDate = DateTime.Now,
                 };
                 if (!_dbContext.AspNetUsers.Any(c => c.UserName == model.Username) && !_dbContext.Accounts.Any(c =>c.Username == model.Username))
                 {
