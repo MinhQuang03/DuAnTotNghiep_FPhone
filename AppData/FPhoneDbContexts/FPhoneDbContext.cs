@@ -50,6 +50,8 @@ public class FPhoneDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Sales> Sales { get; set; }
     public DbSet<SellDailys> SellDaily { get; set; }
     public DbSet<SalePhoneDetaild> SalePhoneDetailds { get; set; }
+
+    public DbSet<SellDailys> SellDailys { get; set; }
     public DbSet<ApplicationUser> AspNetUsers { get; set; }
     public DbSet<VW_Phone> VW_Phone { get; set; }
     public DbSet<VW_PhoneDetail> VW_PhoneDetail { get; set; }
@@ -59,7 +61,8 @@ public class FPhoneDbContext : IdentityDbContext<ApplicationUser>
     // Ko cần sửa file này
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-H6TL71T\MINGG;Initial Catalog=PRO219_WebsiteBanDienThoai ;Integrated Security=True");
+        //optionsBuilder.UseSqlServer(@"Data Source=fphone.database.windows.net;Initial Catalog=PRO219_WebsiteBanDienThoai;User ID=thanhnx;Password=123456aA@");
+        optionsBuilder.UseSqlServer(@"Data Source=TAINQ\SQLEXPRESS;Initial Catalog=PRO219_WebsiteBanDienThoai ;Integrated Security=True");
     }
     protected override void OnModelCreating(ModelBuilder builder)
     {

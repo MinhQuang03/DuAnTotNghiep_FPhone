@@ -37,6 +37,8 @@ namespace AppApi
             services.AddTransient<IBillRepository, BillRepository>();
             services.AddTransient<ISaleRepository, SaleRepository>();
             services.AddTransient<ISalePhoneDetaildRepository, SalePhoneDetaildRepository>();
+            services.AddTransient<ISellDailyRepository, SellDailyRepository>();
+
         }
     }
 }

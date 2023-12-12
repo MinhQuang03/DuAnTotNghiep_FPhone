@@ -1,16 +1,26 @@
-﻿namespace AppData.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace AppData.Models
 {
     public class Discount
     {
         public Guid Id { get; set; }
-        public Decimal ReducedAmount { get; set; }
+        [StringLength(25,MinimumLength =2 , ErrorMessage = "Tên voucher phải từ 2 -25 kí tự")]
+        public string? NameVoucher { get; set; }
+        [Required(ErrorMessage = "Điều kiện là trường bắt buộc")]
+        [Range(0, int.MaxValue , ErrorMessage = " là số nguyên không âm")]
 
-        public DateTime? TimeForm { get; set; }
+        public int? DieuKien { get; set; }
+        [Required(ErrorMessage = "Loại khuyến mãi là bắt buộc")]
+        public int? TypeVoucher { get; set; }
+        [Range(0,int.MaxValue , ErrorMessage = "Trường cần nhập tối đa từ 0 đến 999.999.999")]
+        public int? Quantity { get; set; }
 
-        public DateTime? TimeTo { get; set; }
-
-        public string? Note { get; set; }
-
-        public int Status { get; set; }
+        public double? MucUuDai { get; set; }
+        [Required(ErrorMessage = "Ngày bắt đầu là trường bắt buộc")]
+        public DateTime DateStart { get; set; }
+        [Required(ErrorMessage = "Ngày kết thúc là trường bắt buộc")]
+        public DateTime DateEnd { get; set; }
+        public string? StatusVoucher { get; set; }
     }
 }

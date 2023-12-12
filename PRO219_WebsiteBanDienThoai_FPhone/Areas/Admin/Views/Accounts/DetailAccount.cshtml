@@ -1,0 +1,48 @@
+﻿@model AppData.Models.ApplicationUser
+@{
+    ViewData["Title"] = "EditAccount";
+}
+
+<div class="card container-fluid">
+    <div class="card-header py-2">
+        <h2>Thông tin nhân viên</h2>
+    </div>
+    <div class="card-body">
+        <div class="row justify-content-center mb-3">
+            <img src="@(Model.ImageUrl==null?"":Model.ImageUrl)" width="200px" height="200px" class="rounded-circle">
+        </div>
+       
+        <div class="row">
+            <label class="text-end col-form-label col-md-1">Họ & Tên</label>
+            <div class="col-sm-9">
+                <input class="form-control" type="text" asp-for="Name" readonly />
+            </div>
+        </div>
+        <div class="row mt-4">
+            <label class="text-end col-form-label col-md-1">Email</label>
+            <div class="col-sm-4">
+                <input class="form-control" type="text" asp-for="Email" readonly/>
+            </div>
+            <label class="text-end col-form-label col-md-1">CCCD</label>
+            <div class="col-sm-4">
+                <input class="form-control" type="text" asp-for="CitizenId" readonly/>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <label class="text-end col-form-label col-md-1">Địa chỉ</label>
+            <div class="col-sm-4">
+                <input class="form-control" type="text" asp-for="Address" readonly/>
+            </div>
+            <label class="text-end col-form-label col">Trạng thái</label>
+            <div class="col-sm-4" style="margin-right: 190px">
+                <p readonly class="form-control">@(Model.Status==1?"Hoạt động":"Không hoạt động")</p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-9"></div>
+        <div class="col-3">
+            <a class="btn btn-primary" asp-action="Account">Quay lại</a>
+        </div>
+    </div>
+</div>

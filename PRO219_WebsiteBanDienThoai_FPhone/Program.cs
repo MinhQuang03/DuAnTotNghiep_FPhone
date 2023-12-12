@@ -22,6 +22,8 @@ builder.Services.AddTransient<IRomRepository, RomRepository>();
 builder.Services.AddTransient<IRanksRepositories, RankRepositories>();
 builder.Services.AddTransient<IChipCPURepository, ChipCPURepository>();
 builder.Services.AddTransient<IMaterialRepository, MaterialRepository>();
+builder.Services.AddTransient<IAccountService, AccountService>();
+
 
 
 builder.Services.AddScoped(sp => new HttpClient()
