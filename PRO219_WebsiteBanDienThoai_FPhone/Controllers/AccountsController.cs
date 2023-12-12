@@ -115,7 +115,7 @@ public class AccountsController : Controller
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-       
+
             // chuyển hướng đế trang admin
             if (respo.Roles.Contains("Admin") || respo.Roles.Contains("Staff")) return RedirectPermanent("/admin/accounts/index");
 
@@ -134,8 +134,13 @@ public class AccountsController : Controller
             DataError error = new DataError();
             error.Success = false;
             error.Msg = "Đăng nhập không thành công";
-            TempData["DataError"] = Utility.ConvertObjectToJson(error);
-            return  RedirectToAction("Index", "Home");
+
+            ModelState.AddModelError("UserName", "Tài khoản hoặc mật khẩu sai");
+            return RedirectToAction("Index", "Home");
+
+           // TempData["DataError"] = Utility.ConvertObjectToJson(error);
+           // return  RedirectToAction("Index", "Home");
+
         }
 
         return NoContent();
@@ -198,7 +203,7 @@ public class AccountsController : Controller
 
     }
 
-        public async Task<IActionResult> Cart()
+    public async Task<IActionResult> Cart()
     {
         var userId = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
         if (userId == null)
@@ -231,9 +236,9 @@ public class AccountsController : Controller
         var product = SessionCartDetail.GetObjFromSession(HttpContext.Session, "Cart");
         if (userId == null)
         {
-            product.Add(new CartDetailModel { phoneDetaild = _context.PhoneDetailds.Find(id),quantity = 1  });
+            product.Add(new CartDetailModel { phoneDetaild = _context.PhoneDetailds.Find(id), quantity = 1 });
             SessionCartDetail.SetobjTojson(HttpContext.Session, product, "Cart");
-            
+
             return RedirectToAction("Cart");
         }
         else
@@ -242,7 +247,7 @@ public class AccountsController : Controller
             var idcartss = _context.Carts.FirstOrDefault(a => a.IdAccount == (Guid.Parse(userId)));
             if (idcartss != null)
             {
-             
+
                 CartDetails cartDetails = new CartDetails();
                 cartDetails.Id = new Guid();
                 cartDetails.IdPhoneDetaild = id;
@@ -250,7 +255,7 @@ public class AccountsController : Controller
                 cartDetails.Status = 1;
                 _context.CartDetails.Add(cartDetails);
                 _context.SaveChanges();
-             
+
                 return RedirectToAction("ShowCart");
             }
             else
@@ -267,10 +272,10 @@ public class AccountsController : Controller
                 cartDetails.Status = 1;
                 _context.CartDetails.Add(cartDetails);
                 _context.SaveChanges();
-             
+
                 return RedirectToAction("ShowCart");
             }
-          
+
         }
 
     }
@@ -287,95 +292,131 @@ public class AccountsController : Controller
             var jsonString = JsonConvert.SerializeObject(cart);
             HttpContext.Session.SetString("Cart", jsonString);
         }
-       return RedirectToAction("Cart");
+        return RedirectToAction("Cart");
     }
 
     [HttpPost]
     public async Task<IActionResult> ORDER(CheckOutViewModel order)
     {
-        
-            var userId = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
-            if (userId == null)
-            {
-                return BadRequest("User Id is not available.");
-            }
-            var currentBillNumber = _context.Bill.Count() + 1;
-            var billCode = "HD" + currentBillNumber.ToString("D5");
-            Bill bill = new Bill();
-            bill.Id = Guid.NewGuid();
-            bill.Address = $"{order.Address},{order.Province},{order.District},{order.Ward}";
-            bill.Name = order.Name;
-            bill.BillCode = billCode;
-            bill.Status = 2; // Chờ xác nhận 
-            bill.TotalMoney = order.TotalMoney;
-            bill.CreatedTime = DateTime.Now;
-            bill.PaymentDate = DateTime.Now;
-            bill.IdAccount = Guid.Parse(userId);
-            bill.Phone = order.Phone;
-            bill.StatusPayment = 0; // Chưa thanh toán 
-            bill.deliveryPaymentMethod = "COD";
 
-            _context.Bill.Add(bill);
-            _context.SaveChanges();
-            
-            Guid idhd = bill.Id;
+        var userId = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
+        if (userId == null)
+        {
+            return BadRequest("User Id is not available.");
+        }
+        var currentBillNumber = _context.Bill.Count() + 1;
+        var billCode = "HD" + currentBillNumber.ToString("D5");
+        Bill bill = new Bill();
+        bill.Id = Guid.NewGuid();
+        bill.Address = $"{order.Address},{order.Province},{order.District},{order.Ward}";
+        bill.Name = order.Name;
+        bill.BillCode = billCode;
+        bill.Status = 2; // Chờ xác nhận 
+        bill.TotalMoney = order.TotalMoney;
+        bill.CreatedTime = DateTime.Now;
+        bill.PaymentDate = DateTime.Now;
+        bill.IdAccount = Guid.Parse(userId);
+        bill.Phone = order.Phone;
+        bill.StatusPayment = 0; // Chưa thanh toán 
+        bill.deliveryPaymentMethod = "COD";
 
-            var product = _context.CartDetails.Where(a => a.IdAccount == Guid.Parse(userId)).ToList();
+        _context.Bill.Add(bill);
+        _context.SaveChanges();
 
-           
-                List<BillDetails> Listbill = new List<BillDetails>();
+        Guid idhd = bill.Id;
 
-                foreach (var item in product)
-                {
-                    BillDetails billDetail = new BillDetails();
-                    billDetail.IdBill = idhd;
-                    billDetail.Id = Guid.NewGuid();
-                    billDetail.IdPhoneDetail = item.IdPhoneDetaild;
-                    billDetail.Price = _context.PhoneDetailds.Find(item.IdPhoneDetaild).Price;
-                    billDetail.Status = 0;
-                    Listbill.Add(billDetail);
-                }
+        var product = _context.CartDetails.Where(a => a.IdAccount == Guid.Parse(userId)).ToList();
 
-                foreach (var item in product)
-                {
-                    var cart = _context.CartDetails.Find(item.Id);
-                    _context.CartDetails.Remove(cart);
-                }
 
-                _context.BillDetails.AddRange(Listbill);
-                await _context.SaveChangesAsync();
+        List<BillDetails> Listbill = new List<BillDetails>();
 
-                return RedirectToAction("Index", "Home");
+
+        foreach (var item in product)
+        {
+            BillDetails billDetail = new BillDetails();
+            billDetail.IdBill = idhd;
+            billDetail.Id = Guid.NewGuid();
+            billDetail.IdPhoneDetail = item.IdPhoneDetaild;
+            billDetail.Price = _context.PhoneDetailds.Find(item.IdPhoneDetaild).Price;
+            billDetail.Status = 0;
+            Listbill.Add(billDetail);
+        }
+
+        foreach (var item in product)
+        {
+            var cart = _context.CartDetails.Find(item.Id);
+            _context.CartDetails.Remove(cart);
+        }
+
+        _context.BillDetails.AddRange(Listbill);
+        await _context.SaveChangesAsync();
+
+        return Json(new { success = true });
+
+              //  return RedirectToAction("Index", "Home");
                 
+
     }
 
     public async Task<IActionResult> PurchaseHistory(Guid idAccount)
     {
-        var accBill = _context.Bill.FirstOrDefault(p => p.IdAccount == idAccount);
+        //var accBill = _context.Bill.FirstOrDefault(p => p.IdAccount == idAccount); // sao lại lấy 1 bill đầu. phải lấy hết chứ
 
-        var phoneNames = (from bd in _context.BillDetails
-                          join pdp in _context.PhoneDetailds on bd.IdPhoneDetail equals pdp.Id
-                          join ph in _context.Phones on pdp.IdPhone equals ph.Id
-                          where bd.IdBill == accBill.Id
-                          select ph.PhoneName).FirstOrDefault();
 
-        var ramName = (from bd in _context.BillDetails
-                       join pdp in _context.PhoneDetailds on bd.IdPhoneDetail equals pdp.Id
-                       join ph in _context.Ram on pdp.IdRam equals ph.Id
-                       where bd.IdBill == accBill.Id
-                       select ph.Name).FirstOrDefault();
+        //var phoneNames = (from bd in _context.BillDetails
+        //                  join pdp in _context.PhoneDetailds on bd.IdPhoneDetail equals pdp.Id
+        //                  join ph in _context.Phones on pdp.IdPhone equals ph.Id
+        //                  where bd.IdBill == accBill.Id
+        //                  select ph.PhoneName).FirstOrDefault();
 
-        var colorName = (from bd in _context.BillDetails
-                         join pdp in _context.PhoneDetailds on bd.IdPhoneDetail equals pdp.Id
-                         join ph in _context.Colors on pdp.IdColor equals ph.Id
-                         where bd.IdBill == accBill.Id
-                         select ph.Name).FirstOrDefault();
+        //var ramName = (from bd in _context.BillDetails
+        //               join pdp in _context.PhoneDetailds on bd.IdPhoneDetail equals pdp.Id
+        //               join ph in _context.Ram on pdp.IdRam equals ph.Id
+        //               where bd.IdBill == accBill.Id
+        //               select ph.Name).FirstOrDefault();
 
-        // Lấy danh sách các PhoneName và gán vào ViewBag
-        ViewBag.PhoneNames = phoneNames + " " + ramName + " " + colorName;
+        //var colorName = (from bd in _context.BillDetails
+        //                 join pdp in _context.PhoneDetailds on bd.IdPhoneDetail equals pdp.Id
+        //                 join ph in _context.Colors on pdp.IdColor equals ph.Id
+        //                 where bd.IdBill == accBill.Id
+        //                 select ph.Name).FirstOrDefault();
 
-        var lisst = _context.BillDetails.Where(m => m.IdBill == accBill.Id).ToList();
+        //// Lấy danh sách các PhoneName và gán vào ViewBag
+        //ViewBag.PhoneNames = phoneNames + " " + ramName + " " + colorName;
 
-        return View(lisst);
+        //var lisst = _context.BillDetails.Where(m => m.IdBill == accBill.Id).ToList();
+
+        //return View(lisst);
+
+        // Lấy ra danh sách đơn hàng mà khách hàng đã đặt 
+        var accBill = _context.Bill.Where(p => p.IdAccount == idAccount).OrderByDescending(p => p.CreatedTime).ToList();
+        return View(accBill);
+    }
+
+    public ActionResult XemChiTiet(Guid idBill)
+    {
+        // Tìm ra thông tin chi tiết hóa đơn tương ứng theo mã Bill
+        //var billDetail = _context.BillDetails.Where(p=>p.IdBill == idBill).ToList();
+
+        // Tên sản phầm gồm: Tên điện thoại + màu sắc + Số Ram + Mã imeil
+
+        // Tìm ra điện thoại tương ứng
+
+        var result = (from billDetails in _context.BillDetails
+                     join phoneDetail in _context.PhoneDetailds on billDetails.IdPhoneDetail equals phoneDetail.Id
+                     join phone in _context.Phones on phoneDetail.IdPhone equals phone.Id
+                     join color in _context.Colors on phoneDetail.IdColor equals color.Id
+                     join ram in _context.Ram on phoneDetail.IdRam equals ram.Id
+                     join rom in _context.Rom on phoneDetail.IdRom equals rom.Id
+                     where billDetails.IdPhoneDetail == new Guid(idBill.ToString())
+                     select new PhoneDetailsViewModel
+                     {
+                         PhoneName = phone.PhoneName,
+                         ColorName = color.Name,
+                         RamName = ram.Name,
+                         RomName = rom.Name
+                     }).ToList();
+
+        return View(result);
     }
 }
