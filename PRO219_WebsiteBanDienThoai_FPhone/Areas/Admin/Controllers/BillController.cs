@@ -18,7 +18,8 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var bills = _context.Bill.Where(b => b.Status != 0).ToList();
+            // Lấy danh sách hóa đơn giảm dần theo thời gian đặt hàng
+            var bills = _context.Bill.Where(b => b.Status != 0).ToList().OrderByDescending(b=>b.CreatedTime);
             if (bills != null && bills.Any())
             {
                 return View(bills);
@@ -123,7 +124,9 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             }
             else
             {
+
                 bill.Status = 4;
+                bill.StatusPayment = 1;
                 _context.Entry(bill).State = EntityState.Modified;
                 _context.SaveChanges();
             }

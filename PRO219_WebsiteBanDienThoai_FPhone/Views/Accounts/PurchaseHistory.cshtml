@@ -1,47 +1,86 @@
-﻿@model IEnumerable<AppData.Models.BillDetails>
+﻿@using AppData.Models
+@model List<Bill>
 
 @{
-    ViewData["Title"] = "PurchaseHistory";
+    ViewData["Title"] = "Danh sách hóa đơn khách hàng";
+    String dh1 = "Đã xác nhận";
+    String dh2 = "Chờ xác nhận";
+    String dh3 = "Đang giao";
+    String dh4 = "Đã giao";
+    String dh5 = "Đã hủy";
 }
-
-<h1>PurchaseHistory</h1>
 
 <table class="table table-bordered container">
     <thead>
         <tr>
+            <td colspan="5" style="text-align:center">PURCHASE HISTORY</td>
+        </tr>
+        <tr>
             <th>
-                PhoneName
+                Ngày Đặt
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Number)
+                Status
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                Status Payment
             </th>
             <th>
-                Hành động
+                Total Money
+            </th>
+            <th>
+                Detail
             </th>
         </tr>
+
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                    @ViewBag.PhoneNames
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Number)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-
+        @foreach (var item in Model)
+        {
+            <tr>
                 <td>
-                    <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#traHangModal">Trả hàng</button>
+                    @item.CreatedTime
                 </td>
-
-        </tr>
-}
+                <td>
+                    @if (item.Status == 1)
+                    {
+                        <p class="text-success"> @dh1</p>
+                    }
+                    else if (item.Status == 2)
+                    {
+                        <p class="text-danger"> @dh2</p>
+                    }
+                    else if (item.Status == 3)
+                    {
+                        <p class="text-danger"> @dh3</p>
+                    }
+                    else if (item.Status == 4)
+                    {
+                        <p class="text-success"> @dh4</p>
+                    }
+                    else if (item.Status == 5)
+                    {
+                        <p class="text-success"> @dh5</p>
+                    }
+                </td>
+                <td>
+                    @item.deliveryPaymentMethod  @if (item.StatusPayment == 1)
+                    {
+                        <span class="text-success">Đã thanh toán </span>
+                    }
+                    else
+                    {
+                        <span class="text-danger">Chưa thanh toán </span>
+                    }
+                </td>
+                <td>
+                    @string.Format("{0:0,0}", item.TotalMoney) vnđ
+                </td>
+                <td>
+                    <a href="@Url.Action("XemChiTiet", "Accounts", new { idBill = item.Id })">Xem Chi tiết</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 <!-- Trả hàng modal -->

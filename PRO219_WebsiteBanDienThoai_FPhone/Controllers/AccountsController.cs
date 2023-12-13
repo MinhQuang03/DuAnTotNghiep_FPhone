@@ -17,6 +17,7 @@ using AppData.Utilities;
 using AppData.ViewModels;
 using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
 using Serilog;
+
 namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers;
 
 public class AccountsController : Controller
@@ -25,17 +26,13 @@ public class AccountsController : Controller
     private IcartRepository _cartRepository;
     private FPhoneDbContext _context;
     private readonly HttpClient _client;
-
-
     public AccountsController(HttpClient client)
     {
         _cartDetailepository = new CartDetailepository();
         _cartRepository = new CartRepository();
         _context = new FPhoneDbContext();
         _client = client;
-
     }
-
     //Khi đã đăng nhập ấn nút có biểu tượng user sẽ hiện ra profile của người dùng
     public async Task<IActionResult> Profile()
     {
@@ -44,7 +41,6 @@ public class AccountsController : Controller
         // lấy ra thông tin người dùng thông qua id
         var datajson = await _client.GetStringAsync($"api/Accounts/get-user/{id}");
         var user = JsonConvert.DeserializeObject<Account>(datajson);
-        TempData["UserId"] = id;
         if (user != null)
         {
             var jsondata = await _client.GetStringAsync($"api/Address/get-address/{id}");
@@ -53,8 +49,6 @@ public class AccountsController : Controller
             if (address != null)
                 ViewBag.Address = address.HomeAddress + ", " + address.District + ", " + address.City + ", " +
                                   address.Country;
-            TempData["UserProfile"] = user;
-            TempData["UserAddress"] = address;
             return View(user);
         }
 
@@ -69,26 +63,6 @@ public class AccountsController : Controller
     [HttpPost]
     public async Task<IActionResult> CreateAccount(ClAccountsViewModel model)
     {
-        //if (!_valid.CheckString(model.Name))
-        //{
-        //    ModelState.AddModelError("Username", "Tên không thể chứa ký tự đặc biệt");
-        //    return View(model);
-        //}
-        //if (!_valid.CheckString(model.Username))
-        //{
-        //    ModelState.AddModelError("Username", "Tên đăng nhập không thể chứa ký tự đặc biệt");
-        //    return View(model);
-        //}
-        //if (!_valid.CheckString(model.Password))
-        //{
-        //    ModelState.AddModelError("Password", "Mật khẩu không thể chứa ký tự đặc biệt");
-        //    return View(model);
-        //}
-        //if (!_valid.CheckString(model.CfPassword))
-        //{
-        //    ModelState.AddModelError("CfPassword", "Mật khẩu không thể chứa ký tự đặc biệt");
-        //    return View(model);
-        //}
         // lấy ra tài khoản admin để kiểm tra username có trùng hay không
         var result = await _client.GetStringAsync("/api/Accounts/get-all-staff");
         var userName = JsonConvert.DeserializeObject<List<ApplicationUser>>(result);
@@ -148,7 +122,7 @@ public class AccountsController : Controller
             //chuyển hướng đến trang chủ của web
             if (respo.Roles.Contains("User"))
             {
-                DataError error = new DataError() { Success = true };
+                DataError error = new DataError(){Success = true};
                 error.Success = true;
                 error.Msg = "Đăng nhập thành công";
                 TempData["DataError"] = Utility.ConvertObjectToJson(error);
@@ -160,8 +134,13 @@ public class AccountsController : Controller
             DataError error = new DataError();
             error.Success = false;
             error.Msg = "Đăng nhập không thành công";
-            TempData["DataError"] = Utility.ConvertObjectToJson(error);
+
+            ModelState.AddModelError("UserName", "Tài khoản hoặc mật khẩu sai");
             return RedirectToAction("Index", "Home");
+
+           // TempData["DataError"] = Utility.ConvertObjectToJson(error);
+           // return  RedirectToAction("Index", "Home");
+
         }
 
         return NoContent();
@@ -178,8 +157,6 @@ public class AccountsController : Controller
 
         return RedirectToAction("Cart");
     }
-
-
 
     public async Task<IActionResult> AddCart()
     {
@@ -353,6 +330,7 @@ public class AccountsController : Controller
 
         List<BillDetails> Listbill = new List<BillDetails>();
 
+
         foreach (var item in product)
         {
             BillDetails billDetail = new BillDetails();
@@ -373,79 +351,72 @@ public class AccountsController : Controller
         _context.BillDetails.AddRange(Listbill);
         await _context.SaveChangesAsync();
 
-        return RedirectToAction("Index", "Home");
+        return Json(new { success = true });
+
+              //  return RedirectToAction("Index", "Home");
+                
 
     }
 
     public async Task<IActionResult> PurchaseHistory(Guid idAccount)
     {
-        var accBill = _context.Bill.FirstOrDefault(p => p.IdAccount == idAccount);
+        //var accBill = _context.Bill.FirstOrDefault(p => p.IdAccount == idAccount); // sao lại lấy 1 bill đầu. phải lấy hết chứ
 
-        var phoneNames = (from bd in _context.BillDetails
-                          join pdp in _context.PhoneDetailds on bd.IdPhoneDetail equals pdp.Id
-                          join ph in _context.Phones on pdp.IdPhone equals ph.Id
-                          where bd.IdBill == accBill.Id
-                          select ph.PhoneName).FirstOrDefault();
 
-        var ramName = (from bd in _context.BillDetails
-                       join pdp in _context.PhoneDetailds on bd.IdPhoneDetail equals pdp.Id
-                       join ph in _context.Ram on pdp.IdRam equals ph.Id
-                       where bd.IdBill == accBill.Id
-                       select ph.Name).FirstOrDefault();
+        //var phoneNames = (from bd in _context.BillDetails
+        //                  join pdp in _context.PhoneDetailds on bd.IdPhoneDetail equals pdp.Id
+        //                  join ph in _context.Phones on pdp.IdPhone equals ph.Id
+        //                  where bd.IdBill == accBill.Id
+        //                  select ph.PhoneName).FirstOrDefault();
 
-        var colorName = (from bd in _context.BillDetails
-                         join pdp in _context.PhoneDetailds on bd.IdPhoneDetail equals pdp.Id
-                         join ph in _context.Colors on pdp.IdColor equals ph.Id
-                         where bd.IdBill == accBill.Id
-                         select ph.Name).FirstOrDefault();
+        //var ramName = (from bd in _context.BillDetails
+        //               join pdp in _context.PhoneDetailds on bd.IdPhoneDetail equals pdp.Id
+        //               join ph in _context.Ram on pdp.IdRam equals ph.Id
+        //               where bd.IdBill == accBill.Id
+        //               select ph.Name).FirstOrDefault();
 
-        // Lấy danh sách các PhoneName và gán vào ViewBag
-        ViewBag.PhoneNames = phoneNames + " " + ramName + " " + colorName;
+        //var colorName = (from bd in _context.BillDetails
+        //                 join pdp in _context.PhoneDetailds on bd.IdPhoneDetail equals pdp.Id
+        //                 join ph in _context.Colors on pdp.IdColor equals ph.Id
+        //                 where bd.IdBill == accBill.Id
+        //                 select ph.Name).FirstOrDefault();
 
-        var lisst = _context.BillDetails.Where(m => m.IdBill == accBill.Id).ToList();
+        //// Lấy danh sách các PhoneName và gán vào ViewBag
+        //ViewBag.PhoneNames = phoneNames + " " + ramName + " " + colorName;
 
-        return View(lisst);
+        //var lisst = _context.BillDetails.Where(m => m.IdBill == accBill.Id).ToList();
+
+        //return View(lisst);
+
+        // Lấy ra danh sách đơn hàng mà khách hàng đã đặt 
+        var accBill = _context.Bill.Where(p => p.IdAccount == idAccount).OrderByDescending(p => p.CreatedTime).ToList();
+        return View(accBill);
     }
-    public  IActionResult ResetPassword()
+
+    public ActionResult XemChiTiet(Guid idBill)
     {
-        return View();
-    }
-    public IActionResult ResetPasswordSucces()
-    {
-        return View();
-    }
-    public  IActionResult Profile_Update() 
-    {
-        var user = TempData["UserProfile"] as Account;
-        var address = TempData["UserAddress"] as Address;
-        if (address != null)
-        {
-            ViewBag.HomeAddress = address.HomeAddress ?? "N/A";
-            ViewBag.District = address.District ?? "N/A";
-            ViewBag.City = address.City ?? "N/A";
-            ViewBag.Country = address.Country ?? "N/A";
-        }
-        return View(user);     
-    }
-    [HttpPost]
-    public async Task<IActionResult> Profile_Update(ClAccountsViewModel model, Address address)
-    {
-        //var id = TempData["UserId"]?.ToString();
-        //if (id != null)
-        //{
-        //    var datajson = await _client.GetStringAsync($"api/Accounts/get-user/{id}");
-        //    var user = JsonConvert.DeserializeObject<Account>(datajson);
-        //    if (user != null)
-        //    {
-        //        user.Name = model.Name;
-        //        user.Email = model.Email;
-        //        user.PhoneNumber = model.PhoneNumber;
-        //        user.Password = model.Password;
-        //        user.ImageUrl = model.ImageUrl;
-        //    }
-        //}
-        return View();
-    }
+        // Tìm ra thông tin chi tiết hóa đơn tương ứng theo mã Bill
+        //var billDetail = _context.BillDetails.Where(p=>p.IdBill == idBill).ToList();
 
+        // Tên sản phầm gồm: Tên điện thoại + màu sắc + Số Ram + Mã imeil
 
+        // Tìm ra điện thoại tương ứng
+
+        var result = (from billDetails in _context.BillDetails
+                     join phoneDetail in _context.PhoneDetailds on billDetails.IdPhoneDetail equals phoneDetail.Id
+                     join phone in _context.Phones on phoneDetail.IdPhone equals phone.Id
+                     join color in _context.Colors on phoneDetail.IdColor equals color.Id
+                     join ram in _context.Ram on phoneDetail.IdRam equals ram.Id
+                     join rom in _context.Rom on phoneDetail.IdRom equals rom.Id
+                     where billDetails.IdPhoneDetail == new Guid(idBill.ToString())
+                     select new PhoneDetailsViewModel
+                     {
+                         PhoneName = phone.PhoneName,
+                         ColorName = color.Name,
+                         RamName = ram.Name,
+                         RomName = rom.Name
+                     }).ToList();
+
+        return View(result);
+    }
 }
