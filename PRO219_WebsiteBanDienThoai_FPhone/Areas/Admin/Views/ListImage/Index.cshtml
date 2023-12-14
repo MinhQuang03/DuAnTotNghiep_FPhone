@@ -1,4 +1,5 @@
-﻿@model PRO219_WebsiteBanDienThoai_FPhone.ViewModel.ListPhoneViewModel
+﻿@using System.Globalization
+@model PRO219_WebsiteBanDienThoai_FPhone.ViewModel.ListPhoneViewModel
 <div>
     <partial name="DataError" />
     <h2 class="label-control mb-3">Tìm kiếm sản phẩm</h2>
@@ -65,7 +66,7 @@
                 @Html.DisplayFor(modelItem => item.ProductionCompanyName)
             </td>
             <td>
-                @item.Price?.ToString("C0")
+                @item.Price?.ToString("C0", new CultureInfo("vi-VN"))
             </td>
             <td>
                 @Html.ActionLink("Thêm ảnh", "InsertImageForPhoneDetail", new { id=item.IdPhoneDetail })
