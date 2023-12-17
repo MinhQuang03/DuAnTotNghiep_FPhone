@@ -35,7 +35,6 @@ public class FPhoneDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<ListImage> ListImage { get; set; }
     public DbSet<Material> Material { get; set; }
     public DbSet<OperatingSystems> OperatingSystem { get; set; }
-    public DbSet<Payment> Payments { get; set; }
     public DbSet<Phone> Phones { get; set; }
     public DbSet<PhoneDetaild> PhoneDetailds { get; set; }
     public DbSet<ProductionCompany> ProductionCompany { get; set; }
@@ -44,7 +43,6 @@ public class FPhoneDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Review> Reviews { get; set; }
     public DbSet<Rom> Rom { get; set; }
     public DbSet<Sim> Sim { get; set; }
-    public DbSet<Transaction> Transactions { get; set; }
     public DbSet<Warranty> Warranty { get; set; }
     public DbSet<WarrantyCard> WarrantyCards { get; set; }
     public DbSet<Sales> Sales { get; set; }
@@ -61,8 +59,8 @@ public class FPhoneDbContext : IdentityDbContext<ApplicationUser>
     // Ko cần sửa file này
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        //optionsBuilder.UseSqlServer(@"Data Source=fphone.database.windows.net;Initial Catalog=PRO219_WebsiteBanDienThoai;User ID=thanhnx;Password=123456aA@");
-        optionsBuilder.UseSqlServer(@"Data Source=TAINQ\SQLEXPRESS;Initial Catalog=PRO219_WebsiteBanDienThoai ;Integrated Security=True");
+        optionsBuilder.UseSqlServer(@"Data Source=MSI\SQLEXPRESS;Initial Catalog=PRO219_WebsiteBanDienThoai ;Integrated Security=True");
+
     }
     protected override void OnModelCreating(ModelBuilder builder)
     {

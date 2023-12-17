@@ -38,6 +38,7 @@
             String dh3 = "Đang giao";
             String dh4 = "Đã giao";
             String dh5 = "Đã hủy";
+            String dh6 = "Đã trả hàng";
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
@@ -65,6 +66,10 @@
                     else if (item.Status == 5)
                     {
                         <p class="text-success"> @dh5</p>
+                    }
+                    else if (item.Status == 6)
+                    {
+                        <p class="text-success"> @dh6</p>
                     }
                 </td>
                 <td>

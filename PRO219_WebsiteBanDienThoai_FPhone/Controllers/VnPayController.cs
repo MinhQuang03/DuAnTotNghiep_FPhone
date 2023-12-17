@@ -35,11 +35,11 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
         public IActionResult Payment(CheckOutViewModel request)
         {
             var pay = new PayLib();
-
+            
             pay.AddRequestData("vnp_Version", "2.1.0"); //Phiên bản api mà merchant kết nối. Phiên bản hiện tại là 2.1.0
             pay.AddRequestData("vnp_Command", "pay"); //Mã API sử dụng, mã cho giao dịch thanh toán là 'pay'
             pay.AddRequestData("vnp_TmnCode", vnpay.TmnCode); //Mã website của merchant trên hệ thống của VNPAY (khi đăng ký tài khoản sẽ có trong mail VNPAY gửi về)
-            pay.AddRequestData("vnp_Amount", request.TotalMoney.ToString()); //số tiền cần thanh toán, công thức: số tiền * 100 - ví dụ 10.000 (mười nghìn đồng) --> 1000000
+            pay.AddRequestData("vnp_Amount", ((int)(request.TotalMoney) * 100).ToString()); //số tiền cần thanh toán, công thức: số tiền * 100 - ví dụ 10.000 (mười nghìn đồng) --> 1000000
             pay.AddRequestData("vnp_BankCode", ""); //Mã Ngân hàng thanh toán (tham khảo: https://sandbox.vnpayment.vn/apis/danh-sach-ngan-hang/), có thể để trống, người dùng có thể chọn trên cổng thanh toán VNPAY
             pay.AddRequestData("vnp_CreateDate", DateTime.Now.ToString("yyyyMMddHHmmss")); //ngày thanh toán theo định dạng yyyyMMddHHmmss
             pay.AddRequestData("vnp_CurrCode", "VND"); //Đơn vị tiền tệ sử dụng thanh toán. Hiện tại chỉ hỗ trợ VND
@@ -123,13 +123,25 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
 
             foreach (var item in product)
             {
-                BillDetails billDetail = new BillDetails();
-                billDetail.IdBill = idhd;
-                billDetail.Id = new Guid();
-                billDetail.IdPhoneDetail = item.IdPhoneDetaild;
-                billDetail.Price = _dbContext.PhoneDetailds.Find(item.IdPhoneDetaild).Price;
-                billDetail.Status = 0;
-                Listbill.Add(billDetail);
+                // Tìm ra imeil đầu tiên thuộc PhoneDetail có status = 1 (1: chưa được bán)
+                var emeiCheck = _dbContext.Imei.First(a => a.IdPhoneDetaild == item.IdPhoneDetaild && a.Status == 1);
+                // trường hợp tồn tại emeiCheck
+                if (null != emeiCheck)
+                {
+                    // Cập nhật lại status = 2 (Đã bán)
+                    emeiCheck.Status = 2;
+                    _dbContext.SaveChanges();
+
+                    // Thêm sản phẩm điện thoại vào bill detail
+                    BillDetails billDetail = new BillDetails();
+                    billDetail.IdBill = idhd;
+                    billDetail.Id = Guid.NewGuid();
+                    billDetail.IdPhoneDetail = item.IdPhoneDetaild;
+                    billDetail.Price = _dbContext.PhoneDetailds.Find(item.IdPhoneDetaild).Price;
+                    billDetail.Status = 0;
+                    billDetail.Imei = emeiCheck.NameImei; // Đúng tra là id của bảng emei. Nhưng name email cũng không thể trùng.
+                    Listbill.Add(billDetail);
+                }
             }
             foreach (var item in product)
             {
@@ -167,7 +179,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
                 string vnp_SecureHash = HttpContext.Request.Query["vnp_SecureHash"]; //hash của dữ liệu trả về
 
                 bool checkSignature = pay.ValidateSignature(vnp_SecureHash, hashSecret); //check chữ ký đúng hay không?
-                
+
                 if (checkSignature)
                 {
                     if (vnp_ResponseCode == "00")
