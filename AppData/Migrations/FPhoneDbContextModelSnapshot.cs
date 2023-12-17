@@ -868,7 +868,7 @@ namespace AppData.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SellDaily");
+                    b.ToTable("SellDailys");
                 });
 
             modelBuilder.Entity("AppData.Models.Sim", b =>

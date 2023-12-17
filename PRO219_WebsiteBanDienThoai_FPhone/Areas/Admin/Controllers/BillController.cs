@@ -272,8 +272,8 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         public void SendEmail(string toEmail, DateTime? dNgayGuiBaohanh)
         {
             // Địa chỉ email người gửi
-            string fromEmail = "abc@gmail.com";
-            string password = "122321423423524sdfsdfdsf";
+            string fromEmail = "buiminhquang332003@gmail.com";
+            string password = "buiquang36";
 
             // Tạo đối tượng MailMessage
             MailMessage message = new MailMessage(fromEmail, toEmail);
