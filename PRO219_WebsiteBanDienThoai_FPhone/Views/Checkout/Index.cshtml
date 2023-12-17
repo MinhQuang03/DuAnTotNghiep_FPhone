@@ -33,148 +33,150 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="~/Checkout/css/style.css" rel="stylesheet">
-    
+
 </head>
 
 <body>
 
-<!-- Breadcrumb Start -->
-<div class="container-fluid">
-    <div class="row px-xl-5">
-        <div class="col-12">
-            <nav class="breadcrumb bg-light mb-30">
-                <a class="breadcrumb-item text-dark" href="#">Home</a>
-                <a class="breadcrumb-item text-dark" href="#">Shop</a>
-                <span class="breadcrumb-item active">Checkout</span>
-            </nav>
+    <!-- Breadcrumb Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    <a class="breadcrumb-item text-dark" href="#">Home</a>
+                    <a class="breadcrumb-item text-dark" href="#">Shop</a>
+                    <span class="breadcrumb-item active">Checkout</span>
+                </nav>
+            </div>
         </div>
     </div>
-</div>
-<!-- Breadcrumb End -->
-<!-- Checkout Start -->
-<div class="container-fluid">
+    <!-- Breadcrumb End -->
+    <!-- Checkout Start -->
+    <div class="container-fluid">
         <form id="checkoutForm" asp-action="Index" method="post">
-        <div class="row px-xl-5">
-            <div class="col-lg-8">
-                <h5 class="section-title position-relative text-uppercase mb-3">
-                    <span class="bg-secondary pr-3">Billing Address</span>
-                </h5>
-                <div class="bg-light p-30 mb-5">
-                    <div class="row">
-                        <input id="SumPhone" hidden value="@Model.lstCartDetail.Count"/>
-                        <input id="TotalPhone" hidden value="@total?.ToString("0000")"/>
-                        <div class="col-md-6 form-group">
-                            <label>Họ và tên</label>
-                            <input asp-for="Name" class="form-control" type="text" placeholder="John">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Số điện thoại</label>
-                            <input asp-for="Phone" class="form-control" type="text">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Tỉnh/Thành phố</label>
-                            <input id="ProvinceName" hidden="" asp-for="Province"/>
-                            @Html.DropDownListFor(model => model.id, new SelectList(Model.Provinces, "ProvinceID", "ProvinceName"), "--Lựa chọn--", new { @class = "form-control", id = "Province", onchange = "JCheckOut.ChangeProvince()" })
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Quận/Huyện</label>
-                            <input id="DistrictName" hidden="" asp-for="District"/>
-                            @Html.DropDownListFor(model => model.id, Enumerable.Empty<SelectListItem>(), "--Lựa chọn--", new { @class = "form-control", id = "District", onchange = "JCheckOut.ChangeDistrict()" })
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Xã/Phường</label>
-                            <input id="WardName" hidden="" asp-for="Ward"/>
-                            @Html.DropDownListFor(model => model.id, Enumerable.Empty<SelectListItem>(), "--Lựa chọn--", new { @class = "form-control", id = "Ward", onchange = "JCheckOut.ChangeWard()" })
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Địa chỉ chi tiết</label>
-                                <input asp-for="Address" class="form-control" type="text" placeholder="123">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Phương thức vận chuyển</label>
-                            @Html.DropDownListFor(model => model.id, Enumerable.Empty<SelectListItem>(), "--Lựa chọn--", new { @class = "form-control", id = "AvailableService", onchange = "JCheckOut.ChangeService()" })
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <h5 class="section-title position-relative text-uppercase mb-3">
-                    <span class="bg-secondary pr-3">Order Total</span>
-                </h5>
-                <div class="bg-light p-30 mb-5">
-                    <div class="border-bottom">
-                        <h6 class="mb-3">Products</h6>
-                        @foreach (var item in Model.lstCartDetail)
-                        {
-                            <div class="d-flex justify-content-between">
-                                <p>@item.PhoneName - @item.ColorName-@item.RomName</p>
-                                    <p>@item.Price?.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</p>
-                            </div>
-                        }
-                    </div>
-                    <div class="border-bottom pt-3 pb-2">
-                        <div class="d-flex justify-content-between mb-3">
-                            <h6>Tổng tiền sản phẩm</h6>
-                                <h6>@total?.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</h6>
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <h6 class="font-weight-medium">Phí vận chuyển</h6>
-                            <h6 id="TotalShip" class="font-weight-medium">@totalShip</h6>
-                        </div>
-                    </div>
-                    <div class="pt-2">
-                        <div class="d-flex justify-content-between mt-2">
-                            <h5>Tổng tiền thanh toán</h5>
-                                <input hidden="" asp-for="TotalMoney" id="TotalMoney" />
-                            <h5 id="TotalPayment">
-                                @{ (total + totalShip)?.ToString("C0");}
-                            </h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="mb-5">
+            <div class="row px-xl-5">
+                <div class="col-lg-8">
                     <h5 class="section-title position-relative text-uppercase mb-3">
-                        <span class="bg-secondary pr-3">Payment</span>
+                        <span class="bg-secondary pr-3">Billing Address</span>
                     </h5>
-                    <div class="bg-light p-30">
-                        <div class="form-group">
-                            <div class="custom-control custom-radio">
-                                <input type="radio" class="custom-control-input" name="payment" id="paypal">
-                                <label class="custom-control-label" for="paypal">Chuyển khoản</label>
+                    <div class="bg-light p-30 mb-5">
+                        <div class="row">
+                            <input id="SumPhone" hidden value="@Model.lstCartDetail.Count" />
+                            <input id="TotalPhone" hidden value="@total?.ToString("0000")" />
+                            <div class="col-md-6 form-group">
+                                <label>Họ và tên</label>
+                                <input asp-for="Name" class="form-control" type="text" placeholder="John">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Số điện thoại</label>
+                                <input asp-for="Phone" class="form-control" type="text">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Tỉnh/Thành phố</label>
+                                <input id="ProvinceName" hidden="" asp-for="Province" />
+                                @Html.DropDownListFor(model => model.id, new SelectList(Model.Provinces, "ProvinceID", "ProvinceName"), "--Lựa chọn--", new { @class = "form-control", id = "Province", onchange = "JCheckOut.ChangeProvince()" })
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Quận/Huyện</label>
+                                <input id="DistrictName" hidden="" asp-for="District" />
+                                @Html.DropDownListFor(model => model.id, Enumerable.Empty<SelectListItem>(), "--Lựa chọn--", new { @class = "form-control", id = "District", onchange = "JCheckOut.ChangeDistrict()" })
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Xã/Phường</label>
+                                <input id="WardName" hidden="" asp-for="Ward" />
+                                @Html.DropDownListFor(model => model.id, Enumerable.Empty<SelectListItem>(), "--Lựa chọn--", new { @class = "form-control", id = "Ward", onchange = "JCheckOut.ChangeWard()" })
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Địa chỉ chi tiết</label>
+                                <input asp-for="Address" class="form-control" type="text" placeholder="123">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Phương thức vận chuyển</label>
+                                @Html.DropDownListFor(model => model.id, Enumerable.Empty<SelectListItem>(), "--Lựa chọn--", new { @class = "form-control", id = "AvailableService", onchange = "JCheckOut.ChangeService()" })
                             </div>
                         </div>
-                        <div class="form-group mb-4">
-                            <div class="custom-control custom-radio">
-                                <input type="radio" class="custom-control-input" name="payment" id="banktransfer">
-                                <label class="custom-control-label" for="banktransfer">Thanh toán khi nhận hàng</label>
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-block btn-primary font-weight-bold py-3">Place Order</button>
                     </div>
                 </div>
+                <div class="col-lg-4">
+                    <h5 class="section-title position-relative text-uppercase mb-3">
+                        <span class="bg-secondary pr-3">Order Total</span>
+                    </h5>
+                    <div class="bg-light p-30 mb-5">
+                        <div class="border-bottom">
+                            <h6 class="mb-3">Products</h6>
+                            @foreach (var item in Model.lstCartDetail)
+                            {
+                                <div class="d-flex justify-content-between">
+                                    <p>@item.PhoneName - @item.ColorName-@item.RomName</p>
+                                    <p>@item.Price?.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</p>
+                                </div>
+                            }
+                        </div>
+                        <div class="border-bottom pt-3 pb-2">
+                            <div class="d-flex justify-content-between mb-3">
+                                <h6>Tổng tiền sản phẩm</h6>
+                                <h6>@total?.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</h6>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <h6 class="font-weight-medium">Phí vận chuyển</h6>
+                                <h6 id="TotalShip" class="font-weight-medium">@totalShip</h6>
+                            </div>
+                        </div>
+                        <div class="pt-2">
+                            <div class="d-flex justify-content-between mt-2">
+                                <h5>Tổng tiền thanh toán</h5>
+                                <input hidden="" asp-for="TotalMoney" id="TotalMoney" />
+                                <h5 id="TotalPayment">
+                                    @{
+                                        (total + totalShip)?.ToString("C0");
+                                    }
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-5">
+                        <h5 class="section-title position-relative text-uppercase mb-3">
+                            <span class="bg-secondary pr-3">Payment</span>
+                        </h5>
+                        <div class="bg-light p-30">
+                            <div class="form-group">
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" name="payment" id="paypal">
+                                    <label class="custom-control-label" for="paypal">Chuyển khoản</label>
+                                </div>
+                            </div>
+                            <div class="form-group mb-4">
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" name="payment" id="banktransfer">
+                                    <label class="custom-control-label" for="banktransfer">Thanh toán khi nhận hàng</label>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-block btn-primary font-weight-bold py-3">Place Order</button>
+                        </div>
+                    </div>
+                </div>
+
             </div>
+        </form>
+    </div>
+    <!-- Checkout End -->
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Checkout/lib/easing/easing.min.js"></script>
+    <script src="~/Checkout/lib/owlcarousel/owl.carousel.min.js"></script>
 
-        </div>
-    </form>
-</div>
-<!-- Checkout End -->
-<!-- JavaScript Libraries -->
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-<script src="~/Checkout/lib/easing/easing.min.js"></script>
-<script src="~/Checkout/lib/owlcarousel/owl.carousel.min.js"></script>
+    <!-- Contact Javascript File -->
+    <script src="~/Checkout/mail/jqBootstrapValidation.min.js"></script>
+    <script src="~/Checkout/mail/contact.js"></script>
 
-<!-- Contact Javascript File -->
-<script src="~/Checkout/mail/jqBootstrapValidation.min.js"></script>
-<script src="~/Checkout/mail/contact.js"></script>
+    <!-- Template Javascript -->
+    <script src="~/Checkout/js/main.js"></script>
+    <script src="~/js/JChechOut.js"></script>
 
-<!-- Template Javascript -->
-<script src="~/Checkout/js/main.js"></script>
-<script src="~/js/JChechOut.js"></script>
-
-<script>
-    $(document).ready(function () {
-        JCheckOut.init();
+    <script>
+        $(document).ready(function () {
+            JCheckOut.init();
 
             // Handle form submission
             $("#checkoutForm").submit(function (e) {
@@ -186,8 +188,30 @@
                 // Set the action attribute of the form based on the selected payment method
                 switch (selectedPaymentId) {
                     case "banktransfer":
-                        $("#checkoutForm").attr("action", "/Accounts/ORDER");
+
+                        $.ajax({
+                            type: "POST",
+                            url: "Accounts/ORDER", // Đến method xử lý Order
+                            data: $("#checkoutForm").serialize(),
+                            success: function (response) {
+                                if (response.success) {
+                                    // Chuyển hướng đến trang thanh toán cod (thanh toán khi nhận hàng)
+                                    window.location.href = response.data;
+
+                                    // Chuyển về trang chủ
+                                    window.location.href = 'Home/Index';
+                                } else {
+                                    // Xử lý lỗi nếu cần
+                                    console.error("Banktransfer request failed.");
+                                }
+                            },
+                            error: function () {
+                                // Xử lý lỗi nếu cần
+                                console.error("Error sending banktransfer request.");
+                            }
+                        });
                         break;
+
                     case "paypal":
                         // Gửi yêu cầu thanh toán đến server
                         $.ajax({
@@ -211,8 +235,8 @@
                         break;
                 }
             });
-    })
-</script>
+        })
+    </script>
 </body>
 
 </html>

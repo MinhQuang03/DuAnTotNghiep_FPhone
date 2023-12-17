@@ -26,25 +26,27 @@
             <th>
                 @Html.DisplayNameFor(model => model.StatusPayment)
             </th>
-           
+
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model)
+        {
             String dh1 = "Đã xác nhận";
             String dh2 = "Chờ xác nhận";
             String dh3 = "Đang giao";
             String dh4 = "Đã giao";
             String dh5 = "Đã hủy";
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedTime)
-            </td>
-            <td>
+            String dh6 = "Đã trả hàng";
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedTime)
+                </td>
+                <td>
                     @if (item.Status == 1)
                     {
                         <p class="text-success"> @dh1</p>
@@ -65,21 +67,27 @@
                     {
                         <p class="text-success"> @dh5</p>
                     }
-            </td>   
-                <td><a href="@Url.Action("Detail", "Bill", new { id = item.Id })">Xem Chi tiết</a></td>
-            <td>
-                        @item.deliveryPaymentMethod  @if (item.StatusPayment == 1)
-                        {
-                            <span class="text-success">Đã thanh toán </span>
-                        }
-                        else
-                        {
+                    else if (item.Status == 6)
+                    {
+                        <p class="text-success"> @dh6</p>
+                    }
+                </td>
+                <td>
+                    <a href="@Url.Action("Detail", "Bill", new { id = item.Id })">Xem Chi tiết</a>
+                </td>
+                <td>
+                    @item.deliveryPaymentMethod  @if (item.StatusPayment == 1)
+                    {
+                        <span class="text-success">Đã thanh toán </span>
+                    }
+                    else
+                    {
                         <span class="text-danger">Chưa thanh toán </span>
-                        } 
-            </td>
-                
-            <td>
-                @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    }
+                </td>
+
+                <td>
+                    @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
                 @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
                 @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
                     @if (item.Status == 1)
@@ -94,11 +102,26 @@
                     <a class="btn btn-sm btn-light text-danger border" href=""> <i class="fas fa-trash-alt"></i></a>
 
                     <a class="btn btn-sm btn-light text-orange border" href="@Url.Action("Dahuy", "Bill", new { id = item.Id })"> <i class="fas fa-ban "></i></a>
-                    <a class="btn btn-sm btn-light text-success border" href="@Url.Action("DangGiao", "Bill", new { id = item.Id })"> Đang giao</a>
-                    <a class="btn btn-sm btn-light text-success border" href="@Url.Action("Dagiao", "Bill", new { id = item.Id })"> Đã giao</a>
-            </td>
-        </tr>
-}
+
+
+                    @*Trường hợp đơn hàng đã giao thành công thì ẩn bớt button đang giao và đã giao*@
+                    @if (item.Status != 4)
+                    {
+                        @*Trường hợp đơn hàng đang giao => ẩn button đang giao*@
+                        @if (item.Status != 3)
+                        {
+                            <a class="btn btn-sm btn-light text-success border" href="@Url.Action("DangGiao", "Bill", new { id = item.Id })"> Đang giao</a>
+                        }
+                        @*Trường hợp đã xác nhận => chỉ có đang giao*@
+                        else
+                        {
+                            <a class="btn btn-sm btn-light text-success border" href="@Url.Action("Dagiao", "Bill", new { id = item.Id })"> Đã giao</a>
+                        }
+                    }
+
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 
@@ -113,7 +136,7 @@
             </div>
         </div>
         <div class="row">
-           
+
             <div class="col-md-12 p-3">
 
                 <table id="myTable1" class="table  table-striped table-bordered dt-responsive nowrap">

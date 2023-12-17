@@ -11,7 +11,7 @@
         </a>
     </div>
     <div class="logo logo-white">
-        
+
         <a href="index.html">
             <img src="~/Adminassets/images/logo/logo-white.png" alt="Logo">
             <img class="logo-fold" src="~/Adminassets/images/logo/logo-fold-white.png" alt="Logo">
@@ -238,7 +238,7 @@
                             <li>
                                 <a asp-area="Admin" asp-controller="Sim" asp-action="Index">Sim</a>
                             </li>
-                              <li>
+                            <li>
                                 <a asp-area="Admin" asp-controller="ListImage" asp-action="Index">Ảnh sản phẩm</a>
                             </li>
                             <li>
@@ -253,15 +253,31 @@
 
                         </ul>
                     </li>
-                    
+
                 </ul>
+            </li>
+            <li class="nav-item">
+                <a asp-area="Admin" asp-action="index" asp-controller="Bill">
+                    <span class="icon-holder">
+                        <i class="anticon anticon-appstore"></i>
+                    </span>
+                    <span class="title">Quản Lý Đơn Hàng</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a asp-area="Admin" asp-action="HoanTraHoacBaoHanh" asp-controller="Bill">
+                    <span class="icon-holder">
+                        <i class="anticon anticon-appstore"></i>
+                    </span>
+                    <span class="title">Quản Lý Trả/Bào Hành</span>
+                </a>
             </li>
             <li class="nav-item dropdown">
                 <a class="dropdown-toggle" href="javascript:void(0);">
                     <span class="icon-holder">
                         <i class="anticon anticon-table"></i>
                     </span>
-                    <span class="title">Tables</span>
+                    <span class="title">Table</span>
                     <span class="arrow">
                         <i class="arrow-icon"></i>
                     </span>

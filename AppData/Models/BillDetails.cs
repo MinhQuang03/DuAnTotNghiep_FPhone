@@ -1,6 +1,6 @@
 ﻿namespace AppData.Models
 {
-    public class BillDetails
+    public partial class BillDetails
     {
         public Guid Id { get; set; }
 
@@ -15,13 +15,17 @@
 
         public int Status { get; set; }
 
+        public string? Imei { get; set; }
+
         public DateTime? Update_at { get; set; }
 
-        public virtual Bill? Bills { get; set; }
+        public string? Note { get; set; }
+
+        public virtual Bill Bills { get; set; }
 
         public virtual Discount? Discounts { get; set; }
 
-        public virtual PhoneDetaild? PhoneDetaild { get; set; } 
+        public virtual PhoneDetaild PhoneDetaild { get; set; } 
        
 
     }
