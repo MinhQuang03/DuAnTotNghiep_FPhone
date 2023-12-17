@@ -1,0 +1,108 @@
+﻿@using AppData.Models;
+@model List<BillDetails>
+
+@{
+    ViewData["Title"] = "HoanTraHoacBaoHanh";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h3>Danh Sách Sản Phẩm Hoàn Trả Hoặc Cần Bảo Hành</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Phone Name
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Detail
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            String dh0 = "Giao thành công";
+            String dh1 = "Yêu cầu trả hàng";
+            String dh2 = "Chấp nhận trả hàng";
+            String dh3 = "Trả hàng thành công";
+            String dh4 = "Yêu cầu bảo hành";
+            String dh5 = "Xác nhận bảo hành";
+            <tr>
+                <td>
+                    @item.PhoneDetaild.Phones.PhoneName |
+                    @item.PhoneDetaild.Rams.Name/@item.PhoneDetaild.Roms.Name |
+                    @item.PhoneDetaild.Colors.Name (#imei:@item.Imei)
+                </td>
+                <td>
+                    @string.Format("{0:0,0}", item.Price) vnđ
+                </td>
+                <td>
+                    @if (item.Status == 0)
+                    {
+                        <p class="text-success"> @dh0</p>
+                    }
+                    else if (item.Status == 1)
+                    {
+                        <p class="text-danger"> @dh1</p>
+                    }
+                    else if (item.Status == 2)
+                    {
+                        <p class="text-danger"> @dh2</p>
+                    }
+                    else if (item.Status == 3)
+                    {
+                        <p class="text-danger"> @dh3</p>
+                    }
+                    else if (item.Status == 4)
+                    {
+                        <p class="text-success"> @dh4</p>
+                    }
+                    else if (item.Status == 5)
+                    {
+                        <p class="text-success"> @dh5</p>
+                    }
+                </td>
+                <td>
+                    @if (item.Status == 0)
+                    {
+                        @*<a href="#">Đồng ý trả hàng</a>
+                <a href="#">Hủy trả hàng</a>*@
+                    }
+                    else if (item.Status == 1)
+                    {
+                        <a href="~/Admin/Bill/ChapNhanHoanTra?IdPhoneDetail=@item.IdPhoneDetail&phoneImei=@item.Imei">Đồng ý trả hàng</a>
+                        <a> | </a>
+                        <a href="~/Admin/Bill/HuyBaoHanhVaTraHang?IdPhoneDetail=@item.IdPhoneDetail&phoneImei=@item.Imei">Xác nhận hủy</a>
+                    }
+                    else if (item.Status == 2)
+                    {
+                        <a href="~/Admin/Bill/TraHangThanhCong?IdPhoneDetail=@item.IdPhoneDetail&phoneImei=@item.Imei">Xác nhận trả hàng thành công</a>
+                        <a> | </a>
+                        <a href="~/Admin/Bill/HuyBaoHanhVaTraHang?IdPhoneDetail=@item.IdPhoneDetail&phoneImei=@item.Imei">Xác nhận hủy</a>
+                    }
+                    else if (item.Status == 3)
+                    {
+                        <a>Đã trả hàng</a>
+                    }
+                    else if (item.Status == 4)
+                    {
+                        <a href="~/Admin/Bill/XacNhanBaoHanh?IdPhoneDetail=@item.IdPhoneDetail&phoneImei=@item.Imei">Chấp nhận bảo hành</a>
+                        <a> | </a>
+                        <a href="~/Admin/Bill/HuyBaoHanhVaTraHang?IdPhoneDetail=@item.IdPhoneDetail&phoneImei=@item.Imei">Xác nhận hủy</a>
+                    }
+                    else if (item.Status == 5)
+                    {
+                        <a href="~/Admin/Bill/BaoHanhThanhCong?IdPhoneDetail=@item.IdPhoneDetail&phoneImei=@item.Imei">Bảo hành thành công</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

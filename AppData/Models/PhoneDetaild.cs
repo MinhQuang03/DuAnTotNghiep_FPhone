@@ -43,7 +43,7 @@
         
         public decimal? Sale { get; set; }
 
-
+        public int? Solid { get; set; }
         public int Status { get; set; }
         //public virtual List<ListImage>? Images { get; set; }
 
@@ -70,7 +70,7 @@
         public virtual Color? Colors { get; set; }
 
         public virtual Discount? Discounts { get; set; }
-      
+
 
     }
 }
