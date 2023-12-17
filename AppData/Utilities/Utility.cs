@@ -61,32 +61,80 @@ namespace AppData.Utilities
             }
         }
 
-        public static string EmailCreateAccountTemplate = "Chào {0},\r\n\r\nChúng tôi rất vui thông báo rằng tài khoản của Quý khách đã được tạo thành công trên hệ thống của FPHONE STORE.\r\n\r\nThông tin tài khoản của Quý khách như sau:\r\n\r\nTên đăng nhập: {1}\r\n\r\nNếu Quý khách có bất kỳ câu hỏi hoặc cần hỗ trợ, vui lòng liên hệ với chúng tôi qua email support@fphonestore.com hoặc gọi số điện thoại hỗ trợ khách hàng: 0123-456-789.\r\n\r\nChúc Quý khách có những trải nghiệm tốt nhất với hệ thống của chúng tôi!\r\n\r\nTrân trọng,\r\nFPHONE STORE\r\n";
-
-        public static async Task<ObjectEmailOutput> SendEmail(ObjectEmailInput obj)
+      public static string EmailCreateAccountTemplate(string fullName, string username)  
         {
-           var output = new ObjectEmailOutput();
-           string Address = "fphone.store.404@gmail.com"; //Địa chỉ email của bạn
-             string Password = "bezf nonp fbgq ssui";
-        
-            using (var smtp = new SmtpClient())
-            {
-                smtp.Host = "smtp.gmail.com";
-                smtp.Port = 587;
-                smtp.EnableSsl = true;
-                smtp.Credentials = new NetworkCredential(Address, Password);
-               var a = smtp.SendMailAsync(Address, obj.SendTo, obj.Subject, obj.Message);
-               if (a.IsCompletedSuccessfully)
-               {
-                   output.Success = true;
-                   output.Message = "Thành công";
-                   return output;
-               }
-            }
-            output.Success = false;
-            output.Message = "Không thành công";
-            return output;
+            return $@"
+        <!DOCTYPE html>
+        <html lang='en'>
+        <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <style>
+                body {{
+                    font-family: 'Arial', sans-serif;
+                    background-color: #f4f4f4;
+                    margin: 0;
+                    padding: 0;
+                }}
+                .container {{
+                    max-width: 600px;
+                    margin: 20px auto;
+                    padding: 20px;
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                    background-color: #fff;
+                    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                }}
+                h1 {{
+                    color: #007BFF;
+                    margin-bottom: 20px;
+                }}
+                p {{
+                    margin-bottom: 15px;
+                    line-height: 1.6;
+                    color: #555;
+                }}
+                strong {{
+                    font-weight: bold;
+                }}
+                ul {{
+                    list-style: none;
+                    padding: 0;
+                }}
+                li {{
+                    margin-bottom: 8px;
+                }}
+                a {{
+                    color: #007BFF;
+                    text-decoration: none;
+                    font-weight: bold;
+                }}
+                footer {{
+                    margin-top: 20px;
+                    text-align: center;
+                    color: #777;
+                }}
+            </style>
+        </head>
+        <body>
+            <div class='container'>
+                <h1>{fullName} thân mến,</h1>
+                <p>Chúng tôi rất vui thông báo rằng tài khoản của Quý khách đã được tạo thành công trên hệ thống của <strong> FPHONE STORE. </strong></p>
+                <p>Thông tin tài khoản của Quý khách như sau:</p>
+                <ul>
+                    <li><strong>Tên đăng nhập:</strong> {username}</li>
+                </ul>
+                <p>Nếu Quý khách có bất kỳ câu hỏi hoặc cần hỗ trợ, vui lòng liên hệ với chúng tôi qua email <a href='mailto:support@fphonestore.com'>support@fphonestore.com</a> hoặc gọi số điện thoại hỗ trợ khách hàng: <strong>0123-456-789</strong>.</p>
+                <p>Chúc Quý khách có những trải nghiệm tốt nhất với hệ thống của chúng tôi!</p>
+                <footer>
+                    Trân trọng,<br>
+                    FPHONE STORE
+                </footer>
+            </div>
+        </body>
+        </html>";
         }
+
     }
    
     public class ObjectEmailInput

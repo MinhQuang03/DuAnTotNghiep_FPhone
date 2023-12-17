@@ -12,6 +12,6 @@
 
         public Guid? IdPhoneDetaild { get; set; }
 
-        public virtual BillDetails? BillDetails { get; set; }
+        public virtual PhoneDetaild? PhoneDetaild { get; set; }
     }
 }

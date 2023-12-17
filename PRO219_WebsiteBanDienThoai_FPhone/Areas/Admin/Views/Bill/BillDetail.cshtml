@@ -4,6 +4,13 @@
     var cus = @ViewBag.customer;
     ViewData["Title"] = "BillDetail";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+
+    String dh0 = string.Empty;
+    String dh1 = "Yêu cầu hủy";
+    String dh2 = "Chấp nhận hủy";
+    String dh3 = "Hủy thành công";
+    String dh4 = "Yêu cầu bảo hành";
+    String dh5 = "Xác nhận bảo hành";
 }
 
 <h1>Chi tiết đơn hàng</h1>
@@ -44,10 +51,10 @@
                                         <span>@price.ToString("N0") VND</span>
                                     </td>
                                 }
-                                
-                                
+
+
                                     <td style="font-size:14px;"> @item.Price.ToString("N0") VND</td>
-                                
+
 
                                 <td>@item.quantity</td>
                                 <td>@item.Bills.TotalMoney VND</td>
@@ -102,12 +109,12 @@
     <div class="row">
         <div class="col-sm">
             <div class="alert alert-success" role="alert" style="font-size:24px;">
-               Sản phẩm
+                Sản phẩm
             </div>
             <table class="table">
                 <thead>
-                    <tr>       
-                        
+                    <tr>
+
                         <th>
                             @Html.DisplayNameFor(model => model.IdPhoneDetail)
                         </th>
@@ -127,8 +134,8 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        <tr>      
-                            
+                        <tr>
+
                             <td>
                                 @ViewBag.PhoneNames
                             </td>
@@ -136,10 +143,11 @@
                                 @Html.DisplayFor(modelItem => item.Number)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Price) 
+                                @Html.DisplayFor(modelItem => item.Price)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Status)
+
                             </td>
                         </tr>
                     }

@@ -23,6 +23,7 @@ builder.Services.AddTransient<IRanksRepositories, RankRepositories>();
 builder.Services.AddTransient<IChipCPURepository, ChipCPURepository>();
 builder.Services.AddTransient<IMaterialRepository, MaterialRepository>();
 builder.Services.AddTransient<IAccountService, AccountService>();
+builder.Services.AddTransient<IEmailService, EmailService>();
 
 
 
@@ -48,6 +49,7 @@ builder.Services.AddAuthentication(options =>
         options.LoginPath = "/Admin/Login";
         options.LogoutPath = new PathString("/home");
     });
+builder.Services.AddApplicationInsightsTelemetry();
 
 
 var app = builder.Build();

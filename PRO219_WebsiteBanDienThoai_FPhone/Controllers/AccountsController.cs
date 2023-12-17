@@ -13,10 +13,14 @@ using System.Net.Http;
 using AppData.FPhoneDbContexts;
 using AppData.Repositories;
 using AppData.IRepositories;
+using AppData.IServices;
 using AppData.Utilities;
 using AppData.ViewModels;
 using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
 using Serilog;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.Xml.Linq;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers;
 
@@ -26,12 +30,14 @@ public class AccountsController : Controller
     private IcartRepository _cartRepository;
     private FPhoneDbContext _context;
     private readonly HttpClient _client;
-    public AccountsController(HttpClient client)
+    private IEmailService _emailService;
+    public AccountsController(HttpClient client,IEmailService emailService)
     {
         _cartDetailepository = new CartDetailepository();
         _cartRepository = new CartRepository();
         _context = new FPhoneDbContext();
         _client = client;
+        _emailService = emailService;
     }
     //Khi đã đăng nhập ấn nút có biểu tượng user sẽ hiện ra profile của người dùng
     public async Task<IActionResult> Profile()
@@ -84,7 +90,18 @@ public class AccountsController : Controller
             login.UserName = model.Username;
             login.Password = model.Password;
             //khi tạo tài khoản thành công sẽ đăng nhập luôn
-            if (respo.IsSuccessStatusCode) return await Login(login);
+            if (respo.IsSuccessStatusCode)
+            {
+                ObjectEmailInput emailInput = new ObjectEmailInput()
+                {
+                    FullName =model.Name,
+                    SendTo = model.Email,
+                    Subject = "Thông báo tạo tài khoản",
+                    UserName = model.Username,
+                };
+                await _emailService.SendEmail(emailInput); // gửi email
+                return await Login(login);
+            }
         }
         else
         {
@@ -232,6 +249,7 @@ public class AccountsController : Controller
     }
     public async Task<IActionResult> AddToCard(Guid id)
     {
+
         var userId = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
         var product = SessionCartDetail.GetObjFromSession(HttpContext.Session, "Cart");
         if (userId == null)
@@ -333,13 +351,25 @@ public class AccountsController : Controller
 
         foreach (var item in product)
         {
-            BillDetails billDetail = new BillDetails();
-            billDetail.IdBill = idhd;
-            billDetail.Id = Guid.NewGuid();
-            billDetail.IdPhoneDetail = item.IdPhoneDetaild;
-            billDetail.Price = _context.PhoneDetailds.Find(item.IdPhoneDetaild).Price;
-            billDetail.Status = 0;
-            Listbill.Add(billDetail);
+            // Tìm ra imeil đầu tiên thuộc PhoneDetail có status = 1 (1: chưa được bán)
+            var emeiCheck = _context.Imei.First(a => a.IdPhoneDetaild == item.IdPhoneDetaild && a.Status == 1);
+            // trường hợp tồn tại emeiCheck
+            if (null != emeiCheck)
+            {
+                // Cập nhật lại status = 2 (Đã bán)
+                emeiCheck.Status = 2;
+                _context.SaveChanges();
+
+                // Thêm sản phẩm điện thoại vào bill detail
+                BillDetails billDetail = new BillDetails();
+                billDetail.IdBill = idhd;
+                billDetail.Id = Guid.NewGuid();
+                billDetail.IdPhoneDetail = item.IdPhoneDetaild;
+                billDetail.Price = _context.PhoneDetailds.Find(item.IdPhoneDetaild).Price;
+                billDetail.Status = 0;
+                billDetail.Imei = emeiCheck.NameImei; // Đúng tra là id của bảng emei. Nhưng name email cũng không thể trùng.
+                Listbill.Add(billDetail);
+            }
         }
 
         foreach (var item in product)
@@ -396,27 +426,64 @@ public class AccountsController : Controller
     public ActionResult XemChiTiet(Guid idBill)
     {
         // Tìm ra thông tin chi tiết hóa đơn tương ứng theo mã Bill
-        //var billDetail = _context.BillDetails.Where(p=>p.IdBill == idBill).ToList();
 
-        // Tên sản phầm gồm: Tên điện thoại + màu sắc + Số Ram + Mã imeil
+        // Tên sản phầm gồm: Tên điện thoại => Lấy từ bảng "Phones"
+        //                   Màu sắc        => Lấy từ bảng "Color"
+        //                   Số Ram         => Lấy từ bảng "Ram"
+        //                   Mã imeil       => Lấy từ bảng "Imeil"
+        var billDetail = _context.BillDetails
+                        .Include(p => p.PhoneDetaild)
+                            .ThenInclude(p => p.Phones)
+                        .Include(p => p.PhoneDetaild)
+                            .ThenInclude(p => p.Colors)
+                        .Include(p => p.PhoneDetaild)
+                            .ThenInclude(p => p.Rams)
+                        .Include(p => p.PhoneDetaild)
+                            .ThenInclude(p => p.Roms)
+                        .Where(p => p.IdBill == idBill)
+                        .ToList();
 
-        // Tìm ra điện thoại tương ứng
+        // Get Status of table Bill
+        var billStatus = _context.Bill.Find(idBill);
+        ViewBag.BillStatus = billStatus.Status;
 
-        var result = (from billDetails in _context.BillDetails
-                     join phoneDetail in _context.PhoneDetailds on billDetails.IdPhoneDetail equals phoneDetail.Id
-                     join phone in _context.Phones on phoneDetail.IdPhone equals phone.Id
-                     join color in _context.Colors on phoneDetail.IdColor equals color.Id
-                     join ram in _context.Ram on phoneDetail.IdRam equals ram.Id
-                     join rom in _context.Rom on phoneDetail.IdRom equals rom.Id
-                     where billDetails.IdPhoneDetail == new Guid(idBill.ToString())
-                     select new PhoneDetailsViewModel
-                     {
-                         PhoneName = phone.PhoneName,
-                         ColorName = color.Name,
-                         RamName = ram.Name,
-                         RomName = rom.Name
-                     }).ToList();
+        return View(billDetail);
+    }
 
-        return View(result);
+    // Hoàn trả sản phẩm
+    public ActionResult YeuCauTrahang(Guid IdPhoneDetail, string phoneImei)
+    {
+        // Trả từng sản phẩm trong giỏ hàng.
+        // Trường hợp trong giỏ hàng trả hết => Bill có status = X (Đơn hàng có trạng thái hoàn trả)
+        // Cập nhật lại số lượng trong kho(Emei)
+
+        // Tìm sản phẩm muốn trả trong bảng BillDetails
+        var billDetail = _context.BillDetails.SingleOrDefault(a => a.IdPhoneDetail == IdPhoneDetail && a.Imei == phoneImei);
+        if (null != billDetail)
+        {
+            // Cập nhật trạng thái trong bảng BillDetail status = 1 (1: Yêu cầu hủy)
+            billDetail.Status = 1;
+            _context.SaveChanges();
+        }
+
+        return RedirectToAction("XemChiTiet", new { idBill = billDetail.IdBill });
+    }
+
+    // Yêu cầu bảo hành
+    [HttpPost]
+    public ActionResult YeuCauBaoHanh(Guid IdPhoneDetail, string phoneImei, string note)
+    {
+        // bảo hành từng sản phẩm trong giỏ hàng(BillDetail).
+
+        // Cập nhật trạng thái trong bảng BillDetail status = 4 (4: Yêu cầu bảo hành)
+        var billDetail = _context.BillDetails.SingleOrDefault(a => a.IdPhoneDetail == IdPhoneDetail && a.Imei == phoneImei);
+        if (null != billDetail)
+        {
+            billDetail.Status = 4;
+            billDetail.Note = note;
+            _context.SaveChanges();
+        }
+
+        return RedirectToAction("XemChiTiet", new { idBill = billDetail.IdBill });
     }
 }

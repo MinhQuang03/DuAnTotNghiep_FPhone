@@ -15,7 +15,11 @@
 
         public int Status { get; set; }
 
+        public string? Imei { get; set; }
+
         public DateTime? Update_at { get; set; }
+
+        public string? Note { get; set; }
 
         public virtual Bill Bills { get; set; }
 
