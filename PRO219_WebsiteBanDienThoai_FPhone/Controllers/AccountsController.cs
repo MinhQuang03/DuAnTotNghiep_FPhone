@@ -13,6 +13,7 @@ using System.Net.Http;
 using AppData.FPhoneDbContexts;
 using AppData.Repositories;
 using AppData.IRepositories;
+using AppData.Utilities;
 using AppData.ViewModels;
 using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
 using Serilog;
@@ -124,9 +125,10 @@ public class AccountsController : Controller
             //chuyển hướng đến trang chủ của web
             if (respo.Roles.Contains("User"))
             {
-                DataError error = new DataError();
+                DataError error = new DataError(){Success = true};
                 error.Success = true;
                 error.Msg = "Đăng nhập thành công";
+                TempData["DataError"] = Utility.ConvertObjectToJson(error);
                 return RedirectToAction("AddCart");
             }
         }
@@ -135,8 +137,13 @@ public class AccountsController : Controller
             DataError error = new DataError();
             error.Success = false;
             error.Msg = "Đăng nhập không thành công";
+
             ModelState.AddModelError("UserName", "Tài khoản hoặc mật khẩu sai");
             return RedirectToAction("Index", "Home");
+
+           // TempData["DataError"] = Utility.ConvertObjectToJson(error);
+           // return  RedirectToAction("Index", "Home");
+
         }
 
         return NoContent();
@@ -327,6 +334,7 @@ public class AccountsController : Controller
 
         List<BillDetails> Listbill = new List<BillDetails>();
 
+
         foreach (var item in product)
         {
             // Tìm ra imeil đầu tiên thuộc PhoneDetail có status = 1 (1: chưa được bán)
@@ -360,6 +368,10 @@ public class AccountsController : Controller
         await _context.SaveChangesAsync();
 
         return Json(new { success = true });
+
+              //  return RedirectToAction("Index", "Home");
+                
+
     }
 
     public async Task<IActionResult> PurchaseHistory(Guid idAccount)

@@ -12,8 +12,13 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppData.Migrations
 {
     [DbContext(typeof(FPhoneDbContext))]
+<<<<<<<< HEAD:AppData/Migrations/20231217023940_abc.Designer.cs
     [Migration("20231217023940_abc")]
     partial class abc
+========
+    [Migration("20231208082913_FPhone")]
+    partial class FPhone
+>>>>>>>> b06366b1e377c1fbd16c30ad1810cd2e4a573c3a:AppData/Migrations/20231208082913_FPhone.Designer.cs
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -412,20 +417,32 @@ namespace AppData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Note")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("DateEnd")
+                        .HasColumnType("datetime2");
 
-                    b.Property<decimal>("ReducedAmount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<DateTime>("DateStart")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int>("Status")
+                    b.Property<int?>("DieuKien")
+                        .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("TimeForm")
-                        .HasColumnType("datetime2");
+                    b.Property<double?>("MucUuDai")
+                        .HasColumnType("float");
 
-                    b.Property<DateTime?>("TimeTo")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("NameVoucher")
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.Property<int?>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StatusVoucher")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("TypeVoucher")
+                        .IsRequired()
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
