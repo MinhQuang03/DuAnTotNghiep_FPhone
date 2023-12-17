@@ -48,19 +48,17 @@ public class FPhoneDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Sales> Sales { get; set; }
     public DbSet<SellDailys> SellDaily { get; set; }
     public DbSet<SalePhoneDetaild> SalePhoneDetailds { get; set; }
-
     public DbSet<SellDailys> SellDailys { get; set; }
     public DbSet<ApplicationUser> AspNetUsers { get; set; }
     public DbSet<VW_Phone> VW_Phone { get; set; }
     public DbSet<VW_PhoneDetail> VW_PhoneDetail { get; set; }
-    public DbSet<VW_Phone_Group> VW_Phone_Group { get; set; }   
-    public DbSet<VW_List_By_IdPhone> VW_List_By_IdPhone { get; set; }   
+    public DbSet<VW_Phone_Group> VW_Phone_Group { get; set; }
+    public DbSet<VW_List_By_IdPhone> VW_List_By_IdPhone { get; set; }
     //LKK\SQLEXPRESS    
     // Ko cần sửa file này
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlServer(@"Data Source=MSI\SQLEXPRESS;Initial Catalog=PRO219_WebsiteBanDienThoai ;Integrated Security=True");
-
     }
     protected override void OnModelCreating(ModelBuilder builder)
     {

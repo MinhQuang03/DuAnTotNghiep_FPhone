@@ -26,6 +26,10 @@
         height: 120px;
         gap: 5px;
     }
+
+    .btn {
+        --bs-btn-font-size: 1.5rem;
+    }
 </style>
 
 <section class="section product-details__section container">
@@ -51,26 +55,26 @@
             </div>
             <form action="" id="AddToCart" method="get">
                 <div class="product-details__btn">
-                    <button type="submit" class="add" name="addToCart">
+                    <button type="submit" class="add btn btn-block" name="addToCart">
                         <span>
                             <svg>
                                 <use xlink:href="/images/sprite.svg#icon-cart-plus"></use>
                             </svg>
                         </span>
-                        ADD TO CART
+                        Thêm vào giỏ hàng
                     </button>
                 </div>
             </form>
 
             <form action="@Url.Action("Additem", "FavoritePhone", new { id = '1' })" method="get">
                 <div class="product-details__btn">
-                    <button type="submit" class="add" name="Additem">
+                    <button type="submit" class="add btn btn-block" name="Additem">
                         <span>
                             <svg>
                                 <use xlink:href="/images/sprite.svg#icon-cart-plus"></use>
                             </svg>
                         </span>
-                        FAVORITE
+                        Yêu thích
                     </button>
                 </div>
             </form>

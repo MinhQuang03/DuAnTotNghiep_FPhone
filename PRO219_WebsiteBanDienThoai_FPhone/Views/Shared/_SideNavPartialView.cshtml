@@ -36,20 +36,24 @@
                             </svg>
                         </a>
                     </div>
-                    <ul class="nav__list">
-                        <li class="nav__item">
-                            <a asp-action="Index" asp-controller="Home" class="nav__link ">Home</a>
-                        </li>
-                        <li class="nav__item">
-                            <a asp-action="Index" class="nav__link" asp-controller="ListPhone">Category</a>
-                        </li>
-                        <li class="nav__item">
-                            <a asp-action="Index" asp-controller="Blogs" class="nav__link ">Blog</a>
-                        </li>
-                        <li class="nav__item">
-                            <a href="#contact" class="nav__link scroll-link">Contact</a>
-                        </li>
-                    </ul>
+                    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="navbar-nav">
+                                <li class="nav-item mx-4 ">
+                                    <a class="nav-link text-black" asp-action="Index" asp-controller="Home">Trang chủ</a>
+                                </li>
+                                <li class="nav-item mx-4">
+                                    <a class="nav-link text-black" asp-action="Index" asp-controller="ListPhone">Sản phẩm</a>
+                                </li>
+                                <li class="nav-item mx-4">
+                                    <a class="nav-link text-black" asp-action="Index" asp-controller="Blogs">Blog</a>
+                                </li>
+                                <li class="nav-item mx-4 ">
+                                    <a class="nav-link text-black">Liên hệ</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
                 </div>
 
                 <div class="nav__icons">
