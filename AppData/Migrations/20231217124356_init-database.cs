@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppData.Migrations
 {
-    public partial class abc : Migration
+    public partial class initdatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -280,14 +280,14 @@ namespace AppData.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SellDaily",
+                name: "SellDailys",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TotalMoneys = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    Refund = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     TotalQuantity = table.Column<int>(type: "int", nullable: true),
+                    Refund = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     SellOnl = table.Column<int>(type: "int", nullable: true),
                     SellOff = table.Column<int>(type: "int", nullable: true),
                     BestSeller = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -295,7 +295,7 @@ namespace AppData.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SellDaily", x => x.Id);
+                    table.PrimaryKey("PK_SellDailys", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -1089,7 +1089,7 @@ namespace AppData.Migrations
                 name: "SalePhoneDetailds");
 
             migrationBuilder.DropTable(
-                name: "SellDaily");
+                name: "SellDailys");
 
             migrationBuilder.DropTable(
                 name: "VW_Phone");

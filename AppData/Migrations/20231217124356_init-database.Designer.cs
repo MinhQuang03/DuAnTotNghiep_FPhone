@@ -12,13 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppData.Migrations
 {
     [DbContext(typeof(FPhoneDbContext))]
-<<<<<<<< HEAD:AppData/Migrations/20231217023940_abc.Designer.cs
-    [Migration("20231217023940_abc")]
-    partial class abc
-========
-    [Migration("20231208082913_FPhone")]
-    partial class FPhone
->>>>>>>> b06366b1e377c1fbd16c30ad1810cd2e4a573c3a:AppData/Migrations/20231208082913_FPhone.Designer.cs
+    [Migration("20231217124356_init-database")]
+    partial class initdatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -875,7 +870,7 @@ namespace AppData.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SellDaily");
+                    b.ToTable("SellDailys");
                 });
 
             modelBuilder.Entity("AppData.Models.Sim", b =>
