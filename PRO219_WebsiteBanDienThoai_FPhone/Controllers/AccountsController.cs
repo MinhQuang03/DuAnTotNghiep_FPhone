@@ -96,7 +96,8 @@ public class AccountsController : Controller
                 {
                     FullName =model.Name,
                     SendTo = model.Email,
-                    Subject = "Thông báo tạo tài khoản"
+                    Subject = "Thông báo tạo tài khoản",
+                    UserName = model.Username,
                 };
                 await _emailService.SendEmail(emailInput); // gửi email
                 return await Login(login);
