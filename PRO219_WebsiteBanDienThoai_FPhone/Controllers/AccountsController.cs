@@ -13,6 +13,7 @@ using System.Net.Http;
 using AppData.FPhoneDbContexts;
 using AppData.Repositories;
 using AppData.IRepositories;
+using AppData.IServices;
 using AppData.Utilities;
 using AppData.ViewModels;
 using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
@@ -26,12 +27,14 @@ public class AccountsController : Controller
     private IcartRepository _cartRepository;
     private FPhoneDbContext _context;
     private readonly HttpClient _client;
-    public AccountsController(HttpClient client)
+    private IEmailService _emailService;
+    public AccountsController(HttpClient client,IEmailService emailService)
     {
         _cartDetailepository = new CartDetailepository();
         _cartRepository = new CartRepository();
         _context = new FPhoneDbContext();
         _client = client;
+        _emailService = emailService;
     }
     //Khi đã đăng nhập ấn nút có biểu tượng user sẽ hiện ra profile của người dùng
     public async Task<IActionResult> Profile()
@@ -84,7 +87,17 @@ public class AccountsController : Controller
             login.UserName = model.Username;
             login.Password = model.Password;
             //khi tạo tài khoản thành công sẽ đăng nhập luôn
-            if (respo.IsSuccessStatusCode) return await Login(login);
+            if (respo.IsSuccessStatusCode)
+            {
+                ObjectEmailInput emailInput = new ObjectEmailInput()
+                {
+                    FullName =model.Name,
+                    SendTo = model.Email,
+                    Subject = "Thông báo tạo tài khoản"
+                };
+                await _emailService.SendEmail(emailInput); // gửi email
+                return await Login(login);
+            }
         }
         else
         {
