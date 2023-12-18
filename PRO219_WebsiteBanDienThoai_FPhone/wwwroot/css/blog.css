@@ -1,0 +1,24 @@
+﻿swiper-slide {
+    width: 962px;
+    display: none;
+}
+
+swiper-slide {
+}
+
+swiper-slide-active {
+}
+
+jfeatured-box--thumb {
+    display: inline-block;
+    width: 50%;
+}
+
+jfeatured-box--box-info {
+    display: inline-block;
+    width: 50%;
+}
+
+lazy {
+    width: 50%;
+}
