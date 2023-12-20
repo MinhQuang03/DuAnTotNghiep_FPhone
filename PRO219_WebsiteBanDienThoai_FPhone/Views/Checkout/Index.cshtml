@@ -216,7 +216,7 @@
                         // Gửi yêu cầu thanh toán đến server
                         $.ajax({
                             type: "POST",
-                            url: "/VnPay/Payment", // Đặt đúng đường dẫn của phương thức xử lý thanh toán trên server
+                            url: "/VnPay/PaymentConfirm", // Đặt đúng đường dẫn của phương thức xử lý thanh toán trên server
                             data: $("#checkoutForm").serialize(),
                             success: function (response) {
                                 if (response.success) {
