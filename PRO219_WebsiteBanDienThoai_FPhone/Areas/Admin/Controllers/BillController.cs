@@ -245,7 +245,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                 // Gửi mail thông báo cho khách hàng về thời gian bảo hành/ địa chỉ email gửi trả hàng
                 // Tìm ra email theo thông tin khách hàng
                 var billDetails = _context.Bill
-                                 .Include(p => p.Accounts.Email)
+                                 .Include(p => p.Accounts)
                                  .FirstOrDefault(p => p.Id == billDetail.IdBill);
 
                 SendEmail(billDetails.Accounts.Email, billDetail.Update_at);
@@ -269,43 +269,107 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         }
 
         // Gửi mail với nội dung bảo hành
-        public void SendEmail(string toEmail, DateTime? dNgayGuiBaohanh)
+        public async Task<IActionResult> SendEmail(string toEmail, DateTime? dNgayGuiBaohanh)
         {
-            // Địa chỉ email người gửi
-            string fromEmail = "buiminhquang332003@gmail.com";
-            string password = "buiquang36";
-
-            // Tạo đối tượng MailMessage
-            MailMessage message = new MailMessage(fromEmail, toEmail);
-
-            // Tiêu đề email
-            message.Subject = "Bảo Hành Điện Thoại";
-
-            // Nội dung email
-            message.Body = "\nBạn vui lòng gửi đến địa chỉ: 123 Abc....\nXin cảm ơn\nNgày Gửi: " + dNgayGuiBaohanh
-            + "Thời gian bảo hành đến: " + dNgayGuiBaohanh.Value.AddMonths(3);
-
-            // Thiết lập một số tùy chọn khác nếu cần
-            message.IsBodyHtml = true; // Nếu nội dung là HTML
-            message.Priority = MailPriority.High; // Độ ưu tiên cao
-
-            // Tạo đối tượng SmtpClient để gửi email
-            SmtpClient smtpClient = new SmtpClient("smtp.example.com");
-
-            // Thiết lập thông tin đăng nhập nếu máy chủ SMTP yêu cầu
-            smtpClient.Credentials = new NetworkCredential(fromEmail, password);
-
             try
             {
+                // Thông tin tài khoản email của bạn
+                string fromEmail = "fphone.store.404@gmail.com";
+                string password = "bdrczcwdttczwbsv";
+
+                var acc = _context.Accounts.FirstOrDefault(p => p.Email == toEmail);
+
+                // Tạo đối tượng MailMessage
+                MailMessage mailMessage = new MailMessage();
+                mailMessage.From = new MailAddress(fromEmail);
+                mailMessage.To.Add(toEmail);
+                mailMessage.Subject = "Bảo Hành Điện Thoại";
+                mailMessage.Body = $@"
+        <!DOCTYPE html>
+        <html lang='en'>
+        <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <style>
+                body {{
+                    font-family: 'Arial', sans-serif;
+                    background-color: #f4f4f4;
+                    margin: 0;
+                    padding: 0;
+                }}
+                .container {{
+                    max-width: 600px;
+                    margin: 20px auto;
+                    padding: 20px;
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                    background-color: #fff;
+                    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                }}
+                h1 {{
+                    color: #007BFF;
+                    margin-bottom: 20px;
+                }}
+                p {{
+                    margin-bottom: 15px;
+                    line-height: 1.6;
+                    color: #555;
+                }}
+                strong {{
+                    font-weight: bold;
+                }}
+                ul {{
+                    list-style: none;
+                    padding: 0;
+                }}
+                li {{
+                    margin-bottom: 8px;
+                }}
+                a {{
+                    color: #007BFF;
+                    text-decoration: none;
+                    font-weight: bold;
+                }}
+                footer {{
+                    margin-top: 20px;
+                    text-align: center;
+                    color: #777;
+                }}
+            </style>
+        </head>
+        <body>
+            <div class='container'>
+                <h1>{acc.Username} thân mến,</h1>
+                <p>Chúng tôi rất vui thông báo rằng yêu của quý khách đã được xem xét và đồng ý bởi <strong> FPHONE STORE. </strong></p>
+                <p>Thông tin bảo hành như sau:</p>
+                <p>Hãy gửi tới sau đây: 123ACCC<p>
+                <p>Thời gian bảo hành sẽ tính đến ngày: {dNgayGuiBaohanh.Value.AddMonths(3)}, kể từ ngày bạn gửi yêu cầu bảo hành.<p>
+                <p>Nếu Quý khách có bất kỳ câu hỏi hoặc cần hỗ trợ, vui lòng liên hệ với chúng tôi qua email <a href='mailto:support@fphonestore.com'>support@fphonestore.com</a> hoặc gọi số điện thoại hỗ trợ khách hàng: <strong>0123-456-789</strong>.</p>
+                <p>Chúc Quý khách có những trải nghiệm tốt nhất với hệ thống của chúng tôi!</p>
+                <footer>
+                    Trân trọng,<br>
+                    FPHONE STORE
+                </footer>
+            </div>
+        </body>
+        </html>";
+
+                // Cấu hình đối tượng SmtpClient
+                SmtpClient smtpClient = new SmtpClient("smtp.gmail.com");
+                smtpClient.Port = 587;
+                smtpClient.UseDefaultCredentials = false;
+                smtpClient.Credentials = new NetworkCredential(fromEmail, password);
+                smtpClient.EnableSsl = true;
+
                 // Gửi email
-                smtpClient.Send(message);
-                ViewBag.Status = "Email đã được gửi thành công.";
+                await smtpClient.SendMailAsync(mailMessage);
+
+                return Ok("Email sent successfully!");
             }
             catch (Exception ex)
             {
-                ViewBag.Status = "Có lỗi khi gửi email: " + ex.Message;
+                return StatusCode(500, $"Error sending email: {ex.Message}");
             }
-
         }
     }
 }
