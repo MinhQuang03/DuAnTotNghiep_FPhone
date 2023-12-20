@@ -366,8 +366,9 @@ public class AccountsController : Controller
                 billDetail.Id = Guid.NewGuid();
                 billDetail.IdPhoneDetail = item.IdPhoneDetaild;
                 billDetail.Price = _context.PhoneDetailds.Find(item.IdPhoneDetaild).Price;
+                billDetail.Number = 1;
                 billDetail.Status = 0;
-                billDetail.Imei = emeiCheck.NameImei; // Đúng tra là id của bảng emei. Nhưng name email cũng không thể trùng.
+                billDetail.Imei = emeiCheck.NameImei; // Đúng tra là id của bảng emei. Nhưng name emei cũng không thể trùng.
                 Listbill.Add(billDetail);
             }
         }

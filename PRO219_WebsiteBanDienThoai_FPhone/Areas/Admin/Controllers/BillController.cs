@@ -157,7 +157,48 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                     .ThenInclude(p => p.Rams)
                 .Include(p => p.PhoneDetaild)
                     .ThenInclude(p => p.Roms)
+                .Include(p=> p.Bills)
+                    .ThenInclude(p=> p.Accounts)
                 .Where(p => p.Status != 0)
+                .ToList();
+
+            return View(billDetail);
+        }
+
+        public ActionResult BaoHanh()
+        {
+            // List sản phẩm hoàn trả trong billDetail
+            var billDetail = _context.BillDetails
+                .Include(p => p.PhoneDetaild)
+                    .ThenInclude(p => p.Phones)
+                .Include(p => p.PhoneDetaild)
+                    .ThenInclude(p => p.Colors)
+                .Include(p => p.PhoneDetaild)
+                    .ThenInclude(p => p.Rams)
+                .Include(p => p.PhoneDetaild)
+                    .ThenInclude(p => p.Roms)
+                .Include(p => p.Bills)
+                    .ThenInclude(p => p.Accounts)
+                .Where(p => p.Status != 0)
+                .ToList();
+
+            return View(billDetail);
+        }
+        public ActionResult ChiTietBaoHanh(Guid id)
+        {
+            // List sản phẩm hoàn trả trong billDetail
+            var billDetail = _context.BillDetails
+                .Include(p => p.PhoneDetaild)
+                    .ThenInclude(p => p.Phones)
+                .Include(p => p.PhoneDetaild)
+                    .ThenInclude(p => p.Colors)
+                .Include(p => p.PhoneDetaild)
+                    .ThenInclude(p => p.Rams)
+                .Include(p => p.PhoneDetaild)
+                    .ThenInclude(p => p.Roms)
+                .Include(p => p.Bills)
+                    .ThenInclude(p => p.Accounts)
+                .Where(p => p.Status != 0 && p.Id == id)
                 .ToList();
 
             return View(billDetail);
@@ -262,6 +303,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             if (null != billDetail)
             {
                 billDetail.Status = 0;
+                billDetail.Update_at = DateTime.Now;
                 _context.SaveChanges();
             }
 

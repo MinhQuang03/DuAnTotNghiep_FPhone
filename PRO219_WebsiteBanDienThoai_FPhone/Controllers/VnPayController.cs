@@ -138,6 +138,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
                     billDetail.Id = Guid.NewGuid();
                     billDetail.IdPhoneDetail = item.IdPhoneDetaild;
                     billDetail.Price = _dbContext.PhoneDetailds.Find(item.IdPhoneDetaild).Price;
+                    billDetail.Number = 1;
                     billDetail.Status = 0;
                     billDetail.Imei = emeiCheck.NameImei; // Đúng tra là id của bảng emei. Nhưng name email cũng không thể trùng.
                     Listbill.Add(billDetail);
