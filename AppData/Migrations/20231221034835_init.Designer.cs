@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppData.Migrations
 {
     [DbContext(typeof(FPhoneDbContext))]
-    [Migration("20231217124356_init-database")]
-    partial class initdatabase
+    [Migration("20231221034835_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -535,6 +535,9 @@ namespace AppData.Migrations
                     b.Property<Guid>("IdProductionCompany")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("IdWarranty")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
@@ -545,6 +548,8 @@ namespace AppData.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("IdProductionCompany");
+
+                    b.HasIndex("IdWarranty");
 
                     b.ToTable("Phones");
                 });
@@ -896,15 +901,13 @@ namespace AppData.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("IdPhone")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int?>("Status")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("TimeWarranty")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("IdPhone");
 
                     b.ToTable("Warranty");
                 });
@@ -930,11 +933,18 @@ namespace AppData.Migrations
                     b.Property<Guid?>("IdBillDetail")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("IdImei")
+                    b.Property<Guid?>("IdPhone")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Imei")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("Status")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("ThoiGianConBaoHanh")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -1311,7 +1321,13 @@ namespace AppData.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("AppData.Models.Warranty", "Warranty")
+                        .WithMany()
+                        .HasForeignKey("IdWarranty");
+
                     b.Navigation("ProductionCompanies");
+
+                    b.Navigation("Warranty");
                 });
 
             modelBuilder.Entity("AppData.Models.PhoneDetaild", b =>
@@ -1447,17 +1463,6 @@ namespace AppData.Migrations
                     b.Navigation("PhoneDetaild");
 
                     b.Navigation("Sales");
-                });
-
-            modelBuilder.Entity("AppData.Models.Warranty", b =>
-                {
-                    b.HasOne("AppData.Models.Phone", "Phones")
-                        .WithMany()
-                        .HasForeignKey("IdPhone")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Phones");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
