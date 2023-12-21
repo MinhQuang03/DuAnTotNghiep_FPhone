@@ -326,6 +326,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                 mailMessage.From = new MailAddress(fromEmail);
                 mailMessage.To.Add(toEmail);
                 mailMessage.Subject = "Bảo Hành Điện Thoại";
+                mailMessage.IsBodyHtml = true;
                 mailMessage.Body = $@"
         <!DOCTYPE html>
         <html lang='en'>
