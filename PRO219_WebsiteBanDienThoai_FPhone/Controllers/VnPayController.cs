@@ -84,7 +84,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
             foreach (var item in product)
             {
                 // Tìm ra imeil đầu tiên thuộc PhoneDetail có status = 1 (1: chưa được bán)
-                var emeiCheck = _dbContext.Imei.First(a => a.IdPhoneDetaild == item.IdPhoneDetaild && a.Status == 1);
+                var emeiCheck = _dbContext.Imei.FirstOrDefault(a => a.IdPhoneDetaild == item.IdPhoneDetaild && a.Status == 1);
                 // trường hợp tồn tại emeiCheck
                 if (null != emeiCheck)
                 {

@@ -1,5 +1,5 @@
 ﻿var JAdAccount = (function(window, $) {
-    const ins = {};
+    var ins = {};
     ins.initList = function() {
         const $form = $("#JAdAccount_list_form");
         $form.find('*[id="Options_PageSize"]').val();

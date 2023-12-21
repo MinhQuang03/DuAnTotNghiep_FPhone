@@ -61,7 +61,7 @@ namespace AppData.Utilities
             }
         }
 
-      public static string EmailCreateAccountTemplate(string fullName, string username)  
+        public static string EmailCreateAccountTemplate(string fullName, string username)
         {
             return $@"
         <!DOCTYPE html>
@@ -128,13 +128,17 @@ namespace AppData.Utilities
                 <p>Chúc Quý khách có những trải nghiệm tốt nhất với hệ thống của chúng tôi!</p>
                 <footer>
                     Trân trọng,<br>
-                    FPHONE STORE
+                    FPHONE STORE 
                 </footer>
             </div>
         </body>
         </html>";
         }
 
+        public static string EmailCheckOutTemplate()
+        {
+            return $@"";
+        }
     }
    
     public class ObjectEmailInput

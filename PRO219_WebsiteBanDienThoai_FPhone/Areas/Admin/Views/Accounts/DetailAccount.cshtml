@@ -9,7 +9,11 @@
     </div>
     <div class="card-body">
         <div class="row justify-content-center mb-3">
-            <img src="@(Model.ImageUrl==null?"":Model.ImageUrl)" width="200px" height="200px" class="rounded-circle">
+            @if (Model != null)
+            {
+                <img src="@(Model.ImageUrl == null ? "" : Model.ImageUrl)" width="200px" height="200px" class="rounded-circle">
+            }
+            
         </div>
        
         <div class="row">
@@ -35,7 +39,10 @@
             </div>
             <label class="text-end col-form-label col">Trạng thái</label>
             <div class="col-sm-4" style="margin-right: 190px">
-                <p readonly class="form-control">@(Model.Status==1?"Hoạt động":"Không hoạt động")</p>
+            @if (Model != null)
+            {
+                <p readonly class="form-control">@(Model.Status == 1 ? "Hoạt động" : "Không hoạt động")</p>
+            }
             </div>
         </div>
     </div>

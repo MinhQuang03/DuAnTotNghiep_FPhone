@@ -35,9 +35,6 @@
 
     <thead class="thead-light">
     <tr>
-        @*<th>
-            @Html.DisplayNameFor(model => model.UserName)
-        </th>*@
         <th>
             Tên
         </th>
@@ -48,10 +45,10 @@
         <th>
             Địa chỉ
         </th>
-            <th>
-                Trạng thái
-            </th>
-        <th width="8%">Actions</th>
+        <th>
+            Trạng thái
+        </th>
+        <th width="15%">Hành động</th>
     </tr>
     </thead>
     <tbody>
@@ -75,7 +72,7 @@
                     @Html.DisplayFor(modelItem => item.Address)
                 </td>
                 <td>
-                   @(item.Status ==1?"Hoạt động":"Không hoạt động")
+                    @(item.Status ==0?"Hoạt động":"Không hoạt động")
                 </td>
                 <td >
                     <a asp-action="EditAccount" asp-route-id="@item.Id">
@@ -95,6 +92,7 @@
     }
     </tbody>
 </table>
+@* Phân trang*@
 <div class="row">
     <div class="col">
         <div class="page_size_box row col-7">

@@ -47,27 +47,21 @@ public class VwPhoneDetailService : IVwPhoneDetailService
                  (model.MaterialName == null || c.MaterialName.Contains(model.MaterialName)) &&
                  (model.RamName == null || c.RamName.Contains(model.RamName)) &&
                  (model.RomName == null || c.RomName.Contains(model.RomName)) &&
-                 (model.ProductionCompanyName == null || c.ProductionCompanyName.Contains(model.ProductionCompanyName)))
+                 (model.ProductionCompanyName == null || c.ProductionCompanyName.Contains(model.ProductionCompanyName))) &&
+                (model.IdPhone == Guid.Empty || model.IdPhone == null || c.IdPhone.Equals(model.IdPhone))
             ).Skip(options.SkipCalc).Take(options.PageSize).ToList();
 
-            options.AllRecordCount = _dbContext.VW_PhoneDetail.Count(c => model == null ||
-                                                                          ((model.Price == null ||
-                                                                            c.Price <= model.Price) &&
-                                                                           (model.PhoneName == null ||
-                                                                            c.PhoneName.Contains(model.PhoneName)) &&
-                                                                           (model.ChipCPUName == null ||
-                                                                            c.ChipCPUName.Contains(
-                                                                                model.ChipCPUName)) &&
-                                                                           (model.MaterialName == null ||
-                                                                            c.MaterialName.Contains(
-                                                                                model.MaterialName)) &&
-                                                                           (model.RamName == null ||
-                                                                            c.RamName.Contains(model.RamName)) &&
-                                                                           (model.RomName == null ||
-                                                                            c.RomName.Contains(model.RomName)) &&
-                                                                           (model.ProductionCompanyName == null ||
-                                                                            c.ProductionCompanyName.Contains(
-                                                                                model.ProductionCompanyName))));
+            options.AllRecordCount = _dbContext.VW_PhoneDetail.Count(c =>
+                model == null ||
+                ((model.Price == null || c.Price <= model.Price) &&
+                 (model.PhoneName == null || c.PhoneName.Contains(model.PhoneName)) &&
+                 (model.ChipCPUName == null || c.ChipCPUName.Contains(model.ChipCPUName)) &&
+                 (model.MaterialName == null || c.MaterialName.Contains(model.MaterialName)) &&
+                 (model.RamName == null || c.RamName.Contains(model.RamName)) &&
+                 (model.RomName == null || c.RomName.Contains(model.RomName)) &&
+                 (model.ProductionCompanyName == null || c.ProductionCompanyName.Contains(model.ProductionCompanyName))) &&
+                (model.IdPhone == Guid.Empty || model.IdPhone == null || c.IdPhone.Equals(model.IdPhone))
+            );
         }
         catch (Exception e)
         {

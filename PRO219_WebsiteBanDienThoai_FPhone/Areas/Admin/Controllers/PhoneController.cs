@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Filters;
 using System.Text;
+using AppData.IServices;
+using AppData.Services;
+using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
 {
@@ -12,42 +15,49 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
     public class PhoneController : Controller
     {
         public readonly HttpClient _httpClient;
-        public PhoneController(HttpClient httpClient)
+        private IVwPhoneService _service;
+        private IVwPhoneDetailService _detailService;
+
+        public PhoneController(HttpClient httpClient, IVwPhoneService service, IVwPhoneDetailService detailService)
         {
-
             _httpClient = httpClient;
-
+            _service = service;
+            _detailService = detailService;
         }
         public async Task<IActionResult> Index()
         {
-            var datajson = await _httpClient.GetStringAsync("api/Phone/get");
-            var obj = JsonConvert.DeserializeObject<List<Phone>>(datajson);
-
-            var productionCompanyNames = new Dictionary<Guid, string>();
-
-            foreach (var phone in obj)
-            {
-                if (!productionCompanyNames.ContainsKey(phone.IdProductionCompany))
-                {
-                    var productionCompanyData = await _httpClient.GetStringAsync($"api/ProductionCompany/getById/{phone.IdProductionCompany}");
-                    var productionCompany = JsonConvert.DeserializeObject<ProductionCompany>(productionCompanyData);
-                    productionCompanyNames.Add(phone.IdProductionCompany, productionCompany.Name);
-                }
-            }
-
-            ViewBag.ProductionCompanyNames = productionCompanyNames;
-
-            return View(obj);
+            AdPhoneViewModel model = new AdPhoneViewModel();
+            model.ListVwPhoneGroup = _service.listVwPhoneGroup(model.SearchData, model.ListOptions);
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Index(AdPhoneViewModel model)
+        {
+            model.ListVwPhoneGroup = _service.listVwPhoneGroup(model.SearchData, model.ListOptions);
+            return View(model);
         }
         public async Task<IActionResult> Create()
         {
-            var datajson = await _httpClient.GetStringAsync("api/ProductionCompany/get");
-            List<ProductionCompany> obj = JsonConvert.DeserializeObject<List<ProductionCompany>>(datajson);
-            ViewBag.IdProductionCompany = new SelectList(obj, "Id","Name");
+            //var datajson = await _httpClient.GetStringAsync("api/ProductionCompany/get");
+            //List<ProductionCompany> obj = JsonConvert.DeserializeObject<List<ProductionCompany>>(datajson);
+            //ViewBag.IdProductionCompany = new SelectList(obj, "Id","Name");
             return View();
         }
 
 
+        public IActionResult ListPhoneDetail(Guid id)
+        {
+            AdPhoneDetailViewModel model = new AdPhoneDetailViewModel();
+            model.ListVwPhoneDetail = _detailService.listVwPhoneDetails(model.SearchData,model.ListOptions);
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult ListPhoneDetail(AdPhoneDetailViewModel model)
+        {
+            model.ListVwPhoneDetail = _detailService.listVwPhoneDetails(model.SearchData, model.ListOptions);
+            return View(model);
+        }
         [HttpPost] 
         public async Task<IActionResult> Create(Phone obj, IFormFile file)
         {

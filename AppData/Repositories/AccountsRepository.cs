@@ -109,7 +109,7 @@ namespace AppData.Repositories
             if (adminResult.Succeeded)
             {
                 var staff = _dbContext.AspNetUsers.FirstOrDefault(c => c.UserName == model.UserName);
-                if (staff.Status ==1)
+                if (staff.Status ==0)
                 {
                     x.ApplicationUser = staff;
                     return await GenerateToken(x);
