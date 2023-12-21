@@ -128,6 +128,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
 
                 bill.Status = 4;
                 bill.StatusPayment = 1;
+                bill.PaymentDate = DateTime.Now;
                 _context.Entry(bill).State = EntityState.Modified;
                 _context.SaveChanges();
             }
