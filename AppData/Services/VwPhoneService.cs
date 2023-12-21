@@ -50,9 +50,16 @@ namespace AppData.Services
                 lst = _dbContext.VW_Phone_Group.Where(c =>
                     model == null ||
                     (model.Price == null || c.Price.Contains(model.Price)) &&
+                    (model.PhoneName == null || c.PhoneName.Contains(model.PhoneName)) &&
+                    (model.PriceMax == null || c.PriceMax <= model.PriceMax)
+                ).OrderByDescending(c =>c.CreateDate).Skip(options.SkipCalc).Take(options.PageSize).ToList();
+
+                options.AllRecordCount = _dbContext.VW_Phone_Group.Count(c =>
+                    model == null ||
+                    (model.Price == null || c.Price.Contains(model.Price)) &&
                     (model.PhoneName == null || c.PhoneName.Contains(model.Price)) &&
                     (model.PriceMax == null || c.PriceMax <= model.PriceMax)
-                ).Take(options.PageSize).ToList();
+                );
             }
             catch (Exception e)
             {

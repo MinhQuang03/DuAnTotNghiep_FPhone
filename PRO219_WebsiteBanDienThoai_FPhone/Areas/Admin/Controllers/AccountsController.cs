@@ -97,12 +97,13 @@ public class AccountsController : Controller
     [HttpGet]
     public IActionResult DetailAccount(string id)
     {
+        ApplicationUser user = new ApplicationUser();
         if (id == null)
         {
             return RedirectToAction("Account");
         }
-        var model = _accountsService.GetById(id);
-        return View(model);
+        user = _accountsService.GetById(id);
+        return View(user);
     }
 
     public async Task<RedirectResult> LogOut()
