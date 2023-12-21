@@ -75,7 +75,7 @@
                 @if (ViewBag.BillStatus == 4 && item.Status == 0)
                 {
                     <td>
-                        <a href="/Accounts/YeuCauTrahang?IdPhoneDetail=@item.IdPhoneDetail&phoneImei=@item.Imei">Hoàn trả</a>
+                        <a href="/Accounts/YeuCauTrahang?IdPhoneDetail=@item.IdPhoneDetail&phoneImei=@item.Imei">Hủy giao dịch</a>
                         <a> | </a>
                         @*<a href="/Accounts/YeuCauBaoHanh?IdPhoneDetail=@item.IdPhoneDetail&phoneImei=@item.Imei">Bảo Hành</a>*@
                         <a href="javascript:void(0);" onclick="alterAndSubmit('@item.IdPhoneDetail', '@item.Imei')">Bảo hành</a>
