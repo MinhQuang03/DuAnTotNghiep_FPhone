@@ -4,12 +4,10 @@
     {
         public Guid Id { get; set; }
 
-        public Guid IdPhone { get; set; }
-
         public DateTime? TimeWarranty { get; set; }
 
         public string? Description { get; set; }
 
-        public virtual Phone Phones { get; set; }
+       public int? Status { get; set; }
     }
 }

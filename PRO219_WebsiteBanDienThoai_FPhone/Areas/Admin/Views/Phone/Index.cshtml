@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<AppData.Models.Phone>
-
+@using AppData.FPhoneDbContexts
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
@@ -28,12 +28,17 @@
             <th>
                 @Html.DisplayNameFor(model => model.IdProductionCompany)
             </th>
+            <th>
+                Thời gian bảo hành
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+            FPhoneDbContext _context = new FPhoneDbContext();
+            var tg = _context.Warranty.FirstOrDefault(p => p.Id == item.IdWarranty);
+            <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Id)
             </td>
@@ -48,6 +53,9 @@
             </td>
             <td>
                     @ViewBag.ProductionCompanyNames[item.IdProductionCompany]
+            </td>
+            <td>
+                @tg
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new {  id=item.Id }) 

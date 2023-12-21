@@ -195,6 +195,9 @@
                         <a asp-area="Admin" asp-controller="Phone" asp-action="Index">Phone</a>
                     </li>
                     <li>
+                        <a asp-area="Admin" asp-controller="Imei" asp-action="Index">Thêm mới sản phẩm</a>
+                    </li>
+                    <li>
                         <a asp-area="Admin" asp-controller="PhoneDetaild" asp-action="Index">Danh sách sản phẩm</a>
                     </li>
                     <li class="nav-item dropdown">
@@ -270,6 +273,14 @@
                         <i class="anticon anticon-appstore"></i>
                     </span>
                     <span class="title">Quản Lý Trả/Bào Hành</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a asp-area="Admin" asp-action="BaoHanh" asp-controller="Bill">
+                    <span class="icon-holder">
+                        <i class="anticon anticon-appstore"></i>
+                    </span>
+                    <span class="title">Quản Lý Bào Hành</span>
                 </a>
             </li>
             <li class="nav-item dropdown">
