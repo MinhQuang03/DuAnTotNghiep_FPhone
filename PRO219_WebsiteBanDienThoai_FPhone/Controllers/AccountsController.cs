@@ -451,6 +451,23 @@ public class AccountsController : Controller
         return View(billDetail);
     }
 
+    public ActionResult ThongTinBaoHanh(Guid IdPhoneDetail)
+    {
+        var phone = _context.BillDetails
+                        .Include(p => p.PhoneDetaild)
+                            .ThenInclude(p => p.Phones)
+                        .Include(p => p.PhoneDetaild)
+                            .ThenInclude(p => p.Colors)
+                        .Include(p => p.PhoneDetaild)
+                            .ThenInclude(p => p.Rams)
+                        .Include(p => p.PhoneDetaild)
+                            .ThenInclude(p => p.Roms)
+                        .Include(p => p.Bills)
+                            .ThenInclude(p => p.Accounts)
+                    .Where(p => p.Id == IdPhoneDetail).ToList();
+        return View(phone);
+    }
+
     // Hoàn trả sản phẩm
     public ActionResult YeuCauTrahang(Guid IdPhoneDetail, string phoneImei)
     {

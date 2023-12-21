@@ -10,6 +10,8 @@ namespace AppData.Models
 
         public Guid? IdAccount { get; set; }
 
+        public Guid? IdPhoneDetail { get; set; }
+
         public Guid? IdPhone { get; set; }
         public string Imei { get; set; }
 
@@ -17,7 +19,7 @@ namespace AppData.Models
 
         public string? Description { get; set; }
 
-        public DateTime ThoiGianConBaoHanh { get; set; }
+        public DateTime? ThoiGianConBaoHanh { get; set; }
 
         public DateTime? AppointmentDate { get; set; }
 

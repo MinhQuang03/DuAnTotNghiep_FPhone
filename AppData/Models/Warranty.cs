@@ -4,7 +4,7 @@
     {
         public Guid Id { get; set; }
 
-        public DateTime? TimeWarranty { get; set; }
+        public int TimeWarranty { get; set; }
 
         public string? Description { get; set; }
 
