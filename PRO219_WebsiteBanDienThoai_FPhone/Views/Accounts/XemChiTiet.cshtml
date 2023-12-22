@@ -79,7 +79,7 @@
                         <a> | </a>
                         @*<a href="/Accounts/YeuCauBaoHanh?IdPhoneDetail=@item.IdPhoneDetail&phoneImei=@item.Imei">Bảo Hành</a>*@
                         @*<a href="javascript:void(0);" onclick="alterAndSubmit('@item.IdPhoneDetail', '@item.Imei')">Bảo hành</a>*@
-                        @Html.ActionLink("Bảo hành", "ThongTinBaoHanh", new {  id=item.Id })
+                        @Html.ActionLink("Bảo hành", "ThongTinBaoHanh", new {  idBill =item.IdBill })
                     </td>
                 }
             </tr>

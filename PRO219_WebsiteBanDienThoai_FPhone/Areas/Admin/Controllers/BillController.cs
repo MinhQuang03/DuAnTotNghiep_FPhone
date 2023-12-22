@@ -158,8 +158,8 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                     .ThenInclude(p => p.Rams)
                 .Include(p => p.PhoneDetaild)
                     .ThenInclude(p => p.Roms)
-                .Include(p=> p.Bills)
-                    .ThenInclude(p=> p.Accounts)
+                .Include(p => p.Bills)
+                    .ThenInclude(p => p.Accounts)
                 .Where(p => p.Status != 0)
                 .ToList();
 
@@ -185,24 +185,39 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
 
             return View(billDetail);
         }
-        public ActionResult ChiTietBaoHanh(Guid id)
+        public ActionResult ChiTietBaoHanh(Guid id) 
         {
-            // List sản phẩm hoàn trả trong billDetail
-            var billDetail = _context.BillDetails
-                .Include(p => p.PhoneDetaild)
-                    .ThenInclude(p => p.Phones)
-                .Include(p => p.PhoneDetaild)
-                    .ThenInclude(p => p.Colors)
-                .Include(p => p.PhoneDetaild)
-                    .ThenInclude(p => p.Rams)
-                .Include(p => p.PhoneDetaild)
-                    .ThenInclude(p => p.Roms)
-                .Include(p => p.Bills)
-                    .ThenInclude(p => p.Accounts)
-                .Where(p => p.Status != 0 && p.Id == id)
-                .ToList();
+            // Hiển thị chi tiết điện thoại đổi trả + Thông tin khách hàng
 
-            return View(billDetail);
+                var warrantyCards = _context.WarrantyCards.Where(p => p.IdBillDetail == id).ToList();
+
+            // Hiển thị thông tin khách hàng
+            if (warrantyCards.Count() > 0)
+            {
+                // Lấy thông tin điện thoại trong billdetail
+                ViewBag.BillDetails = _context.BillDetails
+                                      .Include(p => p.PhoneDetaild)
+                                          .ThenInclude(p => p.Phones)
+                                      .Include(p => p.PhoneDetaild)
+                                          .ThenInclude(p => p.Colors)
+                                      .Include(p => p.PhoneDetaild)
+                                          .ThenInclude(p => p.Rams)
+                                      .Include(p => p.PhoneDetaild)
+                                          .ThenInclude(p => p.Roms)
+                                      .Include(p => p.Bills)
+                                          .ThenInclude(p => p.Accounts)
+                                      .Where(p => p.Status != 0)
+                                      .ToList();
+
+                ViewBag.WarrantyCards = warrantyCards;
+
+                var warrantyCard = warrantyCards.FirstOrDefault();
+                var bill = _context.BillDetails.Include(p => p.Bills).FirstOrDefault(p => p.Id == warrantyCard.IdBillDetail);
+
+                return View(bill);
+            }
+
+            return null;
         }
 
         // Chấp nhận trả hàng
