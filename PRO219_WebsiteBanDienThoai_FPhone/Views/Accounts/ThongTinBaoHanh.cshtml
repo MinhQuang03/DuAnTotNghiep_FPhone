@@ -2,47 +2,133 @@
 @using AppData.FPhoneDbContexts;
 @model List<BillDetails>
 
-<h1>Thông tin bảo hành</h1>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông tin bảo hành điện thoại</title>
 
-@foreach(var item in Model){
-    FPhoneDbContext context = new FPhoneDbContext();
-    var ngayhethan = context.Warranty.FirstOrDefault(p => p.Id == item.PhoneDetaild.Phones.IdWarranty);
-    var th = @item.Bills.PaymentDate.AddMonths(ngayhethan.TimeWarranty);
-    <h3>Xin chào @item.Bills.Accounts.Username</h3>
-    <br />
-    <p>
-        Cảm ơn bạn đã mua máy @item.PhoneDetaild.Phones.PhoneName |
-        @item.PhoneDetaild.Rams.Name/@item.PhoneDetaild.Roms.Name |
-        @item.PhoneDetaild.Colors.Name tại cửa hàng FPhone của chúng tôi.
-    </p>
+    <style>
+        .main-container {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
 
-    <br />
-    if (th < DateTime.Now)
-    {
-        <p>Thời gian bảo hành thiết bị của bạn từ @item.Bills.PaymentDate đến ngày @th</p>
-        <br />
-        <p>Hãy gửi yêu cầu cho chúng tôi để xem xét bảo hành.</p>
-        <a href="javascript:void(0);" onclick="alterAndSubmit('@item.IdPhoneDetail', '@item.Imei')">Bảo hành</a>
-    }
-    else
-    {
-        <p>Rất tiếc hiện tại máy của bạn đã hết thời gian bảo hành.</p>
-    }
-}
+        .main-title {
+            text-align: center;
+            margin-top: 30px;
+            color: #333;
+        }
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        .section-title {
+            margin-top: 20px;
+            color: #333;
+        }
+
+        .paragraph {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .unordered-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .list-item {
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .input-text {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+        .button-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+            .button-link:hover {
+                background-color: #0056b3;
+            }
+
+        .info-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body class="main-container">
+
+    <div class="info-container">
+        <h1 class="main-title">Thông tin bảo hành điện thoại</h1>
+
+        @foreach (var item in Model)
+        {
+            FPhoneDbContext context = new FPhoneDbContext();
+            var ngayhethan = context.Warranty.FirstOrDefault(p => p.Id == item.PhoneDetaild.Phones.IdWarranty);
+            var th = @item.Bills.PaymentDate.AddMonths(ngayhethan.TimeWarranty);
+
+            <h3 class="section-title">Xin chào @item.Bills.Accounts.Username</h3>
+            <p class="paragraph">
+                Cảm ơn bạn đã mua máy @item.PhoneDetaild.Phones.PhoneName |
+                @item.PhoneDetaild.Rams.Name/@item.PhoneDetaild.Roms.Name |
+                @item.PhoneDetaild.Colors.Name tại cửa hàng FPhone của chúng tôi.
+            </p>
+
+            @if (th > DateTime.Now)
+            {
+                <p class="paragraph">Thời gian bảo hành thiết bị của bạn từ @item.Bills.PaymentDate đến ngày @th</p>
+                <p class="paragraph">Hãy gửi yêu cầu cho chúng tôi để xem xét bảo hành.</p>
 
 
-<script>
-    function alterAndSubmit(IdPhoneDetail, Imei) {
-        var note = prompt("Nhập nội dung yêu cầu bảo hành", "")
-        if (note != null && note != "") {
+                <label class="label" for="statusInput">Tình trạng máy:</label>
+                <input class="input-text" type="text" id="statusInput_@item.IdPhoneDetail" placeholder="Nhập tình trạng máy">
+
+                <a class="button-link" href="javascript:void(0);" onclick="submitWithNote('@item.IdPhoneDetail', '@item.Imei')">Bảo hành</a>
+            }
+            else
+            {
+                <p class="paragraph">Rất tiếc hiện tại máy của bạn đã hết thời gian bảo hành.</p>
+            }
+        }
+    </div>
+
+    <script>
+        function submitWithNote(IdPhoneDetail, Imei) {
+            var noteId = "#statusInput_" + IdPhoneDetail;
+            var note = $(noteId).val();
+
+            // Thực hiện kiểm tra và xử lý dữ liệu nếu cần
 
             $.ajax({
                 type: "POST",
-                url: "@Url.Action("YeuCauBaoHanh","Accounts")",
+                url: "@Url.Action("YeuCauBaoHanh", "Accounts")",
                 data: {
                     IdPhoneDetail: IdPhoneDetail,
                     phoneImei: Imei,
@@ -50,81 +136,15 @@
                 },
                 success: function (data) {
                     console.log("Thành Công");
+                    // Thực hiện các hành động bổ sung sau khi thành công
                     location.reload(); // Tải lại trang
                 },
                 error: function () {
-                    console.log(data);
                     console.log("Thất bại");
-                    location.reload(); // Tải lại trang
                 }
             });
         }
-    }
-</script>
+    </script>
 
-@*<script>
-    function alterAndSubmit(IdPhoneDetail, Imei) {
-        // Create a modal dynamically
-        var modalHtml = `
-                    <div class="modal custom-modal" tabindex="-1" role="dialog">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Nhập nội dung yêu cầu bảo hành</h5>
-                                        <button type="button" class="close" data-dismiss="closeModal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <input type="text" id="noteInput" class="form-control" placeholder="Nội dung yêu cầu">
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="closeModal">Đóng</button>
-                                    <button type="button" class="btn btn-primary" onclick="submitWithNote(event, '${IdPhoneDetail}', '${Imei}')">Gửi</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-
-        // Append modal to the body
-        $('body').append(modalHtml);
-
-        // Show the modal
-        $('.modal').modal('show');
-    }
-
-    function closeModal() {
-        $('.modal').modal('hide'); // Đóng modal
-    }
-
-    function submitWithNote(e, IdPhoneDetail, Imei) {
-        e.preventDefault(); // Prevent the default form submission behavior
-
-        var note = $('#noteInput').val();
-
-        // Validate note here if needed
-
-        // Close the modal
-        $('.modal').modal('hide');
-
-        $.ajax({
-            type: "POST",
-            url: "@Url.Action("YeuCauBaoHanh","Accounts")",
-            data: {
-                IdPhoneDetail: IdPhoneDetail,
-                phoneImei: Imei,
-                note: note
-            },
-            success: function (data) {
-                console.log("Thành Công");
-                // You can perform additional actions upon success
-                location.reload(); // Tải lại trang
-            },
-            error: function () {
-                console.log("Thất bại");
-            }
-        });
-    }
-</script>
-*@
+</body>
+</html>

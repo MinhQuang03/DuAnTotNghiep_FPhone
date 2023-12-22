@@ -31,7 +31,7 @@ public class AccountsController : Controller
     private FPhoneDbContext _context;
     private readonly HttpClient _client;
     private IEmailService _emailService;
-    public AccountsController(HttpClient client,IEmailService emailService)
+    public AccountsController(HttpClient client, IEmailService emailService)
     {
         _cartDetailepository = new CartDetailepository();
         _cartRepository = new CartRepository();
@@ -94,7 +94,7 @@ public class AccountsController : Controller
             {
                 ObjectEmailInput emailInput = new ObjectEmailInput()
                 {
-                    FullName =model.Name,
+                    FullName = model.Name,
                     SendTo = model.Email,
                     Subject = "Thông báo tạo tài khoản",
                     UserName = model.Username,
@@ -139,7 +139,7 @@ public class AccountsController : Controller
             //chuyển hướng đến trang chủ của web
             if (respo.Roles.Contains("User"))
             {
-                DataError error = new DataError(){Success = true};
+                DataError error = new DataError() { Success = true };
                 error.Success = true;
                 error.Msg = "Đăng nhập thành công";
                 TempData["DataError"] = Utility.ConvertObjectToJson(error);
@@ -155,8 +155,8 @@ public class AccountsController : Controller
             ModelState.AddModelError("UserName", "Tài khoản hoặc mật khẩu sai");
             return RedirectToAction("Index", "Home");
 
-           // TempData["DataError"] = Utility.ConvertObjectToJson(error);
-           // return  RedirectToAction("Index", "Home");
+            // TempData["DataError"] = Utility.ConvertObjectToJson(error);
+            // return  RedirectToAction("Index", "Home");
 
         }
 
@@ -384,8 +384,8 @@ public class AccountsController : Controller
 
         return Json(new { success = true });
 
-              //  return RedirectToAction("Index", "Home");
-                
+        //  return RedirectToAction("Index", "Home");
+
 
     }
 
@@ -451,7 +451,7 @@ public class AccountsController : Controller
         return View(billDetail);
     }
 
-    public ActionResult ThongTinBaoHanh(Guid IdPhoneDetail)
+    public ActionResult ThongTinBaoHanh(Guid idBill)
     {
         var phone = _context.BillDetails
                         .Include(p => p.PhoneDetaild)
@@ -464,7 +464,7 @@ public class AccountsController : Controller
                             .ThenInclude(p => p.Roms)
                         .Include(p => p.Bills)
                             .ThenInclude(p => p.Accounts)
-                    .Where(p => p.Id == IdPhoneDetail).ToList();
+                    .Where(p => p.IdBill == idBill).ToList();
         return View(phone);
     }
 
@@ -494,13 +494,34 @@ public class AccountsController : Controller
         // bảo hành từng sản phẩm trong giỏ hàng(BillDetail).
 
         // Cập nhật trạng thái trong bảng BillDetail status = 4 (4: Yêu cầu bảo hành)
-        var billDetail = _context.BillDetails.SingleOrDefault(a => a.IdPhoneDetail == IdPhoneDetail && a.Imei == phoneImei);
+        var billDetail = _context.BillDetails.Include(a=>a.Bills)
+                                             .ThenInclude(a=>a.Accounts)
+                                             .Include(a=>a.PhoneDetaild)
+                                             .SingleOrDefault(a => a.IdPhoneDetail == IdPhoneDetail && a.Imei == phoneImei);
+
         if (null != billDetail)
         {
-            billDetail.Status = 4;
-            billDetail.Note = note;
+            billDetail.Status = 4; // Yêu cầu bảo hành 
+            _context.SaveChanges();
+
+            var warrantyCard = new WarrantyCard();
+            warrantyCard.Id = Guid.NewGuid();
+            warrantyCard.IdBillDetail = billDetail.Id;
+            warrantyCard.IdAccount = billDetail.Bills.IdAccount;
+            warrantyCard.IdPhoneDetail = IdPhoneDetail;
+            warrantyCard.IdPhone = billDetail.PhoneDetaild.IdPhone;
+            warrantyCard.Imei = phoneImei;
+            warrantyCard.CreatedDate = DateTime.Now;
+            warrantyCard.Description = note; // Có thể thay đổi tùy theo yêu cầu
+            //ThoiGianConBaoHanh = billDetail.Bills.PaymentDate.AddMonths(billDetail.PhoneDetaild.Phones.IdWarranty.TimeWarranty),
+            warrantyCard.Status = 1; // 1: Mới tạo
+            // Bổ sung thêm các thông tin khác nếu cần
+
+            _context.WarrantyCards.Add(warrantyCard);
             _context.SaveChanges();
         }
+
+
 
         return RedirectToAction("XemChiTiet", new { idBill = billDetail.IdBill });
     }
