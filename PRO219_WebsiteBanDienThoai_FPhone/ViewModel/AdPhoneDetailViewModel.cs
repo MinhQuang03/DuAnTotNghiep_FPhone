@@ -15,5 +15,8 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.ViewModel
         public List<VW_PhoneDetail> ListVwPhoneDetail { get; set; } = new List<VW_PhoneDetail>();
         public VW_PhoneDetail SearchData { get; set; } = new VW_PhoneDetail();
         public ListOptions ListOptions { get; set; } = new ListOptions();
+      //Edit
+      public Phone PhoneDetail { get; set; } = new Phone();
+      public IFormFile file { get; set; }
     }
 }

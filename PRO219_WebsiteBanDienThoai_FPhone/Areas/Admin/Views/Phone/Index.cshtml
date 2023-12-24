@@ -23,7 +23,7 @@
 <h2>Danh sách nhóm sản phẩm</h2>
 <p>
     <a asp-action="Create">
-        <span class="title">Tạo mới</span>
+        <span class="title">Thêm mới nhóm sản phẩm</span>
         <span class="icon-holder">
             <i class="fa fa-user-plus text-info pl-1"></i>
         </span>
@@ -36,7 +36,7 @@
               Tên máy
             </th>
             <th class="text-center">
-                Ảnh
+                Ảnh đại diện
             </th>
             <th width="15%" class="text-center">
                 Tên hãng
@@ -66,7 +66,7 @@
                 @Html.DisplayFor(modelItem => item.CreateDate)
             </td>
                 <td class="text-center">
-                @Html.ActionLink("Chỉnh sửa", "Edit", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Chỉnh sửa", "Edit", new { id=item.IdPhone })
                 @* @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
                 @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ }) *@
             </td>

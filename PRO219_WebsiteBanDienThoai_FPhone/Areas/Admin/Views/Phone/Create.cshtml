@@ -5,9 +5,9 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Create</h1>
-
-<h4>Phone</h4>
+<h1>Thêm mới nhóm sản phẩm</h1>
+<br/>
+<h4>Thông tin nhóm sản phẩm</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -19,17 +19,17 @@
                 <span asp-validation-for="Id" class="text-danger"></span>
             </div>*@
             <div class="form-group">
-                <label asp-for="PhoneName" class="control-label"></label>
+                <label class="control-label">Tên nhóm sản phẩm</label>
                 <input asp-for="PhoneName" class="form-control" />
                 <span asp-validation-for="PhoneName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
+                <label class="control-label">Mô tả</label>
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Image" class="control-label"></label>
+                <label class="control-label">Chọn ảnh</label>
                 @*<input asp-for="Image" class="form-control" />*@
                 <input type="file" name="file" />
                 <span asp-validation-for="Image" class="text-danger"></span>
@@ -40,14 +40,14 @@
                 <span asp-validation-for="IdProductionCompany" class="text-danger"></span>
             </div> *@
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Tạo mới" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Trở lại</a>
 </div>
 
 @*@section Scripts {
