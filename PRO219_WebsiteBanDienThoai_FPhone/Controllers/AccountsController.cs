@@ -342,14 +342,20 @@ public class AccountsController : Controller
         bill.StatusPayment = 0; // Chưa thanh toán 
         bill.deliveryPaymentMethod = "COD";
 
+        TempData["Totalmeny"] = bill.TotalMoney.ToString();
+        TempData["Totalship"] = order.ToTalShip.ToString();
+        TempData["name"] = bill.Name;
+        TempData["code"] = bill.BillCode;
+        TempData["address"] = bill.Address;
+        TempData["Phone"] = bill.Phone;
+        TempData["StatusPayment"] = bill.StatusPayment.ToString(); // Chuyển sang string
+        TempData["deliveryPaymentMethod"] = bill.deliveryPaymentMethod;
         _context.Bill.Add(bill);
         _context.SaveChanges();
 
         Guid idhd = bill.Id;
 
         var product = _context.CartDetails.Where(a => a.IdAccount == Guid.Parse(userId)).ToList();
-
-
         List<BillDetails> Listbill = new List<BillDetails>();
 
 
@@ -377,12 +383,7 @@ public class AccountsController : Controller
             }
         }
 
-        foreach (var item in product)
-        {
-            var cart = _context.CartDetails.Find(item.Id);
-            _context.CartDetails.Remove(cart);
-        }
-
+     
         _context.BillDetails.AddRange(Listbill);
         await _context.SaveChangesAsync();
 
@@ -528,5 +529,62 @@ public class AccountsController : Controller
 
 
         return RedirectToAction("XemChiTiet", new { idBill = billDetail.IdBill });
+    }
+
+    public ActionResult paymets()
+    {
+        var name = TempData["name"] as string;
+        var code = TempData["code"] as string;
+        var address = TempData["address"] as string;
+        var phone = TempData["Phone"] as string;
+        var statuspaymnt = TempData["StatusPayment"] as string;
+        var deliverypaymethod = TempData["deliveryPaymentMethod"] as string;
+        var totalmeny = TempData["Totalmeny"] as string;
+      
+        ViewBag.Totalmeny = totalmeny;
+      
+        ViewBag.name = name;
+        ViewBag.code = code;
+        ViewBag.address = address;
+        ViewBag.phone = phone;
+        ViewBag.statuspaymnt = statuspaymnt;
+        ViewBag.deliverypaymethod = deliverypaymethod;
+        var userId = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
+        var product = _context.CartDetails.Where(a => a.IdAccount == Guid.Parse(userId)).ToList();
+        decimal sum = 0;
+        List<Payment> payments = new List<Payment>();
+        foreach (var iten in product)
+        {
+            var idsp = _context.PhoneDetailds.FirstOrDefault(p => p.Id == iten.IdPhoneDetaild).IdPhone;
+            var gia = _context.PhoneDetailds.FirstOrDefault(p => p.Id == iten.IdPhoneDetaild).Price;
+            string anhsp = _context.Phones.FirstOrDefault(p => p.Id == idsp).Image;
+            var tensp = _context.Phones.FirstOrDefault(p => p.Id == idsp).PhoneName;
+            var idcolor = _context.PhoneDetailds.FirstOrDefault(p => p.Id == iten.IdPhoneDetaild).IdColor;
+            var idRam = _context.PhoneDetailds.FirstOrDefault(p => p.Id == iten.IdPhoneDetaild).IdRam;
+            var color = _context.Colors.FirstOrDefault(p => p.Id == idcolor).Name;
+            var Ram = _context.Ram.FirstOrDefault(p => p.Id == idRam).Name;
+            sum += gia;
+            Payment list = new Payment();
+            list.name = tensp;
+            list.price = gia;
+            list.img = anhsp;
+            list.color = color;
+            list.ram = Ram;
+            list.quantity = 1;
+            payments.Add(list);
+
+        }
+
+        decimal ships = decimal.Parse(totalmeny) - sum;
+        ViewBag.ships = ships;
+        ViewBag.sum = sum;
+        ViewBag.cart = payments;
+        foreach (var item in product)
+        {
+            var cart = _context.CartDetails.Find(item.Id);
+            _context.CartDetails.Remove(cart);
+        }
+        _context.SaveChanges();
+        return View();
     }
 }
