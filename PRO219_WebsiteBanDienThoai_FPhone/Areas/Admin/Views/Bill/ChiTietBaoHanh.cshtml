@@ -106,12 +106,9 @@
     ViewData["Title"] = "Hoàn Trả Bảo Hành";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 
-    String dh0 = "Bảo hành thành công";
-    String dh1 = "Yêu cầu trả hàng";
-    String dh2 = "Chấp nhận trả hàng";
-    String dh3 = "Trả hàng thành công";
-    String dh4 = "Yêu cầu bảo hành";
-    String dh5 = "Đang thực hiện bảo hành";
+    String dh0 = "Yêu cầu bảo hành";
+    String dh1 = "Đang thực hiện bảo hành";
+    String dh2 = "Bảo hành hành công";
 
     IEnumerable<WarrantyCard> listWarrantyCard = ViewBag.WarrantyCards as IEnumerable<WarrantyCard>;
     IEnumerable<BillDetails> listBillDetails = ViewBag.BillDetails as IEnumerable<BillDetails>;
@@ -159,14 +156,18 @@
                                         @item.Description
                                     </td>
                                     <td>
-                                        @if (phoneDetail.Status == 4)
+                                        @if (item.Status == 0)
                                         {
-                                            <p class="text-success"> @dh4</p>
+                                            <p class="text-success"> @dh0</p>
                                         }
-                                        else if (phoneDetail.Status == 5)
+                                        else if (item.Status == 1)
                                         {
-                                            <p class="text-success"> @dh5</p>
+                                            <p class="text-success"> @dh1</p>
                                             <p class="text-success"> (@item.AppointmentDate)</p>
+                                        }
+                                        else if(item.Status == 2)
+                                        {
+                                            <p class="text-success"> @dh2</p>
                                         }
                                     </td>
                                 }
@@ -199,13 +200,17 @@
         </div>
            
     </div>
-    @foreach (var phoneDetail in listBillDetails)
+    @foreach (var bh in listWarrantyCard)
     {
-        if (phoneDetail.Status == 4)
+        if (bh.Status == 0)
         {
-            <a href="~/Admin/Bill/XacNhanBaoHanh?IdPhoneDetail=@phoneDetail.IdPhoneDetail&phoneImei=@phoneDetail.Imei" class="button-abc">Chấp nhận bảo hành</a>
+            <a href="~/Admin/Bill/XacNhanBaoHanh?IdPhoneDetail=@bh.IdPhoneDetail&phoneImei=@bh.Imei" class="button-abc">Chấp nhận bảo hành</a>
 
-            <a href="~/Admin/Bill/HuyBaoHanhVaTraHang?IdPhoneDetail=@phoneDetail.IdPhoneDetail&phoneImei=@phoneDetail.Imei" class="button-abc">Xác nhận hủy</a>
+            <a href="~/Admin/Bill/HuyBaoHanh?IdPhoneDetail=@bh.IdPhoneDetail&phoneImei=@bh.Imei" class="button-abc">Xác nhận hủy</a>
+        }
+        else if (bh.Status == 1)
+        {
+            <a href="~/Admin/Bill/BaoHanhThanhCong?IdPhoneDetail=@bh.IdPhoneDetail&phoneImei=@bh.Imei" class="button-abc">Bảo hành thành công</a>
         }
     }
 </div>

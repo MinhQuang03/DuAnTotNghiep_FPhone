@@ -322,7 +322,11 @@ public class AccountsController : Controller
         {
             return BadRequest("User Id is not available.");
         }
-        var currentBillNumber = _context.Bill.Count() + 1;
+        int currentBillNumber;
+        lock (_context.Bill)
+        {
+            currentBillNumber = _context.Bill.Count() + 1;
+        }
         var billCode = "HD" + currentBillNumber.ToString("D5");
         Bill bill = new Bill();
         bill.Id = Guid.NewGuid();
@@ -501,8 +505,8 @@ public class AccountsController : Controller
 
         if (null != billDetail)
         {
-            billDetail.Status = 4; // Yêu cầu bảo hành 
-            _context.SaveChanges();
+            //billDetail.Status = 4; // Yêu cầu bảo hành 
+            //_context.SaveChanges();
 
             var warrantyCard = new WarrantyCard();
             warrantyCard.Id = Guid.NewGuid();
@@ -514,7 +518,7 @@ public class AccountsController : Controller
             warrantyCard.CreatedDate = DateTime.Now;
             warrantyCard.Description = note; // Có thể thay đổi tùy theo yêu cầu
             //ThoiGianConBaoHanh = billDetail.Bills.PaymentDate.AddMonths(billDetail.PhoneDetaild.Phones.IdWarranty.TimeWarranty),
-            warrantyCard.Status = 1; // 1: Mới tạo
+            warrantyCard.Status = 0; // 1: Mới tạo
             // Bổ sung thêm các thông tin khác nếu cần
 
             _context.WarrantyCards.Add(warrantyCard);

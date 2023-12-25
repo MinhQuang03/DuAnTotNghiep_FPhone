@@ -169,21 +169,23 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         public ActionResult BaoHanh()
         {
             // List sản phẩm hoàn trả trong billDetail
-            var billDetail = _context.BillDetails
-                .Include(p => p.PhoneDetaild)
-                    .ThenInclude(p => p.Phones)
-                .Include(p => p.PhoneDetaild)
-                    .ThenInclude(p => p.Colors)
-                .Include(p => p.PhoneDetaild)
-                    .ThenInclude(p => p.Rams)
-                .Include(p => p.PhoneDetaild)
-                    .ThenInclude(p => p.Roms)
-                .Include(p => p.Bills)
-                    .ThenInclude(p => p.Accounts)
-                .Where(p => p.Status != 0)
-                .ToList();
+            //var billDetail = _context.BillDetails
+            //    .Include(p => p.PhoneDetaild)
+            //        .ThenInclude(p => p.Phones)
+            //    .Include(p => p.PhoneDetaild)
+            //        .ThenInclude(p => p.Colors)
+            //    .Include(p => p.PhoneDetaild)
+            //        .ThenInclude(p => p.Rams)
+            //    .Include(p => p.PhoneDetaild)
+            //        .ThenInclude(p => p.Roms)
+            //    .Include(p => p.Bills)
+            //        .ThenInclude(p => p.Accounts)
+            //    .Where (p => p.Status != 0)
+            //    .ToList();
 
-            return View(billDetail);
+            //return View(billDetail);
+            var warrantyCards = _context.WarrantyCards.ToList();
+            return View(warrantyCards);
         }
         public ActionResult ChiTietBaoHanh(Guid id) 
         {
@@ -206,7 +208,6 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                                           .ThenInclude(p => p.Roms)
                                       .Include(p => p.Bills)
                                           .ThenInclude(p => p.Accounts)
-                                      .Where(p => p.Status != 0)
                                       .ToList();
 
                 ViewBag.WarrantyCards = warrantyCards;
@@ -248,7 +249,6 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
 
             return RedirectToAction("HoanTraHoacBaoHanh");
         }
-
         // Xác nhận đã nhận hàng gửi trả từ khách hàng
         public ActionResult TraHangThanhCong(Guid IdPhoneDetail, string phoneImei)
         {
@@ -292,38 +292,55 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         public ActionResult XacNhanBaoHanh(Guid IdPhoneDetail, string phoneImei)
         {
             // Cập nhật trạng thái trong bảng BillDetail status = 5 (5: Xác nhận bảo hành)
-            var billDetail = _context.BillDetails.SingleOrDefault(a => a.IdPhoneDetail == IdPhoneDetail && a.Imei == phoneImei);
-            if (null != billDetail)
+            var bh = _context.WarrantyCards.SingleOrDefault(a => a.IdPhoneDetail == IdPhoneDetail && a.Imei == phoneImei);
+            if (null != bh)
             {
-                billDetail.Status = 5;
-                billDetail.Update_at = DateTime.Now;
+                bh.Status = 1;
+                bh.AppointmentDate = bh.CreatedDate.AddMonths(4);
                 _context.SaveChanges();
 
                 // Gửi mail thông báo cho khách hàng về thời gian bảo hành/ địa chỉ email gửi trả hàng
                 // Tìm ra email theo thông tin khách hàng
+                var idBill = _context.BillDetails.FirstOrDefault(p => p.Id == bh.IdBillDetail);
+
                 var billDetails = _context.Bill
                                  .Include(p => p.Accounts)
-                                 .FirstOrDefault(p => p.Id == billDetail.IdBill);
+                                 .FirstOrDefault(p => p.Id == idBill.IdBill);
 
-                SendEmail(billDetails.Accounts.Email, billDetail.Update_at);
+                SendEmail(billDetails.Accounts.Email, bh.AppointmentDate);
             }
 
-            return RedirectToAction("HoanTraHoacBaoHanh");
+            return RedirectToAction("ChiTietBaoHanh", new { id = bh.IdBillDetail });
         }
+
+        public ActionResult HuyBaoHanh(Guid IdPhoneDetail, string phoneImei)
+        {
+            // Cập nhật trạng thái trong bảng BillDetail status = 2 (2: Chấp nhận trả hàng)
+            var bh = _context.WarrantyCards.SingleOrDefault(a => a.IdPhoneDetail == IdPhoneDetail && a.Imei == phoneImei);
+            if (null != bh)
+            {
+                bh.Status = null;
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("BaoHanh");
+        }
+
+
 
         // Xác nhận bảo hành thành công (Máy đã được trả về cho khách hàng)
         public ActionResult BaoHanhThanhCong(Guid IdPhoneDetail, string phoneImei)
         {
             // Cập nhật trạng thái trong bảng BillDetail status = 0 (0: Trạng thái ban đầu) (1 máy có nhiều lần bảo hành)
-            var billDetail = _context.BillDetails.SingleOrDefault(a => a.IdPhoneDetail == IdPhoneDetail && a.Imei == phoneImei);
-            if (null != billDetail)
+            var bh = _context.WarrantyCards.SingleOrDefault(a => a.IdPhoneDetail == IdPhoneDetail && a.Imei == phoneImei);
+            if (null != bh)
             {
-                billDetail.Status = 0;
-                billDetail.Update_at = DateTime.Now;
+                bh.Status = 2;
+                bh.AppointmentDate = DateTime.Now;
                 _context.SaveChanges();
             }
 
-            return RedirectToAction("HoanTraHoacBaoHanh");
+            return RedirectToAction("BaoHanh");
         }
 
         // Gửi mail với nội dung bảo hành
@@ -401,8 +418,8 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                 <h1>{acc.Username} thân mến,</h1>
                 <p>Chúng tôi rất vui thông báo rằng yêu của quý khách đã được xem xét và đồng ý bởi <strong> FPHONE STORE. </strong></p>
                 <p>Thông tin bảo hành như sau:</p>
-                <p>Hãy gửi tới sau đây: 123ACCC<p>
-                <p>Thời gian bảo hành sẽ tính đến ngày: {dNgayGuiBaohanh.Value.AddMonths(3)}, kể từ ngày bạn gửi yêu cầu bảo hành.<p>
+                <p>Hãy gửi tới địa chỉ sau đây: 123ACCC<p>
+                <p>Thời gian bảo hành sẽ tính đến ngày: {dNgayGuiBaohanh}, kể từ ngày bạn gửi yêu cầu bảo hành.<p>
                 <p>Nếu Quý khách có bất kỳ câu hỏi hoặc cần hỗ trợ, vui lòng liên hệ với chúng tôi qua email <a href='mailto:support@fphonestore.com'>support@fphonestore.com</a> hoặc gọi số điện thoại hỗ trợ khách hàng: <strong>0123-456-789</strong>.</p>
                 <p>Chúc Quý khách có những trải nghiệm tốt nhất với hệ thống của chúng tôi!</p>
                 <footer>
