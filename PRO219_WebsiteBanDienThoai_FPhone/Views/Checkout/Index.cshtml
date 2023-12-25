@@ -120,6 +120,7 @@
                             <div class="d-flex justify-content-between">
                                 <h6 class="font-weight-medium">Phí vận chuyển</h6>
                                 <h6 id="TotalShip" class="font-weight-medium">@totalShip</h6>
+                                <input hidden="" asp-for="ToTalShip" id="TotalShip" />
                             </div>
                         </div>
                         <div class="pt-2">
@@ -199,7 +200,7 @@
                                     window.location.href = response.data;
 
                                     // Chuyển về trang chủ
-                                    window.location.href = 'Home/Index';
+                                    window.location.href = 'Accounts/paymets';
                                 } else {
                                     // Xử lý lỗi nếu cần
                                     console.error("Banktransfer request failed.");
