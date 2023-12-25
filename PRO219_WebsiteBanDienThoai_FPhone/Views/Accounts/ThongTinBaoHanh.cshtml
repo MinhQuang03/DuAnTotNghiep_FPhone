@@ -88,6 +88,8 @@
     <div class="info-container">
         <h1 class="main-title">Thông tin bảo hành điện thoại</h1>
 
+        <p id="successMessage" class="paragraph" style="color: green; display: none;">Gửi yêu cầu thành công</p>
+
         @foreach (var item in Model)
         {
             FPhoneDbContext context = new FPhoneDbContext();
@@ -136,6 +138,7 @@
                 },
                 success: function (data) {
                     console.log("Thành Công");
+                    $("#successMessage").show();
                     // Thực hiện các hành động bổ sung sau khi thành công
                     location.reload(); // Tải lại trang
                 },

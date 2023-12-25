@@ -27,8 +27,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
         }
         public ActionResult PhoneDetail(string id)
         {
-           
-          
+      
             if (string.IsNullOrWhiteSpace(id))
             {
                 return NotFound();
@@ -39,7 +38,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
                 lstImage = null,
                 Image = _phoneRepo.GetById(Guid.Parse(id)).Result.Image,
                 listImageByIdPhone = _imageService.GetListImageByIdPhone(Guid.Parse(id))
-        };
+            };
             return View(data);
         }
         [HttpGet]
@@ -53,6 +52,26 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
                 Items = data.Records,
                 Success = true
             });
+        }
+
+        [HttpPost]
+        public void AddReview(Guid idAccount, Guid idPhoneDetaild, string content)
+        {
+            // Create a new Review instance
+            var newReview = new Review
+            {
+                Id = Guid.NewGuid(), // Generate a new GUID for the review
+                DateTime = DateTime.Now,
+                Content = content,
+                IdPhoneDetaild = idPhoneDetaild,
+                IdAccount = idAccount
+            };
+
+            // Add the new review to the database context
+            _context.Reviews.Add(newReview);
+
+            // Save changes to the database
+            _context.SaveChanges();
         }
     }
 }

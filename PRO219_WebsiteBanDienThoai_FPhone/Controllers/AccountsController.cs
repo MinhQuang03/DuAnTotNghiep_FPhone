@@ -473,24 +473,7 @@ public class AccountsController : Controller
         return View(phone);
     }
 
-    // Hoàn trả sản phẩm
-    public ActionResult YeuCauTrahang(Guid IdPhoneDetail, string phoneImei)
-    {
-        // Trả từng sản phẩm trong giỏ hàng.
-        // Trường hợp trong giỏ hàng trả hết => Bill có status = X (Đơn hàng có trạng thái hoàn trả)
-        // Cập nhật lại số lượng trong kho(Emei)
-
-        // Tìm sản phẩm muốn trả trong bảng BillDetails
-        var billDetail = _context.BillDetails.SingleOrDefault(a => a.IdPhoneDetail == IdPhoneDetail && a.Imei == phoneImei);
-        if (null != billDetail)
-        {
-            // Cập nhật trạng thái trong bảng BillDetail status = 1 (1: Yêu cầu hủy)
-            billDetail.Status = 1;
-            _context.SaveChanges();
-        }
-
-        return RedirectToAction("XemChiTiet", new { idBill = billDetail.IdBill });
-    }
+    
 
     // Yêu cầu bảo hành
     [HttpPost]
