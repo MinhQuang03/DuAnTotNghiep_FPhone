@@ -45,33 +45,67 @@
                     @string.Format("{0:0,0}", item.Price) vnđ
                 </td>
                 <td>
-                    @if(bh == null)
+                    @if(bh != null)
                     {
-                        
-                    } 
-                    else if(bh.Status == 0)
-                    {
-                        <p class="text-success"> @dh0 (Lý do: @bh.Description)</p>
+                        if (bh.Status == null)
+                        {
+
+                        }
+                        else if (bh.Status == 0)
+                        {
+                            <p class="text-success"> @dh0 (Lý do: @bh.Description)</p>
+                        }
+                        else if (bh.Status == 1)
+                        {
+                            <p class="text-danger"> @dh1</p>
+                        }
+                        else if (bh.Status == 2)
+                        {
+                            <p class="text-danger"> @dh2</p>
+                        }
                     }
-                    else if (bh.Status == 1)
+                    else
                     {
-                        <p class="text-danger"> @dh1</p>
+                        var bill = context.Bill.FirstOrDefault(p => p.Id == item.IdBill);
+                        String dh10 = "Đã xác nhận";
+                        String dh11 = "Chờ xác nhận";
+                        String dh12 = "Đang giao";
+                        String dh13 = "Đã giao";
+                        String dh14 = "Đã hủy";
+                        @if (bill.Status == 1)
+                        {
+                            <p class="text-success"> @dh10</p>
+                        }
+                        else if (bill.Status == 2)
+                        {
+                            <p class="text-danger"> @dh11</p>
+                        }
+                        else if (bill.Status == 3)
+                        {
+                            <p class="text-danger"> @dh12</p>
+                        }
+                        else if (bill.Status == 4)
+                        {
+                            <p class="text-success"> @dh13</p>
+                        }
+                        else if (bill.Status == 5)
+                        {
+                            <p class="text-success"> @dh14</p>
+                        }
                     }
-                    else if (bh.Status == 2)
-                    {
-                        <p class="text-danger"> @dh2</p>
-                    }
+
                 </td>
                 @* trường hợp đơn hàng giao thành công mới hiển thị Hoàn trả/Bảo hành*@
-
-                @if (ViewBag.BillStatus == 4 && bh.Status == null)
+                @if(bh != null)
                 {
-                    <td>
-                        <a href="/Accounts/YeuCauTrahang?IdPhoneDetail=@item.IdPhoneDetail&phoneImei=@item.Imei">Hủy giao dịch</a>
-                        <a> | </a>
-                        @Html.ActionLink("Bảo hành", "ThongTinBaoHanh", new {  idBill =item.IdBill })
-                    </td>
+                    if(bh.Status == null)
+                    {
+                        <td>
+                            @Html.ActionLink("Bảo hành", "ThongTinBaoHanh", new {  idBill =item.IdBill })
+                        </td>
+                    }
                 }
+                
             </tr>
         }
     </tbody>
