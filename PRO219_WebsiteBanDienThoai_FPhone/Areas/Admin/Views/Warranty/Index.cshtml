@@ -1,9 +1,8 @@
-﻿@model IEnumerable<AppData.Models.Imei>
+﻿@model IEnumerable<AppData.Models.Warranty>
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
-    int stt = 0;
 }
 
 <h1>Index</h1>
@@ -15,35 +14,34 @@
     <thead>
         <tr>
             <th>
-                STT
+                @Html.DisplayNameFor(model => model.Id)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NameImei)
+                @Html.DisplayNameFor(model => model.TimeWarranty)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdPhoneDetaild)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
-            stt = stt + 1;
-            <tr>
+        <tr>
             <td>
-                @stt
+                @Html.DisplayFor(modelItem => item.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.NameImei)
+                @Html.DisplayFor(modelItem => item.TimeWarranty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @ViewBag.InformationPhone
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |

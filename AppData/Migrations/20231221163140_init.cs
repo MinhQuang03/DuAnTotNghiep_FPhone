@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppData.Migrations
 {
-    public partial class initdatabase : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -372,15 +372,32 @@ namespace AppData.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Warranty",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TimeWarranty = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Warranty", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "WarrantyCards",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IdBillDetail = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     IdAccount = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    IdImei = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    IdPhoneDetail = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    IdPhone = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Imei = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ThoiGianConBaoHanh = table.Column<DateTime>(type: "datetime2", nullable: true),
                     AppointmentDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: true)
                 },
@@ -573,6 +590,7 @@ namespace AppData.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IdProductionCompany = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IdWarranty = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -584,6 +602,11 @@ namespace AppData.Migrations
                         principalTable: "ProductionCompany",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Phones_Warranty_IdWarranty",
+                        column: x => x.IdWarranty,
+                        principalTable: "Warranty",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -592,6 +615,7 @@ namespace AppData.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IdPhone = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IdDiscount = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     IdMaterial = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IdRom = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -685,26 +709,6 @@ namespace AppData.Migrations
                         name: "FK_PhoneDetailds_Sim_IdSim",
                         column: x => x.IdSim,
                         principalTable: "Sim",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Warranty",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IdPhone = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TimeWarranty = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Warranty", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Warranty_Phones_IdPhone",
-                        column: x => x.IdPhone,
-                        principalTable: "Phones",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -1016,6 +1020,11 @@ namespace AppData.Migrations
                 column: "IdProductionCompany");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Phones_IdWarranty",
+                table: "Phones",
+                column: "IdWarranty");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Reviews_AccountsId",
                 table: "Reviews",
                 column: "AccountsId");
@@ -1034,11 +1043,6 @@ namespace AppData.Migrations
                 name: "IX_SalePhoneDetailds_IdSales",
                 table: "SalePhoneDetailds",
                 column: "IdSales");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Warranty_IdPhone",
-                table: "Warranty",
-                column: "IdPhone");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -1099,9 +1103,6 @@ namespace AppData.Migrations
 
             migrationBuilder.DropTable(
                 name: "VW_PhoneDetail");
-
-            migrationBuilder.DropTable(
-                name: "Warranty");
 
             migrationBuilder.DropTable(
                 name: "WarrantyCards");
@@ -1165,6 +1166,9 @@ namespace AppData.Migrations
 
             migrationBuilder.DropTable(
                 name: "ProductionCompany");
+
+            migrationBuilder.DropTable(
+                name: "Warranty");
         }
     }
 }

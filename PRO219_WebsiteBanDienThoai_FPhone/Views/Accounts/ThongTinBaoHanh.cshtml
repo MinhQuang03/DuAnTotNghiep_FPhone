@@ -1,0 +1,150 @@
+﻿@using AppData.Models;
+@using AppData.FPhoneDbContexts;
+@model List<BillDetails>
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông tin bảo hành điện thoại</title>
+
+    <style>
+        .main-container {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .main-title {
+            text-align: center;
+            margin-top: 30px;
+            color: #333;
+        }
+
+        .section-title {
+            margin-top: 20px;
+            color: #333;
+        }
+
+        .paragraph {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .unordered-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .list-item {
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .input-text {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+        .button-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+            .button-link:hover {
+                background-color: #0056b3;
+            }
+
+        .info-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body class="main-container">
+
+    <div class="info-container">
+        <h1 class="main-title">Thông tin bảo hành điện thoại</h1>
+
+        @foreach (var item in Model)
+        {
+            FPhoneDbContext context = new FPhoneDbContext();
+            var ngayhethan = context.Warranty.FirstOrDefault(p => p.Id == item.PhoneDetaild.Phones.IdWarranty);
+            var th = @item.Bills.PaymentDate.AddMonths(ngayhethan.TimeWarranty);
+
+            <h3 class="section-title">Xin chào @item.Bills.Accounts.Username</h3>
+            <p class="paragraph">
+                Cảm ơn bạn đã mua máy @item.PhoneDetaild.Phones.PhoneName |
+                @item.PhoneDetaild.Rams.Name/@item.PhoneDetaild.Roms.Name |
+                @item.PhoneDetaild.Colors.Name tại cửa hàng FPhone của chúng tôi.
+            </p>
+
+            @if (th > DateTime.Now)
+            {
+                <p class="paragraph">Thời gian bảo hành thiết bị của bạn từ @item.Bills.PaymentDate đến ngày @th</p>
+                <p class="paragraph">Hãy gửi yêu cầu cho chúng tôi để xem xét bảo hành.</p>
+
+
+                <label class="label" for="statusInput">Tình trạng máy:</label>
+                <input class="input-text" type="text" id="statusInput_@item.IdPhoneDetail" placeholder="Nhập tình trạng máy">
+
+                <a class="button-link" href="javascript:void(0);" onclick="submitWithNote('@item.IdPhoneDetail', '@item.Imei')">Bảo hành</a>
+            }
+            else
+            {
+                <p class="paragraph">Rất tiếc hiện tại máy của bạn đã hết thời gian bảo hành.</p>
+            }
+        }
+    </div>
+
+    <script>
+        function submitWithNote(IdPhoneDetail, Imei) {
+            var noteId = "#statusInput_" + IdPhoneDetail;
+            var note = $(noteId).val();
+
+            // Thực hiện kiểm tra và xử lý dữ liệu nếu cần
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("YeuCauBaoHanh", "Accounts")",
+                data: {
+                    IdPhoneDetail: IdPhoneDetail,
+                    phoneImei: Imei,
+                    note: note
+                },
+                success: function (data) {
+                    console.log("Thành Công");
+                    // Thực hiện các hành động bổ sung sau khi thành công
+                    location.reload(); // Tải lại trang
+                },
+                error: function () {
+                    console.log("Thất bại");
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>

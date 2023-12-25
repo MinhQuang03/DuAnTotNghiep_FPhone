@@ -53,47 +53,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
 
             string paymentUrl = pay.CreateRequestUrl(vnpay.Url, vnpay.HashSecret);
 
-            // var order = new Order(){
-            //     // các thông tin khác của đơn hàng
-            //     // ...
-            // }
-            // luu đơn hàng xuống db... với trang thái là chưa duyệt... nhớ kèm theo mã order để tí nữa lấy ra check
-            //  pay.AddRequestData("vnp_TxnRef", DateTime.Now.Ticks.ToString()); //mã hóa đơn
-            /// code here 
-            /// 
-
-            //var billId = Guid.NewGuid();
-            //var bill = new Bill()
-            //{
-            //    Id = billId,
-            //    CreatedTime = DateTime.Now,
-            //    PaymentDate = DateTime.Now,
-            //    Name = request.InfoShip.FullName,
-            //    Address = request.InfoShip.Address,
-            //    Phone = request.InfoShip.Phone,
-            //    Status = 0,
-            //    StatusPayment = 1, // VNPAY
-            //    IdAccount = null,
-            //    // BillCode = pay.GetResponseData("vnp_TxnRef"),  /// Thêm db ok thì mở cái này
-            //};
-            //_dbContext.Bill.Add(bill);
-            //var billDetails = new List<BillDetails>();
-            //foreach (var phone in request.Phones)
-            //{
-            //    billDetails.Add(new BillDetails()
-            //    {
-            //        Id = Guid.NewGuid(),
-            //        IdBill = billId,
-            //        IdPhoneDetail = Guid.Parse(phone.PhoneDetailId),
-            //        Number = 1,
-            //        Price = phone.Price,
-            //        NameImei = "Sao ko de null",
-            //        IdDiscount = null,
-            //        Status = 0
-            //    });
-            //}
-            //_dbContext.BillDetails.AddRange(billDetails);
-            //_dbContext.SaveChanges();
+           
 
 
             var userId = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
@@ -124,7 +84,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
             foreach (var item in product)
             {
                 // Tìm ra imeil đầu tiên thuộc PhoneDetail có status = 1 (1: chưa được bán)
-                var emeiCheck = _dbContext.Imei.First(a => a.IdPhoneDetaild == item.IdPhoneDetaild && a.Status == 1);
+                var emeiCheck = _dbContext.Imei.FirstOrDefault(a => a.IdPhoneDetaild == item.IdPhoneDetaild && a.Status == 1);
                 // trường hợp tồn tại emeiCheck
                 if (null != emeiCheck)
                 {
@@ -138,17 +98,13 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
                     billDetail.Id = Guid.NewGuid();
                     billDetail.IdPhoneDetail = item.IdPhoneDetaild;
                     billDetail.Price = _dbContext.PhoneDetailds.Find(item.IdPhoneDetaild).Price;
+                    billDetail.Number = 1;
                     billDetail.Status = 0;
                     billDetail.Imei = emeiCheck.NameImei; // Đúng tra là id của bảng emei. Nhưng name email cũng không thể trùng.
                     Listbill.Add(billDetail);
                 }
             }
-            foreach (var item in product)
-            {
-                var cart = _dbContext.CartDetails.Find(item.Id);
-                _dbContext.CartDetails.Remove(cart);
-
-            }
+            
             _dbContext.BillDetails.AddRange(Listbill);
             _dbContext.SaveChanges();
 
@@ -189,7 +145,6 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
 
                         /// Xử lý update lại trang thái đơn hàng đã thanh toán thành công.. theo Mã bill
                         //var orderIdString = orderId.ToString();
-                        /// Thêm db ok thì mở cái này. để change status
                         var bill = _dbContext.Bill.FirstOrDefault(x => x.BillCode == orderId);
                         if (bill != null)
                         {
@@ -198,11 +153,47 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
                             bill.PaymentDate = DateTime.Now;
                             _dbContext.SaveChanges();
                         }
+
+                        var userId = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
+                        var product = _dbContext.CartDetails.Where(a => a.IdAccount == Guid.Parse(userId)).ToList();
+                        foreach (var item in product)
+                        {
+                            var cart = _dbContext.CartDetails.Find(item.Id);
+                            _dbContext.CartDetails.Remove(cart);
+
+                        }
+                        _dbContext.SaveChanges();
                     }
                     else
                     {
                         //Thanh toán không thành công. Mã lỗi: vnp_ResponseCode
+
+                        var billToDelete = _dbContext.Bill.FirstOrDefault(x => x.BillCode == orderId);
+                        if (billToDelete != null)
+                        {
+                            var billDetailsToDelete = _dbContext.BillDetails.Where(x => x.IdBill == billToDelete.Id).ToList();
+
+                            // Rollback the status of associated Imei records to 1 (Status: Chưa bán)
+                            foreach (var billDetail in billDetailsToDelete)
+                            {
+                                var imeiToUpdate = _dbContext.Imei.FirstOrDefault(a => a.NameImei == billDetail.Imei);
+                                if (imeiToUpdate != null)
+                                {
+                                    imeiToUpdate.Status = 1;
+                                }
+                            }
+
+                            // Remove Bill and associated BillDetails
+                            _dbContext.BillDetails.RemoveRange(billDetailsToDelete);
+                            _dbContext.Bill.Remove(billToDelete);
+                            _dbContext.SaveChanges();
+                        }
+
+
                         ViewBag.Message = "Có lỗi xảy ra trong quá trình xử lý hóa đơn " + orderId + " | Mã giao dịch: " + vnpayTranId + " | Mã lỗi: " + vnp_ResponseCode;
+
+                        
+
                     }
                 }
                 else

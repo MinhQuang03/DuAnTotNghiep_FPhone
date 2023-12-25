@@ -1,59 +1,121 @@
-﻿@model IEnumerable<AppData.Models.Phone>
+﻿@model PRO219_WebsiteBanDienThoai_FPhone.ViewModel.AdPhoneViewModel
 
 @{
-    ViewData["Title"] = "Index";
-    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Quản lý sản phẩm";
 }
 
-<h1>Index</h1>
-
+<div>
+    <partial name="DataError" />
+    <h2 class="label-control mb-3">Tìm kiếm sản phẩm</h2>
+    <form asp-action="Index" method="POST" class="row" id="JAdPhone_list_form">
+        @Html.HiddenFor(x => x.ListOptions.PageIndex)
+        @Html.HiddenFor(x => x.ListOptions.PageSize)
+        <div class="col-8 row">
+            <label class="col-form-label col-2">Tên sản phẩm</label>
+            <input type="text" asp-for="SearchData.PhoneName" class="form-control col" placeholder="Tìm kiếm" />
+        </div>
+        <div class="col-4">
+            <input type="submit" class="btn btn-primary" value="Tìm kiếm" />
+        </div>
+    </form>
+    <hr />
+</div>
+<h2>Danh sách nhóm sản phẩm</h2>
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">
+        <span class="title">Tạo mới</span>
+        <span class="icon-holder">
+            <i class="fa fa-user-plus text-info pl-1"></i>
+        </span>
+    </a>
 </p>
-<table class="table">
-    <thead>
+<table class="table table-bordered">
+    <thead class="thead-light">
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
+            <th class="text-center">
+              Tên máy
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PhoneName)
+            <th class="text-center">
+                Ảnh
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
+            <th width="15%" class="text-center">
+                Tên hãng
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Image)
+            <th width="10%" class="text-center">
+                Ngày tạo
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdProductionCompany)
-            </th>
-            <th></th>
+            <th width="15%" class="text-center">Hành động</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.ListVwPhoneGroup) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
+       
+            <td class="text-left">
+                <a asp-action="ListPhoneDetail" asp-route-id="@item.IdPhone" class="nav-link">
+                    @Html.DisplayFor(modelItem => item.PhoneName)
+                </a>
+            </td>
+            <td class="text-center">
+               <img src="@item.Image" width="80px"/>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PhoneName)
+                @Html.DisplayFor(modelItem => item.ProductionComanyName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Description)
+                @Html.DisplayFor(modelItem => item.CreateDate)
             </td>
-            <td>
-                <img src="@Url.Content(item.Image)" alt="Hình ảnh" style="width:50px">
-            </td>
-            <td>
-                    @ViewBag.ProductionCompanyNames[item.IdProductionCompany]
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new {  id=item.Id }) 
-                
+                <td class="text-center">
+                @Html.ActionLink("Chỉnh sửa", "Edit", new { /* id=item.PrimaryKey */ })
+                @* @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ }) *@
             </td>
         </tr>
 }
     </tbody>
 </table>
+<div class="row">
+    <div class="col">
+        <div class="page_size_box row col-7">
+            <label class="form-label col mt-2">Hiển thị:</label>
+            <select class="form-control col" id="page_size_select" onchange="JAdPhone.changePageSize(event)">
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+            <label class="form-label col mt-2">bản ghi</label>
+        </div>
+    </div>
+    <div class="mx-5 mb-5 col">
+        <ul class="pagination pagination-sm m-0 float-right">
+            <li class="page-item @(Model.ListOptions.PageIndex == 1 ? "disabled" : "")">
+                <a class="page-link" onclick="JAdPhone.submitListForm(@(Model.ListOptions.PageIndex - 1), event)">«</a>
+            </li>
+            @foreach (var i in Model.ListOptions.PaginationIndexes)
+            {
+                if (i == -1)
+                {
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#">...</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item @(Model.ListOptions.PageIndex == i ? "active" : "")">
+                        <a class="page-link" onclick="JAdPhone.submitListForm(@i, event)">@i</a>
+                    </li>
+                }
+            }
+            <li class="page-item @(Model.ListOptions.PageIndex == Model.ListOptions.PageCount ? "disabled" : "")">
+                <a class="page-link" onclick="JAdPhone.submitListForm(@(Model.ListOptions.PageIndex + 1), event)">»</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<script src="~/js/JAdPhone.js"></script>
+<script>
+    $(document).ready(function () {
+        JAdPhone.initList();
+    });
+</script>
