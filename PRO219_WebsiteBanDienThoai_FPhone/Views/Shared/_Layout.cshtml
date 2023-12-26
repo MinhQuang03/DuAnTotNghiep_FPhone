@@ -49,11 +49,59 @@
 
 <!-- Go To -->
 
+   
+
 <a href="#header" class="goto-top scroll-link">
     <svg>
         <use xlink:href="/images/sprite.svg#icon-arrow-up"></use>
     </svg>
 </a>
+@*    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+    <df-messenger intent="WELCOME"
+                  chat-title="FPhone"
+                  agent-id="27402e9b-4d80-4718-a30b-fac277eb4745"
+                  language-code="vi"></df-messenger>*@
+
+    <!-- Thêm script để sử dụng AJAX và gửi yêu cầu đến API của ChatGPT -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Gán sự kiện click cho nút gửi
+            $("#btnSubmit").click(function () {
+                // Lấy văn bản từ ô input
+                var inputText = $("#txtInput").val();
+
+                // Thay thế YOUR_API_KEY và YOUR_CHATGPT_API_URL bằng thông tin thực tế của bạn
+                var apiKey = "YOUR_API_KEY";
+                var apiUrl = "https://localhost:7171/";
+
+                // Gửi yêu cầu đến API của ChatGPT
+                $.ajax({
+                    url: apiUrl,
+                    type: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + apiKey
+                    },
+                    data: JSON.stringify({ inputText: inputText }),
+                    success: function (response) {
+                        // Hiển thị kết quả trả về từ ChatGPT
+                        $("#result").text(response);
+                    },
+                    error: function (error) {
+                        // Hiển thị thông báo lỗi (có thể tùy chỉnh theo ý muốn)
+                        $("#result").text("Có lỗi xảy ra khi gửi yêu cầu đến ChatGPT.");
+                    }
+                });
+            });
+        });
+    </script>
+
+    <!-- Thêm các phần tử HTML cho ô input, nút gửi và hiển thị kết quả -->
+    <input type="text" id="txtInput" />
+    <button id="btnSubmit">Gửi</button>
+    <div id="result"></div>
+
 <partial name="_ScripPartialView"/>
 <!-- JS -->
 
