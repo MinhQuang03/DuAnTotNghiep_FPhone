@@ -22,5 +22,22 @@ namespace AppData.Repositories
         {
             return _dbContext.Address.AsNoTracking().FirstOrDefaultAsync(c => c.IdAccount == IdUser && c.Status == 1);
         }
+
+        public async Task<Address> UpdateAddress(Address address)
+        {
+            var result = _dbContext.Address.FirstOrDefault(c=>c.Id == address.Id && c.IdAccount == address.IdAccount);
+            if (result != null)
+            {
+                result.Country = address.Country;
+                result.City = address.City;
+                result.District = address.District;
+                result.HomeAddress = address.HomeAddress;
+                result.Status = address.Status;
+                await _dbContext.SaveChangesAsync(); // Use asynchronous SaveChanges
+
+                return result;
+            }
+            return null;
+        }
     }
 }

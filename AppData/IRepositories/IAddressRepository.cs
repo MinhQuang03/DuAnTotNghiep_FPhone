@@ -10,5 +10,6 @@ namespace AppData.IRepositories
     public interface IAddressRepository
     {
         public Task<Address?> GetAddress(Guid IdUser); 
+        public Task<Address> UpdateAddress(Address address); 
     }   
 }

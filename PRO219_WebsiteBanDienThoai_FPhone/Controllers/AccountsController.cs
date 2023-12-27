@@ -3,6 +3,7 @@ using AppData.ViewModels.Accounts;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -26,12 +27,14 @@ public class AccountsController : Controller
     private IcartRepository _cartRepository;
     private FPhoneDbContext _context;
     private readonly HttpClient _client;
-    public AccountsController(HttpClient client)
+    private readonly ILogger<AccountsController> _logger;
+    public AccountsController(HttpClient client, ILogger<AccountsController> logger)
     {
         _cartDetailepository = new CartDetailepository();
         _cartRepository = new CartRepository();
         _context = new FPhoneDbContext();
         _client = client;
+        _logger = logger;
     }
     //Khi đã đăng nhập ấn nút có biểu tượng user sẽ hiện ra profile của người dùng
     public async Task<IActionResult> Profile()
@@ -41,10 +44,12 @@ public class AccountsController : Controller
         // lấy ra thông tin người dùng thông qua id
         var datajson = await _client.GetStringAsync($"api/Accounts/get-user/{id}");
         var user = JsonConvert.DeserializeObject<Account>(datajson);
+        TempData["UserId"] = user;
         if (user != null)
         {
             var jsondata = await _client.GetStringAsync($"api/Address/get-address/{id}");
             var address = JsonConvert.DeserializeObject<Address>(jsondata);
+            TempData["UserAddress"] = address;
             // gộp địa chỉ
             if (address != null)
                 ViewBag.Address = address.HomeAddress + ", " + address.District + ", " + address.City + ", " +
@@ -54,7 +59,104 @@ public class AccountsController : Controller
 
         return View();
     }
+    /*
+    public IActionResult Profile_Update()
+    {
+        var user = TempData["UserData"] as Account;
+        var address = TempData["UserAddress"] as Address;
+        if (user != null)
+        {
+            var profile = new ProfileVM
+            {
+                User = user,
+                Address = address
+            };
+            return View(profile);
+        }
+        return View();
+    }
+    [HttpPut]
+    public async Task<IActionResult> Profile_Update([FromBody] ProfileVM model)
+    {
+        if (!ModelState.IsValid)
+        {
+            // Model is not valid, return BadRequest with validation errors
+            return BadRequest(ModelState);
+        }
+        try
+        {
+            var userId = model.User.Id;
+            var user = new Account
+            {
+                Id = userId,
+                Name = model.User.Name,
+                Email = model.User.Email,
+                PhoneNumber = model.User.PhoneNumber,
+                Password = model.User.Password
+            };
+            var address = new Address
+            {
+                IdAccount=userId,
+                Country = model.Address.Country,
+                City = model.Address.City,
+                District = model.Address.District,
+                HomeAddress = model.Address.HomeAddress
+            };
+            var jsonContent = JsonConvert.SerializeObject(new { Id = userId, User = user, Address = address });
+            var stringContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
+            // Inject HttpClient using dependency injection
+            HttpResponseMessage response = await _client.PutAsync($"api/Accounts/update-profile/{userId}", stringContent);
+
+            if (response.IsSuccessStatusCode)
+            {
+                // Successfully updated, redirect to the "Profile" action
+                return RedirectToAction("Profile");
+            }
+            else
+            {
+                // Handle the error
+                return StatusCode((int)response.StatusCode, "Error updating profile");
+            }
+        }
+        catch (Exception ex)
+        {
+            // Log the exception details for debugging
+            _logger.LogError(ex, "An error occurred while updating the user profile");
+
+            // Handle the exception according to your application's error handling strategy
+            return StatusCode(500, "Internal server error");
+        }
+    }
+    [HttpGet]
+    public IActionResult ResetPassword()
+    {
+        return View(new InputVM());
+    }
+    [HttpPost]
+    public async Task<IActionResult> ResetPassword(InputVM model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+        // lấy ra tài khoản admin để kiểm tra username có trùng hay không
+        var result = await _client.GetStringAsync("/api/Accounts/get-all-staff");
+        var userName = JsonConvert.DeserializeObject<List<ApplicationUser>>(result);
+        //Kiểm tra username nhập vào có tồn tại trong list tài khoản admin
+        if (!userName.Any(c => c.UserName == model.Username))
+        {
+            TempData["ErrorMessage"] = "Tên đăng nhập không tồn tại!";
+            return View(model);
+        }
+
+
+        return RedirectToAction("ResetPasswordSucces");
+    }
+    public IActionResult ResetPasswordSucces()
+    {
+        return View();
+    }
     public IActionResult CreateAccount()
     {
         return View();
@@ -419,4 +521,5 @@ public class AccountsController : Controller
 
         return View(result);
     }
+    
 }

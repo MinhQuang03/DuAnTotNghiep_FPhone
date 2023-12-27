@@ -1,4 +1,4 @@
-﻿@model AppData.Models.Account
+﻿@model AppData.ViewModels.Accounts.ProfileVM
 
 @{
     ViewData["Title"] = "Update Profile";
@@ -24,7 +24,7 @@
                     <div class="card-body text-center">
                         <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
                              class="rounded-circle img-fluid" style="width: 150px;">
-                        <h5 class="my-3">@Model.Username</h5>
+                        <h5 class="my-3">@Model.User.Username</h5>
                     </div>
                 </div>
             </div>
@@ -36,7 +36,7 @@
 								<h6 class="mb-0">Full Name</h6>
 							</div>
 							<div class="col-sm-9 text-secondary">
-                                <input type="text" class="form-control" value="@Model.Name">
+                                <input type="text" class="form-control" value="@Model.User.Name">
 							</div>
                         </div>
                         <hr>
@@ -45,7 +45,7 @@
                                 <h6 class="mb-0">Email</h6>
                             </div>
                              <div class="col-sm-9 text-secondary">
-                                <input type="text" class="form-control" value="@Model.Email">
+                                <input type="text" class="form-control" value="@Model.User.Email">
                              </div>
                         </div>
                         <hr>
@@ -54,7 +54,7 @@
                                 <h6 class="mb-0">Phone</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <input type="text" class="form-control" value="@Model.PhoneNumber">
+                                <input type="text" class="form-control" value="@Model.User.PhoneNumber">
                             </div>
                         </div>
                         <div class="row">
@@ -62,7 +62,7 @@
                                 <h6 class="mb-0">Password</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <input type="text" class="form-control" value="@Model.Password">
+                                <input type="text" class="form-control" value="@Model.User.Password">
                             </div>
                         </div>
                         <hr>
@@ -71,7 +71,7 @@
                                 <h6 class="mb-0">Home Address</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <input type="text" class="form-control" value="@ViewBag.HomeAddress">
+                                <input type="text" class="form-control" value="@Model.Address.HomeAddress">
                             </div>
                         </div>
                         <div class="row">
@@ -79,7 +79,7 @@
                                 <h6 class="mb-0">District</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <input type="text" class="form-control" value="@ViewBag.District">
+                                <input type="text" class="form-control" value="@Model.Address.District">
                             </div>
                         </div>
                         <div class="row">
@@ -87,7 +87,7 @@
                                 <h6 class="mb-0">City</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <input type="text" class="form-control" value="@ViewBag.City">
+                                <input type="text" class="form-control" value="@Model.Address.City">
                             </div>
                         </div>
                         <div class="row">
@@ -95,13 +95,13 @@
                                 <h6 class="mb-0">Country</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <input type="text" class="form-control" value="@ViewBag.Country">
+                                <input type="text" class="form-control" value="@Model.Address.Country">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-3"></div>
-                            <div class="col-sm-9 text-secondary">
-                                <input type="button" class="btn btn-primary px-4" value="Save Changes">
+                            <div class="col-sm-12">
+                                <a class="btn btn-info " target="__blank" asp-action="Profile_Update" asp-controller="Accounts">Lưu thông tin</a>
                             </div>
                         </div>
                         <hr />

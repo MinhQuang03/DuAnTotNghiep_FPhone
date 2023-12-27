@@ -11,5 +11,6 @@ namespace AppData.IRepositories
     {
         public Task<List<Account>> GetAllAsync();
         public Task<Account?> GetById(Guid id);
+        public Task<Account> UpdateUser(Account account);
     }
 }

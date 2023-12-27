@@ -15,11 +15,13 @@ public class AccountsController : ControllerBase
 {
     private readonly IAccountsRepository _accountsRepository;
     private readonly IUserRepository _userRepository;
+    private readonly IAddressRepository _addressRepository;
 
-    public AccountsController(IAccountsRepository accountsRepository,IUserRepository userRepository)
+    public AccountsController(IAccountsRepository accountsRepository,IUserRepository userRepository,IAddressRepository addressRepository)
     {
         _accountsRepository = accountsRepository;   
         _userRepository = userRepository;
+        _addressRepository = addressRepository;
     }
 
     [HttpPost("SignUp/Admin/")]
@@ -98,6 +100,19 @@ public class AccountsController : ControllerBase
     {   
         var result = await _userRepository.GetById(id);
         return result;
+    }
+    [HttpPut("update-profile/{id}")]
+    public async Task<(Account, Address)> UpdateUserProfile(ProfileVM pro)
+    {
+        var profile = await _userRepository.GetById(pro.User.Id);
+        if (profile != null)
+        {
+            var address = await _addressRepository.GetAddress(profile.Id);
+            var resultUser = await _userRepository.UpdateUser(pro.User);
+            var resultAddress = await _addressRepository.UpdateAddress(pro.Address);
+            return (resultUser, resultAddress);
+        }
+        return (null, null);
     }
 
 }
