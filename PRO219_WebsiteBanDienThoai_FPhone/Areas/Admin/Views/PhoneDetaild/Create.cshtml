@@ -153,7 +153,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="form-group">
-                            <input asp-for="@Model.PhoneDetail.Id" hidden/>
+                            <input asp-for="@Model.DetailOfPhoneDetaild.IdPhone" hidden value="@Model.PhoneDetail.Id"/>
                             <input asp-for="@Model.PhoneDetail.PhoneName" readonly="readonly" class="form-control text-center font-size-20"/>
                             @* <select asp-for="@Model.DetailOfPhoneDetaild.IdPhone" asp-items="@ViewBag.IdPhone" class="form-control"></select>
                             <span asp-validation-for="@Model.DetailOfPhoneDetaild.IdPhone" class="text-danger"></span> *@
