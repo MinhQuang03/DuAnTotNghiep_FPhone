@@ -17,6 +17,12 @@
     <section class="section cart__area">
         <div class="container">
             <div class="responsive__cart-area">
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-danger">
+                        @TempData["SuccessMessage"]
+                    </div>
+                }
                 <form class="cart__form">
                     <div class="cart__table table-responsive">
                         <table width="100%" class="table">
@@ -87,4 +93,9 @@
             </div>
         </div>
     </section>
+    <script>
+        $(document).ready(function () {
+            $('.toast').toast('show');
+        });
+    </script>
 </main>

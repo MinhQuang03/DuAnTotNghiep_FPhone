@@ -1,0 +1,172 @@
+﻿@using AppData.FPhoneDbContexts;
+
+@{
+    ViewData["Title"] = "paymets";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    FPhoneDbContext dbContext = new FPhoneDbContext();
+    
+    var productList = TempData["CartProducts"] as List<CartDetailModel>;
+}
+
+
+
+@if (ViewBag.errorPaymentOnline != null)
+{
+    <h1> Lỗi @ViewBag.errorPaymentOnline</h1>
+
+}
+else
+{
+    <!-- section -->
+    <div class="section pt-4">
+        <!-- container -->
+        <div class="container bg-white">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="order-summary clearfix">
+                        <div class="section-title">
+                            <p class="text-success  ">Đặt hàng thành công!. </p>
+                            <h3 class="title text-cam">Thông tin đơn hàng</h3>
+
+                        </div>
+
+                        <table class="shopping-cart-table table">
+
+                            <tbody>
+                                <tr>
+                                    <td class=""><h5>Tên khách hàng: </h5></td>
+                                    <td>@ViewBag.name</td>
+                                </tr>
+                                <tr>
+                                    <td class=""><h5>mã đơn hàng</h5></td>
+                                    <td>@ViewBag.code</td>
+                                </tr>
+                                <tr>
+                                    <td class=""><h5>Địa chỉ</h5></td>
+                                    <td>@ViewBag.address</td>
+                                </tr>
+                                <tr>
+                                    <td class=""><h5>Số điện thoại</h5></td>
+                                    <td>@ViewBag.phone</td>
+                                </tr>
+                                <tr>
+                                    <td class=""><h5>Hình thức thanh toán</h5></td>
+                                    <td>@ViewBag.deliverypaymethod </td>
+                                </tr>
+                                <tr>
+                                    <td class=""><h5>Trạng thái thanh toán</h5></td>
+                                    @if (ViewBag.paymentStatus == 1)
+                                    {
+                                        <td>Đã thanh toán</td>
+                                    }
+                                    else
+                                    {
+                                        <td>Chưa thanh toán</td>
+                                    }
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+            </div>
+            <!-- /row -->
+            <!-- /container -->
+
+            <div class="order-summary clearfix">
+                <div class="section-title">
+                    <h3 class="title text-cam">Thông Tin Đơn Hàng</h3>
+                </div>
+                <table class="shopping-cart-table table">
+                    <thead>
+                        <tr>
+                            <th>Tên sản phẩm</th>
+                            <th>Màu</th>
+                            <th>Ram</th>
+                            <th class="text-center">Giá sản phẩm</th>
+                            <th class="text-center">Số lượng</th>
+                            <th class="text-center">Tổng</th>
+                            <th class="text-center">Hình ảnh</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    
+                        @foreach (var iten in ViewBag.cart)
+                        {
+                           
+                            <tr>
+                                <td class ="details">@iten.name</td>
+                                <td class="details">@iten.color</td>
+                                <td class="details">@iten.ram</td>
+                                    <th>
+                                        <span class="text-danger"> @iten.price.ToString("N0") VND</span>
+                                       
+                                    </th>
+                                <td class="price text-center">@iten.quantity</td>
+                                <td class="price text-center">@iten.price.ToString("N0") VND</td>
+                                <td class="thumb">
+                                    <a href="#">
+                                        <img src="@Url.Content(@iten.img)"  />
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+
+                    <tfoot class="border-0">
+                      
+                        <tr>
+
+                            <th class="empty" colspan="3"></th>
+                            <th>Tạm tính</th>
+
+                            <td colspan="2">@string.Format("{0:N0} VND", ViewBag.sum)</td>
+                        </tr>
+                        <tr>
+                            <th class="empty" colspan="3"></th>
+                            <th>Phí vận chuyển</th>
+                            <td  colspan="2">@string.Format("{0:N0} VND", ViewBag.ships)</td>
+                        </tr>
+                        <tr>
+                            <th class="empty" colspan="3"></th>
+                            <th>Tổng tiền</th>
+                            <td  colspan="2">@string.Format("{0:N0} VND", ViewBag.Totalmeny)</td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+
+            </div>
+        </div>
+    </div>
+    <style>
+        .shopping-cart-table > tbody > tr > .thumb > img {
+            width: 60px;
+        }
+
+        .section-title {
+            position: relative;
+            margin-bottom: 15px;
+            margin-top: 15px;
+            border-bottom: 1px solid #DADADA;
+        }
+
+            .section-title .title {
+                display: inline-block;
+                text-transform: uppercase;
+            }
+
+            .section-title:after {
+                content: "";
+                position: absolute;
+                left: 0;
+                bottom: -1.5px;
+                height: 3px;
+                width: 60px;
+                background-color: #F8694A;
+            }
+    </style>
+}

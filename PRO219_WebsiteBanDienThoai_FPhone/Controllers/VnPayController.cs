@@ -156,6 +156,44 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
 
                         var userId = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
                         var product = _dbContext.CartDetails.Where(a => a.IdAccount == Guid.Parse(userId)).ToList();
+
+                        // Lưu thông tin để hiển thị 
+                        ViewBag.name = bill.Name;
+                        ViewBag.code = bill.BillCode;
+                        ViewBag.address = bill.Address;
+                        ViewBag.phone = bill.Phone;
+                        ViewBag.deliverypaymethod = bill.deliveryPaymentMethod;
+                        ViewBag.paymentStatus = bill.StatusPayment;
+                        ViewBag.Totalmeny = bill.TotalMoney;
+                        decimal sum = 0;
+                        List<Payment> payments = new List<Payment>();
+                        foreach (var iten in product)
+                        {
+                            var idsp = _dbContext.PhoneDetailds.FirstOrDefault(p => p.Id == iten.IdPhoneDetaild).IdPhone;
+                            var gia = _dbContext.PhoneDetailds.FirstOrDefault(p => p.Id == iten.IdPhoneDetaild).Price;
+                            string anhsp = _dbContext.Phones.FirstOrDefault(p => p.Id == idsp).Image;
+                            var tensp = _dbContext.Phones.FirstOrDefault(p => p.Id == idsp).PhoneName;
+                            var idcolor = _dbContext.PhoneDetailds.FirstOrDefault(p => p.Id == iten.IdPhoneDetaild).IdColor;
+                            var idRam = _dbContext.PhoneDetailds.FirstOrDefault(p => p.Id == iten.IdPhoneDetaild).IdRam;
+                            var color = _dbContext.Colors.FirstOrDefault(p => p.Id == idcolor).Name;
+                            var Ram = _dbContext.Ram.FirstOrDefault(p => p.Id == idRam).Name;
+                            sum += gia;
+                            Payment list = new Payment();
+                            list.name = tensp;
+                            list.price = gia;
+                            list.img = anhsp;
+                            list.color = color;
+                            list.ram = Ram;
+                            list.quantity = 1;
+                            payments.Add(list);
+
+                        }
+                        decimal ships = (bill.TotalMoney - sum).Value;
+                        ViewBag.ships = ships;
+                        ViewBag.sum = sum;
+                        ViewBag.cart = payments;
+
+
                         foreach (var item in product)
                         {
                             var cart = _dbContext.CartDetails.Find(item.Id);

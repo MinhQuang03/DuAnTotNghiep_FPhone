@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    int stt = 0;
 }
 
 <h1>Index</h1>
@@ -14,7 +15,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
+                STT
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.NameImei)
@@ -30,9 +31,10 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+            stt = stt + 1;
+            <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Id)
+                @stt
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.NameImei)

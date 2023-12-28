@@ -1,7 +1,30 @@
 ﻿@using AppData.Models;
-@model List<BillDetails>
+@model BillDetails
 
-@{
+<style>
+    .button-abc {
+        display: inline-block;
+        padding: 10px 20px;
+        margin: 5px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 16px;
+        cursor: pointer;
+        border: 1px solid #3498db;
+        color: #fff;
+        background-color: #3498db;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+
+        .button-abc:hover {
+            background-color: #2980b9;
+            color: black;
+        }
+</style>
+
+
+@*@{
     ViewData["Title"] = "HoanTraHoacBaoHanh";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
@@ -15,7 +38,7 @@
                  Tên sản phẩm
             </th>
             <th>
-                Giá 
+                Giá
             </th>
             <th>
                 Trình trạng
@@ -76,4 +99,118 @@
         }
     </tbody>
 </table>
+*@
 
+@{
+
+    ViewData["Title"] = "Hoàn Trả Bảo Hành";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+
+    String dh0 = "Yêu cầu bảo hành";
+    String dh1 = "Đang thực hiện bảo hành";
+    String dh2 = "Bảo hành hành công";
+
+    IEnumerable<WarrantyCard> listWarrantyCard = ViewBag.WarrantyCards as IEnumerable<WarrantyCard>;
+    IEnumerable<BillDetails> listBillDetails = ViewBag.BillDetails as IEnumerable<BillDetails>;
+}
+
+<h1>Chi tiết bảo hành</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <div class="alert alert-success" role="alert" style="font-size:24px;">
+                Sản phẩm
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+
+                        <th>
+                            IdPhoneDetail
+                        </th>
+                        <th>
+                            Tình trạng máy 
+                        </th>
+                        <th>
+                            Status
+                        </th>
+
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in listWarrantyCard)
+                    {
+                        <tr>
+                            @foreach (var phoneDetail in listBillDetails)
+                                if (phoneDetail.Id == item.IdBillDetail)
+                                {
+                                    <td>
+                                        @phoneDetail.PhoneDetaild.Phones.PhoneName <br/>
+                                        Ram: @phoneDetail.PhoneDetaild.Rams.Name/@phoneDetail.PhoneDetaild.Roms.Name <br/>
+                                        Màu: @phoneDetail.PhoneDetaild.Colors.Name <br/>(#imei:@item.Imei)
+                                    </td>
+                                    
+                                    <td>
+                                        @item.Description
+                                    </td>
+                                    <td>
+                                        @if (item.Status == 0)
+                                        {
+                                            <p class="text-success"> @dh0</p>
+                                        }
+                                        else if (item.Status == 1)
+                                        {
+                                            <p class="text-success"> @dh1</p>
+                                            <p class="text-success"> (@item.AppointmentDate)</p>
+                                        }
+                                        else if(item.Status == 2)
+                                        {
+                                            <p class="text-success"> @dh2</p>
+                                        }
+                                    </td>
+                                }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-sm">
+            <div class="alert alert-success" role="alert" style="font-size:24px;">
+                Thông tin khách hàng
+            </div>
+            <table class="table">
+                <tbody>
+
+                    <tr class="border-top">
+                        <td class="pb-3 " style="font-weight: bold;">Tên: </td>
+                        <td class="pb-3 pl-5">@Model.Bills.Name</td>
+                    </tr>
+                    <tr class="border-top">
+                        <td class="pb-3" style="font-weight: bold;">Địa chỉ:</td>
+                        <td class="pb-3 pl-5">@Model.Bills.Address</td>
+                    </tr>
+                    <tr class="border-top">
+                        <td class="pb-3" style=" font-weight: bold;">Số điện thoại:</td>
+                        <td class="pb-3 pl-5">@Model.Bills.Phone</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+           
+    </div>
+    @foreach (var bh in listWarrantyCard)
+    {
+        if (bh.Status == 0)
+        {
+            <a href="~/Admin/Bill/XacNhanBaoHanh?IdPhoneDetail=@bh.IdPhoneDetail&phoneImei=@bh.Imei" class="button-abc">Chấp nhận bảo hành</a>
+
+            <a href="~/Admin/Bill/HuyBaoHanh?IdPhoneDetail=@bh.IdPhoneDetail&phoneImei=@bh.Imei" class="button-abc">Xác nhận hủy</a>
+        }
+        else if (bh.Status == 1)
+        {
+            <a href="~/Admin/Bill/BaoHanhThanhCong?IdPhoneDetail=@bh.IdPhoneDetail&phoneImei=@bh.Imei" class="button-abc">Bảo hành thành công</a>
+        }
+    }
+</div>

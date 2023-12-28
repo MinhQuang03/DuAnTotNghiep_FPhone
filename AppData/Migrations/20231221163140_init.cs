@@ -376,7 +376,7 @@ namespace AppData.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TimeWarranty = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    TimeWarranty = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: true)
                 },
@@ -392,11 +392,12 @@ namespace AppData.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IdBillDetail = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     IdAccount = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    IdPhoneDetail = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     IdPhone = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Imei = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ThoiGianConBaoHanh = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ThoiGianConBaoHanh = table.Column<DateTime>(type: "datetime2", nullable: true),
                     AppointmentDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: true)
                 },
@@ -614,6 +615,7 @@ namespace AppData.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IdPhone = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IdDiscount = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     IdMaterial = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IdRom = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
