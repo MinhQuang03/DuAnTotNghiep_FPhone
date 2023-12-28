@@ -33,7 +33,8 @@
 
 <h2>Danh sách sản phẩm</h2>
 
-<p>
+
+<div>
     <a asp-area="Admin" asp-action="Create" asp-controller="PhoneDetaild" asp-route-idphone="@Model.IDPhone" class="nav-link">
         <span class="title">Thêm mới sản phẩm</span>
         <span class="icon-holder">
@@ -42,7 +43,8 @@
             </svg>
         </span>
     </a>
-</p>
+</div>
+
 <table class="table table-bordered">
     <thead class="thead-light text-center">
         <tr>
@@ -77,7 +79,12 @@
 @foreach (var item in Model.ListVwPhoneDetail) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.PhoneName)
+                @*   <a asp-action="InsertImageForPhoneDetail" asp-controller="ListImage" asp-route-id="@item.IdPhoneDetail" class="nav-link">
+                    @Html.DisplayFor(modelItem => item.PhoneName)
+                </a> *@
+                <a asp-route-id="@item.IdPhoneDetail" asp-action="ViewDetail" asp-controller="PhoneDetaild" asp-area="Admin" class="nav-link">
+                    @Html.DisplayFor(modelItem => item.PhoneName)
+                </a>
             </td>
             <td class="text-center">
                 <img src="@item.FirstImage" width="80px"/>
@@ -87,7 +94,7 @@
             <td class="text-center">@item.ProductionCompanyName</td>
             <td class="text-center">@(item.Status == 0?"Hoạt động":"Ngưng hoạt động")</td>
             <td class="text-center">
-                @Html.ActionLink("Edit", "Edit", new { id=item.IdPhone })
+                @Html.ActionLink("Edit", "Edit", new { id=item.IdPhone }) <br/>
             </td>
         </tr>
 }
