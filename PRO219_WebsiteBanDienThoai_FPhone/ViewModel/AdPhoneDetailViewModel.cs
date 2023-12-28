@@ -21,6 +21,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.ViewModel
       public IFormFile file { get; set; }
         //create    
         public PhoneDetaild DetailOfPhoneDetaild { get; set; } = new PhoneDetaild();
-
+        //detail
+        public VW_PhoneDetail VwPhoneDetail { get; set; } = new VW_PhoneDetail();
     }
 }
