@@ -34,8 +34,8 @@
 <h2>Danh sách sản phẩm</h2>
 
 <p>
-    <a asp-area="Admin" asp-action="Create" asp-controller="PhoneDetail" class="nav-link">
-        <span class="title">Tạo mới</span>
+    <a asp-area="Admin" asp-action="Create" asp-controller="PhoneDetaild" asp-route-idphone="@Model.IDPhone" class="nav-link">
+        <span class="title">Thêm mới sản phẩm</span>
         <span class="icon-holder">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
@@ -70,7 +70,7 @@
           <th>
               Trạng thái
           </th>
-          <th>Hành động</th>
+          <th width="10%">Hành động</th>
         </tr>
     </thead>
     <tbody>
@@ -82,14 +82,12 @@
             <td class="text-center">
                 <img src="@item.FirstImage" width="80px"/>
             </td>
-            <td> @item.ColorName</td>
-            <td>@item.Price</td>
-            <td>@item.ProductionCompanyName</td>
-            <td>@(item.Status == 0?"Hoạt động":"Ngưng hoạt động")</td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @* @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ }) *@
+            <td class="text-center"> @item.ColorName</td>
+            <td class="text-center">@item.Price</td>
+            <td class="text-center">@item.ProductionCompanyName</td>
+            <td class="text-center">@(item.Status == 0?"Hoạt động":"Ngưng hoạt động")</td>
+            <td class="text-center">
+                @Html.ActionLink("Edit", "Edit", new { id=item.IdPhone })
             </td>
         </tr>
 }
@@ -133,6 +131,10 @@
             </li>
         </ul>
     </div>
+   
+</div>
+<div>
+    <a asp-action="Index">@("<<") Trở lại</a>
 </div>
 <script src="~/js/JAdPhoneDetail.js"></script>
 <script>

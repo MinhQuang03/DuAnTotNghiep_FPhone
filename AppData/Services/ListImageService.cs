@@ -80,17 +80,17 @@ namespace AppData.Services
 
         public string GetFirstImageByIdPhondDetail(Guid id)
         {
-            var data = "";
+            ListImage img = new ListImage();
             try
             {
-                data = _dbContext.ListImage.FirstOrDefault(c => c.IdPhoneDetaild == id).Image;
+                img.Image = _dbContext.ListImage.FirstOrDefault(c => c.IdPhoneDetaild == id).Image;
             }
             catch (Exception e)
             {
-                data = "";
+                img.Image = "";
             }
 
-            return data;
+            return img.Image;
         }
 
         public List<VW_List_By_IdPhone> GetListImageByIdPhone(Guid idPhone)

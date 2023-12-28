@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Filters;
 using System.Text;
+using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
 {
@@ -138,8 +139,14 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             return View(obj);
         }
 
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create(string idphone) 
         {
+            AdPhoneDetailViewModel model = new AdPhoneDetailViewModel();
+            var phonedetail = await _httpClient.GetStringAsync($"api/Phone/getById/{idphone}");
+            if (phonedetail != null)
+            {
+                model.PhoneDetail = JsonConvert.DeserializeObject<Phone>(phonedetail);
+            }
             var phoneNameData = await _httpClient.GetStringAsync("api/Phone/get");
             List<Phone> phone = JsonConvert.DeserializeObject<List<Phone>>(phoneNameData);
             ViewBag.IdPhone = new SelectList(phone, "Id", "PhoneName");
@@ -184,7 +191,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             List<ChargingportType> chargingport = JsonConvert.DeserializeObject<List<ChargingportType>>(chargingportName);
             ViewBag.IdChargingportType = new SelectList(chargingport, "Id", "Name");
 
-            return View();
+            return View(model);
         }
 
         [HttpPost]
