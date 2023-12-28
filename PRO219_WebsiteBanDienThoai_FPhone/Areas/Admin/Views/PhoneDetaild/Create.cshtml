@@ -1,4 +1,4 @@
-﻿@model AppData.Models.PhoneDetaild
+﻿@model PRO219_WebsiteBanDienThoai_FPhone.ViewModel.AdPhoneDetailViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -153,28 +153,29 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="form-group">
-                            <labe class="control-label">Sản phẩm</labe>
-                            <select asp-for="IdPhone" asp-items="@ViewBag.IdPhone" class="form-control"></select>
-                            <span asp-validation-for="IdPhone" class="text-danger"></span>
+                            <input asp-for="@Model.PhoneDetail.Id" hidden/>
+                            <input asp-for="@Model.PhoneDetail.PhoneName" readonly="readonly" class="form-control text-center font-size-20"/>
+                            @* <select asp-for="@Model.DetailOfPhoneDetaild.IdPhone" asp-items="@ViewBag.IdPhone" class="form-control"></select>
+                            <span asp-validation-for="@Model.DetailOfPhoneDetaild.IdPhone" class="text-danger"></span> *@
                         </div>
                         <div class="form-group">
                             <label class="control-label">Mã giảm giá</label>
-                            <input asp-for="IdDiscount" class="form-control" />
-                            <span asp-validation-for="IdDiscount" class="text-danger"></span>
+                            <input asp-for="@Model.DetailOfPhoneDetaild.IdDiscount" class="form-control" />
+                            <span asp-validation-for="@Model.DetailOfPhoneDetaild.IdDiscount" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label class="control-label">Màu sắc</label>
-                            <select asp-for="IdColor" asp-items="@ViewBag.IdColor" class="form-control"></select>
-                            <span asp-validation-for="IdColor" class="text-danger"></span>
+                            <select asp-for="@Model.DetailOfPhoneDetaild.IdColor" asp-items="@ViewBag.IdColor" class="form-control"></select>
+                            <span asp-validation-for="@Model.DetailOfPhoneDetaild.IdColor" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label class="control-label">Giá tiền</label>
-                            <input asp-for="Price" class="form-control" />
-                            <span asp-validation-for="Price" class="text-danger"></span>
+                            <input asp-for="@Model.DetailOfPhoneDetaild.Price" class="form-control" />
+                            <span asp-validation-for="@Model.DetailOfPhoneDetaild.Price" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label  class="control-label">Trạng thái</label>
-                            <select asp-for="Status" class="custom-select" id="productStatus">
+                            <select asp-for="@Model.DetailOfPhoneDetaild.Status" class="custom-select" id="productStatus">
                                 <option value="0" selected>Hoạt động</option>
                                 <option value="1">Không hoạt động</option>
                             </select>
@@ -195,73 +196,73 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label  class="control-label">Chất liệu</label>
-                            <select asp-for="IdMaterial" asp-items="@ViewBag.IdMaterial" class="form-control"></select>
-                            <span asp-validation-for="IdMaterial" class="text-danger"></span>
+                            <select asp-for="@Model.DetailOfPhoneDetaild.IdMaterial" asp-items="@ViewBag.IdMaterial" class="form-control"></select>
+                            <span asp-validation-for="@Model.DetailOfPhoneDetaild.IdMaterial" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label class="control-label">Ram</label>
-                            <select asp-for="IdRam" asp-items="@ViewBag.IdRam" class="form-control"></select>
-                            <span asp-validation-for="IdRam" class="text-danger"></span>
+                            <select asp-for="@Model.DetailOfPhoneDetaild.IdRam" asp-items="@ViewBag.IdRam" class="form-control"></select>
+                            <span asp-validation-for="@Model.DetailOfPhoneDetaild.IdRam" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label class="control-label">Rom</label>
-                            <select asp-for="IdRom" asp-items="@ViewBag.IdRom" class="form-control"></select>
-                            <span asp-validation-for="IdRom" class="text-danger"></span>
+                            <select asp-for="@Model.DetailOfPhoneDetaild.IdRom" asp-items="@ViewBag.IdRom" class="form-control"></select>
+                            <span asp-validation-for="@Model.DetailOfPhoneDetaild.IdRom" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label  class="control-label">Hệ điều hành</label>
-                            <select asp-for="IdOperatingSystem" asp-items="@ViewBag.IdOperatingSystems" class="form-control"></select>
-                            <span asp-validation-for="IdOperatingSystem" class="text-danger"></span>
+                            <select asp-for="@Model.DetailOfPhoneDetaild.IdOperatingSystem" asp-items="@ViewBag.IdOperatingSystems" class="form-control"></select>
+                            <span asp-validation-for="@Model.DetailOfPhoneDetaild.IdOperatingSystem" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label  class="control-label">Pin</label>
-                            <select asp-for="IdBattery" asp-items="@ViewBag.IdBattery" class="form-control"></select>
-                            <span asp-validation-for="IdBattery" class="text-danger"></span>
+                            <select asp-for="@Model.DetailOfPhoneDetaild.IdBattery" asp-items="@ViewBag.IdBattery" class="form-control"></select>
+                            <span asp-validation-for="@Model.DetailOfPhoneDetaild.IdBattery" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label class="control-label">Sim</label>
-                            <select asp-for="IdSim" asp-items="@ViewBag.IdSim" class="form-control"></select>
-                            <span asp-validation-for="IdSim" class="text-danger"></span>
+                            <select asp-for="@Model.DetailOfPhoneDetaild.IdSim" asp-items="@ViewBag.IdSim" class="form-control"></select>
+                            <span asp-validation-for="@Model.DetailOfPhoneDetaild.IdSim" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label  class="control-label">ChipCPU</label>
-                            <select asp-for="IdChipCPU" asp-items="@ViewBag.IdChipCPUs" class="form-control"></select>
-                            <span asp-validation-for="IdChipCPU" class="text-danger"></span>
+                            <select asp-for="@Model.DetailOfPhoneDetaild.IdChipCPU" asp-items="@ViewBag.IdChipCPUs" class="form-control"></select>
+                            <span asp-validation-for="@Model.DetailOfPhoneDetaild.IdChipCPU" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label class="control-label">ChipGPU</label>
-                            <select asp-for="IdChipGPU" asp-items="@ViewBag.IdChipGPUs" class="form-control"></select>
-                            <span asp-validation-for="IdChipGPU" class="text-danger"></span>
+                            <select asp-for="@Model.DetailOfPhoneDetaild.IdChipGPU" asp-items="@ViewBag.IdChipGPUs" class="form-control"></select>
+                            <span asp-validation-for="@Model.DetailOfPhoneDetaild.IdChipGPU" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label class="control-label">Cổng sạc</label>
-                            <select asp-for="IdChargingport" asp-items="@ViewBag.IdChargingportType" class="form-control"></select>
-                            <span asp-validation-for="IdChargingport" class="text-danger"></span>
+                            <select asp-for="@Model.DetailOfPhoneDetaild.IdChargingport" asp-items="@ViewBag.IdChargingportType" class="form-control"></select>
+                            <span asp-validation-for="@Model.DetailOfPhoneDetaild.IdChargingport" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label  class="control-label">Trọng lượng</label>
-                            <input asp-for="Weight" class="form-control" />
-                            <span asp-validation-for="Weight" class="text-danger"></span>
+                            <input asp-for="@Model.DetailOfPhoneDetaild.Weight" class="form-control" />
+                            <span asp-validation-for="@Model.DetailOfPhoneDetaild.Weight" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label  class="control-label">Camera trước</label>
-                            <input asp-for="FrontCamera" class="form-control" />
-                            <span asp-validation-for="FrontCamera" class="text-danger"></span>
+                            <input asp-for="@Model.DetailOfPhoneDetaild.FrontCamera" class="form-control" />
+                            <span asp-validation-for="@Model.DetailOfPhoneDetaild.FrontCamera" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label  class="control-label">Camera sau</label>
-                            <input asp-for="MainCamera" class="form-control" />
-                            <span asp-validation-for="MainCamera" class="text-danger"></span>
+                            <input asp-for="@Model.DetailOfPhoneDetaild.MainCamera" class="form-control" />
+                            <span asp-validation-for="@Model.DetailOfPhoneDetaild.MainCamera" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label class="control-label">Độ phân giải</label>
-                            <input asp-for="Resolution" class="form-control" />
-                            <span asp-validation-for="Resolution" class="text-danger"></span>
+                            <input asp-for="@Model.DetailOfPhoneDetaild.Resolution" class="form-control" />
+                            <span asp-validation-for="@Model.DetailOfPhoneDetaild.Resolution" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label class="control-label">Kích cỡ</label>
-                            <input asp-for="Size" class="form-control" />
-                            <span asp-validation-for="Size" class="text-danger"></span>
+                            <input asp-for="@Model.DetailOfPhoneDetaild.Size" class="form-control" />
+                            <span asp-validation-for="@Model.DetailOfPhoneDetaild.Size" class="text-danger"></span>
                         </div>
                     </div>
                 </div>

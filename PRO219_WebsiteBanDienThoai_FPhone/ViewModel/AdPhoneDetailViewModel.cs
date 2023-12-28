@@ -7,6 +7,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.ViewModel
 {
     public class AdPhoneDetailViewModel
     {
+        public Guid IDPhone { get; set; }
         public List<Material> listMaterial { get; set; } = new List<Material>();
         public List<ChipCPUs> listChipCPU { get; set; } = new List<ChipCPUs>();
         public List<Ram> listRam { get; set; } = new List<Ram>();
@@ -18,5 +19,8 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.ViewModel
       //Edit
       public Phone PhoneDetail { get; set; } = new Phone();
       public IFormFile file { get; set; }
+        //create    
+        public PhoneDetaild DetailOfPhoneDetaild { get; set; } = new PhoneDetaild();
+
     }
 }

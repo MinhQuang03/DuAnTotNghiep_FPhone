@@ -7,6 +7,7 @@ using System.Text;
 using AppData.IRepositories;
 using AppData.IServices;
 using AppData.Services;
+using Microsoft.EntityFrameworkCore;
 using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
@@ -53,6 +54,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         public IActionResult ListPhoneDetail(Guid id)
         {
             AdPhoneDetailViewModel model = new AdPhoneDetailViewModel();
+            model.IDPhone = id;
             model.SearchData.IdPhone = id;
             model.ListVwPhoneDetail = _detailService.listVwPhoneDetails(model.SearchData,model.ListOptions).Where(c =>c.IdPhone == id).ToList();
             foreach (var item in model.ListVwPhoneDetail)
@@ -65,7 +67,8 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult ListPhoneDetail(AdPhoneDetailViewModel model)
         {
-            model.ListVwPhoneDetail = _detailService.listVwPhoneDetails(model.SearchData, model.ListOptions).Where(c => c.IdPhone == model.SearchData.IdPhone).ToList(); ;
+            model.ListVwPhoneDetail = _detailService.listVwPhoneDetails(model.SearchData, model.ListOptions).Where(c => c.IdPhone == model.SearchData.IdPhone).ToList(); 
+
             return View(model);
         }
         [HttpPost] 
