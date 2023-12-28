@@ -57,7 +57,7 @@
                 </div>
 
                 <div class="nav__icons">
-                    @if (UserClaim.HasRole(User, "User"))
+                   @*  @if (UserClaim.HasRole(User, "User"))
                     {
                         <a asp-action="Profile" asp-route-id="" asp-controller="Accounts" class="icon__item" id="">
                             <svg class="icon__user">
@@ -66,13 +66,13 @@
                         </a>
                     }
                     else if (!UserClaim.HasRole(User, "User"))
-                    {
+                    { *@
                         <a href="#" class="icon__item" id="login-btn">
                             <svg class="icon__user">
                                 <use xlink:href="/images/sprite.svg#icon-user"></use>
                             </svg>
                         </a>
-                    }
+                    
                     <a href="#" class="icon__item" id="search-btn">
                         <svg class="icon__search">
                             <use xlink:href="/images/sprite.svg#icon-search"></use>
