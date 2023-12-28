@@ -1,38 +1,38 @@
-﻿@model AppData.Models.Phone
+﻿@model   PRO219_WebsiteBanDienThoai_FPhone.ViewModel.AdPhoneDetailViewModel
 
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Edit</h1>
-
-<h4>Phone</h4>
+<h1>Chỉnh sửa thông tin nhóm sản phẩm</h1>
+<br/>
+<h4>Nhóm sản phẩm</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="PhoneName" class="control-label"></label>
-                <input asp-for="PhoneName" class="form-control" />
-                <span asp-validation-for="PhoneName" class="text-danger"></span>
+                <label  class="control-label">Tên nhóm sản phẩm</label>
+                <input value="@Model.PhoneDetail.PhoneName" asp-for="@Model.PhoneDetail.PhoneName" class="form-control" />
+                <span asp-validation-for="@Model.PhoneDetail.PhoneName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <label class="control-label">Mô tả</label>
+                <input value="@Model.PhoneDetail.Description" asp-for="@Model.PhoneDetail.Description" class="form-control" />
+                <span asp-validation-for="@Model.PhoneDetail.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Image" class="control-label"></label>
+                <label class="control-label">Ảnh (Vui lòng chọn lại file)</label>
                 @*<input asp-for="Image" class="form-control" />*@
                 <input type="file" name="file" />
-                <span asp-validation-for="Image" class="text-danger"></span>
+                <span asp-validation-for="@Model.PhoneDetail.Image" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="IdProductionCompany" class="control-label"></label>
-                <select asp-for="IdProductionCompany" asp-items="@ViewBag.IdProductionCompany" class="form-control"></select>
-                <span asp-validation-for="IdProductionCompany" class="text-danger"></span>
+                <label asp-for="@Model.PhoneDetail.IdProductionCompany" class="control-label"></label>
+                <select asp-for="@Model.PhoneDetail.IdProductionCompany" asp-items="@ViewBag.IdProductionCompany" class="form-control"></select>
+                <span asp-validation-for="@Model.PhoneDetail.IdProductionCompany" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -42,6 +42,6 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Trở lại</a>
 </div>
 

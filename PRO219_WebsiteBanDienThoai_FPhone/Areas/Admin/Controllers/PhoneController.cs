@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Filters;
 using System.Text;
+using AppData.IRepositories;
 using AppData.IServices;
 using AppData.Services;
+using Microsoft.EntityFrameworkCore;
 using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
@@ -17,12 +19,16 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         public readonly HttpClient _httpClient;
         private IVwPhoneService _service;
         private IVwPhoneDetailService _detailService;
+        private IListImageService _imageService;
+        private IPhoneRepository _phoneRepository;
 
-        public PhoneController(HttpClient httpClient, IVwPhoneService service, IVwPhoneDetailService detailService)
+        public PhoneController(HttpClient httpClient, IVwPhoneService service, IVwPhoneDetailService detailService, IListImageService imageService, IPhoneRepository phoneRepository)
         {
             _httpClient = httpClient;
             _service = service;
             _detailService = detailService;
+            _imageService = imageService;
+            _phoneRepository = phoneRepository;
         }
         public async Task<IActionResult> Index()
         {
@@ -48,14 +54,21 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         public IActionResult ListPhoneDetail(Guid id)
         {
             AdPhoneDetailViewModel model = new AdPhoneDetailViewModel();
-            model.ListVwPhoneDetail = _detailService.listVwPhoneDetails(model.SearchData,model.ListOptions);
+            model.IDPhone = id;
+            model.SearchData.IdPhone = id;
+            model.ListVwPhoneDetail = _detailService.listVwPhoneDetails(model.SearchData,model.ListOptions).Where(c =>c.IdPhone == id).ToList();
+            foreach (var item in model.ListVwPhoneDetail)
+            {
+                item.FirstImage = _imageService.GetFirstImageByIdPhondDetail(item.IdPhoneDetail);
+            }
             return View(model);
         }
 
         [HttpPost]
         public IActionResult ListPhoneDetail(AdPhoneDetailViewModel model)
         {
-            model.ListVwPhoneDetail = _detailService.listVwPhoneDetails(model.SearchData, model.ListOptions);
+            model.ListVwPhoneDetail = _detailService.listVwPhoneDetails(model.SearchData, model.ListOptions).Where(c => c.IdPhone == model.SearchData.IdPhone).ToList(); 
+
             return View(model);
         }
         [HttpPost] 
@@ -86,37 +99,40 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
+            AdPhoneDetailViewModel model = new AdPhoneDetailViewModel();
+            model.PhoneDetail = await _phoneRepository.GetById(id);
             var data = await _httpClient.GetStringAsync("api/ProductionCompany/get");
             List<ProductionCompany> a = JsonConvert.DeserializeObject<List<ProductionCompany>>(data);
             ViewBag.IdProductionCompany = new SelectList(a, "Id", "Name");
 
-            var datajson = await _httpClient.GetStringAsync($"api/Phone/getById/{id}");
-            var obj = JsonConvert.DeserializeObject<Phone>(datajson);
-            return View(obj);
+            //var datajson = await _httpClient.GetStringAsync($"api/Phone/getById/{id}");
+            //var obj = JsonConvert.DeserializeObject<Phone>(datajson);
+            return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(Phone obj, IFormFile file)
+        public async Task<IActionResult> Edit(AdPhoneDetailViewModel model)
         {
-            if (file != null && file.Length > 0) // khong null va khong trong 
-            {
-                var fileName = Path.GetFileName(file.FileName);
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", fileName);
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    file.CopyTo(stream);
-                }
+            //if (file != null && file.Length > 0) // khong null va khong trong 
+            //{
+            //    var fileName = Path.GetFileName(file.FileName);
+            //    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", fileName);
+            //    using (var stream = new FileStream(filePath, FileMode.Create))
+            //    {
+            //        file.CopyTo(stream);
+            //    }
 
-                obj.Image = "/img/" + fileName;
-            }
-            var jsonData = JsonConvert.SerializeObject(obj);
-            HttpContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var response = await _httpClient.PutAsync("api/Phone/update", content);
-            if (response.IsSuccessStatusCode)
-            {
-                return RedirectToAction("Index");
-            }
-            return BadRequest(response.Content.ReadAsStringAsync());
+            //    obj.Image = "/img/" + fileName;
+            //}
+            //var jsonData = JsonConvert.SerializeObject(obj);
+            //HttpContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+            //var response = await _httpClient.PutAsync("api/Phone/update", content);
+            //if (response.IsSuccessStatusCode)
+            //{
+            //    return RedirectToAction("Index");
+            //}
+            //return BadRequest(response.Content.ReadAsStringAsync());
+            return View(model);
         }
     }
 }
