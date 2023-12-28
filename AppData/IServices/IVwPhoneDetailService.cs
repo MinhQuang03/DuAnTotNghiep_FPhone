@@ -1,4 +1,5 @@
-﻿using AppData.ViewModels.Options;
+﻿using AppData.Models;
+using AppData.ViewModels.Options;
 using AppData.ViewModels.Phones;
 
 namespace AppData.IServices
@@ -7,8 +8,14 @@ namespace AppData.IServices
     {
         List<VW_PhoneDetail> listVwPhoneDetails(VW_PhoneDetail model);
         List<VW_PhoneDetail> listVwPhoneDetails(VW_PhoneDetail model,ListOptions options);
-        List<VW_PhoneDetail> getListPhoneDetailByIdPhone(Guid idPhone); 
+        List<VW_PhoneDetail> getListPhoneDetailByIdPhone(Guid idPhone);
+        /// <summary>
+        /// Lấy chi tiết VW_PhoneDetail 
+        /// </summary>
+        /// <param name="id">IdPhoneDetail</param>
+        /// <returns></returns>
         VW_PhoneDetail getPhoneDetailByIdPhoneDetail(Guid id);
-        int CheckPhoneDetail(Guid id);  
+        int CheckPhoneDetail(Guid id);
+        Task<PhoneDetaild> Add(PhoneDetaild obj);
     }
 }
