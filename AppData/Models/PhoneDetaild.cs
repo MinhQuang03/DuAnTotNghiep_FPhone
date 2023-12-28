@@ -6,6 +6,8 @@
 
         public Guid IdPhone { get; set; }
 
+        public string? Code { get; set; }
+
         public Guid? IdDiscount { get; set; }
 
         public Guid IdMaterial { get; set; }

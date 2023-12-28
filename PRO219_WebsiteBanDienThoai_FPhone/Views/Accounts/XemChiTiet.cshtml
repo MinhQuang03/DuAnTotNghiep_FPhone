@@ -1,4 +1,5 @@
 ﻿@using AppData.Models;
+@using AppData.FPhoneDbContexts;
 @model List<BillDetails>
 
 
@@ -6,12 +7,9 @@
     ViewData["Title"] = "Bill Detail";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    String dh0 = "Giao thành công";
-    String dh1 = "Yêu cầu hủy";
-    String dh2 = "Chấp nhận hủy";
-    String dh3 = "Hủy thành công";
-    String dh4 = "Yêu cầu bảo hành";
-    String dh5 = "Xác nhận bảo hành";
+    String dh0 = "Yêu cầu bảo hành";
+    String dh1 = "Đang thực hiện bảo hành";
+    String dh2 = "Bảo hành hành công";
 }
 
 <table class="table table-bordered container">
@@ -35,6 +33,8 @@
     <tbody>
         @foreach (var item in Model)
         {
+            FPhoneDbContext context = new FPhoneDbContext();
+            var bh = context.WarrantyCards.FirstOrDefault(p => p.IdBillDetail == item.Id);
             <tr>
                 <td>
                     @item.PhoneDetaild.Phones.PhoneName |
@@ -45,140 +45,37 @@
                     @string.Format("{0:0,0}", item.Price) vnđ
                 </td>
                 <td>
-                    @if (item.Status == 0)
-                    {
-                        @*<p class="text-success"> @dh0</p>*@
-                    }
-                    else if (item.Status == 1)
-                    {
-                        <p class="text-danger"> @dh1</p>
-                    }
-                    else if (item.Status == 2)
-                    {
-                        <p class="text-danger"> @dh2</p>
-                    }
-                    else if (item.Status == 3)
-                    {
-                        <p class="text-danger"> @dh3</p>
-                    }
-                    else if (item.Status == 4)
-                    {
-                        <p class="text-success"> @dh4 (Lý do: @item.Note)</p>
-                    }
-                    else if (item.Status == 5)
-                    {
-                        <p class="text-success"> @dh5</p>
-                    }
+                    
+                        @if (bh == null)
+                        {
+
+                        }
+                        else if (bh.Status == 0)
+                        {
+                            <p class="text-success"> @dh0 (Lý do: @bh.Description)</p>
+                        }
+                        else if (bh.Status == 1)
+                        {
+                            <p class="text-danger"> @dh1</p>
+                        }
+                        else if (bh.Status == 2)
+                        {
+                            <p class="text-danger"> @dh2</p>
+                        }
+                    
+
                 </td>
                 @* trường hợp đơn hàng giao thành công mới hiển thị Hoàn trả/Bảo hành*@
 
-                @if (ViewBag.BillStatus == 4 && item.Status == 0)
-                {
-                    <td>
-                        <a href="/Accounts/YeuCauTrahang?IdPhoneDetail=@item.IdPhoneDetail&phoneImei=@item.Imei">Hủy giao dịch</a>
-                        <a> | </a>
-                        @*<a href="/Accounts/YeuCauBaoHanh?IdPhoneDetail=@item.IdPhoneDetail&phoneImei=@item.Imei">Bảo Hành</a>*@
-                        <a href="javascript:void(0);" onclick="alterAndSubmit('@item.IdPhoneDetail', '@item.Imei')">Bảo hành</a>
-                    </td>
-                }
+                @if(ViewBag.BillStatus == 4)
+                    {
+                        <td>
+                            @Html.ActionLink("Bảo hành", "ThongTinBaoHanh", new {  idBill =item.IdBill })
+                        </td>
+                    }
+                
             </tr>
         }
     </tbody>
 </table>
 
-<!-- Add these links in your HTML head -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
-
-@*<script>
-    function alterAndSubmit(IdPhoneDetail, Imei) {
-        var note = prompt("Nhập nội dung yêu cầu bảo hành", "")
-        if (note != null && note != "") {
-
-            $.ajax({
-                type: "POST",
-                url: "@Url.Action("YeuCauBaoHanh","Accounts")",
-                data: {
-                    IdPhoneDetail: IdPhoneDetail,
-                    phoneImei: Imei,
-                    note: note
-                },
-                success: function (data) {
-                    console.log("Thành Công");
-                },
-                error: function () {
-                    console.log(data);
-                    console.log("Thất bại");
-                }
-            });
-        }
-    }
-</script>*@
-
-<script>
-    function alterAndSubmit(IdPhoneDetail, Imei) {
-        // Create a modal dynamically
-        var modalHtml = `
-                <div class="modal custom-modal" tabindex="-1" role="dialog">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Nhập nội dung yêu cầu bảo hành</h5>
-                                    <button type="button" class="close" data-dismiss="closeModal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <input type="text" id="noteInput" class="form-control" placeholder="Nội dung yêu cầu">
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="closeModal">Đóng</button>
-                                <button type="button" class="btn btn-primary" onclick="submitWithNote(event, '${IdPhoneDetail}', '${Imei}')">Gửi</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-        // Append modal to the body
-        $('body').append(modalHtml);
-
-        // Show the modal
-        $('.modal').modal('show');
-    }
-
-    function closeModal() {
-        $('.modal').modal('hide'); // Đóng modal
-    }
-
-    function submitWithNote(e, IdPhoneDetail, Imei) {
-        e.preventDefault(); // Prevent the default form submission behavior
-
-        var note = $('#noteInput').val();
-
-        // Validate note here if needed
-
-        // Close the modal
-        $('.modal').modal('hide');
-
-        $.ajax({
-            type: "POST",
-            url: "@Url.Action("YeuCauBaoHanh","Accounts")",
-            data: {
-                IdPhoneDetail: IdPhoneDetail,
-                phoneImei: Imei,
-                note: note
-            },
-            success: function (data) {
-                console.log("Thành Công");
-                // You can perform additional actions upon success
-                location.reload(); // Tải lại trang
-            },
-            error: function () {
-                console.log("Thất bại");
-            }
-        });
-    }
-</script>

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppData.Migrations
 {
     [DbContext(typeof(FPhoneDbContext))]
-    [Migration("20231221034835_init")]
+    [Migration("20231221163140_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -560,6 +560,9 @@ namespace AppData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FrontCamera")
                         .HasColumnType("nvarchar(max)");
 
@@ -904,8 +907,8 @@ namespace AppData.Migrations
                     b.Property<int?>("Status")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("TimeWarranty")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("TimeWarranty")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -936,6 +939,9 @@ namespace AppData.Migrations
                     b.Property<Guid?>("IdPhone")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("IdPhoneDetail")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Imei")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -943,7 +949,7 @@ namespace AppData.Migrations
                     b.Property<int?>("Status")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("ThoiGianConBaoHanh")
+                    b.Property<DateTime?>("ThoiGianConBaoHanh")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");

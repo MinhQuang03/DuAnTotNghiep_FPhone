@@ -31,6 +31,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.ViewModel
         [Display(Name = "Số điện thoại")]
         public string Phone { get; set; }
         public decimal TotalMoney { get; set; } 
+        public decimal ToTalShip { get; set; }
         public string Address { get; set; }
         public int Status { get; set; }
         public Guid IdAccount { get; set; } 
