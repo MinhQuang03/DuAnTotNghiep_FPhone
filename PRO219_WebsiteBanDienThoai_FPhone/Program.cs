@@ -29,7 +29,7 @@ builder.Services.AddTransient<IEmailService, EmailService>();
 
 builder.Services.AddScoped(sp => new HttpClient()
 {
-    BaseAddress = new Uri("https://localhost:44373/")
+    BaseAddress = new Uri("https://localhost:7129/")
 });
 builder.Services.AddSession(option =>
 {
