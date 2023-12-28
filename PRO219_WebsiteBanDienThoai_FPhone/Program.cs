@@ -29,6 +29,7 @@ builder.Services.AddTransient<IEmailService, EmailService>();
 
 builder.Services.AddScoped(sp => new HttpClient()
 {
+    //Uri chạy iis
     BaseAddress = new Uri("https://localhost:44373/")
 });
 builder.Services.AddSession(option =>
