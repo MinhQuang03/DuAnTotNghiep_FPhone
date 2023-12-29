@@ -94,7 +94,7 @@
             <td class="text-center">@item.ProductionCompanyName</td>
             <td class="text-center">@(item.Status == 0?"Hoạt động":"Ngưng hoạt động")</td>
             <td class="text-center">
-                @Html.ActionLink("Edit", "Edit", new { id=item.IdPhone }) <br/>
+                @Html.ActionLink("Chỉnh sửa", "Edit","PhoneDetaild", new { id=item.IdPhoneDetail }) <br/>
             </td>
         </tr>
 }

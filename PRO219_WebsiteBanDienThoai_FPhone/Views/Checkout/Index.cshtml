@@ -198,9 +198,6 @@
                                 if (response.success) {
                                     // Chuyển hướng đến trang thanh toán cod (thanh toán khi nhận hàng)
                                     window.location.href = response.data;
-
-                                    // Chuyển về trang chủ
-                                    window.location.href = 'Accounts/paymets';
                                 } else {
                                     // Xử lý lỗi nếu cần
                                     console.error("Banktransfer request failed.");
