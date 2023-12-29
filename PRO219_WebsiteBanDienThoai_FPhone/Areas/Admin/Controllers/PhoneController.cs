@@ -44,10 +44,10 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         }
         public async Task<IActionResult> Create()
         {
-            var datajson = await _httpClient.GetStringAsync("api/ProductionCompany/get");
-            List<ProductionCompany> obj = JsonConvert.DeserializeObject<List<ProductionCompany>>(datajson);
-            ViewBag.IdProductionCompany = new SelectList(obj, "Id", "Name");
-            return View();
+            AdPhoneInsertViewModel model = new AdPhoneInsertViewModel();
+            model.ListWarranty = _service.ListWarrty();
+            model.ListCompany = _service.ListCompany();
+            return View(model);
         }
 
 
@@ -72,7 +72,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             return View(model);
         }
         [HttpPost] 
-        public async Task<IActionResult> Create(Phone obj, IFormFile file)
+        public async Task<IActionResult> Create(AdPhoneInsertViewModel obj, IFormFile file)
         {
             if (file != null && file.Length > 0) // khong null va khong trong 
             {
@@ -85,7 +85,18 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
 
                 obj.Image = "/img/" + fileName;
             }
-            var jsonData = JsonConvert.SerializeObject(obj);
+
+            Phone data = new Phone()
+            {
+                Id = obj.Id,
+                PhoneName = obj.PhoneName,
+                CreateDate = obj.CreateDate,
+                Description = obj.Description,
+                IdProductionCompany = obj.IdProductionCompany,
+                IdWarranty = obj.IdWarranty,
+                Image = obj.Image
+            };
+            var jsonData = JsonConvert.SerializeObject(data);
             HttpContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync("api/Phone/add", content);
             if (response.IsSuccessStatusCode)
@@ -100,6 +111,8 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         public async Task<IActionResult> Edit(Guid id)
         {
             AdPhoneDetailViewModel model = new AdPhoneDetailViewModel();
+            model.ListCompany = _service.ListCompany();
+            model.ListWarranty = _service.ListWarrty();
             model.PhoneDetail = await _phoneRepository.GetById(id);
             var data = await _httpClient.GetStringAsync("api/ProductionCompany/get");
             List<ProductionCompany> a = JsonConvert.DeserializeObject<List<ProductionCompany>>(data);
@@ -111,28 +124,41 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(AdPhoneDetailViewModel model)
+        public async Task<IActionResult> Edit(AdPhoneDetailViewModel obj, IFormFile file)
         {
-            //if (file != null && file.Length > 0) // khong null va khong trong 
-            //{
-            //    var fileName = Path.GetFileName(file.FileName);
-            //    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", fileName);
-            //    using (var stream = new FileStream(filePath, FileMode.Create))
-            //    {
-            //        file.CopyTo(stream);
-            //    }
+            obj.ListCompany = _service.ListCompany();
+            obj.ListWarranty = _service.ListWarrty();
+            if (file != null && file.Length > 0) // khong null va khong trong 
+            {
+                var fileName = Path.GetFileName(file.FileName);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", fileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
 
-            //    obj.Image = "/img/" + fileName;
-            //}
-            //var jsonData = JsonConvert.SerializeObject(obj);
-            //HttpContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            //var response = await _httpClient.PutAsync("api/Phone/update", content);
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    return RedirectToAction("Index");
-            //}
+                obj.PhoneDetail.Image = "/img/" + fileName;
+            }
+
+            Phone data = new Phone()
+            {
+                Id = obj.PhoneDetail.Id,
+                PhoneName = obj.PhoneDetail.PhoneName,
+                CreateDate = obj.PhoneDetail.CreateDate,
+                Description = obj.PhoneDetail.Description,
+                IdProductionCompany = obj.PhoneDetail.IdProductionCompany,
+                IdWarranty = obj.PhoneDetail.IdWarranty,
+                Image = obj.PhoneDetail.Image
+            };
+            var jsonData = JsonConvert.SerializeObject(data);
+            HttpContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+            var response = await _httpClient.PutAsync("api/Phone/update", content);
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
             //return BadRequest(response.Content.ReadAsStringAsync());
-            return View(model);
+            return View(obj);
         }
     }
 }

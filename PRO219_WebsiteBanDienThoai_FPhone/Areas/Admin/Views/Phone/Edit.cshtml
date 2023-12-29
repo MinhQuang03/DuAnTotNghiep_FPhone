@@ -13,10 +13,16 @@
     <div class="col-md-4">
         <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input hidden asp-for="@Model.PhoneDetail.Id"/>
             <div class="form-group">
                 <label  class="control-label">Tên nhóm sản phẩm</label>
                 <input value="@Model.PhoneDetail.PhoneName" asp-for="@Model.PhoneDetail.PhoneName" class="form-control" />
                 <span asp-validation-for="@Model.PhoneDetail.PhoneName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <labe class="control-label">Nhà sản xuất</labe>
+                @Html.DropDownListFor(model => model.PhoneDetail.IdProductionCompany, new SelectList(Model.ListCompany, "Id", "Name"), "--- Lựa chọn ---", new { @class = "form-control" })
+                <span asp-validation-for="PhoneDetail.IdProductionCompany" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label class="control-label">Mô tả</label>
@@ -24,15 +30,14 @@
                 <span asp-validation-for="@Model.PhoneDetail.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label class="control-label">Thời hạn bảo hành</label>
+                @Html.DropDownListFor(model => model.PhoneDetail.IdWarranty, new SelectList(Model.ListWarranty, "Id", "TimeWarranty"), "--- Lựa chọn ---", new { @class = "form-control"})
+            </div>
+            <div class="form-group">
                 <label class="control-label">Ảnh (Vui lòng chọn lại file)</label>
                 @*<input asp-for="Image" class="form-control" />*@
                 <input type="file" name="file" />
                 <span asp-validation-for="@Model.PhoneDetail.Image" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.PhoneDetail.IdProductionCompany" class="control-label"></label>
-                <select asp-for="@Model.PhoneDetail.IdProductionCompany" asp-items="@ViewBag.IdProductionCompany" class="form-control"></select>
-                <span asp-validation-for="@Model.PhoneDetail.IdProductionCompany" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

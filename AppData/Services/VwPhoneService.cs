@@ -1,5 +1,6 @@
 ﻿using AppData.FPhoneDbContexts;
 using AppData.IServices;
+using AppData.Models;
 using AppData.ViewModels.Options;
 using AppData.ViewModels.Phones;
 
@@ -69,6 +70,36 @@ namespace AppData.Services
 
             return lst;
 
+        }
+
+        public List<Warranty> ListWarrty()
+        {
+            var lst = new List<Warranty>();
+            try
+            {
+                lst = _dbContext.Warranty.ToList();
+            }
+            catch (Exception e)
+            {
+               
+            }
+
+            return lst;
+        }
+
+        public List<ProductionCompany> ListCompany()
+        {
+            var lst = new List<ProductionCompany>();
+            try
+            {
+                lst = _dbContext.ProductionCompany.ToList();
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            return lst;
         }
     }
 }

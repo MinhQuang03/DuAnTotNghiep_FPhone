@@ -19,6 +19,9 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.ViewModel
       //Edit
       public Phone PhoneDetail { get; set; } = new Phone();
       public IFormFile file { get; set; }
+
+      public List<ProductionCompany> ListCompany { get; set; } = new List<ProductionCompany>();
+      public List<Warranty> ListWarranty { get; set; } = new List<Warranty>();
         //create    
         public PhoneDetaild DetailOfPhoneDetaild { get; set; } = new PhoneDetaild();
         //detail
