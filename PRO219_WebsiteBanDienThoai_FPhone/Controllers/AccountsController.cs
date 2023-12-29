@@ -165,13 +165,13 @@ public class AccountsController : Controller
     public IActionResult checkoutID()
     {
         var userId = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
-
+        
         if (userId == null)
         {
             TempData["SuccessMessage"] = "Bạn Phải Đăng nhập trước!";
             return RedirectToAction("Cart");
         }
-
+       
         return RedirectToAction("Cart");
     }
 
