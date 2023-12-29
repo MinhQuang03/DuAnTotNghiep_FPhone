@@ -44,9 +44,9 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         }
         public async Task<IActionResult> Create()
         {
-            //var datajson = await _httpClient.GetStringAsync("api/ProductionCompany/get");
-            //List<ProductionCompany> obj = JsonConvert.DeserializeObject<List<ProductionCompany>>(datajson);
-            //ViewBag.IdProductionCompany = new SelectList(obj, "Id","Name");
+            var datajson = await _httpClient.GetStringAsync("api/ProductionCompany/get");
+            List<ProductionCompany> obj = JsonConvert.DeserializeObject<List<ProductionCompany>>(datajson);
+            ViewBag.IdProductionCompany = new SelectList(obj, "Id", "Name");
             return View();
         }
 

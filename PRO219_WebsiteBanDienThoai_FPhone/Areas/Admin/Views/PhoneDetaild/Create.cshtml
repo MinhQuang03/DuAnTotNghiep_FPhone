@@ -159,11 +159,7 @@
                             @* <select asp-for="@Model.DetailOfPhoneDetaild.IdPhone" asp-items="@ViewBag.IdPhone" class="form-control"></select>
                             <span asp-validation-for="@Model.DetailOfPhoneDetaild.IdPhone" class="text-danger"></span> *@
                         </div>
-                        <div class="form-group">
-                            <label class="control-label">Mã giảm giá</label>
-                            <input asp-for="@Model.DetailOfPhoneDetaild.IdDiscount" class="form-control" />
-                            <span asp-validation-for="@Model.DetailOfPhoneDetaild.IdDiscount" class="text-danger"></span>
-                        </div>
+                       
                         <div class="form-group">
                             <label class="control-label">Màu sắc</label>
                             <select asp-for="@Model.DetailOfPhoneDetaild.IdColor" asp-items="@ViewBag.IdColor" class="form-control"></select>
@@ -189,6 +185,11 @@
                                 <option value="pending">Pending</option>
                             </select>
                         </div>*@
+                       @*  <div class="form-group">
+                            <label class="control-label">Mã giảm giá</label>
+                            <input asp-for="@Model.DetailOfPhoneDetaild.IdDiscount" class="form-control" />
+                            <span asp-validation-for="@Model.DetailOfPhoneDetaild.IdDiscount" class="text-danger"></span>
+                        </div> *@
                     </div>
                 </div>
             </div>
