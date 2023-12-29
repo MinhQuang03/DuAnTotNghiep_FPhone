@@ -55,17 +55,4 @@ public class HomeController : Controller
         var ctsp = JsonConvert.DeserializeObject<List<PhoneDetaild>>(datajson);
         return View(ctsp);
     }
-
-    //public async Task<IActionResult> BlogDetail(Guid id)
-    //{
-    //    var datajson = await _client.GetStringAsync("api/Blog/getById/{id}");
-    //    var detail = JsonConvert.DeserializeObject<List<Blog>>(datajson);
-    //    return View(detail);
-    //}
-
-    //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    //public IActionResult Error()
-    //{
-    //    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-    //}
 }
