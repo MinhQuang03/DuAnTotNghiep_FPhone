@@ -1,4 +1,4 @@
-﻿@model AppData.Models.Phone
+﻿@model PRO219_WebsiteBanDienThoai_FPhone.ViewModel.AdPhoneInsertViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -15,7 +15,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <labe class="control-label">Nhà sản xuất</labe>
-                <select asp-for="IdProductionCompany" asp-items="@ViewBag.IdProductionCompany" class="form-control"></select>
+                @Html.DropDownListFor(model => model.IdProductionCompany, new SelectList(Model.ListCompany, "Id", "Name"), "--- Lựa chọn ---", new { @class = "form-control" })
                 <span asp-validation-for="IdProductionCompany" class="text-danger"></span>
             </div>
             @*<div class="form-group">
@@ -32,6 +32,10 @@
                 <label class="control-label">Mô tả</label>
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Thời hạn bảo hành</label>
+                @Html.DropDownListFor(model => model.IdWarranty, new SelectList(Model.ListWarranty, "Id", "TimeWarranty"), "--- Lựa chọn ---", new { @class = "form-control"})
             </div>
             <div class="form-group">
                 <label class="control-label">Chọn ảnh</label>
