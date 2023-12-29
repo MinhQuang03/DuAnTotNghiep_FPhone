@@ -407,9 +407,9 @@ public class AccountsController : Controller
         _context.BillDetails.AddRange(Listbill);
         await _context.SaveChangesAsync();
 
-        return Json(new { success = true });
+        return Json(new { success = true, data = "/Accounts/paymets" });
 
-        //  return RedirectToAction("Index", "Home");
+  
 
 
     }
@@ -506,9 +506,7 @@ public class AccountsController : Controller
         var statuspaymnt = TempData["StatusPayment"] as string;
         var deliverypaymethod = TempData["deliveryPaymentMethod"] as string;
         var totalmeny = TempData["Totalmeny"] as string;
-      
         ViewBag.Totalmeny = totalmeny;
-      
         ViewBag.name = name;
         ViewBag.code = code;
         ViewBag.address = address;

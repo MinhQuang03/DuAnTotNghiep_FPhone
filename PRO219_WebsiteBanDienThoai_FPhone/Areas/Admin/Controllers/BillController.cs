@@ -20,15 +20,79 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             // Lấy danh sách hóa đơn giảm dần theo thời gian đặt hàng
-            var bills = _context.Bill.Where(b => b.Status != 0).ToList().OrderByDescending(b => b.CreatedTime);
+            var bills = _context.Bill.Where(b => b.Status == 2  ).ToList().OrderByDescending(b => b.CreatedTime);
             if (bills != null && bills.Any())
             {
                 return View(bills);
             }
             else
             {
-                // Xử lý trường hợp không có hóa đơn
-                return BadRequest("NoBills");
+                return View();
+            }
+        }
+        public async Task<IActionResult> xacnhan()
+        {
+            // Lấy danh sách hóa đơn giảm dần theo thời gian đặt hàng
+            var bills = _context.Bill.Where(b => b.Status == 1).ToList().OrderByDescending(b => b.CreatedTime);
+            if (bills != null && bills.Any())
+            {
+                return View(bills);
+            }
+            else
+            {
+                
+                return View();
+            }
+        }
+        public  ActionResult delete(Guid id)
+        {
+
+            var bills = _context.Bill.FirstOrDefault(b => b.Id == id);
+            var bilsdetail = _context.BillDetails.Where(a=>a.IdBill == id).ToList();
+            _context.BillDetails.RemoveRange(bilsdetail);
+            _context.Bill.Remove(bills);
+            _context.SaveChanges();
+
+            return RedirectToAction("Dahuys");
+        }
+
+        public async Task<IActionResult> Dahuys()
+        {
+            // Lấy danh sách hóa đơn giảm dần theo thời gian đặt hàng
+            var bills = _context.Bill.Where(b => b.Status == 5).ToList().OrderByDescending(b => b.CreatedTime);
+            if (bills != null && bills.Any())
+            {
+                return View(bills);
+            }
+            else
+            {
+                return View();
+            }
+        }
+        public async Task<IActionResult> Danggiaoview()
+        {
+            // Lấy danh sách hóa đơn giảm dần theo thời gian đặt hàng
+            var bills = _context.Bill.Where(b => b.Status == 3).ToList().OrderByDescending(b => b.CreatedTime);
+            if (bills != null && bills.Any())
+            {
+                return View(bills);
+            }
+            else
+            {
+                return View();
+            }
+        }
+        public async Task<IActionResult> Dagiaoview()
+        {
+            // Lấy danh sách hóa đơn giảm dần theo thời gian đặt hàng
+            var bills = _context.Bill.Where(b => b.Status == 4).ToList().OrderByDescending(b => b.CreatedTime);
+            if (bills != null && bills.Any())
+            {
+                return View(bills);
+            }
+            else
+            {
+                return View();
             }
         }
         public ActionResult Detail(Guid id)
@@ -80,9 +144,9 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             bill.Status = 5;
             _context.Entry(bill).State = EntityState.Modified;
             _context.SaveChanges();
-
             return RedirectToAction("Index");
         }
+        
         // đang giao hàng
         public ActionResult DangGiao(Guid id)
         {
@@ -113,7 +177,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                     _context.SaveChanges();
                 }
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("xacnhan");
         }
         // thay đổi trạng thái thành đã giao
         public ActionResult Dagiao(Guid id)
@@ -133,7 +197,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                 _context.SaveChanges();
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Danggiaoview");
         }
         // xoá đơn hàng , cập nhật lưu thay đổi
         public ActionResult Deltrash(Guid id)
