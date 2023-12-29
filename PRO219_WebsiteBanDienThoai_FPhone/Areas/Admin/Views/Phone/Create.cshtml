@@ -13,6 +13,11 @@
     <div class="col-md-4">
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <labe class="control-label">Nhà sản xuất</labe>
+                <select asp-for="IdProductionCompany" asp-items="@ViewBag.IdProductionCompany" class="form-control"></select>
+                <span asp-validation-for="IdProductionCompany" class="text-danger"></span>
+            </div>
             @*<div class="form-group">
                 <label asp-for="Id" class="control-label"></label>
                 <input asp-for="Id" class="form-control" />
@@ -34,11 +39,7 @@
                 <input type="file" name="file" />
                 <span asp-validation-for="Image" class="text-danger"></span>
             </div>
-            @* <div class="form-group">
-                <label asp-for="IdProductionCompany" class="control-label"></label>
-                <select asp-for="IdProductionCompany" asp-items="@ViewBag.IdProductionCompany" class="form-control"></select>
-                <span asp-validation-for="IdProductionCompany" class="text-danger"></span>
-            </div> *@
+            
             <div class="form-group">
                 <input type="submit" value="Tạo mới" class="btn btn-primary" />
             </div>
@@ -47,7 +48,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Trở lại</a>
+    <a asp-action="Index">@("<<") Trở lại</a>
 </div>
 
 @*@section Scripts {
