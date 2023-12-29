@@ -255,15 +255,35 @@
 
                 </ul>
             </li>
-            <li class="nav-item">
-                <a asp-area="Admin" asp-action="index" asp-controller="Bill">
+            <li class="nav-item dropdown">
+                <a class="dropdown-toggle" href="javascript:void(0);">
                     <span class="icon-holder">
                         <i class="anticon anticon-appstore"></i>
                     </span>
                     <span class="title">Quản Lý Đơn Hàng</span>
+                    <span class="arrow">
+                        <i class="arrow-icon"></i>
+                    </span>
                 </a>
-            </li>
-            <li class="nav-item">
+                <ul class="dropdown-menu">
+                    <li>
+                        <a asp-area="Admin" asp-controller="Bill" asp-action="Index">Chờ Xác Nhận </a>
+                    </li>
+                    <li>
+                        <a asp-area="Admin" asp-controller="Bill" asp-action="xacnhan">Đã Xác Nhận </a>
+                    </li>
+                    <li>
+                        <a asp-area="Admin" asp-controller="Bill" asp-action="Danggiaoview">Đang Giao</a>
+                    </li>
+                    <li>
+                        <a asp-area="Admin" asp-controller="Bill" asp-action="Dagiaoview">Đã Giao</a>
+                    </li>
+                    <li>
+                        <a asp-area="Admin" asp-controller="Bill" asp-action="Dahuys">Đã Hủy</a>
+                    </li>
+                </ul>
+             </li>
+             <li class="nav-item">
                 <a asp-area="Admin" asp-action="HoanTraHoacBaoHanh" asp-controller="Bill">
                     <span class="icon-holder">
                         <i class="anticon anticon-appstore"></i>
