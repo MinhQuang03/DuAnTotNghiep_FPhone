@@ -24,11 +24,11 @@ builder.Services.AddTransient<IChipCPURepository, ChipCPURepository>();
 builder.Services.AddTransient<IMaterialRepository, MaterialRepository>();
 builder.Services.AddTransient<IAccountService, AccountService>();
 builder.Services.AddTransient<IEmailService, EmailService>();
-
+builder.Services.AddTransient<IContactService, ContactService>();
 
 builder.Services.AddScoped(sp => new HttpClient()
 {
-    BaseAddress = new Uri("https://localhost:7129/")
+    BaseAddress = new Uri("https://localhost:44373/")
 
 });
 builder.Services.AddSession(option =>
