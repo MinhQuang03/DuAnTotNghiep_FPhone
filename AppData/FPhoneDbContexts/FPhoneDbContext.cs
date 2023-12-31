@@ -18,6 +18,7 @@ public class FPhoneDbContext : IdentityDbContext<ApplicationUser>
     {
     }
 
+    public DbSet<Contact> Contact { get; set; } 
     public DbSet<Account> Accounts { get; set; }
     public DbSet<Address> Address { get; set; }
     public DbSet<Battery> Battery { get; set; }
