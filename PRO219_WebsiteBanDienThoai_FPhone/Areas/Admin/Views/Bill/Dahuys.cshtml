@@ -1,15 +1,12 @@
 ﻿@model IEnumerable<AppData.Models.Bill>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Dahuys";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Đã Hủy</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -32,15 +29,15 @@
         </tr>
     </thead>
     <tbody>
-         @if(Model == null ) {
+        @if(Model == null ) {
             <h2  style="text-align:center"> Hiện đang Không có hóa đơn  </h2>
         }else
         {
         @foreach (var item in Model)
         {
-            String dh1 = "Đã xác nhận";
-            String dh2 = "Chờ xác nhận";
-     
+         
+            String dh5 = "Đã hủy";
+          
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
@@ -52,11 +49,12 @@
                     @Html.DisplayFor(modelItem => item.CreatedTime)
                 </td>
                 <td>
-                    @if (item.Status == 2)
-                    {
-                        <p class="text-danger"> @dh2</p>
-                    }
                    
+                    @if (item.Status == 5)
+                    {
+                       <p class="text-danger"> @dh5</p>
+                    }
+                  
                 </td>
                 <td>
                     <a href="@Url.Action("Detail", "Bill", new { id = item.Id })">Xem Chi tiết</a>
@@ -73,19 +71,10 @@
                 </td>
 
                 <td>
-                        <a class="btn btn-sm btn-light text-danger border a33" href="@Url.Action("Status", "Bill", new { id = item.Id })"> <i class="fas fa-toggle-on"></i> </a>
-                    
-      
-                    <a class="btn btn-sm btn-light text-danger border" href=""> <i class="fas fa-trash-alt"></i></a>
-
-                      <a class="btn btn-sm btn-light text-orange border" href="@Url.Action("Dahuy", "Bill", new { id = item.Id })"> <i class="fas fa-ban"></i></a>
+                    <a class="btn btn-sm btn-light text-danger border" href="@Url.Action("delete", "Bill", new { id = item.Id })"> <i class="fas fa-trash-alt"></i></a>
                 </td>
             </tr>
         }
         }
-
     </tbody>
-
 </table>
-
-
