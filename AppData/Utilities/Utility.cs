@@ -11,7 +11,14 @@ namespace AppData.Utilities
 
     public static class Utility
     {
-        
+        private static Random random = new Random();
+
+        public static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
         public static DataError GetDataErrror(Exception ex)
         {
             // 1. trả về DataError false không có msg nếu không có exception
