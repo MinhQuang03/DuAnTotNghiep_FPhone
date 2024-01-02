@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using AppData.Models;
+using AppData.ViewModels.Options;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.ViewModel
 {
@@ -23,5 +25,14 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.ViewModel
         public string Address { get; set; }
         [Display(Name = "Chủ đề")]
         public string Topic { get; set; }
+
+        public string CODE { get; set; }
+        public DateTime? ModifyDate { get; set; }
+            
+        public ListOptions ListOptions { get; set; } = new ListOptions();
+
+        public Contact SearchData { get; set; } = new Contact();
+
+        public List<Contact> Records { get; set; } = new List<Contact>();
     }
 }

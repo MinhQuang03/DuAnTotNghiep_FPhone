@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using AppData.FPhoneDbContexts;
 using AppData.IServices;
 using AppData.Models;
+using AppData.Utilities;
+using AppData.ViewModels.Options;
 
 namespace AppData.Services
 {
@@ -38,14 +40,7 @@ namespace AppData.Services
             try
             {
                 data = _context.Contact.FirstOrDefault(c => c.ID == obj.ID);
-                data.FullName = obj.FullName;
-                data.PhoneNumber = obj.PhoneNumber;
-                data.Email = obj.Email;
-                data.Address = obj.Address;
-                data.Status = obj.Status;
-                data.Topic = obj.Topic;
-                data.Content = obj.Content;
-                data.Type = obj.Type;
+               BeanUtils.CopyAllPropertySameName(obj,data);
                 _context.Contact.Update(data);
                 _context.SaveChanges();
             }
@@ -55,6 +50,27 @@ namespace AppData.Services
             }
 
             return obj;
+        }
+
+        public List<Contact> ListContact(Contact SearchData, ListOptions listOptions)
+        {
+            var lst = new List<Contact>();
+            try
+            {
+                lst = _context.Contact.Where(c => (c.Status == null ||c.Status == SearchData.Status)).OrderByDescending(c =>c.CreateDate).Skip(listOptions.SkipCalc).Take(listOptions.PageSize).ToList();
+                listOptions.AllRecordCount = _context.Contact.Count(c => (c.Status == null || c.Status == SearchData.Status));
+            }
+            catch (Exception e)
+            {
+                
+            }
+
+            return lst;
+        }
+
+        public Contact Details(Guid id)
+        {
+            return _context.Contact.FirstOrDefault(c => c.ID == id);
         }
     }
 }

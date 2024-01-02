@@ -1,5 +1,6 @@
 ﻿using AppData.IServices;
 using AppData.Models;
+using AppData.Utilities;
 using AppData.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
@@ -23,6 +24,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
         public IActionResult Index(ContactViewModel obj)
         {
             var data = new Contact();
+            data.CODE = Utility.RandomString(8);
             data.FullName = obj.FullName;
             data.PhoneNumber = obj.PhoneNumber;
             data.Email = obj.Email;
