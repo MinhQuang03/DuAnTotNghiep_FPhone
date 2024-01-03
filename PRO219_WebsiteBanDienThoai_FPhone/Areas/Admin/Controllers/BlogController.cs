@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Filters;
 using System.Text;
+using AppData.IServices;
+using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
 {
@@ -11,16 +13,26 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
     public class BlogController : Controller
     {
         public readonly HttpClient _httpClient;
-        public BlogController(HttpClient httpClient)
+        private IBlogService _service;
+
+        public BlogController(HttpClient httpClient, IBlogService service)
         {
             _httpClient = httpClient;
+            _service = service;
         }
 
         public async Task<IActionResult> Index()
         {
-            var datajson = await _httpClient.GetStringAsync("api/Blog/get");
-            var obj = JsonConvert.DeserializeObject<List<Blog>>(datajson);
-            return View(obj);
+            AdBlogViewModel model = new AdBlogViewModel();
+            model.Records = _service.GetAll(model.SearchData, model.ListOptions);
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Index(AdBlogViewModel model)
+        {
+            model.Records = _service.GetAll(model.SearchData, model.ListOptions);
+            return View(model);
         }
         public IActionResult Create()
         {
@@ -41,26 +53,26 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
 
                 obj.Images = "/img/" + fileName;
             }
-            var jsonData = JsonConvert.SerializeObject(obj);
-            HttpContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync("api/Blog/add", content);
-            if (response.IsSuccessStatusCode)
+            obj.CreatedDate = DateTime.Now;
+            var data = _service.Add(obj);
+            if (data != null)
             {
                 return RedirectToAction("Index");
             }
-            return View(jsonData);
+
+            return View(obj);
         }
 
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
-            var datajson = await _httpClient.GetStringAsync($"api/Blog/getById/{id}");
-            var obj = JsonConvert.DeserializeObject<Blog>(datajson);
-            return View(obj);
+            Blog model = new Blog();
+            model = _service.Details(id);
+            return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(Guid id, Blog obj, IFormFile file)
+        public async Task<IActionResult> Edit(Blog obj, IFormFile file)
         {
             if (file != null && file.Length > 0) // khong null va khong trong 
             {
@@ -73,14 +85,14 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
 
                 obj.Images = "/img/" + fileName;
             }
-            var jsonData = JsonConvert.SerializeObject(obj);
-            HttpContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var response = await _httpClient.PutAsync("api/Blog/update", content);
-            if (response.IsSuccessStatusCode)
+            obj.CreatedDate = DateTime.Now;
+            var data = _service.Update(obj);
+            if (data != null)
             {
                 return RedirectToAction("Index");
             }
-            return BadRequest(response.Content.ReadAsStringAsync());
+
+            return View(obj);
         }
 
 

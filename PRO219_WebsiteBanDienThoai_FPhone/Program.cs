@@ -25,6 +25,7 @@ builder.Services.AddTransient<IMaterialRepository, MaterialRepository>();
 builder.Services.AddTransient<IAccountService, AccountService>();
 builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddTransient<IContactService, ContactService>();
+builder.Services.AddTransient<IBlogService, BlogService>();
 
 builder.Services.AddScoped(sp => new HttpClient()
 {
