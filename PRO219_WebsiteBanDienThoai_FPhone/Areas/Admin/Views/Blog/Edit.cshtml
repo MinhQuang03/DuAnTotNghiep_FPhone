@@ -11,12 +11,26 @@
 <hr />
 <div class="row mx-5">
     <div class="">
+        
         <form asp-action="Edit" asp-controller="Blog" asp-area="Admin" enctype="multipart/form-data" id="form_Blog">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input hidden asp-for="Images"/>
             <div class="form-group">
                 <label class="control-label">Tiêu đề</label>
-                <input asp-for="Title" class="form-control" />
+                <input asp-for="Title" class="form-control"/>
                 <span class="text-danger error_Title"></span>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <img src="@Model.Images" width="100%"/>
+                </div>
+
+                <label asp-for="Images" class="col-form-label col-2 text-right"></label>
+                <div class="col-4">
+                    <input type="file" name="file"/>
+                    <span class="col">(Vui lòng chọn lại ảnh)</span>
+                    <span asp-validation-for="Images" class="text-danger"></span>
+                </div>
             </div>
             <div class="form-group">
                 <label class="control-label">Mô tả</label>
@@ -28,13 +42,7 @@
                 @Html.TextAreaFor(model => model.Content, new { @class = "form-control", @id = "editor" })
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
-            <div class="form-group row">
-                <label asp-for="Images" class="control-label col-2"></label>
-                <div class="col-4">
-                    <input type="file" name="file" /> <span>(Vui lòng chọn lại ảnh)</span>
-                    <span asp-validation-for="Images" class="text-danger"></span>
-                </div>
-            </div>
+
             @*  <div class="form-group">
             <label asp-for="Images" class="control-label"></label>
 
@@ -49,7 +57,7 @@
                 </select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Lưu" class="btn btn-primary" />
+                <input type="submit" value="Lưu" class="btn btn-primary"/>
             </div>
         </form>
     </div>

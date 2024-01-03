@@ -85,6 +85,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
 
                 obj.Images = "/img/" + fileName;
             }
+
             obj.CreatedDate = DateTime.Now;
             var data = _service.Update(obj);
             if (data != null)
