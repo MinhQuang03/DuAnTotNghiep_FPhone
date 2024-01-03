@@ -1,4 +1,5 @@
-﻿using AppData.Models;
+﻿using AppData.IServices;
+using AppData.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
@@ -8,13 +9,18 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
     public class BlogsController : Controller
     {
         private readonly HttpClient _httpClient;
-        public BlogsController(HttpClient httpClient)
+        private IBlogService _service;
+
+        public BlogsController(HttpClient httpClient, IBlogService service)
         {
             _httpClient = httpClient;
+            _service = service;
         }
         public IActionResult Index()
         {
-            return View();
+            AdBlogViewModel model = new AdBlogViewModel();
+            model.Records = _service.GetAll(model.SearchData, model.ListOptions);
+            return View(model);
         }
         [HttpGet]
 
