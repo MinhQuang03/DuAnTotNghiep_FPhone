@@ -180,81 +180,91 @@
                     </a>
                 }
             </li>
-            <li class="nav-item dropdown">
-                <a class="dropdown-toggle" href="javascript:void(0);">
-                    <span class="icon-holder">
-                        <i class="anticon anticon-appstore"></i>
-                    </span>
-                    <span class="title">Quản lý sản phẩm</span>
-                    <span class="arrow">
-                        <i class="arrow-icon"></i>
-                    </span>
-                </a>
-                <ul class="dropdown-menu">
-                    <li>
-                        <a asp-area="Admin" asp-controller="Phone" asp-action="Index">Nhóm sản phẩm</a>
-                    </li>
-                    <li>
-                        <a asp-area="Admin" asp-controller="Imei" asp-action="Index">Thêm mới sản phẩm</a>
-                    </li>
-                    <li>
-                        <a asp-area="Admin" asp-controller="PhoneDetaild" asp-action="Index">Danh sách sản phẩm</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a href="javascript:void(0);">
-                            <span>PhoneDetaild</span>
-                            <span class="arrow">
-                                <i class="arrow-icon"></i>
-                            </span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a asp-area="Admin" asp-controller="ChargingportType" asp-action="Index">Cổng sach</a>
-                            </li>
-                            <li>
-                                <a asp-area="Admin" asp-controller="Color" asp-action="Index">Màu sắc</a>
-                            </li>
-                            <li>
-                                <a asp-area="Admin" asp-controller="ProductionCompany" asp-action="Index">Nhà sản xuất</a>
-                            </li>
-                            <li>
-                                <a asp-area="Admin" asp-controller="ChipCPUs" asp-action="Index">Chip CPU</a>
-                            </li>
-                            <li>
-                                <a asp-area="Admin" asp-controller="ChipGPUs" asp-action="Index">Chip GPU</a>
-                            </li>
-                            <li>
-                                <a asp-area="Admin" asp-controller="Battery" asp-action="Index">Pin</a>
-                            </li>
-                            <li>
-                                <a asp-area="Admin" asp-controller="Material" asp-action="Index">Chất liệu</a>
-                            </li>
-                            <li>
-                                <a asp-area="Admin" asp-controller="Operating" asp-action="Index">Hệ điều hành</a>
-                            </li>
-                            <li>
-                                <a asp-area="Admin" asp-controller="Ram" asp-action="Index">Ram</a>
-                            </li>
-                            <li>
-                                <a asp-area="Admin" asp-controller="Rom" asp-action="Index">Rom</a>
-                            </li>
-                            <li>
-                                <a asp-area="Admin" asp-controller="Sim" asp-action="Index">Sim</a>
-                            </li>
-                            <li>
-                                <a asp-area="Admin" asp-controller="ListImage" asp-action="Index">Ảnh sản phẩm</a>
-                            </li>
-                            <li>
-                                <a asp-area="Admin" asp-controller="Sale" asp-action="Index">Sale</a>
-                            </li>
-                            <li>
-                                <a asp-area="Admin" asp-controller="Bill" asp-action="Index">Bill</a>
-                            </li>
-                        </ul>
-                    </li>
+        <li class="nav-item dropdown">
+            <a class="dropdown-toggle" href="javascript:void(0);">
+                <span class="icon-holder">
+                    <i class="anticon anticon-appstore"></i>
+                </span>
+                <span class="title">Quản lý sản phẩm</span>
+                <span class="arrow">
+                    <i class="arrow-icon"></i>
+                </span>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a asp-area="Admin" asp-controller="Phone" asp-action="Index">Nhóm sản phẩm</a>
+                </li>
+                <li>
+                    <a asp-area="Admin" asp-controller="Imei" asp-action="Index">Thêm mới sản phẩm</a>
+                </li>
+                <li>
+                    <a asp-area="Admin" asp-controller="PhoneDetaild" asp-action="Index">Danh sách sản phẩm</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="javascript:void(0);">
+                        <span>Linh kiện</span>
+                        <span class="arrow">
+                            <i class="arrow-icon"></i>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a asp-area="Admin" asp-controller="ChargingportType" asp-action="Index">Cổng sạc</a>
+                        </li>
+                        <li>
+                            <a asp-area="Admin" asp-controller="Color" asp-action="Index">Màu sắc</a>
+                        </li>
+                        <li>
+                            <a asp-area="Admin" asp-controller="ProductionCompany" asp-action="Index">Nhà sản xuất</a>
+                        </li>
+                        <li>
+                            <a asp-area="Admin" asp-controller="ChipCPUs" asp-action="Index">Chip CPU</a>
+                        </li>
+                        <li>
+                            <a asp-area="Admin" asp-controller="ChipGPUs" asp-action="Index">Chip GPU</a>
+                        </li>
+                        <li>
+                            <a asp-area="Admin" asp-controller="Battery" asp-action="Index">Pin</a>
+                        </li>
+                        <li>
+                            <a asp-area="Admin" asp-controller="Material" asp-action="Index">Chất liệu</a>
+                        </li>
+                        <li>
+                            <a asp-area="Admin" asp-controller="Operating" asp-action="Index">Hệ điều hành</a>
+                        </li>
+                        <li>
+                            <a asp-area="Admin" asp-controller="Ram" asp-action="Index">Ram</a>
+                        </li>
+                        <li>
+                            <a asp-area="Admin" asp-controller="Rom" asp-action="Index">Rom</a>
+                        </li>
+                        <li>
+                            <a asp-area="Admin" asp-controller="Sim" asp-action="Index">Sim</a>
+                        </li>
+                        
+                    </ul>
+                </li>
 
-                </ul>
-            </li>
+            </ul>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="dropdown-toggle" href="javascript:void(0);">
+                <span class="icon-holder text-grey">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-heart" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0M14 14V5H2v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1M8 7.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132"/>
+                    </svg>
+                </span>
+                <span class="title">Quản Lý Voucher</span>
+                <span class="arrow">
+                    <i class="arrow-icon"></i>
+                </span>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a asp-area="Admin" asp-controller="Sale" asp-action="Index">Danh sách voucher</a>
+                </li>
+            </ul>
+        </li>
             <li class="nav-item dropdown">
                 <a class="dropdown-toggle" href="javascript:void(0);">
                     <span class="icon-holder">
