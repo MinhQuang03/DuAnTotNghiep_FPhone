@@ -1,4 +1,21 @@
-﻿<!DOCTYPE html>
+﻿@using AppData.FPhoneDbContexts;
+@using AppData.ViewModels.Phones;
+@using PRO219_WebsiteBanDienThoai_FPhone.Services;
+@using Microsoft.AspNetCore.Http;
+
+@{
+    var id = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
+    FPhoneDbContext dbContext = new FPhoneDbContext();
+
+}
+@if (id == null)
+{
+    ViewBag.a = TempData["count"] is int countFromTempData ? countFromTempData : 0;
+}
+else{
+    ViewBag.a = dbContext.CartDetails.Where(a => a.IdAccount == Guid.Parse(id)).Count();
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -13,11 +30,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
-@await Html.PartialAsync("_SideNavPartialView.cshtml");
+@await Html.PartialAsync("_SideNavPartialView.cshtml")
 <main role="main">
     @RenderBody()
 </main>
-@await Html.PartialAsync("_FooterPartialView.cshtml");
+@await Html.PartialAsync("_FooterPartialView.cshtml")
 
 @*<!-- PopUp -->
 <div class="popup hide__popup">

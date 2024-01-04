@@ -1,1 +1,29 @@
-﻿  @await Component.InvokeAsync("BlogView") 
+﻿@model PRO219_WebsiteBanDienThoai_FPhone.ViewModel.AdBlogViewModel
+<div class="container-fluid">
+    <div class="block-header__img">
+        <img src="~/images/banner-new.jpg">    
+    </div>
+</div>
+<div class="container my-5">
+    <div class="new-page__list mb-3">
+        <div class="row g-5">
+            @foreach (var item in Model.Records)
+            {
+                <div class="col-12 col-lg-4">
+                    <div class="card-post">
+                        <a class="nav-link" asp-action="BlogDetail" asp-controller="Blogs" asp-route-Id="@item.Id">
+                            <div class="card-post__img mb-1">
+                                <img src="@item.Images" alt="">
+                            </div>
+                            <h2 class=" fw-bold font-size-20 mb-1">@item.Title </h2>
+                            <div class="card-post__date font-size-16 text-grey mb-1">Tin tức | @string.Format("{0:dd/MM/yyyy}",item.CreatedDate)</div>
+                            <div class="card-post__content limit-text font-size-16 mb-0 body-content">
+                                @item.IntroText
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

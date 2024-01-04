@@ -9,13 +9,10 @@
         <div class="container-fluid">
             <div class="row mb-2 bg-light">
                 <div class="col-sm-6">
-                    <h1 class="m-0 text-dark">Dashboard</h1>
+                    <h1 class="m-0 text-dark">Trang Chủ </h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6 ">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Dashboard v1</li>
-                    </ol>
+                 
                 </div><!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
@@ -32,7 +29,7 @@
                 <div class="small-box bg-success">
                     <div class="inner">
                         <h3> @ViewBag.product</h3>
-                        <p>Tất cả sản phẩm</p>
+                    <p style="color:black">Tất Cả Sản Phẩm</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-stats-bars"></i>
@@ -48,12 +45,12 @@
                 <div class="small-box bg-info">
                     <div class="inner">
                         <h3> @ViewBag.Neworder</h3>
-                        <p>Đơn hàng mới</p>
+                    <p style="color:black">Đơn Hàng Chờ Xác Nhận</p>
                     </div>
                     <div class="icon">
                         <i class="fas fa-shopping-cart"></i>
                     </div>
-                    <a href="~/Admin/orders" class="small-box-footer">
+                <a asp-area="Admin" asp-controller="Bill" asp-action="Index" class="small-box-footer">
                         More info <i class="fas fa-arrow-circle-right"></i>
                     </a>
                 </div>
@@ -64,12 +61,12 @@
                 <div class="small-box bg-danger">
                     <div class="inner">
                         <h3>@ViewBag.contact</h3>
-                        <p>Liên hệ Mới</p>
+                    <p style="color:black">Đơn Hàng Đang Giao</p>
                     </div>
                     <div class="icon">
                         <i class="fas fa-file-signature"></i>
                     </div>
-                    <a href="~/admin/contact" class="small-box-footer">
+                <a asp-area ="Admin" asp-controller="Bill" asp-action="Danggiaoview" class="small-box-footer">
                         More info <i class="fas fa-arrow-circle-right"></i>
                     </a>
                 </div>
@@ -81,7 +78,7 @@
                 <div class="small-box btn-success">
                     <div class="inner text-white">
                         <h3>@ViewBag.user</h3>
-                        <p>Tài Khoản khách hàng</p>
+                        <p style="color:black">Tài Khoản Khách Hàng</p>
                     </div>
                     <div class="icon">
                         <i class="fas fa-user-plus"></i>

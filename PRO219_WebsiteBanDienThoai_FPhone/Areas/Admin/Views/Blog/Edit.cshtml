@@ -1,50 +1,63 @@
 ﻿@model AppData.Models.Blog
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Quản lý nội dung";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
-<h1>Edit</h1>
 
-<h4>Blog</h4>
+<h1>Chỉnh sửa bài viết</h1>
+
+<h4>Thông tin</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit" enctype="multipart/form-data">
+<div class="row mx-5">
+    <div class="">
+        
+        <form asp-action="Edit" asp-controller="Blog" asp-area="Admin" enctype="multipart/form-data" id="form_Blog">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input hidden asp-for="Images"/>
             <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" readonly />
-                <span asp-validation-for="Id" class="text-danger"></span>
+                <label class="control-label">Tiêu đề</label>
+                <input asp-for="Title" class="form-control"/>
+                <span class="text-danger error_Title"></span>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <img src="@Model.Images" width="100%"/>
+                </div>
+
+                <label asp-for="Images" class="col-form-label col-2 text-right"></label>
+                <div class="col-4">
+                    <input type="file" name="file"/>
+                    <span class="col">(Vui lòng chọn lại ảnh)</span>
+                    <span asp-validation-for="Images" class="text-danger"></span>
+                </div>
             </div>
             <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+                <label class="control-label">Mô tả</label>
+                <textarea rows="4" asp-for="IntroText" class="form-control"></textarea>
+                <span class="text-danger error_IntroText"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Content" class="control-label"></label>
-                <input asp-for="Content" class="form-control" />
+                <label class="control-label">Nội dung</label>
+                @Html.TextAreaFor(model => model.Content, new { @class = "form-control", @id = "editor" })
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="CreatedDate" class="control-label"></label>
-                <input asp-for="CreatedDate" class="form-control" />
-                <span asp-validation-for="CreatedDate" class="text-danger"></span>
+
+            @*  <div class="form-group">
+            <label asp-for="Images" class="control-label"></label>
+
+            <input type="file" name="file" />
+            <span asp-validation-for="Images" class="text-danger"></span>
+            </div> *@
+            <div class="form-group row col-5">
+                <label class="control-label col">Trạng thái</label>
+                <select asp-for="Status" class="form-control col">
+                    <option selected="" value="0">Hoạt động</option>
+                    <option value="1">Không hoạt động</option>
+                </select>
             </div>
             <div class="form-group">
-                <label asp-for="Images" class="control-label"></label>
-                @*<input asp-for="Image" class="form-control" />*@
-                <input type="file" name="file" />
-                <span asp-validation-for="Images" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" />
-                <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Lưu" class="btn btn-primary"/>
             </div>
         </form>
     </div>
@@ -54,3 +67,6 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+<script>
+    CKEDITOR.replace('Content');
+</script>
