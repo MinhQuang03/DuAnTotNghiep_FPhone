@@ -1,0 +1,57 @@
+﻿@model PRO219_WebsiteBanDienThoai_FPhone.ViewModel.ContactViewModel
+
+@{
+    ViewData["Title"] = "Quản lý liên hệ";
+}
+<div style="margin-top:-30px">
+    <h3>Lịch sử liên hệ</h3>
+    <table class="table table-bordered">
+        <thead class="thead-light">
+            <tr class="text-center">
+                <th>
+                    Họ và tên
+                </th>
+                <th width="10%">Mã định danh</th>
+                <th>
+                    Số điện thoại
+                </th>
+                <th>
+                    Trạng thái
+                </th>
+                <th>
+                    Ngày tạo
+                </th>
+                <th>Ngày xử lý</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Records)
+            {
+                <tr>
+
+                    <td class="text-center" width="15%">
+                        <a href="#" class="nav-link">
+                            @Html.DisplayFor(modelItem => item.FullName)
+                        </a>
+                    </td>
+                    <td class="text-center">
+                        @item.CODE
+                    </td>
+                    <td class="text-center" width="12%">
+                        @item.PhoneNumber
+                    </td>
+                    <td class="text-center" width="10%">
+                        @(item.Status == 0 ? "Chưa xử lý" : "Hoàn thành")
+                    </td>
+                    <td class="text-center" width="10%">
+                        @string.Format("{0:dd/MM/yyyy HH:mm:ss }", item.CreateDate)
+                    </td>
+                    <td width="10%" class="text-center">
+                        @string.Format("{0:dd/MM/yyyy HH:mm:ss }", item.ModifyDate)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -269,6 +269,9 @@ namespace AppData.Migrations
                     b.Property<decimal?>("TotalMoney")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<DateTime?>("Update_at")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("deliveryPaymentMethod")
                         .HasColumnType("nvarchar(max)");
 
@@ -293,6 +296,12 @@ namespace AppData.Migrations
 
                     b.Property<Guid>("IdPhoneDetail")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Imei")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Number")
                         .HasColumnType("int");
@@ -498,7 +507,7 @@ namespace AppData.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdBillDetail");
+                    b.HasIndex("IdPhoneDetaild");
 
                     b.ToTable("Imei");
                 });
@@ -553,36 +562,6 @@ namespace AppData.Migrations
                     b.ToTable("OperatingSystem");
                 });
 
-            modelBuilder.Entity("AppData.Models.Payment", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Account")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("CardId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CvvCode")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("ExpiredDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("PaymentMethod")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("QrCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Payments");
-                });
-
             modelBuilder.Entity("AppData.Models.Phone", b =>
                 {
                     b.Property<Guid>("Id")
@@ -598,6 +577,9 @@ namespace AppData.Migrations
                     b.Property<Guid>("IdProductionCompany")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("IdWarranty")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
@@ -609,6 +591,8 @@ namespace AppData.Migrations
 
                     b.HasIndex("IdProductionCompany");
 
+                    b.HasIndex("IdWarranty");
+
                     b.ToTable("Phones");
                 });
 
@@ -617,6 +601,9 @@ namespace AppData.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FrontCamera")
                         .HasColumnType("nvarchar(max)");
@@ -671,6 +658,9 @@ namespace AppData.Migrations
 
                     b.Property<string>("Size")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Solid")
+                        .HasColumnType("int");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -962,6 +952,7 @@ namespace AppData.Migrations
 
                     b.HasKey("Id");
 
+<<<<<<< HEAD
                     b.ToTable("SellMonthly");
                 });
 
@@ -998,6 +989,9 @@ namespace AppData.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SellYearly");
+=======
+                    b.ToTable("SellDailys");
+>>>>>>> master
                 });
 
             modelBuilder.Entity("AppData.Models.Sim", b =>
@@ -1014,36 +1008,6 @@ namespace AppData.Migrations
                     b.ToTable("Sim");
                 });
 
-            modelBuilder.Entity("AppData.Models.Transaction", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("IdBill")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("IdPayment")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("Time")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdBill");
-
-                    b.HasIndex("IdPayment");
-
-                    b.ToTable("Transactions");
-                });
-
             modelBuilder.Entity("AppData.Models.Warranty", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1053,15 +1017,13 @@ namespace AppData.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("IdPhone")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int?>("Status")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime?>("TimeWarranty")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("TimeWarranty")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("IdPhone");
 
                     b.ToTable("Warranty");
                 });
@@ -1087,11 +1049,21 @@ namespace AppData.Migrations
                     b.Property<Guid?>("IdBillDetail")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("IdImei")
+                    b.Property<Guid?>("IdPhone")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("IdPhoneDetail")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Imei")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("Status")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("ThoiGianConBaoHanh")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -1444,11 +1416,11 @@ namespace AppData.Migrations
 
             modelBuilder.Entity("AppData.Models.Imei", b =>
                 {
-                    b.HasOne("AppData.Models.BillDetails", "BillDetails")
+                    b.HasOne("AppData.Models.PhoneDetaild", "PhoneDetaild")
                         .WithMany()
-                        .HasForeignKey("IdBillDetail");
+                        .HasForeignKey("IdPhoneDetaild");
 
-                    b.Navigation("BillDetails");
+                    b.Navigation("PhoneDetaild");
                 });
 
             modelBuilder.Entity("AppData.Models.ListImage", b =>
@@ -1468,7 +1440,13 @@ namespace AppData.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("AppData.Models.Warranty", "Warranty")
+                        .WithMany()
+                        .HasForeignKey("IdWarranty");
+
                     b.Navigation("ProductionCompanies");
+
+                    b.Navigation("Warranty");
                 });
 
             modelBuilder.Entity("AppData.Models.PhoneDetaild", b =>
@@ -1604,36 +1582,6 @@ namespace AppData.Migrations
                     b.Navigation("PhoneDetaild");
 
                     b.Navigation("Sales");
-                });
-
-            modelBuilder.Entity("AppData.Models.Transaction", b =>
-                {
-                    b.HasOne("AppData.Models.Bill", "Bills")
-                        .WithMany()
-                        .HasForeignKey("IdBill")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AppData.Models.Payment", "Payments")
-                        .WithMany()
-                        .HasForeignKey("IdPayment")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Bills");
-
-                    b.Navigation("Payments");
-                });
-
-            modelBuilder.Entity("AppData.Models.Warranty", b =>
-                {
-                    b.HasOne("AppData.Models.Phone", "Phones")
-                        .WithMany()
-                        .HasForeignKey("IdPhone")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Phones");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

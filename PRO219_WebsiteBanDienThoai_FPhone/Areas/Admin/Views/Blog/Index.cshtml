@@ -1,77 +1,126 @@
 ﻿
-@model IEnumerable<AppData.Models.Blog>
+@model PRO219_WebsiteBanDienThoai_FPhone.ViewModel.AdBlogViewModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Quản lý nội dung";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
-<div class="page-header">
-    <h2 class="header-title">Blog List</h2>
-    <div class="header-sub-title">
-        <nav class="breadcrumb breadcrumb-dash">
-            <a href="#" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
-            <a class="breadcrumb-item" href="#">Pages</a>
-            <a class="breadcrumb-item" href="#">Blog</a>
-            <span class="breadcrumb-item active">Blog List</span>
-        </nav>
-    </div>
+
+<div>
+    <partial name="DataError" />
+    <h2 class="label-control mb-3">Tìm kiếm bài viết</h2>
+    <form method="POST" asp-area="Admin" asp-action="Index" asp-controller="Blog" class="row " id="JBlog_list_form">
+        @Html.HiddenFor(x => x.ListOptions.PageIndex)
+        @Html.HiddenFor(x => x.ListOptions.PageSize)
+        <div class="col-8 row text-center">
+            <label class="col-form-label col-2">Tên</label>
+            <input type="text" asp-for="SearchData.Title" class="form-control col" placeholder="Tìm kiếm" />
+        </div>
+        <div class="col-4">
+            <input type="submit" class="btn btn-primary" value="Tìm kiếm" />
+        </div>
+    </form>
+    <hr />
 </div>
-<h1>Blog List</h1>
 
-
+<h2>Danh sách bài viết</h2>
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Thêm mới +</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Content)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Images)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th></th>
-        </tr>
+<table class="table table-bordered">
+    <thead class="thead-light">
+    <tr class="text-center">
+          
+        <th width="25%">
+            Tiêu đề
+        </th>
+        <th width="25%">
+            Ảnh đại diện
+        </th>
+        <th>
+            Trạng thái
+        </th>
+        <th>
+            Ngày tạo
+        </th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
+    @foreach (var item in Model.Records) {
+        <tr class="text-center">
+          
             <td>
-                @Html.DisplayFor(modelItem => item.Id)
+                <a class="nav-link" href="#">
+                    @Html.DisplayFor(modelItem => item.Title)
+                </a>
+                
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Title)
+                <img width="100%" src="@item.Images"/>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Content)
+                @(item.Status == 0?"Hoạt động":"Ngưng hoạt động")
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreatedDate)
+                @string.Format("{0:dd/MM/yyyy HH:mm:ss}",item.CreatedDate)
             </td>
             <td>
-                <img width="50" src="@item.Images"/>
+                <a class="text-danger nav-link" asp-area="Admin" asp-controller="Blog" asp-action="Edit" asp-route-id="@item.Id">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                    </svg>
+                </a>
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new {  id=item.Id  }) |
-                    @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-                </td>
         </tr>
-}
+    }
     </tbody>
 </table>
+
+@* Phân trang*@
+<div class="row">
+    <div class="col">
+        <div class="page_size_box row col-7">
+            <label class="form-label col mt-2">Hiển thị:</label>
+            <select class="form-control col" id="page_size_select" onchange="JBlog.changePageSize(event)">
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+            <label class="form-label col mt-2">bản ghi</label>
+        </div>
+    </div>
+    <div class="mx-5 mb-5 col">
+        <ul class="pagination pagination-sm m-0 float-right">
+            <li class="page-item @(Model.ListOptions.PageIndex == 1 ? "disabled" : "")">
+                <a class="page-link" onclick="JBlog.submitListForm(@(Model.ListOptions.PageIndex - 1), event)">«</a>
+            </li>
+            @foreach (var i in Model.ListOptions.PaginationIndexes)
+            {
+                if (i == -1)
+                {
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#">...</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item @(Model.ListOptions.PageIndex == i ? "active" : "")">
+                        <a class="page-link" onclick="JBlog.submitListForm(@i, event)">@i</a>
+                    </li>
+                }
+            }
+            <li class="page-item @(Model.ListOptions.PageIndex == Model.ListOptions.PageCount ? "disabled" : "")">
+                <a class="page-link" onclick="JBlog.submitListForm(@(Model.ListOptions.PageIndex + 1), event)">»</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<script src="~/js/JBlog.js"></script>
+<script>
+    $(document).ready(function () {
+        JBlog.initList();
+    });
+</script>

@@ -13,10 +13,14 @@ using System.Net.Http;
 using AppData.FPhoneDbContexts;
 using AppData.Repositories;
 using AppData.IRepositories;
+using AppData.IServices;
 using AppData.Utilities;
 using AppData.ViewModels;
 using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
 using Serilog;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.Xml.Linq;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers;
 
@@ -26,18 +30,21 @@ public class AccountsController : Controller
     private IcartRepository _cartRepository;
     private FPhoneDbContext _context;
     private readonly HttpClient _client;
-    public AccountsController(HttpClient client)
+    private IEmailService _emailService;
+    public AccountsController(HttpClient client, IEmailService emailService)
     {
         _cartDetailepository = new CartDetailepository();
         _cartRepository = new CartRepository();
         _context = new FPhoneDbContext();
         _client = client;
+        _emailService = emailService;
     }
     //Khi đã đăng nhập ấn nút có biểu tượng user sẽ hiện ra profile của người dùng
     public async Task<IActionResult> Profile()
     {
         // lấy ra id người dùng khi đã đăng nhập
         var id = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
+        ViewBag.idacount = id;
         // lấy ra thông tin người dùng thông qua id
         var datajson = await _client.GetStringAsync($"api/Accounts/get-user/{id}");
         var user = JsonConvert.DeserializeObject<Account>(datajson);
@@ -84,7 +91,18 @@ public class AccountsController : Controller
             login.UserName = model.Username;
             login.Password = model.Password;
             //khi tạo tài khoản thành công sẽ đăng nhập luôn
-            if (respo.IsSuccessStatusCode) return await Login(login);
+            if (respo.IsSuccessStatusCode)
+            {
+                ObjectEmailInput emailInput = new ObjectEmailInput()
+                {
+                    FullName = model.Name,
+                    SendTo = model.Email,
+                    Subject = "Thông báo tạo tài khoản",
+                    UserName = model.Username,
+                };
+                await _emailService.SendEmail(emailInput); // gửi email
+                return await Login(login);
+            }
         }
         else
         {
@@ -115,14 +133,14 @@ public class AccountsController : Controller
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-       
+
             // chuyển hướng đế trang admin
             if (respo.Roles.Contains("Admin") || respo.Roles.Contains("Staff")) return RedirectPermanent("/admin/accounts/index");
 
             //chuyển hướng đến trang chủ của web
             if (respo.Roles.Contains("User"))
             {
-                DataError error = new DataError(){Success = true};
+                DataError error = new DataError() { Success = true };
                 error.Success = true;
                 error.Msg = "Đăng nhập thành công";
                 TempData["DataError"] = Utility.ConvertObjectToJson(error);
@@ -134,8 +152,13 @@ public class AccountsController : Controller
             DataError error = new DataError();
             error.Success = false;
             error.Msg = "Đăng nhập không thành công";
-            TempData["DataError"] = Utility.ConvertObjectToJson(error);
-            return  RedirectToAction("Index", "Home");
+
+            ModelState.AddModelError("UserName", "Tài khoản hoặc mật khẩu sai");
+            return RedirectToAction("Index", "Home");
+
+            // TempData["DataError"] = Utility.ConvertObjectToJson(error);
+            // return  RedirectToAction("Index", "Home");
+
         }
 
         return NoContent();
@@ -143,13 +166,13 @@ public class AccountsController : Controller
     public IActionResult checkoutID()
     {
         var userId = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
-
+        
         if (userId == null)
         {
             TempData["SuccessMessage"] = "Bạn Phải Đăng nhập trước!";
             return RedirectToAction("Cart");
         }
-
+       
         return RedirectToAction("Cart");
     }
 
@@ -159,6 +182,7 @@ public class AccountsController : Controller
         var product = SessionCartDetail.GetObjFromSession(HttpContext.Session, "Cart");
         if (product != null)
         {
+            
             var idcartss = _context.Carts.FirstOrDefault(a => a.IdAccount == (Guid.Parse(userId)));
             if (idcartss != null)
             {
@@ -198,12 +222,21 @@ public class AccountsController : Controller
 
     }
 
-        public async Task<IActionResult> Cart()
+    public async Task<IActionResult> Cart()
     {
         var userId = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
         if (userId == null)
         {
             var product = SessionCartDetail.GetObjFromSession(HttpContext.Session, "Cart");
+            if (product != null && product is List<CartDetailModel>)
+            {
+                TempData["count"] = (product as List<CartDetailModel>).Count;
+            }
+            else
+            {
+                // Xử lý khi đối tượng không tồn tại trong Session hoặc không phải là List<CartDetailModel>
+                TempData["count"] = 0; // Hoặc giá trị mặc định tùy thuộc vào yêu cầu của bạn
+            }
             return View(product);
         }
 
@@ -227,13 +260,14 @@ public class AccountsController : Controller
     }
     public async Task<IActionResult> AddToCard(Guid id)
     {
+
         var userId = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
         var product = SessionCartDetail.GetObjFromSession(HttpContext.Session, "Cart");
         if (userId == null)
         {
-            product.Add(new CartDetailModel { phoneDetaild = _context.PhoneDetailds.Find(id),quantity = 1  });
+            product.Add(new CartDetailModel { phoneDetaild = _context.PhoneDetailds.Find(id), quantity = 1 });
             SessionCartDetail.SetobjTojson(HttpContext.Session, product, "Cart");
-            
+
             return RedirectToAction("Cart");
         }
         else
@@ -242,35 +276,54 @@ public class AccountsController : Controller
             var idcartss = _context.Carts.FirstOrDefault(a => a.IdAccount == (Guid.Parse(userId)));
             if (idcartss != null)
             {
-             
-                CartDetails cartDetails = new CartDetails();
-                cartDetails.Id = new Guid();
-                cartDetails.IdPhoneDetaild = id;
-                cartDetails.IdAccount = Guid.Parse(userId);
-                cartDetails.Status = 1;
-                _context.CartDetails.Add(cartDetails);
-                _context.SaveChanges();
-             
-                return RedirectToAction("ShowCart");
+                var car = _context.CartDetails.Where(a =>a.IdAccount == (Guid.Parse(userId))).Count();
+                if (car > 4)
+                {
+                    TempData["SuccessMessage"] = "Bạn chỉ được mua tối đa 5 sản phẩm !";
+                    return RedirectToAction("ShowCart");
+                }
+                else
+                {
+                    CartDetails cartDetails = new CartDetails();
+                    cartDetails.Id = new Guid();
+                    cartDetails.IdPhoneDetaild = id;
+                    cartDetails.IdAccount = Guid.Parse(userId);
+                    cartDetails.Status = 1;
+                    _context.CartDetails.Add(cartDetails);
+                    _context.SaveChanges();
+
+                    return RedirectToAction("ShowCart");
+                }
+               
             }
             else
 
             {
-                Cart cart = new Cart();
-                cart.IdAccount = Guid.Parse(userId);
-                _context.Carts.Add(cart);
-                _context.SaveChanges();
-                CartDetails cartDetails = new CartDetails();
-                cartDetails.Id = new Guid();
-                cartDetails.IdPhoneDetaild = id;
-                cartDetails.IdAccount = Guid.Parse(userId);
-                cartDetails.Status = 1;
-                _context.CartDetails.Add(cartDetails);
-                _context.SaveChanges();
-             
-                return RedirectToAction("ShowCart");
+                var car = _context.CartDetails.Where(a => a.IdAccount == (Guid.Parse(userId))).Count();
+                if (car > 5)
+                {
+                    TempData["SuccessMessage"] = "Bạn chỉ được mua tối đa 5 sản phẩm !";
+                    return RedirectToAction("ShowCart");
+                }
+                else
+                {
+                    Cart cart = new Cart();
+                    cart.IdAccount = Guid.Parse(userId);
+                    _context.Carts.Add(cart);
+                    _context.SaveChanges();
+                    CartDetails cartDetails = new CartDetails();
+                    cartDetails.Id = new Guid();
+                    cartDetails.IdPhoneDetaild = id;
+                    cartDetails.IdAccount = Guid.Parse(userId);
+                    cartDetails.Status = 1;
+                    _context.CartDetails.Add(cartDetails);
+                    _context.SaveChanges();
+
+                    return RedirectToAction("ShowCart");
+                }
+                
             }
-          
+
         }
 
     }
@@ -287,95 +340,225 @@ public class AccountsController : Controller
             var jsonString = JsonConvert.SerializeObject(cart);
             HttpContext.Session.SetString("Cart", jsonString);
         }
-       return RedirectToAction("Cart");
+        return RedirectToAction("Cart");
     }
 
     [HttpPost]
     public async Task<IActionResult> ORDER(CheckOutViewModel order)
     {
-        
-            var userId = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
-            if (userId == null)
+
+        var userId = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
+        if (userId == null)
+        {
+            return BadRequest("User Id is not available.");
+        }
+        int currentBillNumber;
+        lock (_context.Bill)
+        {
+            currentBillNumber = _context.Bill.Count() + 1;
+        }
+        var billCode = "HD" + currentBillNumber.ToString("D5");
+        Bill bill = new Bill();
+        bill.Id = Guid.NewGuid();
+        bill.Address = $"{order.Address},{order.Province},{order.District},{order.Ward}";
+        bill.Name = order.Name;
+        bill.BillCode = billCode;
+        bill.Status = 2; // Chờ xác nhận 
+        bill.TotalMoney = order.TotalMoney;
+        bill.CreatedTime = DateTime.Now;
+        bill.PaymentDate = DateTime.Now;
+        bill.IdAccount = Guid.Parse(userId);
+        bill.Phone = order.Phone;
+        bill.StatusPayment = 0; // Chưa thanh toán 
+        bill.deliveryPaymentMethod = "COD";
+
+        TempData["Totalmeny"] = bill.TotalMoney.ToString();
+        TempData["Totalship"] = order.ToTalShip.ToString();
+        TempData["name"] = bill.Name;
+        TempData["code"] = bill.BillCode;
+        TempData["address"] = bill.Address;
+        TempData["Phone"] = bill.Phone;
+        TempData["StatusPayment"] = bill.StatusPayment.ToString(); // Chuyển sang string
+        TempData["deliveryPaymentMethod"] = bill.deliveryPaymentMethod;
+        _context.Bill.Add(bill);
+        _context.SaveChanges();
+
+        Guid idhd = bill.Id;
+
+        var product = _context.CartDetails.Where(a => a.IdAccount == Guid.Parse(userId)).ToList();
+        List<BillDetails> Listbill = new List<BillDetails>();
+
+
+        foreach (var item in product)
+        {
+            // Tìm ra imeil đầu tiên thuộc PhoneDetail có status = 1 (1: chưa được bán)
+            var emeiCheck = _context.Imei.First(a => a.IdPhoneDetaild == item.IdPhoneDetaild && a.Status == 1);
+            // trường hợp tồn tại emeiCheck
+            if (null != emeiCheck)
             {
-                return BadRequest("User Id is not available.");
+                // Cập nhật lại status = 2 (Đã bán)
+                emeiCheck.Status = 2;
+                _context.SaveChanges();
+
+                // Thêm sản phẩm điện thoại vào bill detail
+                BillDetails billDetail = new BillDetails();
+                billDetail.IdBill = idhd;
+                billDetail.Id = Guid.NewGuid();
+                billDetail.IdPhoneDetail = item.IdPhoneDetaild;
+                billDetail.Price = _context.PhoneDetailds.Find(item.IdPhoneDetaild).Price;
+                billDetail.Number = 1;
+                billDetail.Status = 0;
+                billDetail.Imei = emeiCheck.NameImei; // Đúng tra là id của bảng emei. Nhưng name emei cũng không thể trùng.
+                Listbill.Add(billDetail);
             }
-            var currentBillNumber = _context.Bill.Count() + 1;
-            var billCode = "HD" + currentBillNumber.ToString("D5");
-            Bill bill = new Bill();
-            bill.Id = Guid.NewGuid();
-            bill.Address = $"{order.Address},{order.Province},{order.District},{order.Ward}";
-            bill.Name = order.Name;
-            bill.BillCode = billCode;
-            bill.Status = 2; // Chờ xác nhận 
-            bill.TotalMoney = order.TotalMoney;
-            bill.CreatedTime = DateTime.Now;
-            bill.PaymentDate = DateTime.Now;
-            bill.IdAccount = Guid.Parse(userId);
-            bill.Phone = order.Phone;
-            bill.StatusPayment = 0; // Chưa thanh toán 
-            bill.deliveryPaymentMethod = "COD";
+        }
 
-            _context.Bill.Add(bill);
-            _context.SaveChanges();
-            
-            Guid idhd = bill.Id;
+     
+        _context.BillDetails.AddRange(Listbill);
+        await _context.SaveChangesAsync();
 
-            var product = _context.CartDetails.Where(a => a.IdAccount == Guid.Parse(userId)).ToList();
+        return Json(new { success = true, data = "/Accounts/paymets" });
 
-           
-                List<BillDetails> Listbill = new List<BillDetails>();
+  
 
-                foreach (var item in product)
-                {
-                    BillDetails billDetail = new BillDetails();
-                    billDetail.IdBill = idhd;
-                    billDetail.Id = Guid.NewGuid();
-                    billDetail.IdPhoneDetail = item.IdPhoneDetaild;
-                    billDetail.Price = _context.PhoneDetailds.Find(item.IdPhoneDetaild).Price;
-                    billDetail.Status = 0;
-                    Listbill.Add(billDetail);
-                }
 
-                foreach (var item in product)
-                {
-                    var cart = _context.CartDetails.Find(item.Id);
-                    _context.CartDetails.Remove(cart);
-                }
-
-                _context.BillDetails.AddRange(Listbill);
-                await _context.SaveChangesAsync();
-
-                return RedirectToAction("Index", "Home");
-                
     }
 
     public async Task<IActionResult> PurchaseHistory(Guid idAccount)
     {
-        var accBill = _context.Bill.FirstOrDefault(p => p.IdAccount == idAccount);
+        
+        var accBill = _context.Bill.Where(p => p.IdAccount == idAccount).OrderByDescending(p => p.CreatedTime).ToList();
+        return View(accBill);
+    }
 
-        var phoneNames = (from bd in _context.BillDetails
-                          join pdp in _context.PhoneDetailds on bd.IdPhoneDetail equals pdp.Id
-                          join ph in _context.Phones on pdp.IdPhone equals ph.Id
-                          where bd.IdBill == accBill.Id
-                          select ph.PhoneName).FirstOrDefault();
+    public ActionResult XemChiTiet(Guid idBill)
+    {
+        var billDetail = _context.BillDetails
+                        .Include(p => p.PhoneDetaild)
+                            .ThenInclude(p => p.Phones)
+                        .Include(p => p.PhoneDetaild)
+                            .ThenInclude(p => p.Colors)
+                        .Include(p => p.PhoneDetaild)
+                            .ThenInclude(p => p.Rams)
+                        .Include(p => p.PhoneDetaild)
+                            .ThenInclude(p => p.Roms)
+                        .Where(p => p.IdBill == idBill)
+                        .ToList();
 
-        var ramName = (from bd in _context.BillDetails
-                       join pdp in _context.PhoneDetailds on bd.IdPhoneDetail equals pdp.Id
-                       join ph in _context.Ram on pdp.IdRam equals ph.Id
-                       where bd.IdBill == accBill.Id
-                       select ph.Name).FirstOrDefault();
+        // Get Status of table Bill
+        var billStatus = _context.Bill.Find(idBill);
+        ViewBag.BillStatus = billStatus.Status;
 
-        var colorName = (from bd in _context.BillDetails
-                         join pdp in _context.PhoneDetailds on bd.IdPhoneDetail equals pdp.Id
-                         join ph in _context.Colors on pdp.IdColor equals ph.Id
-                         where bd.IdBill == accBill.Id
-                         select ph.Name).FirstOrDefault();
+        return View(billDetail);
+    }
 
-        // Lấy danh sách các PhoneName và gán vào ViewBag
-        ViewBag.PhoneNames = phoneNames + " " + ramName + " " + colorName;
+    public ActionResult ThongTinBaoHanh(Guid idBill)
+    {
+        var phone = _context.BillDetails
+                        .Include(p => p.PhoneDetaild)
+                            .ThenInclude(p => p.Phones)
+                        .Include(p => p.PhoneDetaild)
+                            .ThenInclude(p => p.Colors)
+                        .Include(p => p.PhoneDetaild)
+                            .ThenInclude(p => p.Rams)
+                        .Include(p => p.PhoneDetaild)
+                            .ThenInclude(p => p.Roms)
+                        .Include(p => p.Bills)
+                            .ThenInclude(p => p.Accounts)
+                    .Where(p => p.IdBill == idBill).ToList();
+        return View(phone);
+    }
 
-        var lisst = _context.BillDetails.Where(m => m.IdBill == accBill.Id).ToList();
+    
 
-        return View(lisst);
+    // Yêu cầu bảo hành
+    [HttpPost]
+    public ActionResult YeuCauBaoHanh(Guid IdPhoneDetail, string phoneImei, string note)
+    {
+        var billDetail = _context.BillDetails.Include(a=>a.Bills)
+                                             .ThenInclude(a=>a.Accounts)
+                                             .Include(a=>a.PhoneDetaild)
+                                             .SingleOrDefault(a => a.IdPhoneDetail == IdPhoneDetail && a.Imei == phoneImei);
+
+        if (null != billDetail)
+        {
+            //billDetail.Status = 4; // Yêu cầu bảo hành 
+            //_context.SaveChanges();
+
+            var warrantyCard = new WarrantyCard();
+            warrantyCard.Id = Guid.NewGuid();
+            warrantyCard.IdBillDetail = billDetail.Id;
+            warrantyCard.IdAccount = billDetail.Bills.IdAccount;
+            warrantyCard.IdPhoneDetail = IdPhoneDetail;
+            warrantyCard.IdPhone = billDetail.PhoneDetaild.IdPhone;
+            warrantyCard.Imei = phoneImei;
+            warrantyCard.CreatedDate = DateTime.Now;
+            warrantyCard.Description = note; // Có thể thay đổi tùy theo yêu cầu
+            //ThoiGianConBaoHanh = billDetail.Bills.PaymentDate.AddMonths(billDetail.PhoneDetaild.Phones.IdWarranty.TimeWarranty),
+            warrantyCard.Status = 0; // 1: Mới tạo
+            // Bổ sung thêm các thông tin khác nếu cần
+
+            _context.WarrantyCards.Add(warrantyCard);
+            _context.SaveChanges();
+        }
+
+
+
+        return RedirectToAction("XemChiTiet", new { idBill = billDetail.IdBill });
+    }
+
+    public ActionResult paymets()
+    {
+        var name = TempData["name"] as string;
+        var code = TempData["code"] as string;
+        var address = TempData["address"] as string;
+        var phone = TempData["Phone"] as string;
+        var statuspaymnt = TempData["StatusPayment"] as string;
+        var deliverypaymethod = TempData["deliveryPaymentMethod"] as string;
+        var totalmeny = TempData["Totalmeny"] as string;
+        ViewBag.Totalmeny = totalmeny;
+        ViewBag.name = name;
+        ViewBag.code = code;
+        ViewBag.address = address;
+        ViewBag.phone = phone;
+        ViewBag.statuspaymnt = statuspaymnt;
+        ViewBag.deliverypaymethod = deliverypaymethod;
+        var userId = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
+        var product = _context.CartDetails.Where(a => a.IdAccount == Guid.Parse(userId)).ToList();
+        decimal sum = 0;
+        List<Payment> payments = new List<Payment>();
+        foreach (var iten in product)
+        {
+            var idsp = _context.PhoneDetailds.FirstOrDefault(p => p.Id == iten.IdPhoneDetaild).IdPhone;
+            var gia = _context.PhoneDetailds.FirstOrDefault(p => p.Id == iten.IdPhoneDetaild).Price;
+            string anhsp = _context.Phones.FirstOrDefault(p => p.Id == idsp).Image;
+            var tensp = _context.Phones.FirstOrDefault(p => p.Id == idsp).PhoneName;
+            var idcolor = _context.PhoneDetailds.FirstOrDefault(p => p.Id == iten.IdPhoneDetaild).IdColor;
+            var idRam = _context.PhoneDetailds.FirstOrDefault(p => p.Id == iten.IdPhoneDetaild).IdRam;
+            var color = _context.Colors.FirstOrDefault(p => p.Id == idcolor).Name;
+            var Ram = _context.Ram.FirstOrDefault(p => p.Id == idRam).Name;
+            sum += gia;
+            Payment list = new Payment();
+            list.name = tensp;
+            list.price = gia;
+            list.img = anhsp;
+            list.color = color;
+            list.ram = Ram;
+            list.quantity = 1;
+            payments.Add(list);
+
+        }
+
+        decimal ships = decimal.Parse(totalmeny) - sum;
+        ViewBag.ships = ships;
+        ViewBag.sum = sum;
+        ViewBag.cart = payments;
+        foreach (var item in product)
+        {
+            var cart = _context.CartDetails.Find(item.Id);
+            _context.CartDetails.Remove(cart);
+        }
+        _context.SaveChanges();
+        return View();
     }
 }

@@ -35,11 +35,11 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
         public IActionResult Payment(CheckOutViewModel request)
         {
             var pay = new PayLib();
-
+            
             pay.AddRequestData("vnp_Version", "2.1.0"); //Phiên bản api mà merchant kết nối. Phiên bản hiện tại là 2.1.0
             pay.AddRequestData("vnp_Command", "pay"); //Mã API sử dụng, mã cho giao dịch thanh toán là 'pay'
             pay.AddRequestData("vnp_TmnCode", vnpay.TmnCode); //Mã website của merchant trên hệ thống của VNPAY (khi đăng ký tài khoản sẽ có trong mail VNPAY gửi về)
-            pay.AddRequestData("vnp_Amount", request.TotalMoney.ToString()); //số tiền cần thanh toán, công thức: số tiền * 100 - ví dụ 10.000 (mười nghìn đồng) --> 1000000
+            pay.AddRequestData("vnp_Amount", ((int)(request.TotalMoney) * 100).ToString()); //số tiền cần thanh toán, công thức: số tiền * 100 - ví dụ 10.000 (mười nghìn đồng) --> 1000000
             pay.AddRequestData("vnp_BankCode", ""); //Mã Ngân hàng thanh toán (tham khảo: https://sandbox.vnpayment.vn/apis/danh-sach-ngan-hang/), có thể để trống, người dùng có thể chọn trên cổng thanh toán VNPAY
             pay.AddRequestData("vnp_CreateDate", DateTime.Now.ToString("yyyyMMddHHmmss")); //ngày thanh toán theo định dạng yyyyMMddHHmmss
             pay.AddRequestData("vnp_CurrCode", "VND"); //Đơn vị tiền tệ sử dụng thanh toán. Hiện tại chỉ hỗ trợ VND
@@ -53,47 +53,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
 
             string paymentUrl = pay.CreateRequestUrl(vnpay.Url, vnpay.HashSecret);
 
-            // var order = new Order(){
-            //     // các thông tin khác của đơn hàng
-            //     // ...
-            // }
-            // luu đơn hàng xuống db... với trang thái là chưa duyệt... nhớ kèm theo mã order để tí nữa lấy ra check
-            //  pay.AddRequestData("vnp_TxnRef", DateTime.Now.Ticks.ToString()); //mã hóa đơn
-            /// code here 
-            /// 
-
-            //var billId = Guid.NewGuid();
-            //var bill = new Bill()
-            //{
-            //    Id = billId,
-            //    CreatedTime = DateTime.Now,
-            //    PaymentDate = DateTime.Now,
-            //    Name = request.InfoShip.FullName,
-            //    Address = request.InfoShip.Address,
-            //    Phone = request.InfoShip.Phone,
-            //    Status = 0,
-            //    StatusPayment = 1, // VNPAY
-            //    IdAccount = null,
-            //    // BillCode = pay.GetResponseData("vnp_TxnRef"),  /// Thêm db ok thì mở cái này
-            //};
-            //_dbContext.Bill.Add(bill);
-            //var billDetails = new List<BillDetails>();
-            //foreach (var phone in request.Phones)
-            //{
-            //    billDetails.Add(new BillDetails()
-            //    {
-            //        Id = Guid.NewGuid(),
-            //        IdBill = billId,
-            //        IdPhoneDetail = Guid.Parse(phone.PhoneDetailId),
-            //        Number = 1,
-            //        Price = phone.Price,
-            //        NameImei = "Sao ko de null",
-            //        IdDiscount = null,
-            //        Status = 0
-            //    });
-            //}
-            //_dbContext.BillDetails.AddRange(billDetails);
-            //_dbContext.SaveChanges();
+           
 
 
             var userId = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
@@ -123,20 +83,28 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
 
             foreach (var item in product)
             {
-                BillDetails billDetail = new BillDetails();
-                billDetail.IdBill = idhd;
-                billDetail.Id = new Guid();
-                billDetail.IdPhoneDetail = item.IdPhoneDetaild;
-                billDetail.Price = _dbContext.PhoneDetailds.Find(item.IdPhoneDetaild).Price;
-                billDetail.Status = 0;
-                Listbill.Add(billDetail);
-            }
-            foreach (var item in product)
-            {
-                var cart = _dbContext.CartDetails.Find(item.Id);
-                _dbContext.CartDetails.Remove(cart);
+                // Tìm ra imeil đầu tiên thuộc PhoneDetail có status = 1 (1: chưa được bán)
+                var emeiCheck = _dbContext.Imei.FirstOrDefault(a => a.IdPhoneDetaild == item.IdPhoneDetaild && a.Status == 1);
+                // trường hợp tồn tại emeiCheck
+                if (null != emeiCheck)
+                {
+                    // Cập nhật lại status = 2 (Đã bán)
+                    emeiCheck.Status = 2;
+                    _dbContext.SaveChanges();
 
+                    // Thêm sản phẩm điện thoại vào bill detail
+                    BillDetails billDetail = new BillDetails();
+                    billDetail.IdBill = idhd;
+                    billDetail.Id = Guid.NewGuid();
+                    billDetail.IdPhoneDetail = item.IdPhoneDetaild;
+                    billDetail.Price = _dbContext.PhoneDetailds.Find(item.IdPhoneDetaild).Price;
+                    billDetail.Number = 1;
+                    billDetail.Status = 0;
+                    billDetail.Imei = emeiCheck.NameImei; // Đúng tra là id của bảng emei. Nhưng name email cũng không thể trùng.
+                    Listbill.Add(billDetail);
+                }
             }
+            
             _dbContext.BillDetails.AddRange(Listbill);
             _dbContext.SaveChanges();
 
@@ -167,7 +135,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
                 string vnp_SecureHash = HttpContext.Request.Query["vnp_SecureHash"]; //hash của dữ liệu trả về
 
                 bool checkSignature = pay.ValidateSignature(vnp_SecureHash, hashSecret); //check chữ ký đúng hay không?
-                
+
                 if (checkSignature)
                 {
                     if (vnp_ResponseCode == "00")
@@ -177,7 +145,6 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
 
                         /// Xử lý update lại trang thái đơn hàng đã thanh toán thành công.. theo Mã bill
                         //var orderIdString = orderId.ToString();
-                        /// Thêm db ok thì mở cái này. để change status
                         var bill = _dbContext.Bill.FirstOrDefault(x => x.BillCode == orderId);
                         if (bill != null)
                         {
@@ -186,11 +153,85 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
                             bill.PaymentDate = DateTime.Now;
                             _dbContext.SaveChanges();
                         }
+
+                        var userId = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
+                        var product = _dbContext.CartDetails.Where(a => a.IdAccount == Guid.Parse(userId)).ToList();
+
+                        // Lưu thông tin để hiển thị 
+                        ViewBag.name = bill.Name;
+                        ViewBag.code = bill.BillCode;
+                        ViewBag.address = bill.Address;
+                        ViewBag.phone = bill.Phone;
+                        ViewBag.deliverypaymethod = bill.deliveryPaymentMethod;
+                        ViewBag.paymentStatus = bill.StatusPayment;
+                        ViewBag.Totalmeny = bill.TotalMoney;
+                        decimal sum = 0;
+                        List<Payment> payments = new List<Payment>();
+                        foreach (var iten in product)
+                        {
+                            var idsp = _dbContext.PhoneDetailds.FirstOrDefault(p => p.Id == iten.IdPhoneDetaild).IdPhone;
+                            var gia = _dbContext.PhoneDetailds.FirstOrDefault(p => p.Id == iten.IdPhoneDetaild).Price;
+                            string anhsp = _dbContext.Phones.FirstOrDefault(p => p.Id == idsp).Image;
+                            var tensp = _dbContext.Phones.FirstOrDefault(p => p.Id == idsp).PhoneName;
+                            var idcolor = _dbContext.PhoneDetailds.FirstOrDefault(p => p.Id == iten.IdPhoneDetaild).IdColor;
+                            var idRam = _dbContext.PhoneDetailds.FirstOrDefault(p => p.Id == iten.IdPhoneDetaild).IdRam;
+                            var color = _dbContext.Colors.FirstOrDefault(p => p.Id == idcolor).Name;
+                            var Ram = _dbContext.Ram.FirstOrDefault(p => p.Id == idRam).Name;
+                            sum += gia;
+                            Payment list = new Payment();
+                            list.name = tensp;
+                            list.price = gia;
+                            list.img = anhsp;
+                            list.color = color;
+                            list.ram = Ram;
+                            list.quantity = 1;
+                            payments.Add(list);
+
+                        }
+                        decimal ships = (bill.TotalMoney - sum).Value;
+                        ViewBag.ships = ships;
+                        ViewBag.sum = sum;
+                        ViewBag.cart = payments;
+
+
+                        foreach (var item in product)
+                        {
+                            var cart = _dbContext.CartDetails.Find(item.Id);
+                            _dbContext.CartDetails.Remove(cart);
+
+                        }
+                        _dbContext.SaveChanges();
                     }
                     else
                     {
                         //Thanh toán không thành công. Mã lỗi: vnp_ResponseCode
+
+                        var billToDelete = _dbContext.Bill.FirstOrDefault(x => x.BillCode == orderId);
+                        if (billToDelete != null)
+                        {
+                            var billDetailsToDelete = _dbContext.BillDetails.Where(x => x.IdBill == billToDelete.Id).ToList();
+
+                            // Rollback the status of associated Imei records to 1 (Status: Chưa bán)
+                            foreach (var billDetail in billDetailsToDelete)
+                            {
+                                var imeiToUpdate = _dbContext.Imei.FirstOrDefault(a => a.NameImei == billDetail.Imei);
+                                if (imeiToUpdate != null)
+                                {
+                                    imeiToUpdate.Status = 1;
+                                }
+                            }
+
+                            // Remove Bill and associated BillDetails
+                            _dbContext.BillDetails.RemoveRange(billDetailsToDelete);
+                            _dbContext.Bill.Remove(billToDelete);
+                            _dbContext.SaveChanges();
+                        }
+
+
                         ViewBag.Message = "Có lỗi xảy ra trong quá trình xử lý hóa đơn " + orderId + " | Mã giao dịch: " + vnpayTranId + " | Mã lỗi: " + vnp_ResponseCode;
+
+                        
+
                     }
                 }
                 else

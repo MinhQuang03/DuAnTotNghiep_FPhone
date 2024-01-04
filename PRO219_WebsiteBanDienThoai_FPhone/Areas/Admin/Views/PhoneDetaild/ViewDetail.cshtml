@@ -1,0 +1,90 @@
+﻿@using System.Globalization
+@model AppData.ViewModels.Phones.VW_PhoneDetail
+
+@{
+    ViewData["Title"] = "Quản lý sản phẩm";
+}
+<div class="container-fluid" style="margin-top:-35px">
+    <div class="row">
+        <h1 class="col">Chi tiết sản phẩm</h1>
+        <a asp-area="Admin" asp-controller="ListImage" asp-action="InsertImageForPhoneDetail" asp-route-id="@Model.IdPhoneDetail" class="nav-link col text-right">Thêm ảnh</a>
+    </div>
+   
+  
+    <div>
+        <input readonly="readonly" value="@Model.PhoneName - @Model.ColorName" class="form-control font-size-20 text-center"/>
+        <hr/>
+        <div class="form-group row">
+            <div class="col-md-5">
+                <img width="100%" src="@(Model.FirstImage ?? "")"/>
+            </div>
+            <div class="form-group col-4">
+                <div class="row">
+                    <label class="label-control col-4">Tên sản phẩm:</label>
+                    <p class="text-black col-8">@Model.PhoneName</p>
+                </div>
+                <div class="row">
+                    <label class="label-control col-4">Giá:</label>
+                    <p class="text-black col-8">@Model.Price</p>
+                </div>
+                <div class="row">
+                    <label class="label-control col-4">Chất liệu:</label>
+                    <p class="text-black col-8">@Model.MaterialName</p>
+                </div>
+                <div class="row">
+                    <label class="label-control col-4">Dung lượng RAM:</label>
+                    <p class="text-black col-8">@Model.RamName</p>
+                </div>
+                <div class="row">
+                    <label class="label-control col-4">Bộ nhớ trong:</label>
+                    <p class="text-black col-8">@Model.RomName</p>
+                </div>
+                <div class="row">
+                    <label class="label-control col-4">Camera:</label>
+                    <p class="text-black col-8">@Model.FrontCamera</p>
+                </div>
+                <div class="row">
+                    <label class="label-control col-4">Độ phân giải:</label>
+                    <p class="text-black col-8">@Model.Resolution</p>
+                </div>
+                <div class="row">
+                    <label class="label-control col-4">Pin:</label>
+                    <p class="text-black col-8">@Model.BatteryName</p>
+                </div>
+                <div class="row">
+                    <label class="label-control col-4">Trọng lượng:</label>
+                    <p class="text-black col-8">@Model.Weight</p>
+                </div>
+                <div class="row">
+                    <label class="label-control col-4">Thẻ sim:</label>
+                    <p class="text-black col-8">@Model.SimName</p>
+                </div>
+                <div class="row">
+                    <label class="label-control col-4">Hệ điều hành:</label>
+                    <p class="text-black col-8">@Model.OperatingSystemName</p>
+                </div>
+                <div class="row">
+                    <label class="label-control col-4">Nhà sản xuất:</label>
+                    <p class="text-black col-8">@Model.ProductionCompanyName</p>
+                </div>
+                <div class="row">
+                    <label class="label-control col-4">Chip xử lý:</label>
+                    <p class="text-black col-8">@Model.ChipCPUName</p>
+                </div>
+                <div class="row">
+                    <label class="label-control col-4">Chip đồ hoạ:</label>
+                    <p class="text-black col-8">@Model.ChipGPUName</p>
+                </div>
+                <div class="row">
+                    <label class="label-control col-4">Cổng sạc:</label>
+                    <p class="text-black col-8">@Model.ChargingportTypeName</p>
+                </div>
+            </div>
+
+        </div>
+
+        <a class="text-white btn btn-primary" style="margin-top:-40px" asp-route-id="@Model.IdPhone" asp-action="ListPhoneDetail" asp-controller="Phone" asp-area="Admin">Trở lại</a>
+
+    </div>
+
+</div>

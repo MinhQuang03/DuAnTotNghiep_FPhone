@@ -1,0 +1,80 @@
+﻿@model IEnumerable<AppData.Models.Bill>
+
+@{
+    ViewData["Title"] = "Dahuys";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Đã Hủy</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Tên Khách Hàng
+            </th>
+            <th>Mã Hóa Đơn</th>
+            <th>
+                Ngày Tạo
+            </th>
+            <th>
+                Tình Trạng
+            </th>
+            <th>Chi tiết</th>
+            <th>
+                Trạng Thái Thanh Toán
+            </th>
+
+            <th>Hành Động  </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if(Model == null ) {
+            <h2  style="text-align:center"> Hiện đang Không có hóa đơn  </h2>
+        }else
+        {
+        @foreach (var item in Model)
+        {
+         
+            String dh5 = "Đã hủy";
+          
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BillCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedTime)
+                </td>
+                <td>
+                   
+                    @if (item.Status == 5)
+                    {
+                       <p class="text-danger"> @dh5</p>
+                    }
+                  
+                </td>
+                <td>
+                    <a href="@Url.Action("Detail", "Bill", new { id = item.Id })">Xem Chi tiết</a>
+                </td>
+                <td>
+                    @item.deliveryPaymentMethod  @if (item.StatusPayment == 1)
+                    {
+                        <span class="text-success">Đã thanh toán </span>
+                    }
+                    else
+                    {
+                        <span class="text-danger">Chưa thanh toán </span>
+                    }
+                </td>
+
+                <td>
+                    <a class="btn btn-sm btn-light text-danger border" href="@Url.Action("delete", "Bill", new { id = item.Id })"> <i class="fas fa-trash-alt"></i></a>
+                </td>
+            </tr>
+        }
+        }
+    </tbody>
+</table>

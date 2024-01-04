@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Filters;
 using System.Text;
+using AppData.IServices;
+using AppData.ViewModels;
+using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
 {
@@ -12,9 +15,14 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
     public class PhoneDetaildController : Controller
     {
         public readonly HttpClient _httpClient;
-        public PhoneDetaildController(HttpClient httpClient)
+        private IVwPhoneDetailService _service;
+        private IListImageService _imageService;
+       
+        public PhoneDetaildController(HttpClient httpClient,IVwPhoneDetailService service, IListImageService imageService)
         {
             _httpClient = httpClient;
+            _service = service;
+            _imageService = imageService;
         }
         public async Task<IActionResult> Index()
         {
@@ -138,8 +146,14 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             return View(obj);
         }
 
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create(string idphone) 
         {
+            AdPhoneDetailViewModel model = new AdPhoneDetailViewModel();
+            var phonedetail = await _httpClient.GetStringAsync($"api/Phone/getById/{idphone}");
+            if (phonedetail != null)
+            {
+                model.PhoneDetail = JsonConvert.DeserializeObject<Phone>(phonedetail);
+            }
             var phoneNameData = await _httpClient.GetStringAsync("api/Phone/get");
             List<Phone> phone = JsonConvert.DeserializeObject<List<Phone>>(phoneNameData);
             ViewBag.IdPhone = new SelectList(phone, "Id", "PhoneName");
@@ -184,19 +198,25 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             List<ChargingportType> chargingport = JsonConvert.DeserializeObject<List<ChargingportType>>(chargingportName);
             ViewBag.IdChargingportType = new SelectList(chargingport, "Id", "Name");
 
-            return View();
+            return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(PhoneDetaild obj)
+        public async Task<IActionResult> Create(AdPhoneDetailViewModel obj)
         {
+            DataError er = new DataError() { Success = true };
+            PhoneDetaild model = new PhoneDetaild();
+            model = obj.DetailOfPhoneDetaild;
+            model.IdPhone = obj.PhoneDetail.Id;
+            model.Id = Guid.NewGuid();
             try
             {
-                var response = await _httpClient.PostAsJsonAsync("api/PhoneDetaild/add", obj);
-                if (response.IsSuccessStatusCode)
+              var result = await _service.Add(model);
+                
+                if (result!=null)
                 {
-                    TempData["successMessage"] = "Them thanh cong";
-                    return RedirectToAction("Index");
+                    er.Msg = "Thêm thành công";
+                    return RedirectToAction("ListPhoneDetail", "Phone",$"{result.IdPhone}");
                 }
             }
             catch (Exception ex)
@@ -270,6 +290,14 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
 
             var response = await _httpClient.PutAsync("api/PhoneDetaild/update", content);
             return RedirectToAction("Index");
+        }
+
+        public IActionResult ViewDetail(Guid id)    
+        {
+            AdPhoneDetailViewModel model = new AdPhoneDetailViewModel(); 
+            model.VwPhoneDetail =  _service.getPhoneDetailByIdPhoneDetail(id);
+            model.VwPhoneDetail.FirstImage = _imageService.GetFirstImageByIdPhondDetail(id);
+            return View(model.VwPhoneDetail);
         }
 
     }

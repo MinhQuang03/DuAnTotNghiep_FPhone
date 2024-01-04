@@ -6,6 +6,8 @@
 
         public Guid IdPhone { get; set; }
 
+        public string? Code { get; set; }
+
         public Guid? IdDiscount { get; set; }
 
         public Guid IdMaterial { get; set; }
@@ -43,9 +45,9 @@
         
         public decimal? Sale { get; set; }
 
-
+        public int? Solid { get; set; }
         public int Status { get; set; }
-        //public virtual List<ListImage>? Images { get; set; }
+       
 
         public virtual Ram? Rams { get; set; }
 
@@ -70,7 +72,7 @@
         public virtual Color? Colors { get; set; }
 
         public virtual Discount? Discounts { get; set; }
-      
+
 
     }
 }

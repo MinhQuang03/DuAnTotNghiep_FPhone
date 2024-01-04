@@ -10,6 +10,7 @@ namespace AppData.Configuration
             builder.HasKey(p => p.Id);
 
             builder.HasOne(p => p.ProductionCompanies).WithMany().HasForeignKey(p => p.IdProductionCompany);
+            builder.HasOne(p => p.Warranty).WithMany().HasForeignKey(p => p.IdWarranty);
         }
     }
 }

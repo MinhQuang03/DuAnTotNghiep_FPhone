@@ -20,6 +20,7 @@
         public string? deliveryPaymentMethod { get; set; }
         public decimal? TotalMoney { get; set; }
 
+        public DateTime? Update_at { get; set; }
         public int StatusPayment { get; set; }
 
         public Guid? IdAccount { get; set; }

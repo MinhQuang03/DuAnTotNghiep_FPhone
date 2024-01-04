@@ -1,4 +1,5 @@
-﻿using AppData.IServices;
+﻿using AppData.FPhoneDbContexts;
+using AppData.IServices;
 using AppData.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -7,7 +8,7 @@ using PRO219_WebsiteBanDienThoai_FPhone.Services;
 using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
 using PRO219_WebsiteBanDienThoai_FPhone.ViewModel.NewFolder;
 using PRO219_WebsiteBanDienThoai_FPhone.ViewModel.Provinces;
-
+ 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
 {
     public class CheckoutController : Controller
@@ -15,13 +16,14 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
 	    private HttpClient _client;
         private IVwPhoneDetailService _service;
         private ICartDetailService _cartDetailService;
-     
-	    public CheckoutController(HttpClient client,IVwPhoneDetailService service,ICartDetailService cartDetailService)
+        private FPhoneDbContext _context;
+        public CheckoutController(HttpClient client,IVwPhoneDetailService service,ICartDetailService cartDetailService)
 	    {
 		    _client = client;
             _client.DefaultRequestHeaders.Add("token", "a799ced2-febc-11ed-a967-deea53ba3605");
             _service = service;
             _cartDetailService = cartDetailService;
+            _context = new FPhoneDbContext();
         }
 	    public async Task<IActionResult> Index()
         {
@@ -31,10 +33,16 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
             //lấy dữ liệu tỉnh thành phố
             var data = await (await _client.GetAsync("https://online-gateway.ghn.vn/shiip/public-api/master-data/province")).Content.ReadAsStringAsync();
              var Province = JsonConvert.DeserializeObject<ApiResponse<Province>>(data);
-                model.Provinces = Province.Data;
+            model.Provinces = Province.Data;
+            var car = _context.CartDetails.Where(a => a.IdAccount == (Guid.Parse(userId))).Count();
+            if (car > 5)
+            {
+                TempData["SuccessMessage"] = "Bạn chỉ được mua tối đa 5 sản phẩm !";
+                return RedirectToAction("ShowCart","Accounts");
+            }
 
-                //kiểm tra đăng nhập
-                if (userId == null) //Chưa đăng nhập
+            //kiểm tra đăng nhập
+            if (userId == null) //Chưa đăng nhập
                 {
                     //lấy thông tin giỏ hàng từ session ( chưa đăng nhập )
                     var datas = SessionService<CartDetailModel>.GetObjFromSession(HttpContext.Session, "Cart");

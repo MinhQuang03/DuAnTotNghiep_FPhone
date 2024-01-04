@@ -30,7 +30,6 @@ public class SignUpController : Controller
     [HttpPost]
     public async Task<IActionResult> SignUp(AdSignUpViewModel model)    
     {
-       
         model.Status = 0;
         model.ImageUrl = string.Empty;
         var result = await _client.PostAsJsonAsync("/api/Accounts/SignUp/Admin", model);

@@ -6,11 +6,17 @@
 @functions {
 
     public LoginModel? LoginModel { get; set; }
+   
 }
 
 @{
     ViewData["Title"] = "_SideNavPartialView";
 }
+<style>
+   /*  .btn{
+        --bs-btn-font-size: 1.5rem;
+    } */
+</style>
 <header id="header" class="header">
     <div class="navigation">
         <div class="container">
@@ -36,20 +42,24 @@
                             </svg>
                         </a>
                     </div>
-                    <ul class="nav__list">
-                        <li class="nav__item">
-                            <a asp-action="Index" asp-controller="Home" class="nav__link ">Home</a>
-                        </li>
-                        <li class="nav__item">
-                            <a asp-action="Index" class="nav__link" asp-controller="ListPhone">Category</a>
-                        </li>
-                        <li class="nav__item">
-                            <a asp-action="Index" asp-controller="Blogs" class="nav__link ">Blog</a>
-                        </li>
-                        <li class="nav__item">
-                            <a href="#contact" class="nav__link scroll-link">Contact</a>
-                        </li>
-                    </ul>
+                    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="navbar-nav">
+                                <li class="nav-item mx-4 ">
+                                    <a class="nav-link text-black" asp-action="Index" asp-controller="Home">Trang chủ</a>
+                                </li>
+                                <li class="nav-item mx-4">
+                                    <a class="nav-link text-black" asp-action="Index" asp-controller="ListPhone">Sản phẩm</a>
+                                </li>
+                                <li class="nav-item mx-4">
+                                    <a class="nav-link text-black" asp-action="Index" asp-controller="Blogs">Blog</a>
+                                </li>
+                                <li class="nav-item mx-4 ">
+                                    <a class="nav-link text-black" asp-action="Index" asp-controller="Contact">Liên hệ</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
                 </div>
 
                 <div class="nav__icons">
@@ -79,13 +89,14 @@
                         <svg class="icon__cart">
                             <use xlink:href="/images/sprite.svg#icon-shopping-basket"></use>
                         </svg>
-                        <span style="background-color: chocolate; " id="cart__total">3</span>
+
+                        <span style="background-color: chocolate; " id="cart__total">@ViewBag.a</span>
                     </a>
                 </div>
             </nav>
         </div>
     </div>
-
+    
 
     <div class="auth">
         <form asp-action="Login" asp-controller="Accounts" class="login-form">
@@ -95,7 +106,7 @@
             <input required type="password" asp-for="@LoginModel.Password" name="Password" placeholder="Mật khẩu" class="box">
             <p>Quên mật khẩu <a href="#">Click Here</a></p>
             <p>Không có tài khoản ? <a asp-controller="Accounts" asp-action="CreateAccount">Tạo mới</a></p>
-            <input type="submit" value="Đăng nhập" class="btn">
+            <input type="submit" value="Đăng nhập" class="btn border" >
         </form>
     </div>
     <div class="searchF">

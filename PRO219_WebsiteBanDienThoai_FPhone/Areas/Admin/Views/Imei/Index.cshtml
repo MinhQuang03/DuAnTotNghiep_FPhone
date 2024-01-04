@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    int stt = 0;
 }
 
 <h1>Index</h1>
@@ -14,37 +15,45 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
+                STT
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NameImei)
+                Tên sản phẩm
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Status)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IdPhoneDetaild)
+                Imei
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+            stt = stt + 1;
+            <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Id)
+                @stt
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.NameImei)
+                  @ViewBag.InformationPhone
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Status)
+                    @if(item.Status == 1)
+                    {
+                        <p>Còn hàng</p>
+                    }
+                    else
+                    {
+                        <p>Đã bán</p>
+                    }
+                </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.NameImei)
             </td>
             <td>
-                @ViewBag.InformationPhone
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
                 @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
                 @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
             </td>

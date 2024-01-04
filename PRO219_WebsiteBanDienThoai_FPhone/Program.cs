@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<IVwPhoneService, VwPhoneService>();
-builder.Services.AddTransient<FPhoneDbContext>();
+builder.Services.AddSingleton<FPhoneDbContext>();
 builder.Services.AddTransient<IVwPhoneDetailService,VwPhoneDetailService>();
 builder.Services.AddTransient<IListImageService,ListImageService>();
 builder.Services.AddTransient<IBlogRepository,BlogRepository>();
@@ -23,12 +23,15 @@ builder.Services.AddTransient<IRanksRepositories, RankRepositories>();
 builder.Services.AddTransient<IChipCPURepository, ChipCPURepository>();
 builder.Services.AddTransient<IMaterialRepository, MaterialRepository>();
 builder.Services.AddTransient<IAccountService, AccountService>();
-
-
+builder.Services.AddTransient<IEmailService, EmailService>();
+builder.Services.AddTransient<IContactService, ContactService>();
+builder.Services.AddTransient<IBlogService, BlogService>();
 
 builder.Services.AddScoped(sp => new HttpClient()
 {
-    BaseAddress = new Uri("https://localhost:7129/")
+    //Uri chạy iis
+    BaseAddress = new Uri("https://localhost:44373/")
+
 });
 builder.Services.AddSession(option =>
 {
@@ -48,6 +51,7 @@ builder.Services.AddAuthentication(options =>
         options.LoginPath = "/Admin/Login";
         options.LogoutPath = new PathString("/home");
     });
+builder.Services.AddApplicationInsightsTelemetry();
 
 
 var app = builder.Build();

@@ -14,6 +14,16 @@ namespace AppData.Repositories
         }
         public async Task<Imei> Add(Imei obj)
         {
+            // Kiểm tra xem có Imei nào có cùng NameImei chưa
+            var existingImei = await _dbContext.Imei.FirstOrDefaultAsync(i => i.NameImei == obj.NameImei);
+
+            if (existingImei != null)
+            {
+                // Nếu đã tồn tại Imei với cùng NameImei, bạn có thể xử lý tùy thuộc vào yêu cầu của bạn,
+                // ví dụ: throw exception, trả về null, hoặc thực hiện các bước khác.
+                throw new Exception("Imei with the same NameImei already exists");
+            }
+
             await _dbContext.Imei.AddAsync(obj);
             await _dbContext.SaveChangesAsync();
             return obj;

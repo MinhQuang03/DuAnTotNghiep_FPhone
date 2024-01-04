@@ -84,14 +84,14 @@ namespace AppData.Repositories
                         await _dbContext.Accounts.AddAsync(ac);
                         await _dbContext.SaveChangesAsync();
                    
-                    ObjectEmailInput email = new ObjectEmailInput();
-                    //Gửi email
-                    email.UserName = model.Username;
-                    email.FullName = model.Name;
-                    email.Subject = "Thông báo tạo tài khoản thành công";
-                    email.Message = Utility.EmailCreateAccountTemplate;
-                    email.SendTo = model.Email;
-                    await Utility.SendEmail(email);
+                    //ObjectEmailInput email = new ObjectEmailInput();
+                    ////Gửi email
+                    //email.UserName = model.Username;
+                    //email.FullName = model.Name;
+                    //email.Subject = "Thông báo tạo tài khoản thành công";
+                    //email.Message = Utility.EmailCreateAccountTemplate;
+                    //email.SendTo = model.Email;
+                    //await Utility.SendEmail(email);
                     return true;
                 }
                 return false;
@@ -111,7 +111,7 @@ namespace AppData.Repositories
             if (adminResult.Succeeded)
             {
                 var staff = _dbContext.AspNetUsers.FirstOrDefault(c => c.UserName == model.UserName);
-                if (staff.Status ==1)
+                if (staff.Status ==0)
                 {
                     x.ApplicationUser = staff;
                     return await GenerateToken(x);
@@ -125,7 +125,7 @@ namespace AppData.Repositories
             LoginInputVM x = new LoginInputVM();
             Security security = new Security();
             var userResult = _dbContext.Accounts.AsNoTracking().FirstOrDefault(c => c.Username == model.UserName && c.Password == security.Encrypt("B3C1035D5744220E", model.Password));
-            if (userResult != null && userResult.Status == 1)
+            if (userResult != null && userResult.Status == 0)
             {
                 x.Account = userResult;
                 return await GenerateToken(x);

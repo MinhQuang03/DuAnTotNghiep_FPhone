@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity.Infrastructure;
+using AppData.FPhoneDbContexts;
 using AppData.IRepositories;
 using AppData.IServices;
 using AppData.Models;
@@ -20,14 +21,20 @@ public class AccountsController : Controller
 {
     private readonly HttpClient _client;
     private IAccountService _accountsService;
+    private FPhoneDbContext _context;
 
     public AccountsController(HttpClient client, IAccountService accountsService)
     {
+        _context = new FPhoneDbContext();
         _client = client;
         _accountsService = accountsService;
     }
     public IActionResult Index()
     {
+        ViewBag.product = _context.PhoneDetailds.Count();
+        ViewBag.Neworder = _context.Bill.Where(a => a.Status == 2).Count();
+        ViewBag.contact = _context.Bill.Where(a => a.Status == 3).Count();
+        ViewBag.user = _context.Accounts.Count();
         return View();
     }
 
@@ -97,12 +104,13 @@ public class AccountsController : Controller
     [HttpGet]
     public IActionResult DetailAccount(string id)
     {
+        ApplicationUser user = new ApplicationUser();
         if (id == null)
         {
             return RedirectToAction("Account");
         }
-        var model = _accountsService.GetById(id);
-        return View(model);
+        user = _accountsService.GetById(id);
+        return View(user);
     }
 
     public async Task<RedirectResult> LogOut()
