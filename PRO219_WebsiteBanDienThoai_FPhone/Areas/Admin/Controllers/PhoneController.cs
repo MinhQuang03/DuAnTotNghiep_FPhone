@@ -9,6 +9,8 @@ using AppData.IServices;
 using AppData.Services;
 using Microsoft.EntityFrameworkCore;
 using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
+using System.Data.Entity;
+using AppData.FPhoneDbContexts;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
 {
@@ -21,6 +23,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         private IVwPhoneDetailService _detailService;
         private IListImageService _imageService;
         private IPhoneRepository _phoneRepository;
+        public FPhoneDbContext _dbContext;
 
         public PhoneController(HttpClient httpClient, IVwPhoneService service, IVwPhoneDetailService detailService, IListImageService imageService, IPhoneRepository phoneRepository)
         {
@@ -29,6 +32,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             _detailService = detailService;
             _imageService = imageService;
             _phoneRepository = phoneRepository;
+            _dbContext = new FPhoneDbContext();
         }
         public async Task<IActionResult> Index()
         {
@@ -105,6 +109,62 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             }
             return View(jsonData);
         }
+
+
+
+        public IActionResult ListImeiPhoneDetail(Guid IdPhoneDetail)
+        {
+            var imei = _dbContext.Imei.Where(p => p.IdPhoneDetaild == IdPhoneDetail).ToList();
+
+            var phoneDetail = _dbContext.PhoneDetailds.FirstOrDefault(p => p.Id == IdPhoneDetail);
+            var ram = _dbContext.Ram.FirstOrDefault(p => p.Id == phoneDetail.IdRam);
+            var color = _dbContext.Colors.FirstOrDefault(p => p.Id == phoneDetail.IdColor);
+            var phoneName = _dbContext.Phones.FirstOrDefault(p => p.Id == phoneDetail.IdPhone);
+
+            ImeiPhoneViewModel model = new ImeiPhoneViewModel();
+            model.IdPhoneDetail = IdPhoneDetail;
+            model.imeis = imei;
+            model.PhoneDetailName = phoneName.PhoneName + " " + ram.Name + " " + color.Name;
+
+            return View(model);
+        }
+
+
+        public async Task<IActionResult> CreateImei(Guid IdPhoneDetail)
+        {
+            var phoneDetail = _dbContext.PhoneDetailds.FirstOrDefault(p => p.Id == IdPhoneDetail);
+            var ram = _dbContext.Ram.FirstOrDefault(p => p.Id == phoneDetail.IdRam);
+            var color = _dbContext.Colors.FirstOrDefault(p => p.Id == phoneDetail.IdColor);
+            var phoneName = _dbContext.Phones.FirstOrDefault(p => p.Id == phoneDetail.IdPhone);
+
+            ImeiPhoneViewModel model = new ImeiPhoneViewModel();
+            model.IdPhoneDetail = IdPhoneDetail;
+            model.PhoneDetailName = phoneName.PhoneName + " " + ram.Name + " " + color.Name;
+            model.PhoneDetaild = phoneDetail;
+           
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateImei(ImeiPhoneViewModel obj)
+        {
+            
+            Imei newImei = new Imei
+            {
+                Id = Guid.NewGuid(),
+                NameImei = obj.AddImeiOfPhone.NameImei,
+                IdPhoneDetaild = obj.PhoneDetaild.Id,
+                Status = 1
+            };
+
+            
+            _dbContext.Imei.Add(newImei);
+            await _dbContext.SaveChangesAsync();
+
+            
+            return RedirectToAction("ListImeiPhoneDetail", new { IdPhoneDetail = newImei.IdPhoneDetaild });
+        }
+
 
 
         [HttpGet]

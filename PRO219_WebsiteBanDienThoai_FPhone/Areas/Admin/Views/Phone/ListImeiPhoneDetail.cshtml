@@ -1,0 +1,71 @@
+﻿@model PRO219_WebsiteBanDienThoai_FPhone.ViewModel.ImeiPhoneViewModel
+
+@{
+    ViewData["Title"] = "Danh sách imei";
+
+    int stt = 0;
+}
+
+<h1>Index</h1>
+
+<div>
+    <a asp-area="Admin" asp-action="CreateImei" asp-controller="Phone" asp-route-IdPhoneDetail="@Model.IdPhoneDetail" class="nav-link">
+        <span class="title">Thêm mới imei</span>
+        <span class="icon-holder">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+            </svg>
+        </span>
+    </a>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                STT
+            </th>
+            <th>
+                Tên sản phẩm
+            </th>
+            <th>
+                Trạng thái
+            </th>
+            <th>
+                Imei
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.imeis)
+        {
+            stt = stt + 1;
+            <tr>
+                <td>
+                    @stt
+                </td>
+                <td>
+                   @Model.PhoneDetailName
+                </td>
+                <td>
+                    @if (item.Status == 1)
+                    {
+                        <p>Còn hàng</p>
+                    }
+                    else
+                    {
+                        <p>Đã bán</p>
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NameImei)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
