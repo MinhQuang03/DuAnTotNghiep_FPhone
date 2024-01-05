@@ -7,10 +7,8 @@ using AppData.Models;
 using AppData.Utilities;
 using AppData.ViewModels.Accounts;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using Utility = AppData.Utilities.Utility;
 
 namespace AppData.Repositories
 {
@@ -122,11 +120,16 @@ namespace AppData.Repositories
         {
             LoginInputVM x = new LoginInputVM();
             Security security = new Security();
-            var userResult = _dbContext.Accounts.AsNoTracking().FirstOrDefault(c => c.Username == model.UserName && c.Password == security.Encrypt("B3C1035D5744220E", model.Password));
+            var userResult = _dbContext.Accounts.FirstOrDefault(c => c.Username == model.UserName);
             if (userResult != null && userResult.Status == 0)
             {
-                x.Account = userResult;
-                return await GenerateToken(x);
+                string giaima = security.Encrypt("B3C1035D5744220E", model.Password);
+                if (userResult.Password == giaima)
+                {
+                    x.Account = userResult;
+                    return await GenerateToken(x);
+                }
+                
             }
             return await GenerateToken(x);
         }

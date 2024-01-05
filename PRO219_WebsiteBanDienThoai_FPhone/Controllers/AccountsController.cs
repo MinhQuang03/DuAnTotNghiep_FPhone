@@ -8,8 +8,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using PRO219_WebsiteBanDienThoai_FPhone.Services;
 using PRO219_WebsiteBanDienThoai_FPhone.Models;
-using System.Text;
-using System.Net.Http;
 using AppData.FPhoneDbContexts;
 using AppData.Repositories;
 using AppData.IRepositories;
@@ -21,6 +19,7 @@ using Serilog;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
+using NuGet.Protocol.Plugins;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers;
 
@@ -31,13 +30,15 @@ public class AccountsController : Controller
     private FPhoneDbContext _context;
     private readonly HttpClient _client;
     private IEmailService _emailService;
-    public AccountsController(HttpClient client, IEmailService emailService)
+    private IAccountService _service;
+    public AccountsController(HttpClient client, IEmailService emailService, IAccountService service)
     {
         _cartDetailepository = new CartDetailepository();
         _cartRepository = new CartRepository();
         _context = new FPhoneDbContext();
         _client = client;
         _emailService = emailService;
+        _service = service;
     }
     //Khi đã đăng nhập ấn nút có biểu tượng user sẽ hiện ra profile của người dùng
     public async Task<IActionResult> Profile()
@@ -99,7 +100,8 @@ public class AccountsController : Controller
                     SendTo = model.Email,
                     Subject = "Thông báo tạo tài khoản",
                     UserName = model.Username,
-                };
+                    Message = Utility.EmailCreateAccountTemplate(model.Name, model.Username)
+            };
                 await _emailService.SendEmail(emailInput); // gửi email
                 return await Login(login);
             }
@@ -174,6 +176,64 @@ public class AccountsController : Controller
         }
        
         return RedirectToAction("Cart");
+    }
+
+    public IActionResult ResetPassword()
+    {
+        return View();
+    }
+    [HttpPost]
+    public IActionResult ResetPassword(ResetPasswordViewModel model)
+    {
+       model.Data = _service.GetUserByEmail(model.Email);
+        if (model.Data == null)
+        {
+            ModelState.AddModelError("Email", "Không có tài khoản nào được đăng ký với địa chỉ email này");
+            return View(model);
+        }
+        else
+        {
+            return RedirectToAction("CheckUser", new { model.Email });
+        }
+
+    }
+
+    public IActionResult CheckUser(string email)
+    {
+        ResetPasswordViewModel model = new ResetPasswordViewModel();
+        model.Email = email;
+        model.Data = _service.GetUserByEmail(email);
+        return View(model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CheckUser(ResetPasswordViewModel model)
+    {
+        Security security = new Security();
+        model.Data = _service.GetUserById(model.Data.Id);
+        string randomPass = Utility.RandomString(8);
+        string passwordHash = security.Encrypt("B3C1035D5744220E", randomPass);
+        model.Data.Password = passwordHash;
+        _service.UpdateUser(model.Data.Id, model.Data, out DataError error);
+        if (error.Success)
+        {
+            ObjectEmailInput emailInput = new ObjectEmailInput()
+            {
+                FullName = model.Data.Name,
+                SendTo = model.Data.Email,
+                Subject = "Thông báo đổi mật khẩu",
+                Message = Utility.EmailResetPasswordTemplate(model.Data.Name,randomPass)
+            };
+            await _emailService.SendEmail(emailInput); // gửi email
+            return RedirectToAction("EmailSuccess");
+        }
+
+        return View(model);
+    }
+
+    public IActionResult EmailSuccess()
+    {
+        return View();
     }
 
     public async Task<IActionResult> AddCart()

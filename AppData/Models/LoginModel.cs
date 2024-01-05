@@ -10,7 +10,6 @@ namespace AppData.Models
         [Required]
         public string UserName { get; set; } = null!;
         [PasswordPropertyText,Required]
-        [MinLength(8)]
         public string Password { get; set; } = null!;
 
     }
