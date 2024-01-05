@@ -12,13 +12,11 @@ namespace AppData.Services
 {
     public class EmailService :IEmailService
     {
-        public async Task<ObjectEmailOutput> SendEmail(ObjectEmailInput obj)
+        public async Task<ObjectEmailOutput> SendEmail(ObjectEmailInput obj) 
         {
             var output = new ObjectEmailOutput();
             string Address = "fphone.store.404@gmail.com"; // Your email address
             string Password = "bdrczcwdttczwbsv"; // App password
-
-            obj.Message = Utility.EmailCreateAccountTemplate(obj.FullName, obj.UserName);
 
             using (var smtp = new SmtpClient())
             {
@@ -26,8 +24,6 @@ namespace AppData.Services
                 smtp.Port = 587;
                 smtp.EnableSsl = true;
                 smtp.Credentials = new NetworkCredential(Address, Password);
-
-
 
                 var mailMessage = new MailMessage
                 {

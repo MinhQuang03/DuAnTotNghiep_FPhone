@@ -102,7 +102,7 @@
             <partial name="DataError"/>
             <input required type="text" asp-for="@LoginModel.UserName" name="UserName" placeholder="Tên đăng nhập" class="box">
             <input required type="password" asp-for="@LoginModel.Password" name="Password" placeholder="Mật khẩu" class="box">
-            <p>Quên mật khẩu <a href="#">Click Here</a></p>
+            <p>Quên mật khẩu <a asp-action="ResetPassword" asp-controller="Accounts">Click Here</a></p>
             <p>Không có tài khoản ? <a asp-controller="Accounts" asp-action="CreateAccount">Tạo mới</a></p>
             <input type="submit" value="Đăng nhập" class="btn border" >
         </form>
