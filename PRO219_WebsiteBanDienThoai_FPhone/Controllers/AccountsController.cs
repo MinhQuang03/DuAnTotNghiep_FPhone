@@ -20,6 +20,7 @@ using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 using NuGet.Protocol.Plugins;
+using System.Text;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers;
 
@@ -31,7 +32,8 @@ public class AccountsController : Controller
     private readonly HttpClient _client;
     private IEmailService _emailService;
     private IAccountService _service;
-    public AccountsController(HttpClient client, IEmailService emailService, IAccountService service)
+    private IHttpContextAccessor _accessor;
+    public AccountsController(HttpClient client, IEmailService emailService, IAccountService service, IHttpContextAccessor accessor)
     {
         _cartDetailepository = new CartDetailepository();
         _cartRepository = new CartRepository();
@@ -39,12 +41,14 @@ public class AccountsController : Controller
         _client = client;
         _emailService = emailService;
         _service = service;
+        _accessor = accessor;
     }
     //Khi đã đăng nhập ấn nút có biểu tượng user sẽ hiện ra profile của người dùng
     public async Task<IActionResult> Profile()
     {
         // lấy ra id người dùng khi đã đăng nhập
         var id = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
+     
         ViewBag.idacount = id;
         // lấy ra thông tin người dùng thông qua id
         var datajson = await _client.GetStringAsync($"api/Accounts/get-user/{id}");
@@ -198,6 +202,85 @@ public class AccountsController : Controller
 
     }
 
+    public IActionResult ChangePassword()
+    {   
+        ChangePasswordViewmodel model = new ChangePasswordViewmodel();
+        var idUser = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
+       
+        if (idUser != null) model.Data = _service.GetUserById(Guid.Parse(idUser));
+        return View(model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ChangePassword(ChangePasswordViewmodel model)
+    {
+        Security security = new Security();
+        var captchaSS = GetSessionValue("_captcha_value"); //lấy captcha từ session
+        model.Data = _service.GetUserById(model.Data.Id);
+
+        //validate mật khẩu cũ
+        if (model.Data.Password != security.Encrypt("B3C1035D5744220E", model.OldPassword))
+        {
+            ModelState.AddModelError("OldPassword", "Mật khẩu không trùng khớp");
+            return View(model);
+        }
+        //validate xác nhận mật khẩu
+        if (model.CfPassword != model.NewPassword)
+        {
+            ModelState.AddModelError("CfPassword", "Mật khẩu không trùng khớp");
+            return View(model);
+        }
+
+        if (captchaSS != null && captchaSS == model.Captcha) 
+        {
+            model.Data.Password = security.Encrypt("B3C1035D5744220E", model.NewPassword); // mã hoá mật khẩu để lưu vào database
+            _service.UpdateUser(model.Data.Id, model.Data, out DataError error);
+            if (error.Success)
+            {
+                //đăng xuất khi đổi mật khẩu thành công
+                var authenticationProperties = new AuthenticationProperties
+                {
+                    ExpiresUtc = DateTimeOffset.UtcNow.AddSeconds(20) // Thiết lập thời gian hết hạn sau khi đăng xuất
+                };
+                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme, authenticationProperties);
+                _accessor.HttpContext.User = null; // xoá thông tin user
+                //Gửi email
+
+                ObjectEmailInput emailInput = new ObjectEmailInput()
+                {
+                    FullName = model.Data.Name,
+                    SendTo = model.Data.Email,
+                    Subject = "Thông báo đổi mật khẩu",
+                    Message = Utility.EmailChangePasswordTemplate(model.Data.Name)
+                };
+                await _emailService.SendEmail(emailInput); // gửi email
+                return View("~/Views/Accounts/Success.cshtml", "Đổi mật khẩu thành công. Vui lòng đăng nhập lại");
+            }
+            else
+            {
+                return View(model);
+            }
+        }
+        else
+        {
+            ModelState.AddModelError("Captcha", "Sai mã xác nhận");
+            return View(model);
+        }
+    }
+    public string GetSessionValue(string key)
+    {
+        if (_accessor != null && _accessor.HttpContext.Session != null)
+        {
+        
+            string content = string.Empty;
+            var bytes = default(byte[]);
+            _accessor.HttpContext.Session.TryGetValue(key, out bytes);
+            if (bytes != null && bytes.Count() > 0) content = Encoding.UTF8.GetString(bytes);
+            return content;
+        }
+        else return null;
+    }
+
     public IActionResult CheckUser(string email)
     {
         ResetPasswordViewModel model = new ResetPasswordViewModel();
@@ -221,7 +304,7 @@ public class AccountsController : Controller
             {
                 FullName = model.Data.Name,
                 SendTo = model.Data.Email,
-                Subject = "Thông báo đổi mật khẩu",
+                Subject = "Thông báo cấp lại mật khẩu",
                 Message = Utility.EmailResetPasswordTemplate(model.Data.Name,randomPass)
             };
             await _emailService.SendEmail(emailInput); // gửi email

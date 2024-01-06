@@ -78,7 +78,13 @@
                             </div>
                         </div>
                         <hr/>
-                        
+                        <div class="row text-right">
+                            <div class="col-9"></div>
+                            <div class="col text-center">
+                                <a asp-action="ChangePassword" class="">Đổi mật khẩu</a>
+                            </div>
+                                
+                        </div>
                     </div>
                 </div>
                 
@@ -89,6 +95,7 @@
                 <a class="btn btn-secondary fs-2" asp-action="Logout" asp-controller="Home">Đăng xuất</a>
 
                 <!-- Right button -->
+                
                 <a href="@Url.Action("PurchaseHistory", "Accounts", new { idAccount = Model.Id })" class="fs-2 ms-1">Lịch sử mua hàng</a>
             </div>
         </div>

@@ -3,7 +3,7 @@ using PRO219_WebsiteBanDienThoai_FPhone.Models;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Services
 {
-    public  class SessionService<T>
+    public class SessionService<T>
     {
         public static void SetobjTojson(ISession session, object value, string key)
         {
