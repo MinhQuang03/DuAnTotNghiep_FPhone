@@ -48,10 +48,7 @@ public class AccountsController : Controller
     {
         // lấy ra id người dùng khi đã đăng nhập
         var id = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
-        if (id==null)
-        {
-            return RedirectToAction("Login");
-        }
+      
         // lấy ra thông tin người dùng thông qua id
         var datajson = await _client.GetStringAsync($"api/Accounts/get-user/{id}");
         var user = JsonConvert.DeserializeObject<Account>(datajson);
