@@ -30,7 +30,7 @@ builder.Services.AddTransient<IBlogService, BlogService>();
 builder.Services.AddScoped(sp => new HttpClient()
 {
     //Uri chạy iis
-    BaseAddress = new Uri("https://localhost:44373/")
+    BaseAddress = new Uri("https://localhost:7129/")
 
 });
 builder.Services.AddSession(option =>
