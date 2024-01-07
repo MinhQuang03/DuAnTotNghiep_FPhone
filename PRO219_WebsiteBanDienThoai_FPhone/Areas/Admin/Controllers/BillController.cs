@@ -211,11 +211,9 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             else
             {
                 
-                
-                var imei = _context.Imei.FirstOrDefault(p => p.NameImei == name);
-                imei.Status = 2; // da ban
+                a.Status = 2; // da ban
 
-                var billdetaild = _context.BillDetails.FirstOrDefault(p => p.IdBill == id);
+                var billdetaild = _context.BillDetails.FirstOrDefault(p => p.IdBill == id && p.Status == 0);
                 billdetaild.Imei = name;
 
                 billdetaild.Status = 1; // đã được nhân viên xác nhận bán, 0 là hủy hoặc chưa được xác nhận 
