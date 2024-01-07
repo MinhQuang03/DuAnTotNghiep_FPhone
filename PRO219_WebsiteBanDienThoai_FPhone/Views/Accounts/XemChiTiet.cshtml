@@ -67,10 +67,10 @@
                 </td>
                 @* trường hợp đơn hàng giao thành công mới hiển thị Hoàn trả/Bảo hành*@
 
-                @if(ViewBag.BillStatus == 4)
+                @if(ViewBag.BillStatus == 3)
                     {
                         <td>
-                            @Html.ActionLink("Bảo hành", "ThongTinBaoHanh", new {  idBill =item.IdBill })
+                            @Html.ActionLink("Bảo hành", "ThongTinBaoHanh", new {  idBillDetail =item.Id })
                         </td>
                     }
                 

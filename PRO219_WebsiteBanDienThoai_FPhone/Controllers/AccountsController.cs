@@ -581,7 +581,7 @@ public class AccountsController : Controller
         return View(billDetail);
     }
 
-    public ActionResult ThongTinBaoHanh(Guid idBill)
+    public ActionResult ThongTinBaoHanh(Guid idBillDetail)
     {
         var phone = _context.BillDetails
                         .Include(p => p.PhoneDetaild)
@@ -594,7 +594,7 @@ public class AccountsController : Controller
                             .ThenInclude(p => p.Roms)
                         .Include(p => p.Bills)
                             .ThenInclude(p => p.Accounts)
-                    .Where(p => p.IdBill == idBill).ToList();
+                    .Where(p => p.Id == idBillDetail).ToList();
         return View(phone);
     }
 
