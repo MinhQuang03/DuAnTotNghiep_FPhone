@@ -506,7 +506,7 @@ public class AccountsController : Controller
         bill.Address = $"{order.Address},{order.Province},{order.District},{order.Ward}";
         bill.Name = order.Name;
         bill.BillCode = billCode;
-        bill.Status = 2; // Chờ xác nhận 
+        bill.Status = 0; // Chờ xác nhận 
         bill.TotalMoney = order.TotalMoney;
         bill.CreatedTime = DateTime.Now;
         bill.PaymentDate = DateTime.Now;
@@ -534,15 +534,6 @@ public class AccountsController : Controller
 
         foreach (var item in product)
         {
-            // Tìm ra imeil đầu tiên thuộc PhoneDetail có status = 1 (1: chưa được bán)
-            var emeiCheck = _context.Imei.First(a => a.IdPhoneDetaild == item.IdPhoneDetaild && a.Status == 1);
-            // trường hợp tồn tại emeiCheck
-            if (null != emeiCheck)
-            {
-                // Cập nhật lại status = 2 (Đã bán)
-                emeiCheck.Status = 2;
-                _context.SaveChanges();
-
                 // Thêm sản phẩm điện thoại vào bill detail
                 BillDetails billDetail = new BillDetails();
                 billDetail.IdBill = idhd;
@@ -551,19 +542,14 @@ public class AccountsController : Controller
                 billDetail.Price = _context.PhoneDetailds.Find(item.IdPhoneDetaild).Price;
                 billDetail.Number = 1;
                 billDetail.Status = 0;
-                billDetail.Imei = emeiCheck.NameImei; // Đúng tra là id của bảng emei. Nhưng name emei cũng không thể trùng.
+                
                 Listbill.Add(billDetail);
-            }
-        }
-
-     
+            
+        }  
         _context.BillDetails.AddRange(Listbill);
         await _context.SaveChangesAsync();
 
         return Json(new { success = true, data = "/Accounts/paymets" });
-
-  
-
 
     }
 
