@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+
 using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Filters;
 using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
 
@@ -31,6 +32,7 @@ public class AccountsController : Controller
     }
     public IActionResult Index()
     {
+
         ViewBag.product = _context.PhoneDetailds.Count();
         ViewBag.Neworder = _context.Bill.Where(a => a.Status == 0).Count();
         ViewBag.contact = _context.Bill.Where(a => a.Status == 2).Count();
@@ -113,6 +115,21 @@ public class AccountsController : Controller
         return View(user);
     }
 
+
+    public IActionResult Editkhachhang(Guid id)
+    {
+        Account Accounts = _context.Accounts.Find(id);
+        Accounts.Status = 1;
+        _context.SaveChanges();
+        return RedirectToAction("KhachHang");
+    }
+    public IActionResult Editkhachhang1(Guid id)
+    {
+        Account Accounts = _context.Accounts.Find(id);
+        Accounts.Status = 0;
+        _context.SaveChanges();
+        return RedirectToAction("KhachHang");
+    }
     public async Task<RedirectResult> LogOut()
     {
         
@@ -125,7 +142,11 @@ public class AccountsController : Controller
         Response.Cookies.Delete(CookieAuthenticationDefaults.AuthenticationScheme);
         return RedirectPermanent("/home");
     }
-
+    public async Task<IActionResult> KhachHang()
+    {
+        var acount = _context.Accounts.ToList();
+        return View(acount);
+    }
     public IActionResult AddSildeShow()
     {
         return View();
