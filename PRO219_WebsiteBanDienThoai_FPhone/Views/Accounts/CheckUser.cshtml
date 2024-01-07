@@ -1,0 +1,60 @@
+﻿@model PRO219_WebsiteBanDienThoai_FPhone.ViewModel.ResetPasswordViewModel
+<style>
+    .form-control {
+        font-size: 1.6rem;
+    }
+
+    .btn {
+        --bs-btn-font-size: 1.6rem;
+    }
+</style>
+<!-- Password Reset 3 - Bootstrap Brain Component -->
+<section class="p-3 p-md-4 p-xl-5">
+    <div class="container border" style="border-radius: 25px;">
+        <div class="text-center">
+            <h1 class="my-5 text-primary">Quên mật khẩu</h1>
+        </div>
+        <div class="row mb-5 mx-3">
+            <div class="col-12 col-md-6 bsb-tpl-bg-platinum" style="background-color: #e5e5e5">
+                <div class="d-flex flex-column justify-content-between h-100 p-3 p-md-4 p-xl-5">
+                    <h3 class="m-0">Welcome!</h3>
+                    <img class="img-fluid rounded mx-auto my-4" loading="lazy" src="Model.Data.ImageUrl" width="245" height="80" alt="avatar">
+                    
+                </div>
+            </div>
+            <div class="col-12 col-md-6 bsb-tpl-bg-lotion">
+                <div class="p-3 p-md-4 p-xl-5">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="mb-5">
+                                <h2 class="font-size-20">Đây có phải là bạn ?</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <form method="post" asp-action="CheckUser" asp-controller="Accounts">
+                        <input hidden asp-for="Data.Id"/>
+                        <div class="row gy-3 gy-md-4 overflow-hidden">
+                            <div class="col-12">
+                                <input readonly="readonly" asp-for="Data.Name" type="text" class="form-control  text-center mt-3">
+                            </div>
+                            <div class="col-12">
+                                <div class="d-grid ">
+                                    <button class="btn bsb-btn-xl btn-primary mt-3" type="submit">Xác nhận</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row">
+                        <div class="col-12">
+                            <hr class="mt-5 mb-4 border-secondary-subtle">
+                            <div class="text-end">
+                                <a asp-action="ResetPassword" class="link-secondary text-decoration-none">Đây không phải là tôi</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

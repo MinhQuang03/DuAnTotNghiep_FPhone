@@ -43,16 +43,15 @@ public class AccountsController : ControllerBase
     public async Task<IActionResult> Login(LoginModel model)
     {
         var clLogin = await _accountsRepository.ClLogin(model);
+        if (clLogin.Valid)
+        {
+            return Ok(clLogin);
+        }
         var adLogin = await _accountsRepository.AdLogin(model);
         if (clLogin.Valid && adLogin.Valid) return BadRequest("Nếu bạn gặp lỗi này vui lòng liên hệ quản trị viên");
         if (adLogin.Valid)
         {
             return Ok(adLogin);
-        }
-
-        if (clLogin.Valid)
-        {
-            return Ok(clLogin);
         }
 
         return BadRequest(new LoginResponseVM()

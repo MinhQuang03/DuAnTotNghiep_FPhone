@@ -50,7 +50,6 @@ public class HomeController : Controller
 
     public async Task<IActionResult> ShowPhone()
     {
-
         var datajson = await _client.GetStringAsync("api/PhoneDetaild/get");
         var ctsp = JsonConvert.DeserializeObject<List<PhoneDetaild>>(datajson);
         return View(ctsp);

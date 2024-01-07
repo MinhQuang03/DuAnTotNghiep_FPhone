@@ -3,11 +3,11 @@
 
 @{
     ViewData["Title"] = "Danh sách hóa đơn khách hàng";
+    String dh0 = "Chờ xác nhận";
     String dh1 = "Đã xác nhận";
-    String dh2 = "Chờ xác nhận";
-    String dh3 = "Đang giao";
-    String dh4 = "Đã giao";
-    String dh5 = "Đã hủy";
+    String dh2 = "Đang giao";
+    String dh3 = "Đã giao";
+    String dh4 = "Đã hủy";
 }
 
 <table class="table table-bordered container">
@@ -42,9 +42,13 @@
                     @item.CreatedTime
                 </td>
                 <td>
-                    @if (item.Status == 1)
+                    @if (item.Status == 0)
                     {
-                        <p class="text-success"> @dh1</p>
+                        <p class="text-success"> @dh0</p>
+                    }
+                    else if (item.Status == 1)
+                    {
+                        <p class="text-danger"> @dh1</p>
                     }
                     else if (item.Status == 2)
                     {
@@ -52,15 +56,11 @@
                     }
                     else if (item.Status == 3)
                     {
-                        <p class="text-danger"> @dh3</p>
+                        <p class="text-success"> @dh3</p>
                     }
                     else if (item.Status == 4)
                     {
                         <p class="text-success"> @dh4</p>
-                    }
-                    else if (item.Status == 5)
-                    {
-                        <p class="text-success"> @dh5</p>
                     }
                 </td>
                 <td>

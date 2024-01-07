@@ -84,5 +84,55 @@ namespace AppData.Services
             error.Msg = "Cập nhật thành công";
             return dbo;
         }
+
+        public Account UpdateUser(Guid id, Account user, out DataError error)
+        {
+            error = new DataError() { Success = true };
+            var dbo = _dbContext.Accounts.Find(id);
+            try
+            {
+                BeanUtils.CopyAllPropertySameName(user,dbo);
+                _dbContext.Accounts.Update(dbo);
+                _dbContext.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                error = Utility.GetDataErrror(e);
+                error.Success = false;
+                return null;
+            }
+            error.Msg = "Cập nhật thành công";
+            return dbo;
+        }
+
+        public Account GetUserByEmail(string email)
+        {
+            var account = new Account();
+            try
+            {
+                account = _dbContext.Accounts.FirstOrDefault(c => c.Email == email);
+            }
+            catch (Exception e)
+            {
+                
+            }
+
+            return account;
+        }
+
+        public Account GetUserById(Guid idGuid)
+        {
+            var account = new Account();
+            try
+            {
+                account = _dbContext.Accounts.FirstOrDefault(c => c.Id == idGuid);
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            return account;
+        }
     }
 }

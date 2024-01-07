@@ -8,8 +8,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using PRO219_WebsiteBanDienThoai_FPhone.Services;
 using PRO219_WebsiteBanDienThoai_FPhone.Models;
-using System.Text;
-using System.Net.Http;
 using AppData.FPhoneDbContexts;
 using AppData.Repositories;
 using AppData.IRepositories;
@@ -21,6 +19,8 @@ using Serilog;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
+using NuGet.Protocol.Plugins;
+using System.Text;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers;
 
@@ -31,19 +31,24 @@ public class AccountsController : Controller
     private FPhoneDbContext _context;
     private readonly HttpClient _client;
     private IEmailService _emailService;
-    public AccountsController(HttpClient client, IEmailService emailService)
+    private IAccountService _service;
+    private IHttpContextAccessor _accessor;
+    public AccountsController(HttpClient client, IEmailService emailService, IAccountService service, IHttpContextAccessor accessor)
     {
         _cartDetailepository = new CartDetailepository();
         _cartRepository = new CartRepository();
         _context = new FPhoneDbContext();
         _client = client;
         _emailService = emailService;
+        _service = service;
+        _accessor = accessor;
     }
     //Khi đã đăng nhập ấn nút có biểu tượng user sẽ hiện ra profile của người dùng
     public async Task<IActionResult> Profile()
     {
         // lấy ra id người dùng khi đã đăng nhập
         var id = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
+     
         ViewBag.idacount = id;
         // lấy ra thông tin người dùng thông qua id
         var datajson = await _client.GetStringAsync($"api/Accounts/get-user/{id}");
@@ -99,7 +104,8 @@ public class AccountsController : Controller
                     SendTo = model.Email,
                     Subject = "Thông báo tạo tài khoản",
                     UserName = model.Username,
-                };
+                    Message = Utility.EmailCreateAccountTemplate(model.Name, model.Username)
+            };
                 await _emailService.SendEmail(emailInput); // gửi email
                 return await Login(login);
             }
@@ -174,6 +180,143 @@ public class AccountsController : Controller
         }
        
         return RedirectToAction("Cart");
+    }
+
+    public IActionResult ResetPassword()
+    {
+        return View();
+    }
+    [HttpPost]
+    public IActionResult ResetPassword(ResetPasswordViewModel model)
+    {
+       model.Data = _service.GetUserByEmail(model.Email);
+        if (model.Data == null)
+        {
+            ModelState.AddModelError("Email", "Không có tài khoản nào được đăng ký với địa chỉ email này");
+            return View(model);
+        }
+        else
+        {
+            return RedirectToAction("CheckUser", new { model.Email });
+        }
+
+    }
+
+    public IActionResult ChangePassword()
+    {   
+        ChangePasswordViewmodel model = new ChangePasswordViewmodel();
+        var idUser = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
+       
+        if (idUser != null) model.Data = _service.GetUserById(Guid.Parse(idUser));
+        return View(model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ChangePassword(ChangePasswordViewmodel model)
+    {
+        Security security = new Security();
+        var captchaSS = GetSessionValue("_captcha_value"); //lấy captcha từ session
+        model.Data = _service.GetUserById(model.Data.Id);
+
+        //validate mật khẩu cũ
+        if (model.Data.Password != security.Encrypt("B3C1035D5744220E", model.OldPassword))
+        {
+            ModelState.AddModelError("OldPassword", "Mật khẩu không trùng khớp");
+            return View(model);
+        }
+        //validate xác nhận mật khẩu
+        if (model.CfPassword != model.NewPassword)
+        {
+            ModelState.AddModelError("CfPassword", "Mật khẩu không trùng khớp");
+            return View(model);
+        }
+
+        if (captchaSS != null && captchaSS == model.Captcha) 
+        {
+            model.Data.Password = security.Encrypt("B3C1035D5744220E", model.NewPassword); // mã hoá mật khẩu để lưu vào database
+            _service.UpdateUser(model.Data.Id, model.Data, out DataError error);
+            if (error.Success)
+            {
+                //đăng xuất khi đổi mật khẩu thành công
+                var authenticationProperties = new AuthenticationProperties
+                {
+                    ExpiresUtc = DateTimeOffset.UtcNow.AddSeconds(20) // Thiết lập thời gian hết hạn sau khi đăng xuất
+                };
+                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme, authenticationProperties);
+                _accessor.HttpContext.User = null; // xoá thông tin user
+                //Gửi email
+
+                ObjectEmailInput emailInput = new ObjectEmailInput()
+                {
+                    FullName = model.Data.Name,
+                    SendTo = model.Data.Email,
+                    Subject = "Thông báo đổi mật khẩu",
+                    Message = Utility.EmailChangePasswordTemplate(model.Data.Name)
+                };
+                await _emailService.SendEmail(emailInput); // gửi email
+                return View("~/Views/Accounts/Success.cshtml", "Đổi mật khẩu thành công. Vui lòng đăng nhập lại");
+            }
+            else
+            {
+                return View(model);
+            }
+        }
+        else
+        {
+            ModelState.AddModelError("Captcha", "Sai mã xác nhận");
+            return View(model);
+        }
+    }
+    public string GetSessionValue(string key)
+    {
+        if (_accessor != null && _accessor.HttpContext.Session != null)
+        {
+        
+            string content = string.Empty;
+            var bytes = default(byte[]);
+            _accessor.HttpContext.Session.TryGetValue(key, out bytes);
+            if (bytes != null && bytes.Count() > 0) content = Encoding.UTF8.GetString(bytes);
+            return content;
+        }
+        else return null;
+    }
+
+    public IActionResult CheckUser(string email)
+    {
+        ResetPasswordViewModel model = new ResetPasswordViewModel();
+        model.Email = email;
+        model.Data = _service.GetUserByEmail(email);
+        return View(model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CheckUser(ResetPasswordViewModel model)
+    {
+        Security security = new Security();
+        model.Data = _service.GetUserById(model.Data.Id);
+        string randomPass = Utility.RandomString(8);
+        string passwordHash = security.Encrypt("B3C1035D5744220E", randomPass);
+        model.Data.Password = passwordHash;
+        _service.UpdateUser(model.Data.Id, model.Data, out DataError error);
+        if (error.Success)
+        {
+            ObjectEmailInput emailInput = new ObjectEmailInput()
+            {
+                FullName = model.Data.Name,
+                SendTo = model.Data.Email,
+                Subject = "Thông báo cấp lại mật khẩu",
+                Message = Utility.EmailResetPasswordTemplate(model.Data.Name,randomPass)
+            };
+            await _emailService.SendEmail(emailInput); // gửi email
+            return RedirectToAction("EmailSuccess");
+        }
+
+        return View(model);
+    }
+
+    public IActionResult EmailSuccess()
+    {
+        return View();
     }
 
     public async Task<IActionResult> AddCart()
@@ -363,7 +506,7 @@ public class AccountsController : Controller
         bill.Address = $"{order.Address},{order.Province},{order.District},{order.Ward}";
         bill.Name = order.Name;
         bill.BillCode = billCode;
-        bill.Status = 2; // Chờ xác nhận 
+        bill.Status = 0; // Chờ xác nhận 
         bill.TotalMoney = order.TotalMoney;
         bill.CreatedTime = DateTime.Now;
         bill.PaymentDate = DateTime.Now;
@@ -391,15 +534,6 @@ public class AccountsController : Controller
 
         foreach (var item in product)
         {
-            // Tìm ra imeil đầu tiên thuộc PhoneDetail có status = 1 (1: chưa được bán)
-            var emeiCheck = _context.Imei.First(a => a.IdPhoneDetaild == item.IdPhoneDetaild && a.Status == 1);
-            // trường hợp tồn tại emeiCheck
-            if (null != emeiCheck)
-            {
-                // Cập nhật lại status = 2 (Đã bán)
-                emeiCheck.Status = 2;
-                _context.SaveChanges();
-
                 // Thêm sản phẩm điện thoại vào bill detail
                 BillDetails billDetail = new BillDetails();
                 billDetail.IdBill = idhd;
@@ -408,19 +542,14 @@ public class AccountsController : Controller
                 billDetail.Price = _context.PhoneDetailds.Find(item.IdPhoneDetaild).Price;
                 billDetail.Number = 1;
                 billDetail.Status = 0;
-                billDetail.Imei = emeiCheck.NameImei; // Đúng tra là id của bảng emei. Nhưng name emei cũng không thể trùng.
+                
                 Listbill.Add(billDetail);
-            }
-        }
-
-     
+            
+        }  
         _context.BillDetails.AddRange(Listbill);
         await _context.SaveChangesAsync();
 
         return Json(new { success = true, data = "/Accounts/paymets" });
-
-  
-
 
     }
 
@@ -452,7 +581,7 @@ public class AccountsController : Controller
         return View(billDetail);
     }
 
-    public ActionResult ThongTinBaoHanh(Guid idBill)
+    public ActionResult ThongTinBaoHanh(Guid idBillDetail)
     {
         var phone = _context.BillDetails
                         .Include(p => p.PhoneDetaild)
@@ -465,7 +594,7 @@ public class AccountsController : Controller
                             .ThenInclude(p => p.Roms)
                         .Include(p => p.Bills)
                             .ThenInclude(p => p.Accounts)
-                    .Where(p => p.IdBill == idBill).ToList();
+                    .Where(p => p.Id == idBillDetail).ToList();
         return View(phone);
     }
 

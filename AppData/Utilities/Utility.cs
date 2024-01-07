@@ -68,6 +68,185 @@ namespace AppData.Utilities
             }
         }
 
+        public static string EmailChangePasswordTemplate(string fullName)
+        {
+            return $@"<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <style>
+        body {{
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }}
+
+        .container {{
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }}
+
+        h1 {{
+            color: #007BFF;
+            margin-bottom: 20px;
+        }}
+
+        p {{
+            margin-bottom: 15px;
+            line-height: 1.6;
+            color: #555;
+        }}
+
+        strong {{
+            font-weight: bold;
+        }}
+
+        ul {{
+            list-style: none;
+            padding: 0;
+        }}
+
+        li {{
+            margin-bottom: 8px;
+        }}
+
+        a {{
+            color: #007BFF;
+            text-decoration: none;
+            font-weight: bold;
+        }}
+
+        footer {{
+            margin-top: 20px;
+            text-align: center;
+            color: #777;
+        }}
+    </style>
+</head>
+
+<body>
+    <div class='container'>
+        <h1>{fullName} thân mến,</h1>
+        <strong>Thông báo đổi mật khẩu !</strong>
+        <p>Mật khẩu của bạn đã được thay đổi vào {string.Format("{0:dd/MM/yyyy HH:mm:ss}",DateTime.UtcNow)}</p>
+        <p>Nếu bạn đã thực hiện hành động, xin hãy bỏ qua email này.
+             Nếu không, vui lòng liên hệ với chúng tôi ngay lập tức tại <a
+                href='mailto:support@fphonestore.com'>support@fphonestore.com</a> hoặc gọi số điện thoại hỗ trợ khách
+            hàng: <strong>0123-456-789</strong>.</p>
+            <p>Để bảo vệ tài khoản của bạn, xin hãy không chia sẻ thông tin đăng nhập với bất kỳ ai.
+                Nếu bạn cảm thấy có bất kỳ hoạt động nào lạ lùng hoặc không xác đáng, xin hãy đổi mật khẩu ngay lập tức và liên hệ với chúng tôi.</p>   
+        <p>Cảm ơn bạn đã tin tưởng và sử dụng dịch vụ của chúng tôi!</p>
+        <footer>
+            Trân trọng,<br>
+            FPHONE STORE<br>
+            Đội Ngũ Hỗ Trợ Khách Hàng            
+        </footer>
+    </div>
+</body>
+
+</html>";
+        }
+
+        public static string EmailResetPasswordTemplate(string fullName, string password)   
+        {
+           return $@"<!DOCTYPE html>
+            <html lang='en'>
+
+            <head>
+                <meta charset='UTF-8'>
+                <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+                <style>
+                    body {{
+                        font-family: 'Arial', sans-serif;
+                        background-color: #f4f4f4;
+                        margin: 0;
+                        padding: 0;
+                    }}
+
+                    .container {{
+                        max-width: 600px;
+                        margin: 20px auto;
+                        padding: 20px;
+                        border: 1px solid #ddd;
+                        border-radius: 8px;
+                        background-color: #fff;
+                        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                    }}
+
+                    h1 {{
+                        color: #007BFF;
+                        margin-bottom: 20px;
+                    }}
+
+                    p {{
+                        margin-bottom: 15px;
+                        line-height: 1.6;
+                        color: #555;
+                    }}
+
+                    strong {{
+                        font-weight: bold;
+                    }}
+
+                    ul {{
+                        list-style: none;
+                        padding: 0;
+                    }}
+
+                    li {{
+                        margin-bottom: 8px;
+                    }}
+
+                    a {{
+                        color: #007BFF;
+                        text-decoration: none;
+                        font-weight: bold;
+                    }}
+
+                    footer {{
+                        margin-top: 20px;
+                        text-align: center;
+                        color: #777;
+                    }}
+                </style>
+            </head>
+
+            <body>
+                <div class='container'>
+                    <h1>{fullName} thân mến,</h1>
+                    <strong>Thông báo đổi mật khẩu !</strong>
+                    <p>Chúng tôi nhận được yêu cầu đổi mật khẩu của bạn</strong></p>
+                    <p>Dưới đây là mật khẩu mới của bạn:</p>
+                    <ul>
+                        <li><strong>Mật khẩu:</strong> {password}</li>
+                    </ul>
+                    <p>Nếu bạn đã thực hiện thay đổi mật khẩu này, xin hãy bỏ qua email này.
+                         Nếu không, vui lòng liên hệ với chúng tôi ngay lập tức tại <a
+                            href='mailto:support@fphonestore.com'>support@fphonestore.com</a> hoặc gọi số điện thoại hỗ trợ khách
+                        hàng: <strong>0123-456-789</strong>.</p>
+                        
+                        <p>Để bảo vệ tài khoản của bạn, xin hãy không chia sẻ thông tin đăng nhập với bất kỳ ai.
+                            Nếu bạn cảm thấy có bất kỳ hoạt động nào lạ lùng hoặc không xác đáng, xin hãy đổi mật khẩu ngay lập tức và liên hệ với chúng tôi.</p>   
+                    <p>Cảm ơn bạn đã tin tưởng và sử dụng dịch vụ của chúng tôi!</p>
+                    <footer>
+                        Trân trọng,<br>
+                        FPHONE STORE<br>
+                        Đội Ngũ Hỗ Trợ Khách Hàng            
+                    </footer>
+                </div>
+            </body>
+            </html>";
+        }
+
+
         public static string EmailCreateAccountTemplate(string fullName, string username)
         {
             return $@"
