@@ -239,6 +239,24 @@
                         break;
                     case "paymentInStore":
                         JCheckOut.ChangePay();
+                        $.ajax({
+                            type: "POST",
+                            url: "Accounts/ORDER", // Đến method xử lý Order
+                            data: $("#checkoutForm").serialize(),
+                            success: function (response) {
+                                if (response.success) {
+                                    // Chuyển hướng đến trang thanh toán cod (thanh toán khi nhận hàng)
+                                    window.location.href = response.data;
+                                } else {
+                                    // Xử lý lỗi nếu cần
+                                    console.error("Banktransfer request failed.");
+                                }
+                            },
+                            error: function () {
+                                // Xử lý lỗi nếu cần
+                                console.error("Error sending banktransfer request.");
+                            }
+                        });
                         break;
 
                 }
