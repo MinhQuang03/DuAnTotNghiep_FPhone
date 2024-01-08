@@ -9,11 +9,11 @@
         background-color: #FFFFCC;
     }
 
-  /*  .selected {
-        background-color: #33FF33;
-        border-radius: 2px;
-    }
-*/
+    /*  .selected {
+            background-color: #33FF33;
+            border-radius: 2px;
+        }
+    */
     .selected {
         background-color: #33FF33;
         border-radius: 2px;
@@ -176,7 +176,7 @@
                 <div class="product__picture" id="product__picture">
                     <!-- <div class="rect" id="rect"></div> -->
                     <div class="picture__container">
-                        <img src="@Model.Image" id="pic"  />
+                        <img src="@Model.Image" id="pic" />
                     </div>
                 </div>
                 <div class="zoom" id="zoom"></div>
@@ -232,7 +232,7 @@
                             <use xlink:href="/images/sprite.svg#icon-star-empty"></use>
                         </svg>
                     </div>
-                    <a href="#" class="rating__quatity">3 Đánh giá</a>
+                    <a href="#" class="rating__quatity">3 reviews</a>
                 </div>
                 <p>
                     @* @item.Description *@
@@ -244,21 +244,25 @@
 
                         </li>
                         @*<li>
-                            <span>RAM Type:</span>
-                            <div id="ramOptions"></div>
+                        <span>RAM Type:</span>
+                        <div id="ramOptions"></div>
                         </li>
                         <li class="row" id="colorList"></li>*@
                         <li class="row" id="ramButtons"></li>
                         <li class="row" id="colorList"></li>
-                        
-                       @* <li>
+
+                        <li>
+                            <span>Brand:</span>
+                            @* <a href="#">@item.Brand</a> *@
+                        </li>
+                        <li>
                             <span>Product Type:</span>
                             <a id="colorName" href="#">Mau den</a>
                         </li>
                         <li>
                             <span>Availability:</span>
                             <a href="#" class="in-stock">In Stock (7 Items)</a>
-                        </li>*@
+                        </li>
                     </ul>
 
                 </div>
@@ -307,7 +311,7 @@
                     </div>
                 </div>
                 <!-- COMMENT 1 - END -->
-                
+
             </div>
         </div>
     </div>
@@ -356,8 +360,8 @@
                     let ramButtonsHtml = '';
                     sortedRamTypes.forEach(ramName => {
                         ramButtonsHtml += `
-                            <button class="btn col-4 border rounded phone-hover mt-2" onclick="loadColorsByRam('${ramName}')">${ramName}</button>
-                `;
+                                <button class="btn col-4 border rounded phone-hover mt-2" onclick="loadColorsByRam('${ramName}')">${ramName}</button>
+                    `;
                     });
 
                     document.querySelector("#ramButtons").innerHTML = ramButtonsHtml;
@@ -381,14 +385,14 @@
 
             itemsWithSelectedRam.forEach(item => {
                 colorsHtml += `
-                    <a class="btn col-4 border rounded phone-hover mt-2"
-                        onclick="loadPhoneDetail('${item.idPhoneDetail}', this)">
-                        <div>
-                            <strong>${item.colorName}</strong>
-                        </div>
-                        <span>${item.price} đ</span>
-                    </a>
-                `;
+                        <a class="btn col-4 border rounded phone-hover mt-2"
+                            onclick="loadPhoneDetail('${item.idPhoneDetail}', this)">
+                            <div>
+                                <strong>${item.colorName}</strong>
+                            </div>
+                            <span>${item.price} đ</span>
+                        </a>
+                    `;
             });
 
             // Keep track of the previously selected button

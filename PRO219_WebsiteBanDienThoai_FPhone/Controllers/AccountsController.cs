@@ -577,11 +577,6 @@ public class AccountsController : Controller
         // Get Status of table Bill
         var billStatus = _context.Bill.Find(idBill);
         ViewBag.BillStatus = billStatus.Status;
-
-        var a = _context.BillDetails.FirstOrDefault(p => p.IdBill == idBill);
-        var check = _context.WarrantyCards.FirstOrDefault(p => p.IdBillDetail == a.Id);
-        ViewBag.Check = check.Description;
-
         return View(billDetail);
     }
 
