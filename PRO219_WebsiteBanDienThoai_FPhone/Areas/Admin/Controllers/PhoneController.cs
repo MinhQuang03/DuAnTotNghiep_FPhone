@@ -10,6 +10,7 @@ using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
 using System.Text;
 using System.Collections.Generic;
 using System.IO;
+using AppData.Utilities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
@@ -103,6 +104,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                 IdWarranty = obj.IdWarranty,
                 Image = obj.Image
             };
+            BeanUtils.CopyAllPropertySameName(obj,data);
             var jsonData = JsonConvert.SerializeObject(data);
             HttpContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync("api/Phone/add", content);
