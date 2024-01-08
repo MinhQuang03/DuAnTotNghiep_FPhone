@@ -14,15 +14,17 @@
         //});
     };
     ins.ChangePay = function() {
-            if ($('#paymentInStore').is(':checked')) {
-                var insurance = $("#TotalPhone").val(); // tổng tiền sản phẩm
-                $("#TotalMoney").val(parseFloat(insurance));
-                $("#TotalPayment").text(parseFloat(insurance).toLocaleString('vi', { style: 'currency', currency: 'VND' }));
-                $("#TotalShip").val("0");
-                $("#TotalShip").text("0");
-            } else {
-                ins.TotalShip();
-            }
+        if ($('#paymentInStore').is(':checked')) {
+            $('.displayAddress').hide();
+            var insurance = $("#TotalPhone").val(); // tổng tiền sản phẩm
+            $("#TotalMoney").val(parseFloat(insurance));
+            $("#TotalPayment").text(parseFloat(insurance).toLocaleString('vi', { style: 'currency', currency: 'VND' }));
+            $("#TotalShip").val("0");
+            $("#TotalShip").text("0");
+        } else {
+            $('.displayAddress').show();
+            ins.TotalShip();
+        }
         
     };
 
