@@ -20,7 +20,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         {
             var datajson = await _httpClient.GetStringAsync("api/Rank/get");
             var obj = JsonConvert.DeserializeObject<List<Rank>>(datajson);
-            return View(obj);
+            return View(obj.OrderBy(c =>c.STT));
         }
       
       

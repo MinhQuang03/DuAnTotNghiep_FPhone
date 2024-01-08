@@ -71,26 +71,26 @@
                                 <label>Số điện thoại</label>
                                 <input asp-for="Phone" class="form-control" type="text">
                             </div>
-                            <div class="col-md-6 form-group">
+                            <div class="col-md-6 form-group displayAddress">
                                 <label>Tỉnh/Thành phố</label>
                                 <input id="ProvinceName" hidden="" asp-for="Province" />
                                 @Html.DropDownListFor(model => model.id, new SelectList(Model.Provinces, "ProvinceID", "ProvinceName"), "--Lựa chọn--", new { @class = "form-control", id = "Province", onchange = "JCheckOut.ChangeProvince()" })
                             </div>
-                            <div class="col-md-6 form-group">
+                            <div class="col-md-6 form-group displayAddress">
                                 <label>Quận/Huyện</label>
                                 <input id="DistrictName" hidden="" asp-for="District" />
                                 @Html.DropDownListFor(model => model.id, Enumerable.Empty<SelectListItem>(), "--Lựa chọn--", new { @class = "form-control", id = "District", onchange = "JCheckOut.ChangeDistrict()" })
                             </div>
-                            <div class="col-md-6 form-group">
+                            <div class="col-md-6 form-group displayAddress">
                                 <label>Xã/Phường</label>
                                 <input id="WardName" hidden="" asp-for="Ward" />
                                 @Html.DropDownListFor(model => model.id, Enumerable.Empty<SelectListItem>(), "--Lựa chọn--", new { @class = "form-control", id = "Ward", onchange = "JCheckOut.ChangeWard()" })
                             </div>
-                            <div class="col-md-6 form-group">
+                            <div class="col-md-6 form-group displayAddress">
                                 <label>Địa chỉ chi tiết</label>
                                 <input asp-for="Address" class="form-control" type="text" placeholder="123">
                             </div>
-                            <div class="col-md-6 form-group">
+                            <div class="col-md-6 form-group displayAddress">
                                 <label>Phương thức vận chuyển</label>
                                 @Html.DropDownListFor(model => model.id, Enumerable.Empty<SelectListItem>(), "--Lựa chọn--", new { @class = "form-control", id = "AvailableService", onchange = "JCheckOut.ChangeService()" })
                             </div>
