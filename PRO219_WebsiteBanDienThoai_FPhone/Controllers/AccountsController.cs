@@ -578,6 +578,10 @@ public class AccountsController : Controller
         var billStatus = _context.Bill.Find(idBill);
         ViewBag.BillStatus = billStatus.Status;
 
+        var a = _context.BillDetails.FirstOrDefault(p => p.IdBill == idBill);
+        var check = _context.WarrantyCards.FirstOrDefault(p => p.IdBillDetail == a.Id);
+        ViewBag.Check = check.Description;
+
         return View(billDetail);
     }
 
@@ -627,6 +631,7 @@ public class AccountsController : Controller
             warrantyCard.Status = 0; // 1: Mới tạo
             // Bổ sung thêm các thông tin khác nếu cần
 
+            TempData["SuccessMessage"] = "Bạn đã gửi yêu cầu thành công!";
             _context.WarrantyCards.Add(warrantyCard);
             _context.SaveChanges();
         }

@@ -84,7 +84,12 @@
     </style>
 </head>
 <body class="main-container">
-
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["SuccessMessage"]
+        </div>
+    }
     <div class="info-container">
         <h1 class="main-title">Thông tin bảo hành điện thoại</h1>
 
