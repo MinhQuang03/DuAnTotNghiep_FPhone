@@ -29,6 +29,7 @@ builder.Services.AddTransient<IBlogService, BlogService>();
 
 builder.Services.AddScoped(sp => new HttpClient()
 {
+    //Uri chạy iis
     BaseAddress = new Uri("https://localhost:44373/")
 
 });

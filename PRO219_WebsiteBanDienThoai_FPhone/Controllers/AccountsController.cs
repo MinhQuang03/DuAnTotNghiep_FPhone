@@ -48,7 +48,8 @@ public class AccountsController : Controller
     {
         // lấy ra id người dùng khi đã đăng nhập
         var id = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
-      
+     
+        ViewBag.idacount = id;
         // lấy ra thông tin người dùng thông qua id
         var datajson = await _client.GetStringAsync($"api/Accounts/get-user/{id}");
         var user = JsonConvert.DeserializeObject<Account>(datajson);
@@ -370,6 +371,15 @@ public class AccountsController : Controller
         if (userId == null)
         {
             var product = SessionCartDetail.GetObjFromSession(HttpContext.Session, "Cart");
+            if (product != null && product is List<CartDetailModel>)
+            {
+                TempData["count"] = (product as List<CartDetailModel>).Count;
+            }
+            else
+            {
+                // Xử lý khi đối tượng không tồn tại trong Session hoặc không phải là List<CartDetailModel>
+                TempData["count"] = 0; // Hoặc giá trị mặc định tùy thuộc vào yêu cầu của bạn
+            }
             return View(product);
         }
 

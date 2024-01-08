@@ -142,14 +142,20 @@
                         <div class="bg-light p-30">
                             <div class="form-group">
                                 <div class="custom-control custom-radio">
-                                    <input type="radio" class="custom-control-input" name="payment" id="paypal">
+                                    <input type="radio" onclick="JCheckOut.ChangePay()" class="custom-control-input" name="payment" id="paypal">
                                     <label class="custom-control-label" for="paypal">Chuyển khoản</label>
                                 </div>
                             </div>
                             <div class="form-group mb-4">
                                 <div class="custom-control custom-radio">
-                                    <input type="radio" class="custom-control-input" name="payment" id="banktransfer">
+                                    <input type="radio" onclick="JCheckOut.ChangePay()" class="custom-control-input" name="payment" id="banktransfer">
                                     <label class="custom-control-label" for="banktransfer">Thanh toán khi nhận hàng</label>
+                                </div>
+                            </div>
+                            <div class="form-group mb-4">
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" onclick="JCheckOut.ChangePay()" class="custom-control-input" name="payment" id="paymentInStore">
+                                    <label class="custom-control-label" for="paymentInStore">Thanh toán tại quầy</label>
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-block btn-primary font-weight-bold py-3">Place Order</button>
@@ -179,6 +185,7 @@
         $(document).ready(function () {
             JCheckOut.init();
 
+         
             // Handle form submission
             $("#checkoutForm").submit(function (e) {
                 e.preventDefault(); // Prevent the default form submission
@@ -189,7 +196,6 @@
                 // Set the action attribute of the form based on the selected payment method
                 switch (selectedPaymentId) {
                     case "banktransfer":
-
                         $.ajax({
                             type: "POST",
                             url: "Accounts/ORDER", // Đến method xử lý Order
@@ -231,6 +237,10 @@
                             }
                         });
                         break;
+                    case "paymentInStore":
+                        JCheckOut.ChangePay();
+                        break;
+
                 }
             });
         })

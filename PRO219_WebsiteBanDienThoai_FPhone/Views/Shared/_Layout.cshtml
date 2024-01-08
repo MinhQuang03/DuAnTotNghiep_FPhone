@@ -1,4 +1,21 @@
-﻿<!DOCTYPE html>
+﻿@using AppData.FPhoneDbContexts;
+@using AppData.ViewModels.Phones;
+@using PRO219_WebsiteBanDienThoai_FPhone.Services;
+@using Microsoft.AspNetCore.Http;
+
+@{
+    var id = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
+    FPhoneDbContext dbContext = new FPhoneDbContext();
+
+}
+@if (id == null)
+{
+    ViewBag.a = TempData["count"] is int countFromTempData ? countFromTempData : 0;
+}
+else{
+    ViewBag.a = dbContext.CartDetails.Where(a => a.IdAccount == Guid.Parse(id)).Count();
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -48,47 +65,6 @@
 </div>*@
 
 <!-- Go To -->
-
-
-    
-    <!-- Messenger Plugin chat Code -->
-<div id="fb-root">
-    <a href="#header" class="goto-top scroll-link">
-        <svg>
-            <use xlink:href="/images/sprite.svg#icon-arrow-up"></use>
-        </svg>
-</a>
-    </div>
-
-    <!-- Your Plugin chat code -->
-    <div id="fb-customer-chat" class="fb-customerchat">
-    </div>
-
-
-
-@* <script>
-    var chatbox = document.getElementById('fb-customer-chat');
-    chatbox.setAttribute("page_id", "200472229811745");
-    chatbox.setAttribute("attribution", "biz_inbox");
-</script>
-
-<!-- Your SDK code -->
-<script>
-    window.fbAsyncInit = function() {
-        FB.init({
-            xfbml            : true,
-            version          : 'v18.0'
-        });
-    };
-
-    (function(d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
-        js.src = 'https://connect.facebook.net/vi_VN/sdk/xfbml.customerchat.js';
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
-</script> *@
 
 <partial name="_ScripPartialView"/>
 <!-- JS -->
