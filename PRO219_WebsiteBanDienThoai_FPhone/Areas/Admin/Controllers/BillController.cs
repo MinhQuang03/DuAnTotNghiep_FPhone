@@ -134,6 +134,10 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             bill.Status = 1;
             _context.Entry(bill).State = EntityState.Modified;
             _context.SaveChanges();
+
+            var acc = _context.Accounts.FirstOrDefault(p => p.Id == bill.IdAccount);
+            SendEmailDangGiao(acc.Email);
+
             return RedirectToAction("Index");
         }
 
@@ -229,11 +233,16 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         public ActionResult DeleteBilDetail(Guid id)
         {
             var a = _context.BillDetails.FirstOrDefault(p => p.Id == id);
-            
-            a.Status = 2; // xoa 
-            _context.SaveChanges();
+            if (a != null)
+            {
+                var b = _context.Bill.FirstOrDefault(p => p.Id == a.IdBill);
+                b.TotalMoney = b.TotalMoney - a.Price; // cap nhat gia tien
+                a.Status = 2; // xoa 
+                _context.SaveChanges();
 
-            TempData["SuccessMessage"] = "Xóa sản phẩm thành công !";
+                TempData["SuccessMessage"] = "Xóa sản phẩm thành công !";
+            }
+            
             return RedirectToAction("Detail", new { id = a.IdBill });
         }
 
@@ -513,6 +522,109 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                 <p>Thông tin bảo hành như sau:</p>
                 <p>Hãy gửi tới địa chỉ sau đây: 123ACCC<p>
                 <p>Thời gian bảo hành sẽ tính đến ngày: {dNgayGuiBaohanh}, kể từ ngày bạn gửi yêu cầu bảo hành.<p>
+                <p>Nếu Quý khách có bất kỳ câu hỏi hoặc cần hỗ trợ, vui lòng liên hệ với chúng tôi qua email <a href='mailto:support@fphonestore.com'>support@fphonestore.com</a> hoặc gọi số điện thoại hỗ trợ khách hàng: <strong>0123-456-789</strong>.</p>
+                <p>Chúc Quý khách có những trải nghiệm tốt nhất với hệ thống của chúng tôi!</p>
+                <footer>
+                    Trân trọng,<br>
+                    FPHONE STORE
+                </footer>
+            </div>
+        </body>
+        </html>";
+
+                // Cấu hình đối tượng SmtpClient
+                SmtpClient smtpClient = new SmtpClient("smtp.gmail.com");
+                smtpClient.Port = 587;
+                smtpClient.UseDefaultCredentials = false;
+                smtpClient.Credentials = new NetworkCredential(fromEmail, password);
+                smtpClient.EnableSsl = true;
+
+                // Gửi email
+                await smtpClient.SendMailAsync(mailMessage);
+
+                return Ok("Email sent successfully!");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error sending email: {ex.Message}");
+            }
+        }
+
+
+        public async Task<IActionResult> SendEmailDangGiao(string toEmail)
+        {
+            try
+            {
+                // Thông tin tài khoản email của bạn
+                string fromEmail = "fphone.store.404@gmail.com";
+                string password = "bdrczcwdttczwbsv";
+
+                var acc = _context.Accounts.FirstOrDefault(p => p.Email == toEmail);
+
+                // Tạo đối tượng MailMessage
+                MailMessage mailMessage = new MailMessage();
+                mailMessage.From = new MailAddress(fromEmail);
+                mailMessage.To.Add(toEmail);
+                mailMessage.Subject = "Thông báo giao hàng";
+                mailMessage.IsBodyHtml = true;
+                mailMessage.Body = $@"
+        <!DOCTYPE html>
+        <html lang='en'>
+        <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <style>
+                body {{
+                    font-family: 'Arial', sans-serif;
+                    background-color: #f4f4f4;
+                    margin: 0;
+                    padding: 0;
+                }}
+                .container {{
+                    max-width: 600px;
+                    margin: 20px auto;
+                    padding: 20px;
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                    background-color: #fff;
+                    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                }}
+                h1 {{
+                    color: #007BFF;
+                    margin-bottom: 20px;
+                }}
+                p {{
+                    margin-bottom: 15px;
+                    line-height: 1.6;
+                    color: #555;
+                }}
+                strong {{
+                    font-weight: bold;
+                }}
+                ul {{
+                    list-style: none;
+                    padding: 0;
+                }}
+                li {{
+                    margin-bottom: 8px;
+                }}
+                a {{
+                    color: #007BFF;
+                    text-decoration: none;
+                    font-weight: bold;
+                }}
+                footer {{
+                    margin-top: 20px;
+                    text-align: center;
+                    color: #777;
+                }}
+            </style>
+        </head>
+        <body>
+            <div class='container'>
+                <h1>{acc.Username} thân mến,</h1>
+                <p>Cảm ơn quý khách đã tin tưởng <strong> FPHONE STORE. </strong> của chúng tôi</p>
+                <p>Đơn hàng của quý khách đã xác nhận và đang được giao.</p>
                 <p>Nếu Quý khách có bất kỳ câu hỏi hoặc cần hỗ trợ, vui lòng liên hệ với chúng tôi qua email <a href='mailto:support@fphonestore.com'>support@fphonestore.com</a> hoặc gọi số điện thoại hỗ trợ khách hàng: <strong>0123-456-789</strong>.</p>
                 <p>Chúc Quý khách có những trải nghiệm tốt nhất với hệ thống của chúng tôi!</p>
                 <footer>

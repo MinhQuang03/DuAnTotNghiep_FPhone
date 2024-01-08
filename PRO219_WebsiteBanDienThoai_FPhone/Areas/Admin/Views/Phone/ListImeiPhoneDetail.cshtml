@@ -1,12 +1,13 @@
-﻿@model PRO219_WebsiteBanDienThoai_FPhone.ViewModel.ImeiPhoneViewModel
+﻿@using PRO219_WebsiteBanDienThoai_FPhone.ViewModel
+@using AppData.Models
+@model ImeiPhoneViewModel
 
 @{
     ViewData["Title"] = "Danh sách imei";
-
     int stt = 0;
 }
 
-<h1>Index</h1>
+<h1>Danh sách Imei</h1>
 
 <div>
     <a asp-area="Admin" asp-action="CreateImei" asp-controller="Phone" asp-route-IdPhoneDetail="@Model.IdPhoneDetail" class="nav-link">
@@ -17,7 +18,30 @@
             </svg>
         </span>
     </a>
+    <br />
+    <form method="post" asp-action="Import" enctype="multipart/form-data">
+        <input type="file" name="files" />
+        <input type="submit" value="Import" />
+    </form>
+    <br />
+    <button type="button" class="btn btn-info" href="@Url.Action("Export", "Phone")">Xuất file Excel</button>
+    
+ @*   @if (ViewBag.Imei != null)
+    {
+        <b>Danh sách Không hợp lệ:</b>
+        foreach (var item in ViewBag.Imei)
+        {
+            <a>@item</a>
+            <br />
+        }
+    }*@
 </div>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["SuccessMessage"]
+    </div>
+}
 <table class="table">
     <thead>
         <tr>
@@ -33,7 +57,7 @@
             <th>
                 Imei
             </th>
-            <th></th>
+
         </tr>
     </thead>
     <tbody>
@@ -45,7 +69,7 @@
                     @stt
                 </td>
                 <td>
-                   @Model.PhoneDetailName
+                    @Model.PhoneDetailName
                 </td>
                 <td>
                     @if (item.Status == 1)
@@ -60,11 +84,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.NameImei)
                 </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-                </td>
+ 
             </tr>
         }
     </tbody>
