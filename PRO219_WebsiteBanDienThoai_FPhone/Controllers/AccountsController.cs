@@ -552,7 +552,72 @@ public class AccountsController : Controller
         return Json(new { success = true, data = "/Accounts/paymets" });
 
     }
+    [HttpPost]
+    public async Task<IActionResult> ORDERTT(CheckOutViewModel order)
+    {
 
+        var userId = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
+        if (userId == null)
+        {
+            return BadRequest("User Id is not available.");
+        }
+        int currentBillNumber;
+        lock (_context.Bill)
+        {
+            currentBillNumber = _context.Bill.Count() + 1;
+        }
+        var billCode = "HD" + currentBillNumber.ToString("D5");
+        Bill bill = new Bill();
+        bill.Id = Guid.NewGuid();
+        bill.Address = "Nhận trực tiếp tại cửa hàng ";
+        bill.Name = order.Name;
+        bill.BillCode = billCode;
+        bill.Status = 0; // Chờ xác nhận 
+        bill.TotalMoney = order.TotalMoney;
+        bill.CreatedTime = DateTime.Now;
+        bill.PaymentDate = DateTime.Now;
+        bill.IdAccount = Guid.Parse(userId);
+        bill.Phone = order.Phone;
+        bill.StatusPayment = 0; // Chưa thanh toán 
+        bill.deliveryPaymentMethod = "Nhận trực tiếp tại cửa hàng ";
+
+        TempData["Totalmeny"] = bill.TotalMoney.ToString();
+        TempData["Totalship"] = order.ToTalShip.ToString();
+        TempData["name"] = bill.Name;
+        TempData["code"] = bill.BillCode;
+        TempData["address"] = bill.Address;
+        TempData["Phone"] = bill.Phone;
+        TempData["StatusPayment"] = bill.StatusPayment.ToString(); // Chuyển sang string
+        TempData["deliveryPaymentMethod"] = bill.deliveryPaymentMethod;
+        _context.Bill.Add(bill);
+        _context.SaveChanges();
+
+        Guid idhd = bill.Id;
+
+        var product = _context.CartDetails.Where(a => a.IdAccount == Guid.Parse(userId)).ToList();
+        List<BillDetails> Listbill = new List<BillDetails>();
+
+
+        foreach (var item in product)
+        {
+            // Thêm sản phẩm điện thoại vào bill detail
+            BillDetails billDetail = new BillDetails();
+            billDetail.IdBill = idhd;
+            billDetail.Id = Guid.NewGuid();
+            billDetail.IdPhoneDetail = item.IdPhoneDetaild;
+            billDetail.Price = _context.PhoneDetailds.Find(item.IdPhoneDetaild).Price;
+            billDetail.Number = 1;
+            billDetail.Status = 0;
+
+            Listbill.Add(billDetail);
+
+        }
+        _context.BillDetails.AddRange(Listbill);
+        await _context.SaveChangesAsync();
+
+        return Json(new { success = true, data = "/Accounts/paymets" });
+
+    }
     public async Task<IActionResult> PurchaseHistory(Guid idAccount)
     {
         
