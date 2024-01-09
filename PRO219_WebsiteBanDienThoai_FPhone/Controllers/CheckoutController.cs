@@ -40,6 +40,11 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
                 TempData["SuccessMessage"] = "Bạn chỉ được mua tối đa 5 sản phẩm !";
                 return RedirectToAction("ShowCart","Accounts");
             }
+            else if (car == 0)
+            {
+                TempData["SuccessMessage"] = "Bạn chưa có sản phẩm trong giỏ hàng !";
+                return RedirectToAction("ShowCart", "Accounts");
+            }
 
             //kiểm tra đăng nhập
             if (userId == null) //Chưa đăng nhập

@@ -155,10 +155,10 @@
                             <div class="form-group mb-4">
                                 <div class="custom-control custom-radio">
                                     <input type="radio" onclick="JCheckOut.ChangePay()" class="custom-control-input" name="payment" id="paymentInStore">
-                                    <label class="custom-control-label" for="paymentInStore">Thanh toán tại quầy</label>
+                                    <label class="custom-control-label" for="paymentInStore">Nhận hàng tại cửa hàng </label>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-block btn-primary font-weight-bold py-3">Place Order</button>
+                            <button type="submit" class="btn btn-block btn-primary font-weight-bold py-3">Đặt Hàng</button>
                         </div>
                     </div>
                 </div>
@@ -241,7 +241,7 @@
                         JCheckOut.ChangePay();
                         $.ajax({
                             type: "POST",
-                            url: "Accounts/ORDER", // Đến method xử lý Order
+                            url: "Accounts/ORDERTT", // Đến method xử lý Order
                             data: $("#checkoutForm").serialize(),
                             success: function (response) {
                                 if (response.success) {
