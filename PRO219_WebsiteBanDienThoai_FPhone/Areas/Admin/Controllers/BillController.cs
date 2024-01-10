@@ -146,8 +146,9 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                              select ph.Name).FirstOrDefault();
 
             // Lấy danh sách các PhoneName và gán vào ViewBag
-            ViewBag.PhoneNames = phoneNames + " " + ramName + " " + colorName;
-
+            ViewBag.PhoneNames = phoneNames /*+ " " + ramName + " " + colorName*/;
+            ViewBag.ram = ramName;
+            ViewBag.color = colorName;
             ViewBag.customer = _context.Bill.Where(m => m.Id == id).First();
             var lisst = _context.BillDetails.Where(m => m.IdBill == id && m.Status != 2).ToList();
             return View("BillDetail", lisst);
