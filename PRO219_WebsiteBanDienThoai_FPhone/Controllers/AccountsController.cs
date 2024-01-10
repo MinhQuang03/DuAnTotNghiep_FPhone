@@ -579,7 +579,7 @@ public class AccountsController : Controller
         bill.IdAccount = Guid.Parse(userId);
         bill.Phone = order.Phone;
         bill.StatusPayment = 0; // Chưa thanh toán 
-        bill.deliveryPaymentMethod = "Nhận trực tiếp tại cửa hàng ";
+        bill.deliveryPaymentMethod = "TT";
 
         TempData["Totalmeny"] = bill.TotalMoney.ToString();
         TempData["Totalship"] = order.ToTalShip.ToString();
