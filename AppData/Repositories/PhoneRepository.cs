@@ -1,6 +1,7 @@
 ﻿using AppData.FPhoneDbContexts;
 using AppData.IRepositories;
 using AppData.Models;
+using AppData.Utilities;
 using AppData.ViewModels.Phones;
 using Microsoft.EntityFrameworkCore;
 
@@ -41,10 +42,7 @@ namespace AppData.Repositories
         public async Task<Phone> Update(Phone obj)
         {
             var a = await _dbContext.Phones.FindAsync(obj.Id);
-            a.PhoneName = obj.PhoneName;
-            a.Description = obj.Description;
-            a.Image = obj.Image;
-            a.IdProductionCompany = obj.IdProductionCompany;
+            BeanUtils.CopyAllPropertySameName(obj,a);
             _dbContext.Phones.Update(a);
             await _dbContext.SaveChangesAsync();
             return obj;

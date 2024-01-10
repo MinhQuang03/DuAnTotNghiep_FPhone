@@ -15,7 +15,9 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.18.0/font/bootstrap-icons.css">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.7.3/dist/js/bootstrap.bundle.min.js"></script>
-
+@if (Model == null){
+    <h2 style="text-align:center"> Hiện đang Không có sản phẩm trong giỏ hàng của bạn  </h2>
+}else {
 <main id="main">
     <section class="section cart__area">
         <div class="container">
@@ -31,11 +33,11 @@
                         <table width="100%" class="table">
                             <thead>
                                 <tr>
-                                    <th>PRODUCT</th>
-                                    <th>NAME</th>
-                                    <th>COLOR</th>
+                                    <th>Hình ảnh</th>
+                                    <th>Tên sản phẩm</th>
+                                    <th>Màu sắc</th>
                                     <th>RAM</th>
-                                    <th>TOTAL</th>
+                                    <th>Giá</th>
                                    
                                 </tr>
                             </thead>
@@ -87,10 +89,10 @@
 
                     <div class="cart-btns">
                         <div class="continue__shopping">
-                            <a href="/">Continue Shopping</a>
+                            <a href="/">Tiếp tục mua sắm</a>
                         </div>
                         <div class="continue__shopping">
-                            <a asp-action="checkoutID" asp-controller="Accounts">PROCEED TO CHECKOUT</a>
+                            <a asp-action="checkoutID" asp-controller="Accounts">Tiến hành thanh toán</a>
                         </div>
                     </div>
 
@@ -104,4 +106,5 @@
         });
     </script>
 </main>
+}
 

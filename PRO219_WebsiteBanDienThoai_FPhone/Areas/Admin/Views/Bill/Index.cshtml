@@ -5,11 +5,7 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<h1>Danh sách hóa đơn chờ</h1>
 <table class="table">
     <thead>
         <tr>
@@ -28,7 +24,7 @@
                 Trạng Thái Thanh Toán
             </th>
 
-            <th>Hành Động  </th>
+            @*<th>Hành Động  </th>*@
         </tr>
     </thead>
     <tbody>
@@ -38,8 +34,7 @@
         {
         @foreach (var item in Model)
         {
-            String dh1 = "Đã xác nhận";
-            String dh2 = "Chờ xác nhận";
+            String dh0 = "Chờ xác nhận";
      
             <tr>
                 <td>
@@ -52,9 +47,9 @@
                     @Html.DisplayFor(modelItem => item.CreatedTime)
                 </td>
                 <td>
-                    @if (item.Status == 2)
+                    @if (item.Status == 0)
                     {
-                        <p class="text-danger"> @dh2</p>
+                        <p class="text-danger"> @dh0</p>
                     }
                    
                 </td>
@@ -72,14 +67,14 @@
                     }
                 </td>
 
-                <td>
+                @*<td>
                         <a class="btn btn-sm btn-light text-danger border a33" href="@Url.Action("Status", "Bill", new { id = item.Id })"> <i class="fas fa-toggle-on"></i> </a>
                     
       
                     <a class="btn btn-sm btn-light text-danger border" href=""> <i class="fas fa-trash-alt"></i></a>
 
                       <a class="btn btn-sm btn-light text-orange border" href="@Url.Action("Dahuy", "Bill", new { id = item.Id })"> <i class="fas fa-ban"></i></a>
-                </td>
+                </td>*@
             </tr>
         }
         }

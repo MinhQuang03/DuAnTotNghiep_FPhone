@@ -26,7 +26,7 @@ public class ClAccountsViewModel
 
     [Display(Name = "Email")]
     [Required(ErrorMessage = "Email không được để trống")]
-    [EmailAddress]
+    [EmailAddress(ErrorMessage = "Email sai định dạng")]
     public string Email { get; set; }
 
     [Phone]

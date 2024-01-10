@@ -11,9 +11,9 @@
             <div class="col">
                 <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
                     <ol class="breadcrumb mb-0">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item"><a href="#">User</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">User Profile</li>
+                        <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                        <li class="breadcrumb-item"><a href="#">Tài khoản</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Thông tin tài khoản</li>
                     </ol>
                 </nav>
             </div>
@@ -78,7 +78,13 @@
                             </div>
                         </div>
                         <hr/>
-                        
+                        <div class="row text-right">
+                            <div class="col-9"></div>
+                            <div class="col text-center">
+                                <a asp-action="ChangePassword" class="">Đổi mật khẩu</a>
+                            </div>
+                                
+                        </div>
                     </div>
                 </div>
                 
@@ -89,6 +95,7 @@
                 <a class="btn btn-secondary fs-2" asp-action="Logout" asp-controller="Home">Đăng xuất</a>
 
                 <!-- Right button -->
+                
                 <a href="@Url.Action("PurchaseHistory", "Accounts", new { idAccount = Model.Id })" class="fs-2 ms-1">Lịch sử mua hàng</a>
             </div>
         </div>

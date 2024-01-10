@@ -2,21 +2,42 @@
     const ins = {};
     const fromDistrict = "1542"; // Quận huyện người gửi
     const shopId = "4189088";
-    ins.init = function() {
+    ins.init = function () {
+        //$('input[type="radio"]').change(function () {
 
+        //    if ($('#paymentInStore').is(':checked')) {
+        //        var insurance = $("#TotalPhone").val(); // tổng tiền sản phẩm
+        //        $("#TotalMoney").val(parseFloat(insurance));
+        //        $("#TotalPayment").text(parseFloat(insurance));
+        //        $("#TotalShip").val(0);
+        //    }
+        //});
+    };
+    ins.ChangePay = function() {
+        if ($('#paymentInStore').is(':checked')) {
+            $('.displayAddress').hide();
+            var insurance = $("#TotalPhone").val(); // tổng tiền sản phẩm
+            $("#TotalMoney").val(parseFloat(insurance));
+            $("#TotalPayment").text(parseFloat(insurance).toLocaleString('vi', { style: 'currency', currency: 'VND' }));
+            $("#TotalShip").val("0");
+            $("#TotalShip").text("0");
+        } else {
+            $('.displayAddress').show();
+            ins.TotalShip();
+        }
+        
     };
 
     ins.GetProvince = function() {
         const stringHtml = "";
-
     };
 
     ins.ChangeProvince = function() {
         let stringHtml = "";
-        const value = $("#Province").val();
+        var value = $("#Province").val();
         if (value.length > 1) {
-            const url = "https://online-gateway.ghn.vn/shiip/public-api/master-data/district";
-            const headers = {
+            var url = "https://online-gateway.ghn.vn/shiip/public-api/master-data/district";
+            var headers = {
                 token: "a799ced2-febc-11ed-a967-deea53ba3605"
             };
             data = {
@@ -48,10 +69,10 @@
 
     ins.ChangeDistrict = function() {
         let stringHtml = "";
-        const value = $("#District").val();
+        var value = $("#District").val();
         if (value.length > 1) {
-            const url = "https://online-gateway.ghn.vn/shiip/public-api/master-data/ward";
-            const headers = {
+            var url = "https://online-gateway.ghn.vn/shiip/public-api/master-data/ward";
+            var headers = {
                 token: "a799ced2-febc-11ed-a967-deea53ba3605"
             };
            var data = {
@@ -82,7 +103,7 @@
 
     ins.ChangeWard = function ()
     {
-        const value = $("#Ward").val();
+        var value = $("#Ward").val();
         if (value.length>1){
             $("#WardName").val($("#Ward option:selected").text());
         } else {
@@ -93,7 +114,7 @@
     ins.AvailableService = function (toDistrict) {
         var url = "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/available-services";
         let stringHtml = '';
-        const header = {
+        var header = {
             token: "a799ced2-febc-11ed-a967-deea53ba3605"
         };
         var data = {
@@ -135,7 +156,7 @@
             width *= parseInt(sumPhone);
             length *= parseInt(sumPhone);
         }
-        const url = "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee";
+        var url = "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee";
         const header = {
             token: "a799ced2-febc-11ed-a967-deea53ba3605",
             shop_id: shopId
@@ -179,12 +200,22 @@
 
     //khi chọn gói dịch vụ sẽ tính phí ship
     ins.ChangeService = function () {
-       var value= $("#AvailableService").val();
-        if (value.length>1) {
-            ins.TotalShip();
-        } else {
-            $("#TotalShip").empty();
+        if ($('#paymentInStore').is(':checked')) {
+            var insurance = $("#TotalPhone").val(); // tổng tiền sản phẩm
+            $("#TotalMoney").val(parseFloat(insurance));
+            $("#TotalPayment").text(parseFloat(insurance).toLocaleString('vi', { style: 'currency', currency: 'VND' }));
+            $("#TotalShip").val("0");
+            $("#TotalShip").text("0");
         }
+        else {
+            var value = $("#AvailableService").val();
+            if (value.length > 1) {
+                ins.TotalShip();
+            } else {
+                $("#TotalShip").empty();
+            }
+        }
+       
     }
 
     return ins;

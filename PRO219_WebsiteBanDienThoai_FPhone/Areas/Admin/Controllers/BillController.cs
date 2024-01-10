@@ -20,7 +20,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             // Lấy danh sách hóa đơn giảm dần theo thời gian đặt hàng
-            var bills = _context.Bill.Where(b => b.Status == 2  ).ToList().OrderByDescending(b => b.CreatedTime);
+            var bills = _context.Bill.Where(b => b.Status == 0).ToList().OrderByDescending(b => b.CreatedTime);
             if (bills != null && bills.Any())
             {
                 return View(bills);
@@ -59,7 +59,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         public async Task<IActionResult> Dahuys()
         {
             // Lấy danh sách hóa đơn giảm dần theo thời gian đặt hàng
-            var bills = _context.Bill.Where(b => b.Status == 5).ToList().OrderByDescending(b => b.CreatedTime);
+            var bills = _context.Bill.Where(b => b.Status == 4).ToList().OrderByDescending(b => b.CreatedTime);
             if (bills != null && bills.Any())
             {
                 return View(bills);
@@ -72,7 +72,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         public async Task<IActionResult> Danggiaoview()
         {
             // Lấy danh sách hóa đơn giảm dần theo thời gian đặt hàng
-            var bills = _context.Bill.Where(b => b.Status == 3).ToList().OrderByDescending(b => b.CreatedTime);
+            var bills = _context.Bill.Where(b => b.Status == 2).ToList().OrderByDescending(b => b.CreatedTime);
             if (bills != null && bills.Any())
             {
                 return View(bills);
@@ -85,7 +85,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         public async Task<IActionResult> Dagiaoview()
         {
             // Lấy danh sách hóa đơn giảm dần theo thời gian đặt hàng
-            var bills = _context.Bill.Where(b => b.Status == 4).ToList().OrderByDescending(b => b.CreatedTime);
+            var bills = _context.Bill.Where(b => b.Status == 3).ToList().OrderByDescending(b => b.CreatedTime);
             if (bills != null && bills.Any())
             {
                 return View(bills);
@@ -123,17 +123,21 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             ViewBag.PhoneNames = phoneNames + " " + ramName + " " + colorName;
 
             ViewBag.customer = _context.Bill.Where(m => m.Id == id).First();
-            var lisst = _context.BillDetails.Where(m => m.IdBill == id).ToList();
+            var lisst = _context.BillDetails.Where(m => m.IdBill == id && m.Status != 2).ToList();
             return View("BillDetail", lisst);
         }
         //chỉnh sửa status đơn hàng 
-        // status = 1 đã xác nhận, 2 chờ xác nhận 
+        // status = 0 cho xác nhận, 1 da xác nhận 
         public ActionResult Status(Guid id)
         {
             Bill bill = _context.Bill.Find(id);
-            bill.Status = (bill.Status == 1) ? 2 : 1;
+            bill.Status = 1;
             _context.Entry(bill).State = EntityState.Modified;
             _context.SaveChanges();
+
+            var acc = _context.Accounts.FirstOrDefault(p => p.Id == bill.IdAccount);
+            SendEmailDangGiao(acc.Email);
+
             return RedirectToAction("Index");
         }
 
@@ -141,7 +145,11 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         public ActionResult Dahuy(Guid id)
         {
             Bill bill = _context.Bill.Find(id);
-            bill.Status = 5;
+            bill.Status = 4;
+
+            var billdetail = _context.BillDetails.FirstOrDefault(p => p.IdBill == id);
+            billdetail.Status = 2; // xoa
+
             _context.Entry(bill).State = EntityState.Modified;
             _context.SaveChanges();
             return RedirectToAction("Index");
@@ -151,31 +159,15 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         public ActionResult DangGiao(Guid id)
         {
             Bill bill = _context.Bill.Find(id);
-            if (bill.Status == 2)
+            if (bill.Status == 0)
             {
                 //Loii
             }
             else
             {
-                bill.Status = 3;
+                bill.Status = 2;
                 _context.Entry(bill).State = EntityState.Modified;
-                _context.SaveChanges();
-
-                var soldImeis = (from billDetail in _context.BillDetails
-                                 join imei in _context.Imei on billDetail.IdPhoneDetail equals imei.IdPhoneDetaild
-                                 where billDetail.IdBill == id && imei.Status == 1
-                                 select imei).ToList();
-                var bd = _context.BillDetails.FirstOrDefault(bd => bd.IdBill == id);
-
-                if (soldImeis.Any())
-                {
-                    // 1 = chua ban, 2 = da ban
-                    var imeiToGet = soldImeis.FirstOrDefault();
-                    imeiToGet.Status = 2;
-                    imeiToGet.IdBillDetail = bd.Id;
-                    _context.Entry(imeiToGet).State = EntityState.Modified;
-                    _context.SaveChanges();
-                }
+                _context.SaveChanges();  
             }
             return RedirectToAction("xacnhan");
         }
@@ -183,14 +175,14 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         public ActionResult Dagiao(Guid id)
         {
             Bill bill = _context.Bill.Find(id);
-            if (bill.Status == 2)
+            if (bill.Status == 0)
             {
                 // loi
             }
             else
             {
 
-                bill.Status = 4;
+                bill.Status = 3;
                 bill.StatusPayment = 1;
                 bill.PaymentDate = DateTime.Now;
                 _context.Entry(bill).State = EntityState.Modified;
@@ -203,11 +195,57 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         public ActionResult Deltrash(Guid id)
         {
             Bill bill = _context.Bill.Find(id);
-            bill.Status = 0;
+            bill.Status = 5;
             _context.Entry(bill).State = EntityState.Modified;
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
+
+        [HttpGet]
+        // Thêm mới imei 
+        public ActionResult TimKiemImei(string name, Guid id)
+        {
+            
+            var a = _context.Imei.FirstOrDefault(p => p.NameImei == name);
+            if (a == null)
+            {
+                TempData["SuccessMessage"] = "Không tìm thấy sản phẩm !";
+                return RedirectToAction("Detail", new { id = id });
+            }
+            else
+            {
+                
+                a.Status = 2; // da ban
+
+                var billdetaild = _context.BillDetails.FirstOrDefault(p => p.IdBill == id && p.Status == 0);
+                billdetaild.Imei = name;
+
+                billdetaild.Status = 1; // đã được nhân viên xác nhận bán, 0 là hủy hoặc chưa được xác nhận 
+
+                _context.SaveChanges();
+                TempData["SuccessMessage"] = "Đã thêm sản phẩm thành công !";
+
+
+                return RedirectToAction("Detail", new { id = id});
+            }
+        }
+
+        public ActionResult DeleteBilDetail(Guid id)
+        {
+            var a = _context.BillDetails.FirstOrDefault(p => p.Id == id);
+            if (a != null)
+            {
+                var b = _context.Bill.FirstOrDefault(p => p.Id == a.IdBill);
+                b.TotalMoney = b.TotalMoney - a.Price; // cap nhat gia tien
+                a.Status = 2; // xoa 
+                _context.SaveChanges();
+
+                TempData["SuccessMessage"] = "Xóa sản phẩm thành công !";
+            }
+            
+            return RedirectToAction("Detail", new { id = a.IdBill });
+        }
+
 
         // Hiển thị danh sách sản phẩm hoàn trả
         public ActionResult HoanTraHoacBaoHanh()
@@ -484,6 +522,109 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                 <p>Thông tin bảo hành như sau:</p>
                 <p>Hãy gửi tới địa chỉ sau đây: 123ACCC<p>
                 <p>Thời gian bảo hành sẽ tính đến ngày: {dNgayGuiBaohanh}, kể từ ngày bạn gửi yêu cầu bảo hành.<p>
+                <p>Nếu Quý khách có bất kỳ câu hỏi hoặc cần hỗ trợ, vui lòng liên hệ với chúng tôi qua email <a href='mailto:support@fphonestore.com'>support@fphonestore.com</a> hoặc gọi số điện thoại hỗ trợ khách hàng: <strong>0123-456-789</strong>.</p>
+                <p>Chúc Quý khách có những trải nghiệm tốt nhất với hệ thống của chúng tôi!</p>
+                <footer>
+                    Trân trọng,<br>
+                    FPHONE STORE
+                </footer>
+            </div>
+        </body>
+        </html>";
+
+                // Cấu hình đối tượng SmtpClient
+                SmtpClient smtpClient = new SmtpClient("smtp.gmail.com");
+                smtpClient.Port = 587;
+                smtpClient.UseDefaultCredentials = false;
+                smtpClient.Credentials = new NetworkCredential(fromEmail, password);
+                smtpClient.EnableSsl = true;
+
+                // Gửi email
+                await smtpClient.SendMailAsync(mailMessage);
+
+                return Ok("Email sent successfully!");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error sending email: {ex.Message}");
+            }
+        }
+
+
+        public async Task<IActionResult> SendEmailDangGiao(string toEmail)
+        {
+            try
+            {
+                // Thông tin tài khoản email của bạn
+                string fromEmail = "fphone.store.404@gmail.com";
+                string password = "bdrczcwdttczwbsv";
+
+                var acc = _context.Accounts.FirstOrDefault(p => p.Email == toEmail);
+
+                // Tạo đối tượng MailMessage
+                MailMessage mailMessage = new MailMessage();
+                mailMessage.From = new MailAddress(fromEmail);
+                mailMessage.To.Add(toEmail);
+                mailMessage.Subject = "Thông báo giao hàng";
+                mailMessage.IsBodyHtml = true;
+                mailMessage.Body = $@"
+        <!DOCTYPE html>
+        <html lang='en'>
+        <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <style>
+                body {{
+                    font-family: 'Arial', sans-serif;
+                    background-color: #f4f4f4;
+                    margin: 0;
+                    padding: 0;
+                }}
+                .container {{
+                    max-width: 600px;
+                    margin: 20px auto;
+                    padding: 20px;
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                    background-color: #fff;
+                    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                }}
+                h1 {{
+                    color: #007BFF;
+                    margin-bottom: 20px;
+                }}
+                p {{
+                    margin-bottom: 15px;
+                    line-height: 1.6;
+                    color: #555;
+                }}
+                strong {{
+                    font-weight: bold;
+                }}
+                ul {{
+                    list-style: none;
+                    padding: 0;
+                }}
+                li {{
+                    margin-bottom: 8px;
+                }}
+                a {{
+                    color: #007BFF;
+                    text-decoration: none;
+                    font-weight: bold;
+                }}
+                footer {{
+                    margin-top: 20px;
+                    text-align: center;
+                    color: #777;
+                }}
+            </style>
+        </head>
+        <body>
+            <div class='container'>
+                <h1>{acc.Username} thân mến,</h1>
+                <p>Cảm ơn quý khách đã tin tưởng <strong> FPHONE STORE. </strong> của chúng tôi</p>
+                <p>Đơn hàng của quý khách đã xác nhận và đang được giao.</p>
                 <p>Nếu Quý khách có bất kỳ câu hỏi hoặc cần hỗ trợ, vui lòng liên hệ với chúng tôi qua email <a href='mailto:support@fphonestore.com'>support@fphonestore.com</a> hoặc gọi số điện thoại hỗ trợ khách hàng: <strong>0123-456-789</strong>.</p>
                 <p>Chúc Quý khách có những trải nghiệm tốt nhất với hệ thống của chúng tôi!</p>
                 <footer>

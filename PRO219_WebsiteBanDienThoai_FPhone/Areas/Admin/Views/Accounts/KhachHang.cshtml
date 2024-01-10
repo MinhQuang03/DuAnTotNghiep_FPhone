@@ -1,0 +1,71 @@
+﻿@model IEnumerable<AppData.Models.Account>
+@{
+    ViewData["Title"] = "Accounts";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<h1>Danh sách Khách Hàng</h1>
+
+<table class="table table-bordered">
+
+    <thead class="thead-light">
+        <tr>
+            <th>
+                Tên
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Username
+            </th>
+            <th>
+                SDT
+            </th>
+            <th>
+                Trạng thái
+            </th>
+            <th width="15%">Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+            @foreach (var item in Model)
+            {
+                <tr>
+                    @* <td>
+            @Html.DisplayFor(modelItem => item.UserName)
+            </td>*@
+                    <td>
+                     @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Username)
+                </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PhoneNumber)
+                    </td>
+                    <td>
+                        @(item.Status == 0 ? "Hoạt động" : "Không hoạt động")
+                    </td>
+                    <td>
+                        @if (item.Status == 0)
+                    {
+                        <a class="btn btn-sm btn-light text-success border a33" href="@Url.Action("Editkhachhang", "Accounts", new { id = item.Id })"> <i class="fas fa-toggle-on"></i> </a>
+                    }
+                    else if (item.Status == 1)
+                    {
+                        <a class="btn btn-sm btn-light text-danger border a33" href="@Url.Action("Editkhachhang1", "Accounts", new { id = item.Id })"> <i class="fas fa-toggle-on"></i> </a>
+                    }
+                    
+                    </td>
+       
+                </tr>
+            }
+        
+    </tbody>
+</table>

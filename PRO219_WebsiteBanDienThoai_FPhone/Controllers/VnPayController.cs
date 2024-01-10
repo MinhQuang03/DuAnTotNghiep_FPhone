@@ -35,7 +35,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
         public IActionResult Payment(CheckOutViewModel request)
         {
             var pay = new PayLib();
-            
+
             pay.AddRequestData("vnp_Version", "2.1.0"); //Phiên bản api mà merchant kết nối. Phiên bản hiện tại là 2.1.0
             pay.AddRequestData("vnp_Command", "pay"); //Mã API sử dụng, mã cho giao dịch thanh toán là 'pay'
             pay.AddRequestData("vnp_TmnCode", vnpay.TmnCode); //Mã website của merchant trên hệ thống của VNPAY (khi đăng ký tài khoản sẽ có trong mail VNPAY gửi về)
@@ -53,7 +53,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
 
             string paymentUrl = pay.CreateRequestUrl(vnpay.Url, vnpay.HashSecret);
 
-           
+
 
 
             var userId = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value;
@@ -65,7 +65,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
             bill.Id = new Guid();
             bill.Address = request.Address + "," + request.Province + "," + request.District + "," + request.Ward;
             bill.Name = request.Name;
-            bill.Status = 0;
+            bill.Status = 0; // cho xac nhan
             bill.TotalMoney = request.TotalMoney;
             bill.CreatedTime = DateTime.Now;
             bill.PaymentDate = DateTime.Now;
@@ -83,28 +83,17 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
 
             foreach (var item in product)
             {
-                // Tìm ra imeil đầu tiên thuộc PhoneDetail có status = 1 (1: chưa được bán)
-                var emeiCheck = _dbContext.Imei.FirstOrDefault(a => a.IdPhoneDetaild == item.IdPhoneDetaild && a.Status == 1);
-                // trường hợp tồn tại emeiCheck
-                if (null != emeiCheck)
-                {
-                    // Cập nhật lại status = 2 (Đã bán)
-                    emeiCheck.Status = 2;
-                    _dbContext.SaveChanges();
-
-                    // Thêm sản phẩm điện thoại vào bill detail
-                    BillDetails billDetail = new BillDetails();
-                    billDetail.IdBill = idhd;
-                    billDetail.Id = Guid.NewGuid();
-                    billDetail.IdPhoneDetail = item.IdPhoneDetaild;
-                    billDetail.Price = _dbContext.PhoneDetailds.Find(item.IdPhoneDetaild).Price;
-                    billDetail.Number = 1;
-                    billDetail.Status = 0;
-                    billDetail.Imei = emeiCheck.NameImei; // Đúng tra là id của bảng emei. Nhưng name email cũng không thể trùng.
-                    Listbill.Add(billDetail);
-                }
+                // Thêm sản phẩm điện thoại vào bill detail
+                BillDetails billDetail = new BillDetails();
+                billDetail.IdBill = idhd;
+                billDetail.Id = Guid.NewGuid();
+                billDetail.IdPhoneDetail = item.IdPhoneDetaild;
+                billDetail.Price = _dbContext.PhoneDetailds.Find(item.IdPhoneDetaild).Price;
+                billDetail.Number = 1;
+                billDetail.Status = 0;
+                Listbill.Add(billDetail);
             }
-            
+
             _dbContext.BillDetails.AddRange(Listbill);
             _dbContext.SaveChanges();
 
@@ -148,7 +137,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
                         var bill = _dbContext.Bill.FirstOrDefault(x => x.BillCode == orderId);
                         if (bill != null)
                         {
-                            bill.Status = 1; // đã xác nhận toán
+
                             bill.StatusPayment = 1; // Đã thanh toán 
                             bill.PaymentDate = DateTime.Now;
                             _dbContext.SaveChanges();
@@ -210,17 +199,6 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
                         if (billToDelete != null)
                         {
                             var billDetailsToDelete = _dbContext.BillDetails.Where(x => x.IdBill == billToDelete.Id).ToList();
-
-                            // Rollback the status of associated Imei records to 1 (Status: Chưa bán)
-                            foreach (var billDetail in billDetailsToDelete)
-                            {
-                                var imeiToUpdate = _dbContext.Imei.FirstOrDefault(a => a.NameImei == billDetail.Imei);
-                                if (imeiToUpdate != null)
-                                {
-                                    imeiToUpdate.Status = 1;
-                                }
-                            }
-
                             // Remove Bill and associated BillDetails
                             _dbContext.BillDetails.RemoveRange(billDetailsToDelete);
                             _dbContext.Bill.Remove(billToDelete);
@@ -230,7 +208,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
 
                         ViewBag.Message = "Có lỗi xảy ra trong quá trình xử lý hóa đơn " + orderId + " | Mã giao dịch: " + vnpayTranId + " | Mã lỗi: " + vnp_ResponseCode;
 
-                        
+
 
                     }
                 }
@@ -242,8 +220,6 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
 
             return View();
         }
-
-
         private string GetIpAddress()
         {
             string ipAddress = "";
