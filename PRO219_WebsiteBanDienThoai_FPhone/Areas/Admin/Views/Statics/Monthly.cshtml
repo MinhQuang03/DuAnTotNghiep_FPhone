@@ -1,0 +1,109 @@
+﻿@using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
+@model SellMonthlyViewModel
+
+@{
+    var index = 1;
+    ViewData["Title"] = "Index";
+}
+
+<h1>Thống Kê</h1>
+
+<div>
+    <span>Chọn năm</span>
+    <input id="select_year" type="number" min="1900" max="@(DateTime.Now.Year)" step="1" value="2023" />
+</div>
+<div class="w-100">
+    <div class="inline-block w-45 float-left">
+        <canvas id="chBar"></canvas>
+    </div>
+    <div class="inline-block w-45 float-right">
+        <canvas id="chBar1"></canvas>
+    </div>
+</div>
+
+    <form method="post" class="col-12 px-xl-5 mx-5 row" asp-action="Index">
+        <div class="col">
+            <span>Chọn Tháng </span>
+            <input id="selection_month" asp-for="Search.Month" type="number" min="1" max="12" step="1" value="1" />
+        </div>
+    <div class="col">
+        <span>Chọn Năm </span>
+        <input id="selection_year" asp-for="Search.Year" type="number" min="1900" max="@(DateTime.Now.Year)" step="1" value="2023" />
+    </div>
+        <div class="col">
+            <input type="submit" placeholder="Tìm kiếm" value="Tìm kiếm" class="btn btn-primary" />
+        </div>
+    </form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                STT
+            </th>
+            <th>
+                Ngày Tạo
+            </th>
+            <th>
+                Tổng Tiền
+            </th>
+            <th>
+                Số Lượng Bán Ra
+            </th>
+            <th>
+                Bán Online
+            </th>
+            <th>
+                Bán Offline
+            </th>
+            <th>
+                Bán Chạy Nhất
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.Refund)
+            </th>*@
+            <th>
+                Trạng Thái
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.lstsellMonthlys)
+        {
+            <tr>
+                <td>
+                    @(index++)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalMoneys)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalQuantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SellOnl)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SellOff)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BestSeller)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Refund)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<script src="~/js/adminchart.js"></script>

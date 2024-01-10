@@ -10,27 +10,30 @@ using System.Threading.Tasks;
 
 namespace AppData.Repositories
 {
-    public class SellDailyRepository : ISellDailyRepository
+    public class SellMonthlyRepo : ISellMonthlyRepository
     {
         private FPhoneDbContext _dbContext;
 
-        public SellDailyRepository(FPhoneDbContext dbContext)
+        public SellMonthlyRepo(FPhoneDbContext dbContext)
         {
             _dbContext = dbContext;
         }
-        public async Task<List<SellDailys>> GetAll()
+
+        public async Task<List<SellMonthlys>> GetByYear(int year)
         {
-            return await _dbContext.SellDailys.ToListAsync();
+            return await _dbContext.SellMonthlys.Where(e => e.CreateTime.Year == year).ToListAsync();
         }
 
-        public async Task<SellDailys> GetById(Guid id)
+
+        public async Task<List<SellMonthlys>> GetAll()
         {
-            return await _dbContext.SellDailys.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbContext.SellMonthlys.ToListAsync();
         }
 
-        public async Task<List<SellDailys>> GetByYear(int year)
+
+        public async Task<SellMonthlys> GetById(Guid id)
         {
-            return await _dbContext.SellDailys.Where(e => e.CreateTime.Year == year).ToListAsync();
+            return await _dbContext.SellMonthlys.FirstOrDefaultAsync(p => p.Id == id);
         }
     }
 }

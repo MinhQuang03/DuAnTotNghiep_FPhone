@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace AppData.IRepositories
 {
-    public interface ISellDailyRepository
+    public interface ISellMonthlyRepository
     {
-        Task<List<SellDailys>> GetAll();
-        Task<SellDailys> GetById(Guid id);
-        Task<List<SellDailys>> GetByYear(int year);
+        Task<List<SellMonthlys>> GetAll();
+        Task<SellMonthlys> GetById(Guid id);
+        Task<List<SellMonthlys>> GetByYear(int year);
     }
 }
