@@ -223,7 +223,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                 
                 a.Status = 2; // da ban
 
-                var billdetaild = _context.BillDetails.FirstOrDefault(p => p.IdBill == id && p.Imei == null);
+                var billdetaild = _context.BillDetails.FirstOrDefault(p => p.IdBill == id && p.IdPhoneDetail == a.IdPhoneDetaild && p.Imei == null);
                 billdetaild.Imei = name;
 
                 _context.SaveChanges();
@@ -239,8 +239,8 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             var a = _context.BillDetails.FirstOrDefault(p => p.Id == id);
             if (a != null)
             {
-                var listBillDetail = _context.BillDetails.Where(p => p.Id == a.IdBill).ToList();
-                if(listBillDetail.Count > 2)
+                var listBillDetail = _context.BillDetails.Where(p => p.IdBill == a.IdBill).ToList();
+                if(listBillDetail.Count > 1)
                 {
                     var b = _context.Bill.FirstOrDefault(p => p.Id == a.IdBill);
                     b.TotalMoney = b.TotalMoney - a.Price; // cap nhat gia tien
