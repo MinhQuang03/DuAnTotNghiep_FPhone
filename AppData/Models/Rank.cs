@@ -1,4 +1,6 @@
-﻿namespace AppData.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace AppData.Models
 {
     public class Rank
     {
@@ -15,8 +17,10 @@
 
         public DateTime? DateRank { get; set; }
 
-
+        public int Status { get; set; }
         public int? Policies { get; set; }
         public int? Benefits { get; set; }
+        [NotMapped]
+        public int? Days { get; set; }
     }
 }

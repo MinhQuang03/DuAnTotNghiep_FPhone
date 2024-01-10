@@ -6,9 +6,8 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 
 }
-<div>
-    <a asp-action="Index">Xem lịch sử</a>
-</div>
+ 
+
 
 <h2>Bảng chi tiết</h2>
 
@@ -81,24 +80,31 @@
         <thead class="thead-light">
             <tr>
                 <th>STT</th>
-                <th>Tên người dùng</th>
-                <th>Điểm</th>
+                <th>Ngày</th>
+                <th>Top1</th>
                 <th>Tổng điểm</th>
-                <th>Ranking</th>
-                <th>Chính sách</th>
-                <th>Quyền lợi</th>
+                <th>Top2</th>
+                <th>Tổng điểm</th>
+                <th>Top3</th>
+                <th>Tổng điểm</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
+            
             @foreach (var item in Model)
             {
+                @if (item.STT == 1) {
                 <tr>
                     <td>
                         <div class="d-flex align-items-center">
 
                             <div class="badge badge-success badge-diamond m-r-10"></div>
-                            <div>@Html.DisplayFor(modelItem => item.STT)</div>
+                           @*  @for(var stt in item.STT)
+                                { *@
+                                    <div>@Html.DisplayFor(modelItem => item.STT)</div>
+                                @* } *@
+
                         </div>
                     </td>
 
@@ -124,6 +130,7 @@
                         @Html.DisplayFor(modelItem => item.Benefits)
                     </td>
                 </tr>
+                }
             }
         </tbody>
     </table>

@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 
 namespace AppData.IRepositories
 {
-    public interface IRanksRepositories
+    public interface ISellYearlyRepository
     {
-        Task<List<Rank>> GetAll();
-    
-        Task<Rank> GetById(Guid id);
-        Task<List<Rank>> GetByYear(int days);
+        Task<List<SellYearlys>> GetAll();
+        Task<SellYearlys> GetById(Guid id);
+        Task<List<SellYearlys>> GetByYear(int year);
     }
 }

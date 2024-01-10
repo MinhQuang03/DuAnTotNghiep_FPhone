@@ -1,5 +1,5 @@
 ﻿@using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
-@model SellDailyViewModel
+@model SellMonthlyViewModel
 
 @{
     var index = 1;
@@ -10,7 +10,7 @@
 
 <div>
     <span>Chọn năm</span>
-    <input id="select_year" type="number" min="1900" max="@(DateTime.Now.Month)" step="1" value="1" />
+    <input id="select_year" type="number" min="1900" max="@(DateTime.Now.Year)" step="1" value="2023" />
 </div>
 <div class="w-100">
     <div class="inline-block w-45 float-left">
@@ -69,7 +69,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.LstSellDailys)
+        @foreach (var item in Model.lstsellMonthlys)
         {
             <tr>
                 <td>
@@ -93,9 +93,9 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.BestSeller)
                 </td>
-                @*<td>
+                <td>
                     @Html.DisplayFor(modelItem => item.Refund)
-                </td>*@
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Status)
                 </td>

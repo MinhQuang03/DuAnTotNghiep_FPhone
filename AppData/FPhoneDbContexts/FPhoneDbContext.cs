@@ -47,6 +47,8 @@ public class FPhoneDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Warranty> Warranty { get; set; }
     public DbSet<WarrantyCard> WarrantyCards { get; set; }
     public DbSet<Sales> Sales { get; set; }
+    public DbSet<SellMonthlys> SellMonthlys { get; set; }
+    public DbSet<SellYearlys> SellYearlys { get; set; }
     public DbSet<SellDailys> SellDaily { get; set; }
     public DbSet<SalePhoneDetaild> SalePhoneDetailds { get; set; }
     public DbSet<SellDailys> SellDailys { get; set; }
@@ -59,7 +61,7 @@ public class FPhoneDbContext : IdentityDbContext<ApplicationUser>
     // Ko cần sửa file này
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer(@"Data Source=.;Initial Catalog=PRO219_WebsiteBanDienThoai ;Integrated Security=True");
+        optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-GEO6VF4;Initial Catalog=PRO219_WebsiteBanDienThoai ;Integrated Security=True");
     }
     protected override void OnModelCreating(ModelBuilder builder)
     {

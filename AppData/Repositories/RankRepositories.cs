@@ -2,6 +2,7 @@
 using AppData.IRepositories;
 using AppData.Models;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,6 +58,10 @@ namespace AppData.Repositories
             return ranks;
         }
 
-
+        public async Task<List<Rank>> GetByYear(int days)
+        {
+            return await _dbContext.Ranks.Where(e => e.Days == days).ToListAsync();
+          //  return true;
+        }
     }
 }
