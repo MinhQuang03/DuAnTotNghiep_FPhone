@@ -64,7 +64,7 @@
                     {
                         <tr>
                             <td>
-                                @if(item.Status == 0)
+                                @if(item.Imei == null)
                                 {
                                     <div class="form-check">
                                         <a href="@Url.Action("DeleteBilDetail", "Bill", new { id = item.Id })" style="color:red">
@@ -82,7 +82,7 @@
                                 @Html.DisplayFor(modelItem => item.Price)
                             </td>
                             <td>
-                                @if (item.Status == 1)
+                                @if (item.Imei != null)
                                 {
 
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-circle" viewBox="0 0 16 16">

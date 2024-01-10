@@ -131,14 +131,22 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         public ActionResult Status(Guid id)
         {
             Bill bill = _context.Bill.Find(id);
-            bill.Status = 1;
-            _context.Entry(bill).State = EntityState.Modified;
-            _context.SaveChanges();
-
-            var acc = _context.Accounts.FirstOrDefault(p => p.Id == bill.IdAccount);
-            SendEmailDangGiao(acc.Email);
-
-            return RedirectToAction("Index");
+            var billdetail = _context.BillDetails.FirstOrDefault(p => p.IdBill == id);
+            if(billdetail.Imei == null)
+            {
+                TempData["SuccessMessage"] = "Vui lòng thêm imei trước khi xác nhận !";
+                return RedirectToAction("Detail", new { id = id });
+            }
+            else
+            {
+                bill.Status = 1;
+                _context.Entry(bill).State = EntityState.Modified;
+                var acc = _context.Accounts.FirstOrDefault(p => p.Id == bill.IdAccount);
+                SendEmailDangGiao(acc.Email);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            
         }
 
         // huỷ đơn hàng
@@ -147,9 +155,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             Bill bill = _context.Bill.Find(id);
             bill.Status = 4;
 
-            var billdetail = _context.BillDetails.FirstOrDefault(p => p.IdBill == id);
-            billdetail.Status = 2; // xoa
-
+           
             _context.Entry(bill).State = EntityState.Modified;
             _context.SaveChanges();
             return RedirectToAction("Index");
@@ -217,10 +223,8 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                 
                 a.Status = 2; // da ban
 
-                var billdetaild = _context.BillDetails.FirstOrDefault(p => p.IdBill == id && p.Status == 0);
+                var billdetaild = _context.BillDetails.FirstOrDefault(p => p.IdBill == id && p.Imei == null);
                 billdetaild.Imei = name;
-
-                billdetaild.Status = 1; // đã được nhân viên xác nhận bán, 0 là hủy hoặc chưa được xác nhận 
 
                 _context.SaveChanges();
                 TempData["SuccessMessage"] = "Đã thêm sản phẩm thành công !";
@@ -235,12 +239,22 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             var a = _context.BillDetails.FirstOrDefault(p => p.Id == id);
             if (a != null)
             {
-                var b = _context.Bill.FirstOrDefault(p => p.Id == a.IdBill);
-                b.TotalMoney = b.TotalMoney - a.Price; // cap nhat gia tien
-                a.Status = 2; // xoa 
-                _context.SaveChanges();
+                var listBillDetail = _context.BillDetails.Where(p => p.Id == a.IdBill).ToList();
+                if(listBillDetail.Count > 2)
+                {
+                    var b = _context.Bill.FirstOrDefault(p => p.Id == a.IdBill);
+                    b.TotalMoney = b.TotalMoney - a.Price; // cap nhat gia tien
+                    _context.Remove(a);
+                    _context.SaveChanges();
 
-                TempData["SuccessMessage"] = "Xóa sản phẩm thành công !";
+                    TempData["SuccessMessage"] = "Xóa sản phẩm thành công !";
+                }
+                else
+                {
+                    TempData["SuccessMessage"] = "Bạn không thể xóa sản phẩm !";
+                }
+
+                
             }
             
             return RedirectToAction("Detail", new { id = a.IdBill });
