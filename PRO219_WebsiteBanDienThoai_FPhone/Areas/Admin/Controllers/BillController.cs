@@ -169,6 +169,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                 bill.Status = 1;
                 _context.Entry(bill).State = EntityState.Modified;
                 var acc = _context.Accounts.FirstOrDefault(p => p.Id == bill.IdAccount);
+
                 SendEmailDangGiao(acc.Email);
                 _context.SaveChanges();
                 return RedirectToAction("Index");
@@ -179,12 +180,21 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         // huỷ đơn hàng
         public ActionResult Dahuy(Guid id)
         {
-            Bill bill = _context.Bill.Find(id);
-            bill.Status = 4;
+            var a = _context.BillDetails.FirstOrDefault(p => p.IdBill == id);
+            if(a.Imei != null)
+            {
+                Bill bill = _context.Bill.Find(id);
+                bill.Status = 4;
 
-           
-            _context.Entry(bill).State = EntityState.Modified;
-            _context.SaveChanges();
+
+                _context.Entry(bill).State = EntityState.Modified;
+                _context.SaveChanges();
+            }
+            else
+            {
+                TempData["SuccessMessage"] = "Không thể hủy khi đã thêm imei !";
+            }
+            
             return RedirectToAction("Index");
         }
         
@@ -219,7 +229,11 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                 bill.StatusPayment = 1;
                 bill.PaymentDate = DateTime.Now;
                 _context.Entry(bill).State = EntityState.Modified;
+
+                var acc = _context.Accounts.FirstOrDefault(p => p.Id == bill.IdAccount);
+                SendEmailDaGiao(acc.Email);
                 _context.SaveChanges();
+
             }
 
             return RedirectToAction("Danggiaoview");
@@ -666,6 +680,108 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                 <h1>{acc.Username} thân mến,</h1>
                 <p>Cảm ơn quý khách đã tin tưởng <strong> FPHONE STORE. </strong> của chúng tôi</p>
                 <p>Đơn hàng của quý khách đã xác nhận và đang được giao.</p>
+                <p>Nếu Quý khách có bất kỳ câu hỏi hoặc cần hỗ trợ, vui lòng liên hệ với chúng tôi qua email <a href='mailto:support@fphonestore.com'>support@fphonestore.com</a> hoặc gọi số điện thoại hỗ trợ khách hàng: <strong>0123-456-789</strong>.</p>
+                <p>Chúc Quý khách có những trải nghiệm tốt nhất với hệ thống của chúng tôi!</p>
+                <footer>
+                    Trân trọng,<br>
+                    FPHONE STORE
+                </footer>
+            </div>
+        </body>
+        </html>";
+
+                // Cấu hình đối tượng SmtpClient
+                SmtpClient smtpClient = new SmtpClient("smtp.gmail.com");
+                smtpClient.Port = 587;
+                smtpClient.UseDefaultCredentials = false;
+                smtpClient.Credentials = new NetworkCredential(fromEmail, password);
+                smtpClient.EnableSsl = true;
+
+                // Gửi email
+                await smtpClient.SendMailAsync(mailMessage);
+
+                return Ok("Email sent successfully!");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error sending email: {ex.Message}");
+            }
+        }
+
+        public async Task<IActionResult> SendEmailDaGiao(string toEmail)
+        {
+            try
+            {
+                // Thông tin tài khoản email của bạn
+                string fromEmail = "fphone.store.404@gmail.com";
+                string password = "bdrczcwdttczwbsv";
+
+                var acc = _context.Accounts.FirstOrDefault(p => p.Email == toEmail);
+
+                // Tạo đối tượng MailMessage
+                MailMessage mailMessage = new MailMessage();
+                mailMessage.From = new MailAddress(fromEmail);
+                mailMessage.To.Add(toEmail);
+                mailMessage.Subject = "Thông báo giao hàng thành công";
+                mailMessage.IsBodyHtml = true;
+                mailMessage.Body = $@"
+        <!DOCTYPE html>
+        <html lang='en'>
+        <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <style>
+                body {{
+                    font-family: 'Arial', sans-serif;
+                    background-color: #f4f4f4;
+                    margin: 0;
+                    padding: 0;
+                }}
+                .container {{
+                    max-width: 600px;
+                    margin: 20px auto;
+                    padding: 20px;
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                    background-color: #fff;
+                    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                }}
+                h1 {{
+                    color: #007BFF;
+                    margin-bottom: 20px;
+                }}
+                p {{
+                    margin-bottom: 15px;
+                    line-height: 1.6;
+                    color: #555;
+                }}
+                strong {{
+                    font-weight: bold;
+                }}
+                ul {{
+                    list-style: none;
+                    padding: 0;
+                }}
+                li {{
+                    margin-bottom: 8px;
+                }}
+                a {{
+                    color: #007BFF;
+                    text-decoration: none;
+                    font-weight: bold;
+                }}
+                footer {{
+                    margin-top: 20px;
+                    text-align: center;
+                    color: #777;
+                }}
+            </style>
+        </head>
+        <body>
+            <div class='container'>
+                <h1>{acc.Username} thân mến,</h1>
+                <p>Cảm ơn quý khách đã tin tưởng <strong> FPHONE STORE. </strong> của chúng tôi</p>
+                <p>Đơn hàng của quý khách đã được giao thành công.</p>
                 <p>Nếu Quý khách có bất kỳ câu hỏi hoặc cần hỗ trợ, vui lòng liên hệ với chúng tôi qua email <a href='mailto:support@fphonestore.com'>support@fphonestore.com</a> hoặc gọi số điện thoại hỗ trợ khách hàng: <strong>0123-456-789</strong>.</p>
                 <p>Chúc Quý khách có những trải nghiệm tốt nhất với hệ thống của chúng tôi!</p>
                 <footer>
