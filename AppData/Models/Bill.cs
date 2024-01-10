@@ -22,8 +22,9 @@
 
         public DateTime? Update_at { get; set; }
         public int StatusPayment { get; set; }
-
+        public string? Note { get; set; }
         public Guid? IdAccount { get; set; }
+
 
         public virtual Account Accounts { get; set; }
 
