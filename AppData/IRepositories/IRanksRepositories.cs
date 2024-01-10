@@ -12,5 +12,6 @@ namespace AppData.IRepositories
         Task<List<Rank>> GetAll();
     
         Task<Rank> GetById(Guid id);
+        Task<List<Rank>> GetByYear(int days);
     }
 }

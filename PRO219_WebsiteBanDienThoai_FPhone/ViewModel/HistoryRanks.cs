@@ -1,15 +1,15 @@
 ﻿namespace PRO219_WebsiteBanDienThoai_FPhone.ViewModel
 {
-    public class BlogDetailView
+    public class HistoryRanks
     {
-        public Guid IdBlog { get; set; }
-        public Guid IdBlogDetail { get; set; }
-        public string? Title { get; set; }
+   
+        public DateTime Date { get; set; }
+        public string? Top1Name { get; set; }
 
-        public string? Content { get; set; }
+        public string? Top2Name { get; set; }
 
-        public string? Images { get; set; }
+        public string? Top3Name { get; set; }
 
-        public DateTime? CreatedDate { get; set; }
+        public int? point { get; set; }
     }
 }
