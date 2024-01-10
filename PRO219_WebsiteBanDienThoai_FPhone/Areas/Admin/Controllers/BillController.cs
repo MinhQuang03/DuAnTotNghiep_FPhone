@@ -17,9 +17,14 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         {
             _context = new FPhoneDbContext();
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string search)
         {
-            // Lấy danh sách hóa đơn giảm dần theo thời gian đặt hàng
+            if (!string.IsNullOrEmpty(search))
+            {
+                var s = _context.Bill.Where(b => b.BillCode == search && b.Status == 0).ToList().OrderByDescending(b => b.CreatedTime);
+                return View(s);
+            }
+               
             var bills = _context.Bill.Where(b => b.Status == 0).ToList().OrderByDescending(b => b.CreatedTime);
             if (bills != null && bills.Any())
             {
@@ -30,8 +35,14 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                 return View();
             }
         }
-        public async Task<IActionResult> xacnhan()
+      
+        public async Task<IActionResult> xacnhan(string search)
         {
+            if (!string.IsNullOrEmpty(search))
+            {
+                var s = _context.Bill.Where(b => b.BillCode == search && b.Status == 1).ToList().OrderByDescending(b => b.CreatedTime);
+                return View(s);
+            }
             // Lấy danh sách hóa đơn giảm dần theo thời gian đặt hàng
             var bills = _context.Bill.Where(b => b.Status == 1).ToList().OrderByDescending(b => b.CreatedTime);
             if (bills != null && bills.Any())
@@ -56,8 +67,13 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             return RedirectToAction("Dahuys");
         }
 
-        public async Task<IActionResult> Dahuys()
+        public async Task<IActionResult> Dahuys(string search)
         {
+            if (!string.IsNullOrEmpty(search))
+            {
+                var s = _context.Bill.Where(b => b.BillCode == search && b.Status == 4).ToList().OrderByDescending(b => b.CreatedTime);
+                return View(s);
+            }
             // Lấy danh sách hóa đơn giảm dần theo thời gian đặt hàng
             var bills = _context.Bill.Where(b => b.Status == 4).ToList().OrderByDescending(b => b.CreatedTime);
             if (bills != null && bills.Any())
@@ -69,8 +85,13 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                 return View();
             }
         }
-        public async Task<IActionResult> Danggiaoview()
+        public async Task<IActionResult> Danggiaoview(string search)
         {
+            if (!string.IsNullOrEmpty(search))
+            {
+                var s = _context.Bill.Where(b => b.BillCode == search && b.Status == 2).ToList().OrderByDescending(b => b.CreatedTime);
+                return View(s);
+            }
             // Lấy danh sách hóa đơn giảm dần theo thời gian đặt hàng
             var bills = _context.Bill.Where(b => b.Status == 2).ToList().OrderByDescending(b => b.CreatedTime);
             if (bills != null && bills.Any())
@@ -82,8 +103,13 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                 return View();
             }
         }
-        public async Task<IActionResult> Dagiaoview()
+        public async Task<IActionResult> Dagiaoview(string search)
         {
+            if (!string.IsNullOrEmpty(search))
+            {
+                var s = _context.Bill.Where(b => b.BillCode == search && b.Status == 3).ToList().OrderByDescending(b => b.CreatedTime);
+                return View(s);
+            }
             // Lấy danh sách hóa đơn giảm dần theo thời gian đặt hàng
             var bills = _context.Bill.Where(b => b.Status == 3).ToList().OrderByDescending(b => b.CreatedTime);
             if (bills != null && bills.Any())
