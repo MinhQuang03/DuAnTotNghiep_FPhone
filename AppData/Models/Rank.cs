@@ -15,7 +15,7 @@
 
         public DateTime? DateRank { get; set; }
 
-
+        public int Status { get; set; }
         public int? Policies { get; set; }
         public int? Benefits { get; set; }
     }
