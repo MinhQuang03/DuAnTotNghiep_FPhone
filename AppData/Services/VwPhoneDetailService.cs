@@ -1,6 +1,7 @@
 ﻿using AppData.FPhoneDbContexts;
 using AppData.IServices;
 using AppData.Models;
+using AppData.Utilities;
 using AppData.ViewModels.Options;
 using AppData.ViewModels.Phones;
 using Microsoft.EntityFrameworkCore;
@@ -71,6 +72,21 @@ public class VwPhoneDetailService : IVwPhoneDetailService
         }
 
         return lst;
+    }
+
+    public List<PhoneDetaild> listPhoneDetailByIDPhone(Guid id)
+    {
+       var lst = new List<PhoneDetaild>();
+       try
+       {
+            lst = _dbContext.PhoneDetailds.Where(c=>c.IdPhone == id).ToList();
+       }
+       catch (Exception e)
+       {
+           
+       }
+
+       return lst;
     }
 
     public List<VW_PhoneDetail> getListPhoneDetailByIdPhone(Guid idPhone)

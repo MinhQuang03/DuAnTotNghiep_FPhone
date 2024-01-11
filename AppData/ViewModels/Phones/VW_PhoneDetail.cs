@@ -10,6 +10,8 @@ namespace AppData.ViewModels.Phones
        
         public Guid IdPhoneDetail { get; set; }
         public Guid IdPhone { get; set; }
+        public Guid RamID { get; set; }
+        public Guid ColorID { get; set; }
         public string? PhoneName { get; set; }
         public decimal? ReducedAmount { get; set; }
         public string? MaterialName { get; set; }
