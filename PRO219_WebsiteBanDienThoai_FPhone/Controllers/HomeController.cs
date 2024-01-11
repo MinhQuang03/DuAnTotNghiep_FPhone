@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers;
 
@@ -13,23 +14,30 @@ public class HomeController : Controller
 {
     private readonly HttpClient _client;
     private IVwPhoneService _phoneService;
+    private IVwTop5PhoneServices _top5PhoneService;
     private readonly ILogger<HomeController> _logger;
     private FPhoneDbContext _context;
-    public HomeController(ILogger<HomeController> logger, HttpClient client, IVwPhoneService phoneService)
+    public HomeController(ILogger<HomeController> logger, HttpClient client, IVwPhoneService phoneService, IVwTop5PhoneServices top5PhoneService)
     {
         _context = new FPhoneDbContext();
         _logger = logger;
         _client = client;
         _phoneService = phoneService;
+        _top5PhoneService = top5PhoneService;
     }
 
 
     public async Task<IActionResult> Index()
     {
-        VW_Phone_Group model = new VW_Phone_Group();
-	    var data= _phoneService.listVwPhoneGroup(model);
-        return View(data);
+       HomeGroupViewModel model = new HomeGroupViewModel();
+
+
+	    model.vPhoneGroup  = _phoneService.listVwPhoneGroup(model._VW_Phone_Group);
+        model.vTop5 = await _top5PhoneService.listVwTop5PhoneGroup();
+
+        return View(model);
     }
+
 
     
     public async Task<IActionResult> LogOut()

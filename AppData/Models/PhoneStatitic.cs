@@ -20,8 +20,9 @@ namespace AppData.Models
         public string? BestPriceRange { get; set; }
 
         public string? BuyTime { get; set; }
-        public int? SellOff { get; set; }
-        public string? BestSeller { get; set; }
+        public int? PecentPhone { get; set; }
+        public int? TotalBackPhone { get; set; }
+        public string? Note { get; set; }
         public string? Status { get; set; }
         [NotMapped]
         public int? Month {get; set; }

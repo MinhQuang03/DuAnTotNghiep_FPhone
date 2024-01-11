@@ -17,5 +17,9 @@ namespace AppData.ViewModels.Phones
         public decimal? PriceMax { get; set; }  
         public DateTime? CreateDate { get; set; } = DateTime.Now;
 
+
+
+
+
     }
 }
