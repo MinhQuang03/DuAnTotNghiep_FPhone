@@ -73,7 +73,7 @@
                     }
                     else if (!UserClaim.HasRole(User, "User"))
                     {
-                        <a href="#" class="icon__item" id="login-btn">
+                        <a asp-controller="Accounts" asp-action="Login" class="icon__item" id="login-btn">
                             <svg class="icon__user">
                                 <use xlink:href="/images/sprite.svg#icon-user"></use>
                             </svg>
@@ -98,7 +98,7 @@
     </div>
     
 
-    <div class="auth">
+    @* <div class="auth">
         <form asp-action="Login" asp-controller="Accounts" class="login-form">
             <h3>Đăng nhập</h3>
             <partial name="DataError"/>
@@ -108,7 +108,7 @@
             <p>Không có tài khoản ? <a asp-controller="Accounts" asp-action="CreateAccount">Tạo mới</a></p>
             <input type="submit" value="Đăng nhập" class="btn border" >
         </form>
-    </div>
+    </div> *@
     <div class="searchF">
         <form action="" class="search-form">
             <input type="search" id="search-box" placeholder="Search here..">
