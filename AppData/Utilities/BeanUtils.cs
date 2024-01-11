@@ -7,6 +7,15 @@ using System.Threading.Tasks;
 
 namespace AppData.Utilities
 {
+    public static class FphoneConst
+    {
+        public const int HoatDong = 0;
+        public const int KhongHoatDong = 1;
+
+        public const int ChuaBan = 1;
+        public const int Daban = 2;
+    }
+
     public static class BeanUtils
     {
         public static bool IsNumber(this object value)

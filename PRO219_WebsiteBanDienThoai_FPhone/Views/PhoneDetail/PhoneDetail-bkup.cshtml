@@ -10,10 +10,10 @@
     }
 
     /*  .selected {
-                background-color: #33FF33;
-                border-radius: 2px;
-            }
-        */
+            background-color: #33FF33;
+            border-radius: 2px;
+        }
+    */
     .selected {
         background-color: #33FF33;
         border-radius: 2px;
@@ -181,10 +181,9 @@
                 </div>
                 <div class="zoom" id="zoom"></div>
             </div>
-            <form  id="AddToCart" method="get">
-                <input asp-for="IdPhoneDetail" hidden=""/>
+            <form action="" id="AddToCart" method="get">
                 <div class="product-details__btn">
-                    <button onclick="JPhoneDetail.AddToCard(event)" type="submit" class="add btn btn-block" id="addToCart" name="addToCart">
+                    <button type="submit" class="add btn btn-block" name="addToCart">
                         <span>
                             <svg>
                                 <use xlink:href="/images/sprite.svg#icon-cart-plus"></use>
@@ -211,10 +210,9 @@
 
         <div class="product-detail__right">
             <div class="product-detail__content">
-                <h3 id="phoneName">@Model.Phone.PhoneName</h3>
-                <strong style="color: red" id="notExits">Hết hàng</strong>
+                <h3 id="phoneName"></h3>
                 <div class="price">
-                    <span id="phonePrice" style="color: red;font-size: 20px"></span>
+                    <span id="phonePrice" class="new__price"></span>
                 </div>
                 <div class="product__review">
                     <div class="rating">
@@ -245,12 +243,12 @@
                         <li class=" row" id="listPhone">
 
                         </li>
-                        <li class="row" @* id="ramButtons" *@>
-                            @foreach (var item in Model.LstRam)
-                            {
-                                <a value="@item.Id" id="@item.Id" onclick="JPhoneDetail.selectPhoneDetail('@item.Id','@Model.IdPhone')" class="btn border col btnRam">@item.Name</a>
-                            }
+                        @*<li>
+                        <span>RAM Type:</span>
+                        <div id="ramOptions"></div>
                         </li>
+                        <li class="row" id="colorList"></li>*@
+                        <li class="row" id="ramButtons"></li>
                         <li class="row" id="colorList"></li>
 
                         <li>
@@ -262,8 +260,8 @@
                             <a id="colorName" href="#">Mau den</a>
                         </li>
                         <li>
-                            <span>Số lượng kho:</span>
-                            <a href="#" class="in-stock"></a>
+                            <span>Availability:</span>
+                            <a href="#" class="in-stock">In Stock (7 Items)</a>
                         </li>
                     </ul>
 
@@ -319,9 +317,127 @@
     </div>
 </section>
 
-<script src="~/js/JPhoneDetail.js"></script>
+
+
 <script>
-    $(document).ready(function() {
-        $('#notExits').hide();
+    document.addEventListener('DOMContentLoaded', function () {
+        var id = window.location.href.split("/")[5];
+        console.log(id);
+        if (id == null) {
+            alert("Không tìm thấy sản phẩm");
+        }
+        loadPhoneDetails(id);
     });
+
+    function loadPhoneDetails(id) {
+        let api = "/PhoneDetail/GetDetailPhones/" + id;
+        fetch(api)
+            .then(response => response.json())
+            .then(response => {
+                console.log(response);
+
+                if (response.success) {
+                    localStorage.setItem("phoneDetails", JSON.stringify(response));
+
+                    // Group items by RAM type
+                    let groupedByRam = {};
+                    response.items.forEach(item => {
+                        if (!groupedByRam[item.ramName]) {
+                            groupedByRam[item.ramName] = [];
+                        }
+                        groupedByRam[item.ramName].push(item);
+                    });
+
+                    // Sort RAM types by GB
+                    let sortedRamTypes = Object.keys(groupedByRam).sort((a, b) => {
+                        // Extract GB value from RAM type (assuming RAM type is in the format "X GB")
+                        const getGBValue = ramType => parseInt(ramType.split(' ')[0]);
+
+                        return getGBValue(a) - getGBValue(b);
+                    });
+
+                    // Display RAM buttons
+                    let ramButtonsHtml = '';
+                    sortedRamTypes.forEach(ramName => {
+                        ramButtonsHtml += `
+                                <button class="btn col-4 border rounded phone-hover mt-2" onclick="loadColorsByRam('${ramName}')">${ramName}</button>
+                    `;
+                    });
+
+                    document.querySelector("#ramButtons").innerHTML = ramButtonsHtml;
+
+                    // Call loadColorsByRam with the first RAM
+                    loadColorsByRam(sortedRamTypes[0]);
+
+                    // Call loadPhoneDetail with the first item
+                    loadPhoneDetail(response.items[0].idPhoneDetail, document.querySelector("#listPhone a"));
+                }
+            })
+            .catch(error => console.log(error));
+    }
+
+    function loadColorsByRam(selectedRam) {
+        let phoneDetails = JSON.parse(localStorage.getItem("phoneDetails"));
+        let colorsHtml = '';
+
+        if (phoneDetails) {
+            let itemsWithSelectedRam = phoneDetails.items.filter(item => item.ramName === selectedRam);
+
+            itemsWithSelectedRam.forEach(item => {
+                colorsHtml += `
+                        <a class="btn col-4 border rounded phone-hover mt-2"
+                            onclick="loadPhoneDetail('${item.idPhoneDetail}', this)">
+                            <div>
+                                <strong>${item.colorName}</strong>
+                            </div>
+                            <span>${item.price} đ</span>
+                        </a>
+                    `;
+            });
+
+            // Keep track of the previously selected button
+            let previouslySelectedButton = document.querySelector("#colorList .selected");
+
+            document.querySelector("#colorList").innerHTML = colorsHtml;
+
+            // Add the "selected" class to the newly clicked button
+            let newlyClickedButton = document.querySelector("#colorList a");
+            if (previouslySelectedButton) {
+                newlyClickedButton.classList.add("selected");
+
+                // Remove "selected" class from the previously selected button
+                previouslySelectedButton.classList.remove("selected");
+            }
+
+            // Call loadPhoneDetail with the first item
+            loadPhoneDetail(itemsWithSelectedRam[0].idPhoneDetail, newlyClickedButton);
+        }
+    }
+
+
+
+
+    function loadPhoneDetail(id, button) {
+        let phoneDetails = JSON.parse(localStorage.getItem("phoneDetails"));
+        if (phoneDetails == null) {
+            alert("Không tìm thấy sản phẩm");
+        }
+        let phone = phoneDetails.items.find(x => x.idPhoneDetail == id);
+        document.getElementById("phoneName").innerHTML = phone.phoneName;
+        document.getElementById("phonePrice").innerHTML = phone.price + " đ";
+        document.getElementById("colorName").innerHTML = phone.colorName;
+
+        localStorage.setItem("idPhoneDetail", phone.idPhoneDetail);
+
+        // Remove "selected" class from all buttons
+        document.querySelectorAll("#listPhone a, #colorList a").forEach(btn => {
+            btn.classList.remove("selected");
+        });
+
+        // Add the "selected" class to the clicked button
+        button.classList.add("selected");
+
+        document.getElementById("AddToCart").action = "@Url.Action("AddToCard", "Accounts")/" + phone.idPhoneDetail;
+    }
 </script>
+
