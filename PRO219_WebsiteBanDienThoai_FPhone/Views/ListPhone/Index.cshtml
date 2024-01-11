@@ -93,7 +93,7 @@
                     <img src="@item.FirstImage" alt="product">
                 </div>
                 <div class="product__footer">
-                    <h3 style="width: 235px;height: 39px">@item.PhoneName @item.RamName @item.RomName</h3>
+                    <h3 style="width: 235px;height: 39px">@item.PhoneName @item.RamName @item.RomName - @item.ColorName</h3>
                     <div class="rating">
                         <svg>
                             <use xlink:href="./images/sprite.svg#icon-star-full"></use>
@@ -115,7 +115,7 @@
                         <h4 style="color:#da152b">@item.Price</h4>
                     </div>
                     <a href="#">
-                        @Html.ActionLink("Thêm vào giỏ hàng", "PhoneDetail", "PhoneDetail", new { id = item.IdPhone }, new { @class = "product__btn", type = "submit" })
+                        @Html.ActionLink("Thêm vào giỏ hàng", "AddToCard", "Accounts", new { id = item.IdPhoneDetail }, new { @class = "product__btn", type = "submit" })
 
                     </a>
                 </div>

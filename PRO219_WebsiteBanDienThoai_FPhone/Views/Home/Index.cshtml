@@ -1,4 +1,3 @@
-@using AppData.ViewModels.Phones
 @model PRO219_WebsiteBanDienThoai_FPhone.ViewModel.HomeGroupViewModel
 ﻿@using AppData.Models;
 
@@ -16,7 +15,9 @@
                             <span class="">New Inspiration 2020</span>
                             <h1 class="">PHONES MADE FOR YOU!</h1>
                             <p>Trending from mobile and headphone style collection</p>
-                            <a href="#"><button class="hero__btn">SHOP NOW</button></a>
+                            <a href="#">
+                                <button class="hero__btn">SHOP NOW</button>
+                            </a>
                         </div>
                         <div class="hero__right">
                             <div class="hero__img-container">
@@ -31,7 +32,9 @@
                             <span>New Inspiration 2020</span>
                             <h1>PHONES MADE FOR YOU!</h1>
                             <p>Trending from mobile and headphone style collection</p>
-                            <a href="#"><button class="hero__btn">SHOP NOW</button></a>
+                            <a href="#">
+                                <button class="hero__btn">SHOP NOW</button>
+                            </a>
                         </div>
                         <div class="hero__right">
                             <img class="banner_02" src="~/images/banner_02.png" alt="banner2"/>
@@ -59,7 +62,6 @@
         </div>
     </div>
 </div>
-
 
 
 <!-- Collection -->
@@ -94,169 +96,167 @@
 
 <!-- Latest Products -->
 <section class="section latest__products" id="latest">
-<div class="title__container">
-    <div class="section__title active" data-id="Latest Products">
+    <div class="title__container">
+        <div class="section__title active" data-id="Latest Products">
             <img src="~/img/gifhot.webp" width="55px"/>
-        <h1 class="primary__title">Top sản phẩm bán chạy</h1>
-            <img src="~/img/gifhot.webp" width="55px" />
+            <h1 class="primary__title">Top sản phẩm bán chạy</h1>
+            <img src="~/img/gifhot.webp" width="55px"/>
+        </div>
     </div>
-</div>
-<div class="container" data-aos="fade-up" data-aos-duration="1200">
-<div class="glide" id="glide_2">
-<div class="glide__track" data-glide-el="track">
-<ul class="glide__slides latest-center">
-                    @foreach (VTop5_PhoneSell item in Model.vTop5)
+    <div class="container" data-aos="fade-up" data-aos-duration="1200">
+        <div class="glide" id="glide_2">
+            <div class="glide__track" data-glide-el="track">
+                <ul class="glide__slides latest-center">
+                    @foreach (var item in Model.vTop5)
                     {
                         <li class="glide__slide">
                             <div class="product">
-                                <div class="product__header">
-                                    <img src="/images/products/iPhone/iphone6.jpeg" alt="product">
+                            <div class="product__header">
+                                <img src="@item.Image" alt="product">
+                            </div>
+                            <div class="product__footer">
+                                <h3>@item.PhoneName</h3>
+                                <div class="rating">
+                                    <svg>
+                                        <use xlink:href="./images/sprite.svg#icon-star-full"></use>
+                                    </svg>
+                                    <svg>
+                                        <use xlink:href="./images/sprite.svg#icon-star-full"></use>
+                                    </svg>
+                                    <svg>
+                                        <use xlink:href="./images/sprite.svg#icon-star-full"></use>
+                                    </svg>
+                                    <svg>
+                                        <use xlink:href="./images/sprite.svg#icon-star-full"></use>
+                                    </svg>
+                                    <svg>
+                                        <use xlink:href="./images/sprite.svg#icon-star-empty"></use>
+                                    </svg>
                                 </div>
-                                <div class="product__footer">
-                                    <h3>@item.PhoneName</h3>
-                                    <div class="rating">
-                                        <svg>
-                                            <use xlink:href="./images/sprite.svg#icon-star-full"></use>
-                                        </svg>
-                                        <svg>
-                                            <use xlink:href="./images/sprite.svg#icon-star-full"></use>
-                                        </svg>
-                                        <svg>
-                                            <use xlink:href="./images/sprite.svg#icon-star-full"></use>
-                                        </svg>
-                                        <svg>
-                                            <use xlink:href="./images/sprite.svg#icon-star-full"></use>
-                                        </svg>
-                                        <svg>
-                                            <use xlink:href="./images/sprite.svg#icon-star-empty"></use>
-                                        </svg>
-                                    </div>
-                                    <div class="product__price">
-                                        <h4>@item.Price</h4>
-                                    </div>
-                                    <a href="#">
-                                        <button type="submit" class="product__btn">Add To Cart</button>
-                                    </a>
+                                <div class="product__price">
+                                    <h4>@item.Price</h4>
                                 </div>
+                                <a asp-controller="Accounts" asp-action="AddToCard" asp-route-id="@item.Id">
+                                    <button type="submit" class="product__btn">Thêm vào giỏ hàng</button>
+                                </a>
+                            </div>
+                            </div>
                         </li>
                     }
                 </ul>
-</div>
+            </div>
 
-</ul>
-</div>
-
-<div class="glide__arrows" data-glide-el="controls">
-    <button class="glide__arrow glide__arrow--left" data-glide-dir="<">
-        <svg>
-            <use xlink:href="./images/sprite.svg#icon-arrow-left2"></use>
-        </svg>
-    </button>
-    <button class="glide__arrow glide__arrow--right" data-glide-dir=">">
-        <svg>
-            <use xlink:href="./images/sprite.svg#icon-arrow-right2"></use>
-        </svg>
-    </button>
-</div>
-</div>
-</div>
+        <div class="glide__arrows" data-glide-el="controls">
+            <button class="glide__arrow glide__arrow--left" data-glide-dir="<">
+                <svg>
+                    <use xlink:href="./images/sprite.svg#icon-arrow-left2"></use>
+                </svg>
+            </button>
+            <button class="glide__arrow glide__arrow--right" data-glide-dir=">">
+                <svg>
+                    <use xlink:href="./images/sprite.svg#icon-arrow-right2"></use>
+                </svg>
+            </button>
+        </div>
+    </div>
+    </div>
 </section>
 
 <section class="category__section section" id="category">
-    <div class="tab__list">
-        <div class="title__container tabs">
-            <div class="section__titles category__titles ">
-                <div class="section__title filter-btn active" data-id="All Products">
-                    <span class="dot"></span>
-                    <h1 class="primary__title">All Products</h1>
-                </div>
+<div class="tab__list">
+    <div class="title__container tabs">
+        <div class="section__titles category__titles ">
+            <div class="section__title filter-btn active" data-id="All Products">
+                <span class="dot"></span>
+                <h1 class="primary__title">All Products</h1>
             </div>
-            <div class="section__titles">
-                <div class="section__title filter-btn" data-id="Trending Products">
-                    <span class="dot"></span>
-                    <h1 class="primary__title">Trending Products</h1>
-                </div>
-            </div>
-
-            <div class="section__titles">
-                <div class="section__title filter-btn" data-id="Special Products">
-                    <span class="dot"></span>
-                    <h1 class="primary__title">Special Products</h1>
-                </div>
-            </div>
-
-            <div class="section__titles">
-                <div class="section__title filter-btn" data-id="Featured Products">
-                    <span class="dot"></span>
-                    <h1 class="primary__title">Featured Products</h1>
-                </div>
-            </div>
-
         </div>
-    </div>
-
-    <div class="row container justify-content-between">
-        @foreach (VW_Phone_Group item in Model.vPhoneGroup)
-        {
-            <div class="product category__products mt-2" style="width: 250px;height: 414.8px">
-                <div class="product__header" style="width: 235px;height: 250px">
-                    <img src="@item.Image" alt="product">
-                </div>
-                <div class="product__footer" >
-                    <h3>@item.PhoneName</h3>
-                    <div class="rating">
-                        <svg>
-                            <use xlink:href="./images/sprite.svg#icon-star-full"></use>
-                        </svg>
-                        <svg>
-                            <use xlink:href="./images/sprite.svg#icon-star-full"></use>
-                        </svg>
-                        <svg>
-                            <use xlink:href="./images/sprite.svg#icon-star-full"></use>
-                        </svg>
-                        <svg>
-                            <use xlink:href="./images/sprite.svg#icon-star-full"></use>
-                        </svg>
-                        <svg>
-                            <use xlink:href="./images/sprite.svg#icon-star-empty"></use>
-                        </svg>
-                    </div>
-                    <div class="product__price mt-2" style="width: 235px;height: 18px">
-                        <h4 style="color:#da152b">@item.Price</h4>
-                    </div>
-                    <a href="#">
-                        @Html.ActionLink("Chi tiết", "PhoneDetail", "PhoneDetail", new { id = item.IdPhone }, new { @class = "product__btn", type = "submit" })
-
-                    </a>
-                </div>
-                 <ul>
-                    <li>
-                        <a data-tip="Quick View" data-place="left" href="#">
-                            <svg>
-                                <use xlink:href="./images/sprite.svg#icon-eye"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    <li>
-                        <a data-tip="Add To Wishlist" data-place="left" href="#">
-                            <svg>
-                                <use xlink:href="./images/sprite.svg#icon-heart-o"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    <li>
-                        <a data-tip="Add To Compare" data-place="left" href="#">
-                            <svg>
-                                <use xlink:href="./images/sprite.svg#icon-loop2"></use>
-                            </svg>
-                        </a>
-                    </li>
-                </ul> 
+        <div class="section__titles">
+            <div class="section__title filter-btn" data-id="Trending Products">
+                <span class="dot"></span>
+                <h1 class="primary__title">Trending Products</h1>
             </div>
-        }
-    </div> 
+        </div>
 
-    @*<div class="category__container" data-aos="fade-up" data-aos-duration="1200">
+        <div class="section__titles">
+            <div class="section__title filter-btn" data-id="Special Products">
+                <span class="dot"></span>
+                <h1 class="primary__title">Special Products</h1>
+            </div>
+        </div>
+
+        <div class="section__titles">
+            <div class="section__title filter-btn" data-id="Featured Products">
+                <span class="dot"></span>
+                <h1 class="primary__title">Featured Products</h1>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="row container justify-content-between">
+    @foreach (var item in Model.vPhoneGroup)
+    {
+        <div class="product category__products mt-2" style="height: 414.8px; width: 250px;">
+            <div class="product__header" style="height: 250px; width: 235px;">
+                <img src="@item.Image" alt="product">
+            </div>
+            <div class="product__footer">
+                <h3>@item.PhoneName</h3>
+                <div class="rating">
+                    <svg>
+                        <use xlink:href="./images/sprite.svg#icon-star-full"></use>
+                    </svg>
+                    <svg>
+                        <use xlink:href="./images/sprite.svg#icon-star-full"></use>
+                    </svg>
+                    <svg>
+                        <use xlink:href="./images/sprite.svg#icon-star-full"></use>
+                    </svg>
+                    <svg>
+                        <use xlink:href="./images/sprite.svg#icon-star-full"></use>
+                    </svg>
+                    <svg>
+                        <use xlink:href="./images/sprite.svg#icon-star-empty"></use>
+                    </svg>
+                </div>
+                <div class="product__price mt-2" style="height: 18px; width: 235px;">
+                    <h4 style="color: #da152b">@item.Price</h4>
+                </div>
+                <a href="#">
+                    @Html.ActionLink("Chi tiết", "PhoneDetail", "PhoneDetail", new { id = item.IdPhone }, new { @class = "product__btn", type = "submit" })
+
+                </a>
+            </div>
+            <ul>
+                <li>
+                    <a data-tip="Quick View" data-place="left" href="#">
+                        <svg>
+                            <use xlink:href="./images/sprite.svg#icon-eye"></use>
+                        </svg>
+                    </a>
+                </li>
+                <li>
+                    <a data-tip="Add To Wishlist" data-place="left" href="#">
+                        <svg>
+                            <use xlink:href="./images/sprite.svg#icon-heart-o"></use>
+                        </svg>
+                    </a>
+                </li>
+                <li>
+                    <a data-tip="Add To Compare" data-place="left" href="#">
+                        <svg>
+                            <use xlink:href="./images/sprite.svg#icon-loop2"></use>
+                        </svg>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    }
+</div>
+
+@*<div class="category__container" data-aos="fade-up" data-aos-duration="1200">
             <div class="category__center"></div>
         </div>
 </section>
@@ -300,7 +300,7 @@
                     </svg>
                 </div></div></div></div>
 
-
+    *@
 </section>
-     @*  @await Component.InvokeAsync("BlogView") *@
+@*  @await Component.InvokeAsync("BlogView") *@
 <!--New Section  -->
