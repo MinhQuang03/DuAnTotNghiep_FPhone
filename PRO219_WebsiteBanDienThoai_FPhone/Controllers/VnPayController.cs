@@ -5,6 +5,8 @@ using PRO219_WebsiteBanDienThoai_FPhone.Helpers;
 using PRO219_WebsiteBanDienThoai_FPhone.Models;
 using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
 using System.Drawing.Drawing2D;
+using System.Net.Mail;
+using System.Net;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
 {
@@ -189,6 +191,9 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
                             _dbContext.CartDetails.Remove(cart);
 
                         }
+                        var acc = _dbContext.Accounts.FirstOrDefault(x => x.Id == bill.IdAccount);
+                        SendEmailVnPay(acc.Email);
+
                         _dbContext.SaveChanges();
                     }
                     else
@@ -232,6 +237,109 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
                 ipAddress = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
             }
             return ipAddress;
+        }
+
+        public async Task<IActionResult> SendEmailVnPay(string toEmail)
+        {
+            try
+            {
+                // Thông tin tài khoản email của bạn
+                string fromEmail = "fphone.store.404@gmail.com";
+                string password = "bdrczcwdttczwbsv";
+
+                var acc = _dbContext.Accounts.FirstOrDefault(p => p.Email == toEmail);
+
+                // Tạo đối tượng MailMessage
+                MailMessage mailMessage = new MailMessage();
+                mailMessage.From = new MailAddress(fromEmail);
+                mailMessage.To.Add(toEmail);
+                mailMessage.Subject = "Thông báo đặt hàng thành công";
+                mailMessage.IsBodyHtml = true;
+                mailMessage.Body = $@"
+        <!DOCTYPE html>
+        <html lang='en'>
+        <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <style>
+                body {{
+                    font-family: 'Arial', sans-serif;
+                    background-color: #f4f4f4;
+                    margin: 0;
+                    padding: 0;
+                }}
+                .container {{
+                    max-width: 600px;
+                    margin: 20px auto;
+                    padding: 20px;
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                    background-color: #fff;
+                    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                }}
+                h1 {{
+                    color: #007BFF;
+                    margin-bottom: 20px;
+                }}
+                p {{
+                    margin-bottom: 15px;
+                    line-height: 1.6;
+                    color: #555;
+                }}
+                strong {{
+                    font-weight: bold;
+                }}
+                ul {{
+                    list-style: none;
+                    padding: 0;
+                }}
+                li {{
+                    margin-bottom: 8px;
+                }}
+                a {{
+                    color: #007BFF;
+                    text-decoration: none;
+                    font-weight: bold;
+                }}
+                footer {{
+                    margin-top: 20px;
+                    text-align: center;
+                    color: #777;
+                }}
+            </style>
+        </head>
+        <body>
+            <div class='container'>
+                <h1>{acc.Username} thân mến,</h1>
+                <p>Cảm ơn quý khách đã tin tưởng <strong> FPHONE STORE. </strong> của chúng tôi</p>
+                <p>Đơn hàng của quý khách đã được đạt hàng thành công.</p>
+                <p>Nhân viên của chúng tôi sẽ liên hệ với quý khách sớm nhất để xác nhận đơn hàng.</p>
+                <p>Nếu Quý khách có bất kỳ câu hỏi hoặc cần hỗ trợ, vui lòng liên hệ với chúng tôi qua email <a href='mailto:support@fphonestore.com'>support@fphonestore.com</a> hoặc gọi số điện thoại hỗ trợ khách hàng: <strong>0123-456-789</strong>.</p>
+                <p>Chúc Quý khách có những trải nghiệm tốt nhất với hệ thống của chúng tôi!</p>
+                <footer>
+                    Trân trọng,<br>
+                    FPHONE STORE
+                </footer>
+            </div>
+        </body>
+        </html>";
+
+                // Cấu hình đối tượng SmtpClient
+                SmtpClient smtpClient = new SmtpClient("smtp.gmail.com");
+                smtpClient.Port = 587;
+                smtpClient.UseDefaultCredentials = false;
+                smtpClient.Credentials = new NetworkCredential(fromEmail, password);
+                smtpClient.EnableSsl = true;
+
+                // Gửi email
+                await smtpClient.SendMailAsync(mailMessage);
+
+                return Ok("Email sent successfully!");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error sending email: {ex.Message}");
+            }
         }
     }
 }

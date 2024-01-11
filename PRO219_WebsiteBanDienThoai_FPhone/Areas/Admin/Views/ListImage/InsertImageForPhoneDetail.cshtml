@@ -24,7 +24,6 @@
    <span asp-validation-for="Images"></span>
     <h3>Thêm ảnh</h3>
    <form method="POST" enctype="multipart/form-data">
-  
        <input hidden asp-for="Record.IdPhoneDetail"/>
        <label class="form-label mr-1">Chọn file</label>
        <input name="Images" accept=".jpg,.png,.gif,.svg" type="file" id="fileInput" multiple accept="image/*">
@@ -38,8 +37,7 @@
     $(document).ready(function () {
         $('#fileInput').change(function () {
             JAdListImage.previewImages();
-        });
+        }); 
     });
-
 </script>
 

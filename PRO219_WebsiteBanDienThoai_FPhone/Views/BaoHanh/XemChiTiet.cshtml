@@ -1,0 +1,99 @@
+﻿@using AppData.Models;
+@using AppData.FPhoneDbContexts;
+@model List<BillDetails>
+
+
+@{
+    ViewData["Title"] = "Bill Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    String dh0 = "Yêu cầu bảo hành";
+    String dh1 = "Đang thực hiện bảo hành";
+    String dh2 = "Bảo hành hành công";
+}
+
+<table class="table table-bordered container">
+    <thead>
+        <tr>
+            <td colspan="5" style="text-align:center">Chi tiết hóa đơn</td>
+        </tr>
+        <tr>
+            <th>
+                Tên sản phẩm
+            </th>
+            <th>
+                Giá 
+            </th>
+            <th>
+                Trình trạng 
+            </th>
+        </tr>
+
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            FPhoneDbContext context = new FPhoneDbContext();
+            var bh = context.WarrantyCards.FirstOrDefault(p => p.IdBillDetail == item.Id);
+            <tr>
+                <td>
+                    @item.PhoneDetaild.Phones.PhoneName |
+                    @item.PhoneDetaild.Rams.Name/@item.PhoneDetaild.Roms.Name |
+                    @item.PhoneDetaild.Colors.Name (#imei:@item.Imei)
+                </td>
+                <td>
+                    @string.Format("{0:0,0}", item.Price) vnđ
+                </td>
+                <td>
+
+                    @if (bh == null)
+                    {
+
+                    }
+                    else if (bh.Status == 0)
+                    {
+                        <p class="text-success"> @dh0 (Lý do: @bh.Description)</p>
+                    }
+                    else if (bh.Status == 1)
+                    {
+                        <p class="text-danger"> @dh1</p>
+                    }
+                    else if (bh.Status == 2)
+                    {
+                        <p class="text-danger"> @dh2</p>
+                    }
+
+
+                </td>
+                @* trường hợp đơn hàng giao thành công mới hiển thị Hoàn trả/Bảo hành*@
+
+                @if (ViewBag.BillStatus == 3)
+                {
+                    <td>
+                        @Html.ActionLink("Bảo hành", "ThongTinBaoHanh", new {  idBillDetail =item.Id })
+                    </td>
+                }
+                else if (ViewBag.BillStatus != 3 && ViewBag.BillStatus != 4)
+                {
+                    <td>
+                        Đơn hàng đang được giao 
+                    </td>
+                }
+                else if (ViewBag.BillStatus  == 4)
+                {
+                    <td>
+                        Đã hủy
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        Máy đang được bảo hành
+                    </td>
+                }
+
+            </tr>
+        }
+    </tbody>
+</table>
+

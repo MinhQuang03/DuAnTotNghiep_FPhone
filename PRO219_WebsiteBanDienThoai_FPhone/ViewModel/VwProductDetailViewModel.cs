@@ -9,6 +9,11 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.ViewModel
       public List<ListImage> lstImage = new List<ListImage>();
       public string? Image { get; set; }
       public List<VW_List_By_IdPhone> listImageByIdPhone = new List<VW_List_By_IdPhone>();
+      public List<Ram> LstRam { get; set; } = new List<Ram>();
+      public List<string> ListIDRam { get; set; } = new List<string>();
+      public string IdPhone { get; set; }
+      public string IdPhoneDetail { get; set; }
+      public Phone Phone { get; set; } = new Phone();
     }   
     
 }

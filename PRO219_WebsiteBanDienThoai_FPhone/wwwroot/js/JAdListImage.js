@@ -36,15 +36,15 @@
         }
         for (let i = 0; i < files.length; i++) {
          
-            const file = files[i];
-            const reader = new FileReader();
+            var file = files[i];
+            var reader = new FileReader();
             reader.onload = (function (file, index) {
                 if (preview.find('img').length >=5) {
                     alert("Tối đa 5 ảnh");
                     return ins.ClearImage();
                 }
                 return function(e) {
-                    const img = $("<img>").attr({
+                    var img = $("<img>").attr({
                         'src': e.target.result,
                         'id': `Images[${index}]`,
                         'style': "width:150px;height:150px;margin-left:10px"

@@ -30,5 +30,21 @@
     };
 
 
+    ins.previewImages = function() {
+        var preview = $("#imagePreview");
+        var files = $("#fileInput").prop("files");
+        if (files.length > 0) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                preview.attr("src", e.target.result);
+            };
+
+            reader.readAsDataURL(files[0]); // Đọc chỉ tệp đầu tiên trong danh sách
+        } else {
+            alert("Vui lòng chọn một tệp ảnh.");
+        }
+    };
+
+
     return ins;
 })(window, jQuery);
