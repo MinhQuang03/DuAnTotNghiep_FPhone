@@ -3,7 +3,8 @@
     ins.changeColor = function (idPhoneDetail) {
         $('.btnPhoneDetail').removeClass("selected");
         $('#' + idPhoneDetail).addClass("selected");
-     
+        $('#ShowDetaild').show();
+
         var phoneName = "";
         $.ajax({
             method: "GET",
@@ -69,6 +70,7 @@ ins.selectPhoneDetail = function (idRam, idPhone) {
                 }
                
                 $('#colorList').append(stringHtml);
+
             }
         });
     }
