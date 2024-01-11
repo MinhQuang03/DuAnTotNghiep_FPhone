@@ -21,6 +21,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 using NuGet.Protocol.Plugins;
 using System.Text;
+using System.Data.Entity;
+using System.Net.Mail;
+using System.Net;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers;
 
@@ -549,6 +552,9 @@ public class AccountsController : Controller
         _context.BillDetails.AddRange(Listbill);
         await _context.SaveChangesAsync();
 
+        var acc = _context.Accounts.FirstOrDefault(x => x.Id == bill.IdAccount);
+        SendEmailCOD(acc.Email);
+
         return Json(new { success = true, data = "/Accounts/paymets" });
 
     }
@@ -615,6 +621,9 @@ public class AccountsController : Controller
         _context.BillDetails.AddRange(Listbill);
         await _context.SaveChangesAsync();
 
+        var acc = _context.Accounts.FirstOrDefault(x => x.Id == bill.IdAccount);
+        SendEmailTT(acc.Email, billCode);
+
         return Json(new { success = true, data = "/Accounts/paymets" });
 
     }
@@ -624,83 +633,6 @@ public class AccountsController : Controller
         var accBill = _context.Bill.Where(p => p.IdAccount == idAccount).OrderByDescending(p => p.CreatedTime).ToList();
         return View(accBill);
     }
-
-    public ActionResult XemChiTiet(Guid idBill)
-    {
-        var billDetail = _context.BillDetails
-                        .Include(p => p.PhoneDetaild)
-                            .ThenInclude(p => p.Phones)
-                        .Include(p => p.PhoneDetaild)
-                            .ThenInclude(p => p.Colors)
-                        .Include(p => p.PhoneDetaild)
-                            .ThenInclude(p => p.Rams)
-                        .Include(p => p.PhoneDetaild)
-                            .ThenInclude(p => p.Roms)
-                        .Where(p => p.IdBill == idBill)
-                        .ToList();
-
-        // Get Status of table Bill
-        var billStatus = _context.Bill.Find(idBill);
-        ViewBag.BillStatus = billStatus.Status;
-        return View(billDetail);
-    }
-
-    public ActionResult ThongTinBaoHanh(Guid idBillDetail)
-    {
-        var phone = _context.BillDetails
-                        .Include(p => p.PhoneDetaild)
-                            .ThenInclude(p => p.Phones)
-                        .Include(p => p.PhoneDetaild)
-                            .ThenInclude(p => p.Colors)
-                        .Include(p => p.PhoneDetaild)
-                            .ThenInclude(p => p.Rams)
-                        .Include(p => p.PhoneDetaild)
-                            .ThenInclude(p => p.Roms)
-                        .Include(p => p.Bills)
-                            .ThenInclude(p => p.Accounts)
-                    .Where(p => p.Id == idBillDetail).ToList();
-        return View(phone);
-    }
-
-    
-
-    // Yêu cầu bảo hành
-    [HttpPost]
-    public ActionResult YeuCauBaoHanh(Guid IdPhoneDetail, string phoneImei, string note)
-    {
-        var billDetail = _context.BillDetails.Include(a=>a.Bills)
-                                             .ThenInclude(a=>a.Accounts)
-                                             .Include(a=>a.PhoneDetaild)
-                                             .SingleOrDefault(a => a.IdPhoneDetail == IdPhoneDetail && a.Imei == phoneImei);
-
-        if (null != billDetail)
-        {
-            //billDetail.Status = 4; // Yêu cầu bảo hành 
-            //_context.SaveChanges();
-
-            var warrantyCard = new WarrantyCard();
-            warrantyCard.Id = Guid.NewGuid();
-            warrantyCard.IdBillDetail = billDetail.Id;
-            warrantyCard.IdAccount = billDetail.Bills.IdAccount;
-            warrantyCard.IdPhoneDetail = IdPhoneDetail;
-            warrantyCard.IdPhone = billDetail.PhoneDetaild.IdPhone;
-            warrantyCard.Imei = phoneImei;
-            warrantyCard.CreatedDate = DateTime.Now;
-            warrantyCard.Description = note; // Có thể thay đổi tùy theo yêu cầu
-            //ThoiGianConBaoHanh = billDetail.Bills.PaymentDate.AddMonths(billDetail.PhoneDetaild.Phones.IdWarranty.TimeWarranty),
-            warrantyCard.Status = 0; // 1: Mới tạo
-            // Bổ sung thêm các thông tin khác nếu cần
-
-            TempData["SuccessMessage"] = "Bạn đã gửi yêu cầu thành công!";
-            _context.WarrantyCards.Add(warrantyCard);
-            _context.SaveChanges();
-        }
-
-
-
-        return RedirectToAction("XemChiTiet", new { idBill = billDetail.IdBill });
-    }
-
     public ActionResult paymets()
     {
         var name = TempData["name"] as string;
@@ -755,4 +687,211 @@ public class AccountsController : Controller
         _context.SaveChanges();
         return View();
     }
+
+    public async Task<IActionResult> SendEmailCOD(string toEmail)
+    {
+        try
+        {
+            // Thông tin tài khoản email của bạn
+            string fromEmail = "fphone.store.404@gmail.com";
+            string password = "bdrczcwdttczwbsv";
+
+            var acc = _context.Accounts.FirstOrDefault(p => p.Email == toEmail);
+
+            // Tạo đối tượng MailMessage
+            MailMessage mailMessage = new MailMessage();
+            mailMessage.From = new MailAddress(fromEmail);
+            mailMessage.To.Add(toEmail);
+            mailMessage.Subject = "Thông báo đặt hàng thành công";
+            mailMessage.IsBodyHtml = true;
+            mailMessage.Body = $@"
+        <!DOCTYPE html>
+        <html lang='en'>
+        <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <style>
+                body {{
+                    font-family: 'Arial', sans-serif;
+                    background-color: #f4f4f4;
+                    margin: 0;
+                    padding: 0;
+                }}
+                .container {{
+                    max-width: 600px;
+                    margin: 20px auto;
+                    padding: 20px;
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                    background-color: #fff;
+                    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                }}
+                h1 {{
+                    color: #007BFF;
+                    margin-bottom: 20px;
+                }}
+                p {{
+                    margin-bottom: 15px;
+                    line-height: 1.6;
+                    color: #555;
+                }}
+                strong {{
+                    font-weight: bold;
+                }}
+                ul {{
+                    list-style: none;
+                    padding: 0;
+                }}
+                li {{
+                    margin-bottom: 8px;
+                }}
+                a {{
+                    color: #007BFF;
+                    text-decoration: none;
+                    font-weight: bold;
+                }}
+                footer {{
+                    margin-top: 20px;
+                    text-align: center;
+                    color: #777;
+                }}
+            </style>
+        </head>
+        <body>
+            <div class='container'>
+                <h1>{acc.Username} thân mến,</h1>
+                <p>Cảm ơn quý khách đã tin tưởng <strong> FPHONE STORE. </strong> của chúng tôi</p>
+                <p>Đơn hàng của quý khách đã được đạt hàng thành công.</p>
+                <p>Nhân viên của chúng tôi sẽ liên hệ với quý khách sớm nhất để xác nhận đơn hàng.</p>
+                <p>Nếu Quý khách có bất kỳ câu hỏi hoặc cần hỗ trợ, vui lòng liên hệ với chúng tôi qua email <a href='mailto:support@fphonestore.com'>support@fphonestore.com</a> hoặc gọi số điện thoại hỗ trợ khách hàng: <strong>0123-456-789</strong>.</p>
+                <p>Chúc Quý khách có những trải nghiệm tốt nhất với hệ thống của chúng tôi!</p>
+                <footer>
+                    Trân trọng,<br>
+                    FPHONE STORE
+                </footer>
+            </div>
+        </body>
+        </html>";
+
+            // Cấu hình đối tượng SmtpClient
+            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com");
+            smtpClient.Port = 587;
+            smtpClient.UseDefaultCredentials = false;
+            smtpClient.Credentials = new NetworkCredential(fromEmail, password);
+            smtpClient.EnableSsl = true;
+
+            // Gửi email
+            await smtpClient.SendMailAsync(mailMessage);
+
+            return Ok("Email sent successfully!");
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Error sending email: {ex.Message}");
+        }
+    }
+
+    public async Task<IActionResult> SendEmailTT(string toEmail, string mahd)
+    {
+        try
+        {
+            // Thông tin tài khoản email của bạn
+            string fromEmail = "fphone.store.404@gmail.com";
+            string password = "bdrczcwdttczwbsv";
+
+            var acc = _context.Accounts.FirstOrDefault(p => p.Email == toEmail);
+
+            // Tạo đối tượng MailMessage
+            MailMessage mailMessage = new MailMessage();
+            mailMessage.From = new MailAddress(fromEmail);
+            mailMessage.To.Add(toEmail);
+            mailMessage.Subject = "Thông báo đặt hàng thành công";
+            mailMessage.IsBodyHtml = true;
+            mailMessage.Body = $@"
+        <!DOCTYPE html>
+        <html lang='en'>
+        <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <style>
+                body {{
+                    font-family: 'Arial', sans-serif;
+                    background-color: #f4f4f4;
+                    margin: 0;
+                    padding: 0;
+                }}
+                .container {{
+                    max-width: 600px;
+                    margin: 20px auto;
+                    padding: 20px;
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                    background-color: #fff;
+                    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                }}
+                h1 {{
+                    color: #007BFF;
+                    margin-bottom: 20px;
+                }}
+                p {{
+                    margin-bottom: 15px;
+                    line-height: 1.6;
+                    color: #555;
+                }}
+                strong {{
+                    font-weight: bold;
+                }}
+                ul {{
+                    list-style: none;
+                    padding: 0;
+                }}
+                li {{
+                    margin-bottom: 8px;
+                }}
+                a {{
+                    color: #007BFF;
+                    text-decoration: none;
+                    font-weight: bold;
+                }}
+                footer {{
+                    margin-top: 20px;
+                    text-align: center;
+                    color: #777;
+                }}
+            </style>
+        </head>
+        <body>
+            <div class='container'>
+                <h1>{acc.Username} thân mến,</h1>
+                <p>Cảm ơn quý khách đã tin tưởng <strong> FPHONE STORE. </strong> của chúng tôi</p>
+                <p>Đơn hàng {mahd} của quý khách đã được đạt hàng thành công.</p>
+                <p>Nhân viên của chúng tôi sẽ liên hệ với quý khách sớm nhất để xác nhận đơn hàng.</p>
+                <p>Nếu Quý khách có bất kỳ câu hỏi hoặc cần hỗ trợ, vui lòng liên hệ với chúng tôi qua email <a href='mailto:support@fphonestore.com'>support@fphonestore.com</a> hoặc gọi số điện thoại hỗ trợ khách hàng: <strong>0123-456-789</strong>.</p>
+                <p>Chúc Quý khách có những trải nghiệm tốt nhất với hệ thống của chúng tôi!</p>
+                <footer>
+                    Trân trọng,<br>
+                    FPHONE STORE
+                </footer>
+            </div>
+        </body>
+        </html>";
+
+            // Cấu hình đối tượng SmtpClient
+            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com");
+            smtpClient.Port = 587;
+            smtpClient.UseDefaultCredentials = false;
+            smtpClient.Credentials = new NetworkCredential(fromEmail, password);
+            smtpClient.EnableSsl = true;
+
+            // Gửi email
+            await smtpClient.SendMailAsync(mailMessage);
+
+            return Ok("Email sent successfully!");
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Error sending email: {ex.Message}");
+        }
+    }
+
 }
