@@ -192,9 +192,6 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             var data = await _httpClient.GetStringAsync("api/ProductionCompany/get");
             List<ProductionCompany> a = JsonConvert.DeserializeObject<List<ProductionCompany>>(data);
             ViewBag.IdProductionCompany = new SelectList(a, "Id", "Name");
-
-            //var datajson = await _httpClient.GetStringAsync($"api/Phone/getById/{id}");
-            //var obj = JsonConvert.DeserializeObject<Phone>(datajson);
             return View(model);
         }
 
