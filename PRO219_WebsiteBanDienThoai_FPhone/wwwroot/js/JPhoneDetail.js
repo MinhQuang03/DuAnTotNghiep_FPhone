@@ -1,15 +1,15 @@
 ﻿var JPhoneDetail = (function(window,$) {
     var ins = {};
-
     ins.changeColor = function (idPhoneDetail) {
         $('.btnPhoneDetail').removeClass("selected");
         $('#' + idPhoneDetail).addClass("selected");
-        $('#IdPhoneDetail').val(idPhoneDetail);
+     
         var phoneName = "";
         $.ajax({
             method: "GET",
             url: '/PhoneDetail/getPhoneDetailById/' + idPhoneDetail,
             success: (data) => {
+                $('#IdPhoneDetail').val(idPhoneDetail);
                 phoneName = data.phoneName + ' - ' + data.colorName;
                 $('#phoneName').text(data.phoneName + " " + data.colorName);
                 console.log(data.price);
@@ -49,6 +49,7 @@ ins.selectPhoneDetail = function (idRam, idPhone) {
         $('#notExits').hide();
         var stringHtml = "";
         $('#colorList').empty();
+        $('#IdPhoneDetail').val(null);
         $('.btnRam').removeClass('selected');
        /* console.log(idRam);*/
         $('#' + idRam).addClass("selected");
@@ -58,7 +59,6 @@ ins.selectPhoneDetail = function (idRam, idPhone) {
             success: (data) => {
                 console.log(data);
                 for (var i = 0; i < data.length; i++) {
-
                     stringHtml += `<a id="${data[i].idPhoneDetail}" onclick="JPhoneDetail.changeColor('${data[i].idPhoneDetail}')" class="btn col-4 border rounded phone-hover mt-2 btnPhoneDetail" >
                                     <div>
                                         <strong>${data[i].colorName}</strong>
