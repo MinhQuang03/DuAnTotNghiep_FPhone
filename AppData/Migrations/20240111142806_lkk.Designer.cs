@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppData.Migrations
 {
     [DbContext(typeof(FPhoneDbContext))]
-    [Migration("20240110113120_FPhone")]
-    partial class FPhone
+    [Migration("20240111142806_lkk")]
+    partial class lkk
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -209,6 +209,9 @@ namespace AppData.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Note")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("PaymentDate")
