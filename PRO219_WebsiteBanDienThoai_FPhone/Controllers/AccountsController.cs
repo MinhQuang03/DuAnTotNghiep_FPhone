@@ -151,25 +151,16 @@ public class AccountsController : Controller
             //chuyển hướng đến trang chủ của web
             if (respo.Roles.Contains("User"))
             {
-                DataError error = new DataError() { Success = true };
-                error.Success = true;
-                error.Msg = "Đăng nhập thành công";
-                TempData["DataError"] = Utility.ConvertObjectToJson(error);
-                return RedirectToAction("AddCart");
+                return RedirectToAction("Index","Home");
             }
         }
         else
         {
             DataError error = new DataError();
             error.Success = false;
-            error.Msg = "Đăng nhập không thành công";
-
-            ModelState.AddModelError("UserName", "Tài khoản hoặc mật khẩu sai");
-            return RedirectToAction("Index", "Home");
-
-            // TempData["DataError"] = Utility.ConvertObjectToJson(error);
-            // return  RedirectToAction("Index", "Home");
-
+            error.Msg = "Sai tài khoản hoặc mật khẩu";
+            TempData["DataError"] = Utility.ConvertObjectToJson(error);
+            return View(model);
         }
 
         return NoContent();
