@@ -11,6 +11,6 @@ namespace AppData.IServices
 {
     public interface IVwTop5PhoneServices
     {
-        Task<List<VTop5_PhoneSell>> listVwTop5PhoneGroup();
+      List<VTop5_PhoneSell> listVwTop5PhoneGroup();
     }
 }

@@ -17,12 +17,14 @@ public class HomeController : Controller
     private IVwTop5PhoneServices _top5PhoneService;
     private readonly ILogger<HomeController> _logger;
     private FPhoneDbContext _context;
-    public HomeController(ILogger<HomeController> logger, HttpClient client, IVwPhoneService phoneService, IVwTop5PhoneServices top5PhoneService)
+    private IHttpContextAccessor _accessor;
+    public HomeController(ILogger<HomeController> logger, HttpClient client, IVwPhoneService phoneService, IVwTop5PhoneServices top5PhoneService, IHttpContextAccessor accessor)
     {
         _context = new FPhoneDbContext();
         _logger = logger;
         _client = client;
         _phoneService = phoneService;
+        _accessor = accessor;
         _top5PhoneService = top5PhoneService;
     }
 
@@ -30,11 +32,8 @@ public class HomeController : Controller
     public async Task<IActionResult> Index()
     {
        HomeGroupViewModel model = new HomeGroupViewModel();
-
-
 	    model.vPhoneGroup  = _phoneService.listVwPhoneGroup(model._VW_Phone_Group);
-        model.vTop5 = await _top5PhoneService.listVwTop5PhoneGroup();
-
+        model.vTop5 =  _top5PhoneService.listVwTop5PhoneGroup();
         return View(model);
     }
 

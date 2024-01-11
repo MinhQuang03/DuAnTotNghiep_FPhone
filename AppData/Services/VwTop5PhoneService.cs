@@ -16,13 +16,10 @@ namespace AppData.Services
         {
             _dbContext = dbContext;
         }
-        public async Task<List<VTop5_PhoneSell>> listVwTop5PhoneGroup()
+        public List<VTop5_PhoneSell> listVwTop5PhoneGroup()
         {
-           //var query = _dbContext.VW_Top5Phone.FromSqlRaw("select * from VW_Top5Phone").ToList();
-           // var rs = new List<VTop5_PhoneSell>();
-           return _dbContext.VW_Top5Phone.ToList();
+           return _dbContext.VTop5_PhoneSell.ToList();
         }
-
 
     }
 }

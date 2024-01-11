@@ -57,8 +57,8 @@ public class FPhoneDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<VW_PhoneDetail> VW_PhoneDetail { get; set; }
     public DbSet<VW_Phone_Group> VW_Phone_Group { get; set; }
     public DbSet<VW_List_By_IdPhone> VW_List_By_IdPhone { get; set; }
-    //LKK\SQLEXPRESS    
-    // Ko cần sửa file này
+    public DbSet<VTop5_PhoneSell> VTop5_PhoneSell { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlServer(@"Data Source=.;Initial Catalog=PRO219_WebsiteBanDienThoai ;Integrated Security=True");
