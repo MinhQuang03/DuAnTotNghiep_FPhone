@@ -119,6 +119,11 @@ public class AccountsController : Controller
         return View(model);
     }
 
+    public IActionResult Login()
+    {
+        return View();
+    }
+
     [HttpPost]
     public async Task<IActionResult> Login(LoginModel model)
     {
