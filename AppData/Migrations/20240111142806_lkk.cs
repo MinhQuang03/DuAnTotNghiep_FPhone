@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppData.Migrations
 {
-    public partial class FPhone : Migration
+    public partial class lkk : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -507,6 +507,7 @@ namespace AppData.Migrations
                     TotalMoney = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     Update_at = table.Column<DateTime>(type: "datetime2", nullable: true),
                     StatusPayment = table.Column<int>(type: "int", nullable: false),
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IdAccount = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
