@@ -15,12 +15,14 @@ public class HomeController : Controller
     private IVwPhoneService _phoneService;
     private readonly ILogger<HomeController> _logger;
     private FPhoneDbContext _context;
-    public HomeController(ILogger<HomeController> logger, HttpClient client, IVwPhoneService phoneService)
+    private IHttpContextAccessor _accessor;
+    public HomeController(ILogger<HomeController> logger, HttpClient client, IVwPhoneService phoneService,IHttpContextAccessor accessor)
     {
         _context = new FPhoneDbContext();
         _logger = logger;
         _client = client;
         _phoneService = phoneService;
+        _accessor = accessor;
     }
 
 
@@ -53,5 +55,18 @@ public class HomeController : Controller
         var datajson = await _client.GetStringAsync("api/PhoneDetaild/get");
         var ctsp = JsonConvert.DeserializeObject<List<PhoneDetaild>>(datajson);
         return View(ctsp);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> OnBrowserClose()
+    {
+        //đăng xuất khi đổi mật khẩu thành công
+        var authenticationProperties = new AuthenticationProperties
+        {
+            ExpiresUtc = DateTimeOffset.UtcNow.AddSeconds(20) // Thiết lập thời gian hết hạn sau khi đăng xuất
+        };
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme, authenticationProperties);
+        _accessor.HttpContext.User = null; // xoá thông tin user
+        return Ok();
     }
 }

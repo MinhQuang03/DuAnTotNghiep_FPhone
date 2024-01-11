@@ -70,5 +70,16 @@ else{
 <!-- JS -->
 
 @await RenderSectionAsync("Scripts", false)
+    <script>
+        $(document).ready(async function () {
+            $(window).on('unload', async function () {
+                // Gửi yêu cầu POST đến máy chủ
+                await $.ajax({
+                    type: 'POST',
+                    url: '/Home/OnBrowserClose'
+                });
+            });
+        });
+    </script>
 </body>
 </html>
