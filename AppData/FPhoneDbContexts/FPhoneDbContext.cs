@@ -54,6 +54,7 @@ public class FPhoneDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<SellDailys> SellDailys { get; set; }
     public DbSet<ApplicationUser> AspNetUsers { get; set; }
     public DbSet<VW_Phone> VW_Phone { get; set; }
+    public DbSet<VTop5_PhoneSell> VW_Top5Phone { get; set; }
     public DbSet<VW_PhoneDetail> VW_PhoneDetail { get; set; }
     public DbSet<VW_Phone_Group> VW_Phone_Group { get; set; }
     public DbSet<VW_List_By_IdPhone> VW_List_By_IdPhone { get; set; }
@@ -71,6 +72,7 @@ public class FPhoneDbContext : IdentityDbContext<ApplicationUser>
         builder.Entity<VW_PhoneDetail>().ToView("VW_PhoneDetail").HasNoKey();
         builder.Entity<VW_Phone_Group>().ToView("VW_Phone_Group").HasNoKey();
         builder.Entity<VW_List_By_IdPhone>().ToView("VW_List_By_IdPhone").HasNoKey();
+        builder.Entity<VTop5_PhoneSell>().ToView("VTop5_PhoneSell").HasNoKey();
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 }
