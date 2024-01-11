@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers;
 
@@ -13,25 +14,30 @@ public class HomeController : Controller
 {
     private readonly HttpClient _client;
     private IVwPhoneService _phoneService;
+    private IVwTop5PhoneServices _top5PhoneService;
     private readonly ILogger<HomeController> _logger;
     private FPhoneDbContext _context;
-    private IHttpContextAccessor _accessor;
-    public HomeController(ILogger<HomeController> logger, HttpClient client, IVwPhoneService phoneService,IHttpContextAccessor accessor)
+    public HomeController(ILogger<HomeController> logger, HttpClient client, IVwPhoneService phoneService, IVwTop5PhoneServices top5PhoneService)
     {
         _context = new FPhoneDbContext();
         _logger = logger;
         _client = client;
         _phoneService = phoneService;
-        _accessor = accessor;
+        _top5PhoneService = top5PhoneService;
     }
 
 
     public async Task<IActionResult> Index()
     {
-        VW_Phone_Group model = new VW_Phone_Group();
-	    var data= _phoneService.listVwPhoneGroup(model);
-        return View(data);
+       HomeGroupViewModel model = new HomeGroupViewModel();
+
+
+	    model.vPhoneGroup  = _phoneService.listVwPhoneGroup(model._VW_Phone_Group);
+        model.vTop5 = await _top5PhoneService.listVwTop5PhoneGroup();
+
+        return View(model);
     }
+
 
     
     public async Task<IActionResult> LogOut()
@@ -55,18 +61,5 @@ public class HomeController : Controller
         var datajson = await _client.GetStringAsync("api/PhoneDetaild/get");
         var ctsp = JsonConvert.DeserializeObject<List<PhoneDetaild>>(datajson);
         return View(ctsp);
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> OnBrowserClose()
-    {
-        //đăng xuất khi đổi mật khẩu thành công
-        var authenticationProperties = new AuthenticationProperties
-        {
-            ExpiresUtc = DateTimeOffset.UtcNow.AddSeconds(20) // Thiết lập thời gian hết hạn sau khi đăng xuất
-        };
-        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme, authenticationProperties);
-        _accessor.HttpContext.User = null; // xoá thông tin user
-        return Ok();
     }
 }

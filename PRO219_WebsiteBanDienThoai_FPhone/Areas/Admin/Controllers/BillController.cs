@@ -181,7 +181,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         public ActionResult Dahuy(Guid id)
         {
             var a = _context.BillDetails.FirstOrDefault(p => p.IdBill == id);
-            if(a.Imei != null)
+            if(a.Imei == null)
             {
                 Bill bill = _context.Bill.Find(id);
                 bill.Status = 4;
@@ -193,6 +193,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             else
             {
                 TempData["SuccessMessage"] = "Không thể hủy khi đã thêm imei !";
+                return RedirectToAction("Detail", new { id = id });
             }
             
             return RedirectToAction("Index");
@@ -239,14 +240,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             return RedirectToAction("Danggiaoview");
         }
         // xoá đơn hàng , cập nhật lưu thay đổi
-        public ActionResult Deltrash(Guid id)
-        {
-            Bill bill = _context.Bill.Find(id);
-            bill.Status = 5;
-            _context.Entry(bill).State = EntityState.Modified;
-            _context.SaveChanges();
-            return RedirectToAction("Index");
-        }
+   
 
         [HttpGet]
         // Thêm mới imei 
@@ -300,50 +294,28 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             
             return RedirectToAction("Detail", new { id = a.IdBill });
         }
-
-
-        // Hiển thị danh sách sản phẩm hoàn trả
-        public ActionResult HoanTraHoacBaoHanh()
-        {
-            // List sản phẩm hoàn trả trong billDetail
-            var billDetail = _context.BillDetails
-                .Include(p => p.PhoneDetaild)
-                    .ThenInclude(p => p.Phones)
-                .Include(p => p.PhoneDetaild)
-                    .ThenInclude(p => p.Colors)
-                .Include(p => p.PhoneDetaild)
-                    .ThenInclude(p => p.Rams)
-                .Include(p => p.PhoneDetaild)
-                    .ThenInclude(p => p.Roms)
-                .Include(p => p.Bills)
-                    .ThenInclude(p => p.Accounts)
-                .Where(p => p.Status != 0)
-                .ToList();
-
-            return View(billDetail);
-        }
-
         public ActionResult BaoHanh()
         {
-            // List sản phẩm hoàn trả trong billDetail
-            //var billDetail = _context.BillDetails
-            //    .Include(p => p.PhoneDetaild)
-            //        .ThenInclude(p => p.Phones)
-            //    .Include(p => p.PhoneDetaild)
-            //        .ThenInclude(p => p.Colors)
-            //    .Include(p => p.PhoneDetaild)
-            //        .ThenInclude(p => p.Rams)
-            //    .Include(p => p.PhoneDetaild)
-            //        .ThenInclude(p => p.Roms)
-            //    .Include(p => p.Bills)
-            //        .ThenInclude(p => p.Accounts)
-            //    .Where (p => p.Status != 0)
-            //    .ToList();
-
-            //return View(billDetail);
-            var warrantyCards = _context.WarrantyCards.ToList();
+            var warrantyCards = _context.WarrantyCards.Where(p => p.Status == 0).ToList();
             return View(warrantyCards);
         }
+        public ActionResult ThucHienBaoHanh()
+        {
+            var warrantyCards = _context.WarrantyCards.Where(p => p.Status == 1).ToList();
+            return View(warrantyCards);
+        }
+        public ActionResult BaoHanhThanhCong()
+        {
+            var warrantyCards = _context.WarrantyCards.Where(p => p.Status == 2).ToList();
+            return View(warrantyCards);
+        }
+
+        public ActionResult TimKiemBaoHanh(string search)
+        {
+
+            return View();
+        }
+
         public ActionResult ChiTietBaoHanh(Guid id) 
         {
             // Hiển thị chi tiết điện thoại đổi trả + Thông tin khách hàng
