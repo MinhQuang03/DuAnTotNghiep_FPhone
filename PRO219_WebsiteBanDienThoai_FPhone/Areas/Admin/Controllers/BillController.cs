@@ -181,7 +181,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         public ActionResult Dahuy(Guid id)
         {
             var a = _context.BillDetails.FirstOrDefault(p => p.IdBill == id);
-            if(a.Imei != null)
+            if(a.Imei == null)
             {
                 Bill bill = _context.Bill.Find(id);
                 bill.Status = 4;
@@ -193,6 +193,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             else
             {
                 TempData["SuccessMessage"] = "Không thể hủy khi đã thêm imei !";
+                return RedirectToAction("Detail", new { id = id });
             }
             
             return RedirectToAction("Index");
@@ -239,14 +240,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             return RedirectToAction("Danggiaoview");
         }
         // xoá đơn hàng , cập nhật lưu thay đổi
-        public ActionResult Deltrash(Guid id)
-        {
-            Bill bill = _context.Bill.Find(id);
-            bill.Status = 5;
-            _context.Entry(bill).State = EntityState.Modified;
-            _context.SaveChanges();
-            return RedirectToAction("Index");
-        }
+   
 
         [HttpGet]
         // Thêm mới imei 
