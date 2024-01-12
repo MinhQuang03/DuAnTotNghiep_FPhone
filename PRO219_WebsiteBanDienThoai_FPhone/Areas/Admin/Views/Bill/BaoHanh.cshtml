@@ -20,7 +20,7 @@
     <thead>
         <tr>
             <th>
-                Tên tài khoản  
+                Tên tài khoản
             </th>
             <th>
                 Tên sản phẩm
@@ -34,13 +34,15 @@
         </tr>
     </thead>
     <tbody>
-        @if(Model == null)
+        @if (Model == null)
         {
-            <h2 style="text-align:center"> Hiện đang Không có máy yêu cầu bảo hành </h2>
+            <h2 style="text-align:center"> Hiện đang Không có máy đang bảo hành </h2>
         }
-        @foreach (var item in Model)
+        else
         {
-            
+            @foreach (var item in Model)
+            {
+
                 String dh0 = "Yêu cầu bảo hành";
                 String dh1 = "Đang thực hiện bảo hành";
                 String dh2 = "Bảo hành hành công";
@@ -80,8 +82,10 @@
 
                 </tr>
 
-            
+
+            }
         }
+
     </tbody>
 </table>
 
