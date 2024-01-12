@@ -167,17 +167,24 @@
                 <div class="product__pictures">
                     @foreach (var item in Model.listImageByIdPhone)
                     {
+                        <a class="fancybox-thumb" href="@item.Image" data-fancybox="gallery" data-src="@item.Image">
                         <div class="pictures__container">
-                            <img class="picture" src="@item.Image" id="pic1" />
+                            <img class="picture" src="@item.Image" id="pic1"/>
                         </div>
+                        </a>
                     }
 
                 </div>
                 <div class="product__picture" id="product__picture">
                     <!-- <div class="rect" id="rect"></div> -->
-                    <div class="picture__container">
-                        <img src="@Model.Image" id="pic" />
-                    </div>
+                    <a href="@Model.Image" class="fancybox-thumb first-item" data-fancybox data-fancybox="gallery" data-caption="Single image">
+                        <img src="@Model.Image" />
+                    </a>
+                   @*  <a class="first-item fancybox-thumb" href="@Model.Image" data-type="image" data-fancybox="gallery" data-src="@Model.Image">
+                        <div class="picture__container">
+                            <img src="@Model.Image" id="pic"/>
+                        </div>
+                    </a> *@
                 </div>
                 <div class="zoom" id="zoom"></div>
             </div>
@@ -321,7 +328,17 @@
 
 <script src="~/js/JPhoneDetail.js"></script>
 <script>
+    $('#notExits').hide();
     $(document).ready(function() {
-        $('#notExits').hide();
+        
+        $('[data-fancybox]').fancybox({
+            thumbs: {
+                autoStart: true
+            },
+            slideShow: {
+                autoStart: true,
+                speed: 3000
+            }
+        });
     });
 </script>
