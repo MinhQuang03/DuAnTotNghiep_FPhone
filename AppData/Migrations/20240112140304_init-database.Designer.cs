@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppData.Migrations
 {
     [DbContext(typeof(FPhoneDbContext))]
-    [Migration("20240111142806_lkk")]
-    partial class lkk
+    [Migration("20240112140304_init-database")]
+    partial class initdatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -479,18 +479,23 @@ namespace AppData.Migrations
                         .IsRequired()
                         .HasColumnType("int");
 
+                    b.Property<string>("MaVoucher")
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
                     b.Property<double?>("MucUuDai")
                         .HasColumnType("float");
 
                     b.Property<string>("NameVoucher")
+                        .IsRequired()
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
 
                     b.Property<int?>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<string>("StatusVoucher")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("StatusVoucher")
+                        .HasColumnType("int");
 
                     b.Property<int?>("TypeVoucher")
                         .IsRequired()
@@ -1088,6 +1093,23 @@ namespace AppData.Migrations
                     b.ToTable("WarrantyCards");
                 });
 
+            modelBuilder.Entity("AppData.ViewModels.Phones.VTop5_PhoneSell", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.ToView("VTop5_PhoneSell");
+                });
+
             modelBuilder.Entity("AppData.ViewModels.Phones.VW_List_By_IdPhone", b =>
                 {
                     b.Property<Guid>("IdPhone")
@@ -1170,6 +1192,9 @@ namespace AppData.Migrations
                     b.Property<string>("ChipGPUName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("ColorID")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("ColorName")
                         .HasColumnType("nvarchar(max)");
 
@@ -1196,6 +1221,9 @@ namespace AppData.Migrations
 
                     b.Property<string>("ProductionCompanyName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("RamID")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("RamName")
                         .HasColumnType("nvarchar(max)");

@@ -6,6 +6,12 @@ namespace AppData.Models
     {
         public Guid Id { get; set; }
         [StringLength(25,MinimumLength =2 , ErrorMessage = "Tên voucher phải từ 2 -25 kí tự")]
+
+        public string? MaVoucher { get; set; }
+        [Required(ErrorMessage = "Tên voucher là trường bắt buộc.")]
+        [StringLength(25, MinimumLength = 2, ErrorMessage = "Tên voucher phải nhập từ 2-25 kí tự")]
+        [RegularExpression(@"^[a-zA-Z0-9\s]*$", ErrorMessage = "Tên voucher không được chứa ký tự đặc biệt.")]
+
         public string? NameVoucher { get; set; }
         [Required(ErrorMessage = "Điều kiện là trường bắt buộc")]
         [Range(0, int.MaxValue , ErrorMessage = " là số nguyên không âm")]
@@ -21,6 +27,6 @@ namespace AppData.Models
         public DateTime DateStart { get; set; }
         [Required(ErrorMessage = "Ngày kết thúc là trường bắt buộc")]
         public DateTime DateEnd { get; set; }
-        public string? StatusVoucher { get; set; }
+        public int? StatusVoucher { get; set; }
     }
 }
