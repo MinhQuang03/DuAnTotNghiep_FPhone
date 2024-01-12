@@ -124,10 +124,10 @@ public class VwPhoneDetailService : IVwPhoneDetailService
         return _dbContext.VW_PhoneDetail.Where(c => c.IdPhoneDetail == id).Count();
     }
 
-    public async Task<PhoneDetaild> Add(PhoneDetaild obj)
+    public PhoneDetaild Add(PhoneDetaild obj)
     {
-        await _dbContext.PhoneDetailds.AddAsync(obj);
-        await _dbContext.SaveChangesAsync();
+         _dbContext.PhoneDetailds.AddAsync(obj);
+         _dbContext.SaveChanges();
         return obj;
     }
 }
