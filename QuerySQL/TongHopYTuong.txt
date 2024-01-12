@@ -1,0 +1,8 @@
+RankingMenber
+Doanh thu (Ngay , thang , nam)
+Phan tich xu huong mua hang (gio mua hang , khoang gia mua , do tuoi mua , )
+SanPham duoc vao danh sach thich nhieu nhat 
+Chi tiet san pham yeu thich  (Mau sac , Nha san xuat , bo nho )
+View doanh thu tinh tu luc mo trang admin tro ve dau ngay,dau tuan , dau thang , trang thai hoa don cho  , top sp ban chay trong ngay , tuan
+View Sp ban chay co id (SHow len trang chu)
+View thong ke account
