@@ -14,6 +14,9 @@
                 border-radius: 2px;
             }
         */
+    .form-control {
+        font-size: 1.5rem
+    }
     .selected {
         background-color: #33FF33;
         border-radius: 2px;
@@ -266,8 +269,8 @@
                         </li>
 
                         <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" id="ShowDetaild">
-                            Xem thông tin chi tiết
+                        <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal" id="ShowDetaild">
+                            Xem thông tin chi tiết <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="10" height="10"><path d="M224 416c-8.188 0-16.38-3.125-22.62-9.375l-192-192c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L224 338.8l169.4-169.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-192 192C240.4 412.9 232.2 416 224 416z"></path></svg>
                         </button>
 
                         <!-- Modal -->
@@ -279,11 +282,14 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        ...
+                                        <div class="row">
+                                            <label class="col-form-label">Tên sản phẩm</label>
+                                            <input readonly class="form-control text-center" value="abc"/>
+                                        </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -347,6 +353,8 @@
 <script src="~/js/JPhoneDetail.js"></script>
 <script>
     $('#notExits').hide();
+    $('#ShowDetaild').hide();
+
     $(document).ready(function() {
         $('[data-fancybox]').fancybox({
             thumbs: {
@@ -357,6 +365,5 @@
                 speed: 3000
             }
         });
-        $('#ShowDetaild').hide();
     });
 </script>

@@ -10,6 +10,7 @@
             method: "GET",
             url: '/PhoneDetail/getPhoneDetailById/' + idPhoneDetail,
             success: (data) => {
+               
                 $('#IdPhoneDetail').val(idPhoneDetail);
                 phoneName = data.phoneName + ' - ' + data.colorName;
                 $('#phoneName').text(data.phoneName + " " + data.colorName);
@@ -18,7 +19,6 @@
                     .toLocaleString('vi', { style: 'currency', currency: 'VND' }));
             }
         });
-
 
         $.ajax({
             method: "GET",
@@ -45,7 +45,8 @@
         }
     }
 
-ins.selectPhoneDetail = function (idRam, idPhone) {
+    ins.selectPhoneDetail = function (idRam, idPhone) {
+      
         $('#addToCart').show();
         $('#notExits').hide();
         var stringHtml = "";
