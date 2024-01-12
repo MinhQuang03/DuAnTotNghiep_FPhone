@@ -28,10 +28,10 @@
         }
 </style>
 
-<h2>Chi tiết đơn hàng( Chờ xác nhận )</h2> 
+<h2>Chi tiết đơn hàng</h2> 
 @if (TempData["SuccessMessage"] != null)
 {
-    <div class="alert alert-danger">
+    <div class="alert alert-success">
         @TempData["SuccessMessage"]
     </div>
 }
@@ -49,12 +49,6 @@
                         </td>
                         <th>
                             Tên sản phẩm
-                        </th>
-                        <th>
-                            màu 
-                        </th>
-                        <th>
-                            Ram
                         </th>
                         <th>
                             Đơn giá 
@@ -88,12 +82,7 @@
                             <td>
                                 @ViewBag.PhoneNames
                             </td>
-                            <td>
-                                @ViewBag.ram
-                            </td>
-                            <td>
-                                @ViewBag.color
-                            </td>
+                           
                             <td style="color:red">
                                 @item.Price.ToString("N0") VND
                             </td>
@@ -101,8 +90,9 @@
                                 @if (item.Imei != null)
                                 {
                                     <span>(@item.Imei)</span>
-
-
+                                }
+                                else if (cus.Status == 6 || cus.Status == 4 || cus.Status == 5)
+                                {
                                     
                                 }
                                 else
