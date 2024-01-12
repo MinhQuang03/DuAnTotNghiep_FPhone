@@ -179,12 +179,13 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         }
 
         // huỷ đơn hàng
-        public ActionResult Dahuy(Guid id)
+        public async Task<IActionResult> Dahuy(Guid id,string statusInput1)
         {
             var a = _context.BillDetails.FirstOrDefault(p => p.IdBill == id);
             if(a.Imei == null)
             {
                 Bill bill = _context.Bill.Find(id);
+                bill.Note = statusInput1;
                 bill.Status = 4;
 
 
@@ -196,8 +197,8 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                 TempData["SuccessMessage"] = "Không thể hủy khi đã thêm imei !";
                 return RedirectToAction("Detail", new { id = id });
             }
-            
-            return RedirectToAction("Index");
+
+            return Json(new { success = true, data = "/Admin/Bill/Index" });
         }
         
         // đang giao hàng

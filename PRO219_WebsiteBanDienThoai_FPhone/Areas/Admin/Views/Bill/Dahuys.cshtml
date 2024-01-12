@@ -30,7 +30,9 @@
             <th>
                 Trạng Thái Thanh Toán
             </th>
-
+            <th>
+                Lý do hủy 
+            </th>
             <th>Hành Động  </th>
         </tr>
     </thead>
@@ -75,7 +77,9 @@
                         <span class="text-danger">Chưa thanh toán </span>
                     }
                 </td>
-
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Note)
+                    </td>
                 <td>
                     <a class="btn btn-sm btn-light text-danger border" href="@Url.Action("delete", "Bill", new { id = item.Id })"> <i class="fas fa-trash-alt"></i></a>
                 </td>
