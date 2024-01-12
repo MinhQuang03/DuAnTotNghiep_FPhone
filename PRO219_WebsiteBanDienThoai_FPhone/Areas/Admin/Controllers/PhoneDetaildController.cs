@@ -211,12 +211,12 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             model.Id = Guid.NewGuid();
             try
             {
-              var result = await _service.Add(model);
+              var result =  _service.Add(model);
                 
                 if (result!=null)
                 {
                     er.Msg = "Thêm thành công";
-                    return RedirectToAction("ListPhoneDetail", "Phone",$"{result.IdPhone}");
+                    return Redirect($"/Admin/Phone/ListPhoneDetail/{result.IdPhone}");
                 }
             }
             catch (Exception ex)

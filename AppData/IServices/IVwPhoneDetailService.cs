@@ -17,6 +17,6 @@ namespace AppData.IServices
         /// <returns></returns>
         VW_PhoneDetail getPhoneDetailByIdPhoneDetail(Guid id);
         int CheckPhoneDetail(Guid id);
-        Task<PhoneDetaild> Add(PhoneDetaild obj);
+     PhoneDetaild Add(PhoneDetaild obj);
     }
 }

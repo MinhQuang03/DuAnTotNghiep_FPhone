@@ -1,4 +1,5 @@
-﻿@model PRO219_WebsiteBanDienThoai_FPhone.ViewModel.AdPhoneDetailViewModel
+﻿@using AppData.Utilities
+@model PRO219_WebsiteBanDienThoai_FPhone.ViewModel.AdPhoneDetailViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -173,8 +174,8 @@
                         <div class="form-group">
                             <label  class="control-label">Trạng thái</label>
                             <select asp-for="@Model.DetailOfPhoneDetaild.Status" class="custom-select" id="productStatus">
-                                <option value="0" selected>Hoạt động</option>
-                                <option value="1">Không hoạt động</option>
+                                <option value="@FphoneConst.HoatDong" selected>Hoạt động</option>
+                                <option value="@FphoneConst.KhongHoatDong">Không hoạt động</option>
                             </select>
                         </div>
                         @*<div class="form-group">
