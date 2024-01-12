@@ -2,6 +2,7 @@
 using AppData.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Filters;
 using System.Net;
 using System.Net.Mail;
@@ -178,12 +179,13 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         }
 
         // huỷ đơn hàng
-        public ActionResult Dahuy(Guid id)
+        public async Task<IActionResult> Dahuy(Guid id,string statusInput1)
         {
             var a = _context.BillDetails.FirstOrDefault(p => p.IdBill == id);
             if(a.Imei == null)
             {
                 Bill bill = _context.Bill.Find(id);
+                bill.Note = statusInput1;
                 bill.Status = 4;
 
 
@@ -195,8 +197,8 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                 TempData["SuccessMessage"] = "Không thể hủy khi đã thêm imei !";
                 return RedirectToAction("Detail", new { id = id });
             }
-            
-            return RedirectToAction("Index");
+
+            return Json(new { success = true, data = "/Admin/Bill/Index" });
         }
         
         // đang giao hàng
@@ -294,26 +296,82 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             
             return RedirectToAction("Detail", new { id = a.IdBill });
         }
-        public ActionResult BaoHanh()
-        {
+
+        [HttpGet]
+        public ActionResult BaoHanh(string search)
+        {  
+            if (!string.IsNullOrEmpty(search))
+            {
+                var a = _context.WarrantyCards.Where(p => p.Imei.Contains(search) && p.Status == 0).ToList();
+                return View(a);
+            }
+            
             var warrantyCards = _context.WarrantyCards.Where(p => p.Status == 0).ToList();
-            return View(warrantyCards);
+            if (warrantyCards != null && warrantyCards.Any())
+            {
+                return View(warrantyCards);
+            }
+            else
+            {
+                return View();
+            }           
         }
-        public ActionResult ThucHienBaoHanh()
+
+        [HttpGet]
+        public ActionResult ThucHienBaoHanh(string search)
         {
+            if (!string.IsNullOrEmpty(search))
+            {
+                var a = _context.WarrantyCards.Where(p => p.Imei.Contains(search) && p.Status == 1).ToList();
+                return View(a);
+            }
+
             var warrantyCards = _context.WarrantyCards.Where(p => p.Status == 1).ToList();
-            return View(warrantyCards);
+            if (warrantyCards != null && warrantyCards.Any())
+            {
+                return View(warrantyCards);
+            }
+            else
+            {
+                return View();
+            }
+
         }
-        public ActionResult BaoHanhThanhCong()
+
+        [HttpGet]
+        public ActionResult BaoHanhThanhCong(string search)
         {
+            if (!string.IsNullOrEmpty(search))
+            {
+                var a = _context.WarrantyCards.Where(p => p.Imei.Contains(search) && p.Status == 2).ToList();
+                return View(a);
+            }
+
             var warrantyCards = _context.WarrantyCards.Where(p => p.Status == 2).ToList();
-            return View(warrantyCards);
+            if (warrantyCards != null && warrantyCards.Any())
+            {
+                return View(warrantyCards);
+            }
+            else
+            {
+                return View();
+            }
+
         }
 
         public ActionResult TimKiemBaoHanh(string search)
         {
-
-            return View();
+            var a = _context.WarrantyCards.FirstOrDefault(p => p.Imei == search);
+            if (a == null)
+            {
+                TempData["SuccessMessage"] = "Bạn không thể xóa sản phẩm !";
+                return View(a);
+            }
+            else
+            {
+                return View(a);
+            }
+            
         }
 
         public ActionResult ChiTietBaoHanh(Guid id) 

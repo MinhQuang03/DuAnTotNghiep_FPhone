@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<ActionList xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Actions>
+    <Action>
+      <SMTPServer />
+      <SMTPServerPort>25</SMTPServerPort>
+      <SMTPUser />
+      <SMTPPassword />
+      <SMTPUseSSL>false</SMTPUseSSL>
+      <SMTPDefaultCredentials>false</SMTPDefaultCredentials>
+      <CSVDelimiter>\t (Tab)</CSVDelimiter>
+      <CSVTextQualifier>"</CSVTextQualifier>
+      <CSVDecimalChar />
+      <CSVCharset>UTF-8</CSVCharset>
+      <CSVNewline>CrLf (\r\n)</CSVNewline>
+      <Name>DATN</Name>
+      <DSN>Driver={SQL Server};server=DESKTOP-H6TL71T\MINGG;lastuser=admin;trusted_connection=Yes</DSN>
+      <DSNUser />
+      <DSNPassword />
+      <Query />
+      <AutoAdjustColumnWidth>true</AutoAdjustColumnWidth>
+      <MakeDateColumns>true</MakeDateColumns>
+      <RemoveTime>false</RemoveTime>
+      <DontCreateEmptyFile>false</DontCreateEmptyFile>
+      <OutputTypeCSV>false</OutputTypeCSV>
+      <OutputTypeExcel>true</OutputTypeExcel>
+      <OutputTypeHTML>false</OutputTypeHTML>
+      <OutputAppend>false</OutputAppend>
+      <OutputOverwrite>true</OutputOverwrite>
+      <OutputPath />
+      <OutputPrintHeader>true</OutputPrintHeader>
+      <EmailEnabled>false</EmailEnabled>
+      <EmailConditionalSendEnabled>false</EmailConditionalSendEnabled>
+      <EmailSendNumberRows>0</EmailSendNumberRows>
+      <EmailFrom />
+      <EmailTo />
+      <EmailBcc />
+      <EmailSubject />
+      <EmailMessage />
+      <EmailAttachOutput>true</EmailAttachOutput>
+      <EmailZIP>true</EmailZIP>
+      <EmailZIPSize>3</EmailZIPSize>
+      <EmailMaxSize>5</EmailMaxSize>
+      <ExcelTemplate />
+      <ExcelWorksheet />
+      <ExcelCell>A1</ExcelCell>
+      <CSSTable>border-collapse: collapse; font-family: Helvetica, sans-serif; font-size: 12px;</CSSTable>
+      <CSSTRHeader />
+      <CSSTDHeader>border: 1px solid black; font-weight: bold; padding: 5px;</CSSTDHeader>
+      <CSSTRData />
+      <CSSTDData>border: 1px solid black; padding: 5px;</CSSTDData>
+    </Action>
+  </Actions>
+  <DefaultSMTPServer />
+  <DefaultSMTPServerPort>25</DefaultSMTPServerPort>
+  <DefaultSMTPUser />
+  <DefaultSMTPPassword />
+  <DefaultSMTPUseSSL>false</DefaultSMTPUseSSL>
+  <DefaultSMTPDefaultCredentials>false</DefaultSMTPDefaultCredentials>
+  <LogPath />
+  <LogMaxSize>5</LogMaxSize>
+  <LogMaxRotate>4</LogMaxRotate>
+  <LogEmailEnabled>false</LogEmailEnabled>
+  <LogEmailTo />
+  <LogEmailFrom />
+  <SMTPTimeOut>100</SMTPTimeOut>
+  <QueryTimeOut>600</QueryTimeOut>
+</ActionList>
