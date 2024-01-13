@@ -1,17 +1,24 @@
 ﻿var JAdCheckOut = (function () {
 
-    var modelFromView = {
-        ListvVwPhoneDetails: [/* ... */],
-        listImage: [/* ... */],
-        Bill: { /* ... */ },
-        ListBillDetail: [/* ... */],
-    };
-
-
     var ins = {};
     const ChuyenKhoan = "BANKING";
     const TienMat = "TIENMAT";
     const TienMat_ChuyenKhoan = "TIENMAT_CHUYENKHOAN";
+
+    ins.searchClick = function() {
+        var dataSearch = $('#dataSearch').val();
+            $(`.ShowProduct`).each(function () {
+                var phoneName = $(this).attr("id");
+                var code = $(this).attr("name");
+                if (phoneName.includes(dataSearch) || code == dataSearch || dataSearch=="") {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+    }
+
+
     ins.clickAddProp = function () {
         var value = parseInt($('#NumberSilde').val());
         var new_value = value + 1;
