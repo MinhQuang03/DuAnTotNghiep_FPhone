@@ -110,11 +110,12 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         {
             if (!string.IsNullOrEmpty(search))
             {
-                var s = _context.Bill.Where(b => b.BillCode == search && b.Status == 3).ToList().OrderByDescending(b => b.CreatedTime);
+                var s = _context.Bill.Where(b => b.BillCode == search && b.Status == 3).OrderByDescending(b => b.CreatedTime).ToList();
                 return View(s);
             }
             // Lấy danh sách hóa đơn giảm dần theo thời gian đặt hàng
-            var bills = _context.Bill.Where(b => b.Status == 3).ToList().OrderByDescending(b => b.CreatedTime);
+            var bills = _context.Bill.Where(b => b.Status == 3).OrderByDescending(c =>c.CreatedTime).ToList();
+
             if (bills != null && bills.Any())
             {
                 return View(bills);
@@ -927,7 +928,8 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Error sending email: {ex.Message}");
+                //return StatusCode(500, $"Error sending email: {ex.Message}");
+                return NoContent();
             }
         }
     }

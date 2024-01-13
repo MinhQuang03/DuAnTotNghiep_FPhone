@@ -26,8 +26,7 @@ public class VwPhoneDetailService : IVwPhoneDetailService
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            throw;
+          
         }
 
         return lst;
@@ -124,6 +123,15 @@ public class VwPhoneDetailService : IVwPhoneDetailService
         return _dbContext.VW_PhoneDetail.Where(c => c.IdPhoneDetail == id).Count();
     }
 
+    public int CountPhoneDetailFromImei(Guid idPhoneDetail)
+    {
+        return _dbContext.Imei.Count(c => c.IdPhoneDetaild == idPhoneDetail);
+    }
+
+    public List<string> GetListImagebyIdPhoneDetail(Guid id)
+    {
+        return _dbContext.ListImage.Where(c => c.IdPhoneDetaild == id).Select(c => c.Image).ToList();
+    }
     public PhoneDetaild Add(PhoneDetaild obj)
     {
          _dbContext.PhoneDetailds.AddAsync(obj);

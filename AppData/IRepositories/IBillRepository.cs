@@ -15,6 +15,7 @@ namespace AppData.IRepositories
         Task Delete(Guid id);
 
         Task<Bill> GetById(Guid id);
+        BillDetails AddBillDetail(BillDetails model);
 
     }
 }

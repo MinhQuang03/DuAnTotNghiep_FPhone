@@ -12,6 +12,7 @@ namespace AppData.ViewModels.Phones
         public Guid IdPhone { get; set; }
         public Guid RamID { get; set; }
         public Guid ColorID { get; set; }
+        public string? Code { get; set; }
         public string? PhoneName { get; set; }
         public decimal? ReducedAmount { get; set; }
         public string? MaterialName { get; set; }
@@ -32,6 +33,11 @@ namespace AppData.ViewModels.Phones
         public int? Status { get; set; }    
         public string? ProductionCompanyName { get; set; }
         [NotMapped]
-        public string? FirstImage { get; set; } 
+        public string? FirstImage { get; set; }
+
+        [NotMapped]
+        public int CountPhone { get; set; }
+        [NotMapped]
+        public List<string> ListImage { get; set; } = new List<string>();
     }
 }
