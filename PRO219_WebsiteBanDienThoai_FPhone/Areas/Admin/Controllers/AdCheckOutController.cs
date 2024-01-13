@@ -1,5 +1,4 @@
-﻿using AppData.FPhoneDbContexts;
-using AppData.IRepositories;
+﻿using AppData.IRepositories;
 using AppData.IServices;
 using AppData.Utilities;
 using Microsoft.AspNetCore.Mvc;
@@ -13,24 +12,13 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
 
     public class AdCheckOutController : Controller
     {
-       
-        private IProductionCompanyRepository _companyRepository;
-        private IRamRepository _ramRepository;
-        private IChipCPURepository _chipCpuRepository;
-        private IRomRepository _romRepository;
-        private IMaterialRepository _materialRepository;
         private IVwPhoneDetailService _phoneDetailService;
         private IListImageService _imageService;
         private IAccountService _accountService;
         private IBillRepository _billRepository;
 
-        public AdCheckOutController( IProductionCompanyRepository companyRepository, IRamRepository ramRepository, IChipCPURepository chipCpuRepository, IRomRepository romRepository, IMaterialRepository materialRepository, IVwPhoneDetailService phoneDetailService, IListImageService imageService, IAccountService accountService, IBillRepository billRepository)
+        public AdCheckOutController(  IVwPhoneDetailService phoneDetailService, IListImageService imageService, IAccountService accountService, IBillRepository billRepository)
         {
-            _companyRepository = companyRepository;
-            _ramRepository = ramRepository;
-            _chipCpuRepository = chipCpuRepository;
-            _romRepository = romRepository;
-            _materialRepository = materialRepository;
             _phoneDetailService = phoneDetailService;
             _imageService = imageService;
             _accountService = accountService;
@@ -49,7 +37,6 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                     : _imageService.GetFirstImageByIdPhondDetail(item.IdPhoneDetail);
                 //đếm số lượng sản phẩm
                 item.CountPhone = _phoneDetailService.CountPhoneDetailFromImei(item.IdPhoneDetail);
-               
             }
             return View(model);
         }

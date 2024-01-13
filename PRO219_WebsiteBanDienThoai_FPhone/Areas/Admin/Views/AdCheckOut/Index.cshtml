@@ -39,20 +39,26 @@
     <div class="row">
         <div class="form-group col-4 border border-secondary-subtle">
             <h2>Sản phẩm</h2>
+            <div class="row my-3 ml-1">
+                <input placeholder="Tìm kiếm" id="dataSearch" class="form-control col-6" type="text" />
+                <span class="col-2"></span>
+                <input type="submit" onclick="JAdCheckOut.searchClick()" class="btn btn-primary col-4" value="Tìm kiếm" />
+            </div>
+           
             <div class="card ">
                 <div class="card-body form-group row overflow-auto" style="max-height: 800px; background-color: #f0f8ff">
                     @foreach (var item in Model.ListvVwPhoneDetails)
                     {
-                        <div class="col-6 mt-2 border border-dark rounded" style="background-color: white;max-height: 334px">
-                            <img class="card-img-top" src="@item.FirstImage" alt="Card image cap" height="150px" width="50px">
-                            <p class="card-text text-center">@item.PhoneName</p>
-                            <p>MSP: @item.Code</p>
-                            <p class="text-danger text-center">Giá: @item.Price?.ToString("C", CultureInfo.GetCultureInfo("vi-VN"))</p>
-                            <p id="quantity_@index">Số lượng: @item.CountPhone</p>
-                            <input hidden id="quantity_hide_@index" value="@item.CountPhone"/>
-                            <input hidden id="IdPhoneDetail_@index" value="@item.IdPhoneDetail"/>
-                            <input onclick="JAdCheckOut.clickButtonAdd('@index')" id="btnAdd_@index" type="button" class="form-control text-center text-white btn-primary" value="Add"/>
-                        </div> 
+                            <div id="@item.PhoneName" name="@item.Code" class="col-6 mt-2 border border-dark rounded ShowProduct" style="background-color: white;max-height: 334px">
+                                <img class="card-img-top" src="@item.FirstImage" alt="Card image cap" height="150px" width="50px">
+                                <p class="card-text text-center">@item.PhoneName</p>
+                                <p>MSP: @item.Code</p>
+                                <p class="text-danger text-center">Giá: @item.Price?.ToString("C", CultureInfo.GetCultureInfo("vi-VN"))</p>
+                                <p id="quantity_@index">Số lượng: @item.CountPhone</p>
+                                <input hidden id="quantity_hide_@index" value="@item.CountPhone"/>
+                                <input hidden id="IdPhoneDetail_@index" value="@item.IdPhoneDetail"/>
+                                <input onclick="JAdCheckOut.clickButtonAdd('@index')" id="btnAdd_@index" type="button" class="form-control text-center text-white btn-primary" value="Add"/>
+                            </div> 
                         index++;
                     }
 
@@ -296,7 +302,8 @@
     $(document).ready(function() {
         $('.banking').hide();
         $('.tienMat').hide();
-        
+        $('#hideMenu').click();
+
         JAdCheckOut.searchUser();
         JAdCheckOut.initList();
 
