@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AppData.Utilities;
 
 namespace AppData.Repositories
 {
@@ -19,9 +20,19 @@ namespace AppData.Repositories
         }
         public async Task<Bill> Add(Bill obj)
         {
-            await _dbContext.Bill.AddAsync(obj);
-            await _dbContext.SaveChangesAsync();
-            return obj;
+            Bill dbo = new Bill();
+            try
+            {
+                BeanUtils.CopyAllPropertySameName(obj,dbo);
+                _dbContext.Bill.Add(obj);
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                dbo = null;
+            }
+          
+            return dbo;
         }
 
         public async Task Delete(Guid id)
@@ -39,6 +50,23 @@ namespace AppData.Repositories
         public async Task<Bill> GetById(Guid id)
         {
             return await _dbContext.Bill.FirstOrDefaultAsync(p => p.Id == id);
+        }
+
+        public BillDetails AddBillDetail(BillDetails model)
+        {
+            var data = new BillDetails();
+            try
+            {
+                BeanUtils.CopyAllPropertySameName(model,data);
+                _dbContext.BillDetails.Add(data);
+                _dbContext.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                data = null;
+            }
+
+            return data;
         }
 
         public async Task<Bill> Update(Bill obj)

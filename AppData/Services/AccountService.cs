@@ -134,5 +134,20 @@ namespace AppData.Services
 
             return account;
         }
+
+        public Account GetUserByPhoneNumber(string phoneNumber)
+        {
+            var account = new Account();
+            try
+            {
+                account = _dbContext.Accounts.FirstOrDefault(c => c.PhoneNumber == phoneNumber);
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            return account;
+        }
     }
 }
