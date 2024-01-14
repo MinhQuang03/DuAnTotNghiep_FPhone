@@ -1,4 +1,8 @@
-﻿@model IEnumerable<AppData.Models.Bill>
+﻿@using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
+@using X.PagedList;
+@using X.PagedList.Mvc.Common;
+@using X.PagedList.Mvc.Core;
+@model IPagedList<AppData.Models.Bill>
 
 @{
     ViewData["Title"] = "Dagiaoview";
@@ -87,3 +91,21 @@
 
     </tbody>
 </table>
+<div class="custom-pager">
+    @Html.PagedListPager(Model, pageNumber => Url.Action("Dagiaoview", new { pageNumber, pageSize = Model.PageSize }), new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded, LiElementClasses = new[] { "page-item" }, PageClasses = new[] { "page-link" } })
+</div>
+<style>
+    .custom-pager {
+        display: flex;
+        justify-content: flex-end;
+        margin-right: 100px; /* Điều chỉnh khoảng cách bên phải */
+    }
+
+        .custom-pager .page-item {
+            margin: 0 5px; /* Điều chỉnh khoảng cách giữa các mũi tên */
+        }
+
+        .custom-pager .page-link {
+            font-size: 13px; /* Điều chỉnh kích thước của mũi tên */
+        }
+</style>
