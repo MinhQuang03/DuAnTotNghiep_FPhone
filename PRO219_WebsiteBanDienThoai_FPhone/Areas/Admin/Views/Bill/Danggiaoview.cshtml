@@ -41,9 +41,9 @@
         </tr>
     </thead>
     <tbody>
-        @if (Model == null)
+        @if (Model == null || !Model.Any())
         {
-            <h2 style="text-align:center"> Hiện đang Không có hóa đơn  </h2>
+            <h2 style="text-align:center">Hiện đang Không có hóa đơn</h2>
         }
         else
         {

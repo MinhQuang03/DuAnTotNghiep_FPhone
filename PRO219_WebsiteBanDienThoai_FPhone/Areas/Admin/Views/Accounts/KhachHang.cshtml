@@ -1,4 +1,9 @@
-﻿@model IEnumerable<AppData.Models.Account>
+﻿@using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
+@using X.PagedList;
+@using X.PagedList.Mvc.Common;
+@using X.PagedList.Mvc.Core;
+@model IPagedList<AppData.Models.Account>
+
 @{
     ViewData["Title"] = "Accounts";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
@@ -7,6 +12,13 @@
 
 <h1>Danh sách Khách Hàng</h1>
 
+<div>
+    <form method="get" action="@Url.Action("KhachHang", "Accounts")">
+        <label for="search">Tìm kiếm:</label>
+        <input type="text" name="search" id="search" placeholder="Nhập Số điện thoại " />
+        <button style="background-color:#3f87f5; border-color: #3f87f5;" type="submit">Tìm kiếm</button>
+    </form>
+</div>
 <table class="table table-bordered">
 
     <thead class="thead-light">
@@ -30,6 +42,12 @@
         </tr>
     </thead>
     <tbody>
+          @if (Model == null || !Model.Any())
+        {
+            <h2 style="text-align:center">Không có khách hàng</h2>
+        }
+        else
+        {
         
             @foreach (var item in Model)
             {
@@ -66,6 +84,24 @@
        
                 </tr>
             }
-        
+        }
     </tbody>
 </table>
+<div class="custom-pager">
+    @Html.PagedListPager(Model, pageNumber => Url.Action("KhachHang", new { pageNumber, pageSize = Model.PageSize }), new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded, LiElementClasses = new[] { "page-item" }, PageClasses = new[] { "page-link" } })
+</div>
+<style>
+    .custom-pager {
+        display: flex;
+        justify-content: flex-end;
+        margin-right: 100px; /* Điều chỉnh khoảng cách bên phải */
+    }
+
+        .custom-pager .page-item {
+            margin: 0 5px; /* Điều chỉnh khoảng cách giữa các mũi tên */
+        }
+
+        .custom-pager .page-link {
+            font-size: 13px; /* Điều chỉnh kích thước của mũi tên */
+        }
+</style>

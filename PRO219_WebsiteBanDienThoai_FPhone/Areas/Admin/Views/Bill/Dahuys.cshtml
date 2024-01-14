@@ -40,9 +40,11 @@
         </tr>
     </thead>
     <tbody>
-        @if(Model == null ) {
-            <h2  style="text-align:center"> Hiện đang Không có hóa đơn  </h2>
-        }else
+        @if (Model == null || !Model.Any())
+        {
+            <h2 style="text-align:center">Hiện đang Không có hóa đơn</h2>
+        }
+        else
         {
         @foreach (var item in Model)
         {
