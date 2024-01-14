@@ -1,3 +1,5 @@
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model PRO219_WebsiteBanDienThoai_FPhone.ViewModel.HomeGroupViewModel
 ﻿@using AppData.Models;
 
@@ -134,7 +136,7 @@
                                     </svg>
                                 </div>
                                 <div class="product__price">
-                                    <h4>@item.Price</h4>
+                                        <h4>@item.Price?.ToString("C", new CultureInfo("vi-VN"))</h4>
                                 </div>
                                 <a asp-controller="Accounts" asp-action="AddToCard" asp-route-id="@item.Id">
                                     <button type="submit" class="product__btn">Thêm vào giỏ hàng</button>

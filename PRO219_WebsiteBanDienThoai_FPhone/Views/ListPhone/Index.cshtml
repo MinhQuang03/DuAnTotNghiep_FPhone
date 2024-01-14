@@ -1,4 +1,6 @@
-﻿@model PRO219_WebsiteBanDienThoai_FPhone.ViewModel.ListPhoneViewModel
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model PRO219_WebsiteBanDienThoai_FPhone.ViewModel.ListPhoneViewModel
 @{
     ViewData["Title"] = "Phone List";
 }
@@ -112,7 +114,7 @@
                         </svg>
                     </div>
                     <div class="product__price mt-2">
-                        <h4 style="color:#da152b">@item.Price</h4>
+                        <h4 style="color:#da152b">@item.Price?.ToString("C", new CultureInfo("vi-VN"))</h4>
                     </div>
                     <a href="#">
                         @Html.ActionLink("Thêm vào giỏ hàng", "AddToCard", "Accounts", new { id = item.IdPhoneDetail }, new { @class = "product__btn", type = "submit" })
