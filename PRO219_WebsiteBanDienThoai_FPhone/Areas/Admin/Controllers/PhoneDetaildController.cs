@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Filters;
 using System.Text;
 using AppData.IServices;
+using AppData.Utilities;
 using AppData.ViewModels;
 using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
 
@@ -209,6 +210,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             model = obj.DetailOfPhoneDetaild;
             model.IdPhone = obj.PhoneDetail.Id;
             model.Id = Guid.NewGuid();
+            model.Code = Utility.RandomString(6);
             try
             {
               var result =  _service.Add(model);
