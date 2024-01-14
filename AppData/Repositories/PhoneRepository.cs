@@ -38,6 +38,21 @@ namespace AppData.Repositories
             return await _dbContext.Phones.FirstOrDefaultAsync(p => p.Id == id);
         }
 
+        public int CheckExitPhone(string phoneName)
+        {
+            int phone = 0;
+            try
+            {
+                phone = _dbContext.Phones.Count(c => c.PhoneName.ToLower() == phoneName.ToLower());
+            }
+            catch (Exception e)
+            {
+                
+            }
+
+            return phone;
+        }
+
 
         public async Task<Phone> Update(Phone obj)
         {

@@ -36,7 +36,7 @@
         </div>
     </div>
     <div class="row">
-        <form method="post" class="col-12 px-xl-5 mx-5 row">
+        <form method="post" asp-controller="ListPhone" asp-action="Index" class="col-12 px-xl-5 mx-5 row">
             <div class="col">
                 @Html.DropDownListFor(model => model.SearchData.ProductionCompanyName, new SelectList(Model.Brand, "Name", "Name"), "Loại điện thoại", new { @class = "form-control", id = "Province" })
             </div>
