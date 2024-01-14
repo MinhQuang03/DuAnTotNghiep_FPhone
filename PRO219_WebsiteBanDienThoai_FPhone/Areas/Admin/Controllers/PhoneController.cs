@@ -82,6 +82,15 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(AdPhoneInsertViewModel obj, IFormFile file)
         {
+            obj.ListWarranty = _service.ListWarrty();
+            obj.ListCompany = _service.ListCompany();
+
+            if (_phoneRepository.CheckExitPhone(obj.PhoneName)>0)
+            {
+                ModelState.AddModelError("PhoneName", "Tên sản phẩm này đã tồn tại");
+                return View(obj);
+            }
+
             if (file != null && file.Length > 0) // khong null va khong trong 
             {
                 var fileName = Path.GetFileName(file.FileName);
@@ -207,6 +216,9 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         {
             obj.ListCompany = _service.ListCompany();
             obj.ListWarranty = _service.ListWarrty();
+
+
+
             if (file != null && file.Length > 0) // khong null va khong trong 
             {
                 var fileName = Path.GetFileName(file.FileName);
