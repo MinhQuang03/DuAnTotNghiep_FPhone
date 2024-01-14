@@ -6,8 +6,6 @@ using AppData.ViewModels.ThongKe;
 
 //using AppData.ViewModels.DanhGia;
 
-using DocumentFormat.OpenXml.Spreadsheet;
-using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
