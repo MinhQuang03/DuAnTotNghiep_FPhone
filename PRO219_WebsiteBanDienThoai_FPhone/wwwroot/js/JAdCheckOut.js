@@ -4,7 +4,8 @@
     const ChuyenKhoan = "BANKING";
     const TienMat = "TIENMAT";
     const TienMat_ChuyenKhoan = "TIENMAT_CHUYENKHOAN";
-
+    const phoneRegex = /^(0\d{9,10})$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     ins.searchClick = function() {
         var dataSearch = $('#dataSearch').val();
             $(`.ShowProduct`).each(function () {
@@ -17,7 +18,62 @@
                 }
             });
     }
+    ins.submitFormCreateAccount = function (e) {
+        e.preventDefault();
+        var error = 0;
+        var form = $('#createAccountUser');
+        var formData = form.serialize();
+        //validate họ tên
+        if ($('#Account_Name').val() =="") {
+            $('.error_Name').text("Vui lòng nhập thông tin");
+            error++;
+        } else {
+            $('.error_Name').text("");
+        }
+        //validate tên đăng nhập
+        if ($('#Account_Username').val()=="") {
+            $('.error_Username').text("Vui lòng nhập thông tin");
+            error++;
+        } else {
+            $('.error_Username').text("");
+        }
+        //validate số điện thoại
+        if ($('#Account_PhoneNumber').val() == "") {
+            $('.error_SDT').text("Vui lòng nhập thông tin");
+            error++;
+        } else {
+            if (!phoneRegex.test($('#Account_PhoneNumber').val())) {
+                $('.error_SDT').text('Số điện thoại sai định dạng');
+                error++
+            } else {
+                $('.error_SDT').text('');
+            }
+        }
+        //validate email
+        if ($('#Account_Email').val() == "") {
+            $('.error_Email').text("Vui lòng nhập thông tin");
+            error++;
+        } else {
+            if (!emailRegex.test($('#Account_Email').val())) {
+                $('.error_Email').text('Email sai định dạng');
+                error++
+            } else {
+                $('.error_Email').text('');
+            }
+        }
 
+        if (error == 0) {
+            $.ajax({
+                type: 'POST',
+                url: '/AdCheckOut/CreateAccountUser',
+                data: formData,
+                success: function (response) {
+                    alert(response);
+                    $("#createAccount").show();
+                }
+            });
+        }
+    }
 
     ins.clickAddProp = function () {
         var value = parseInt($('#NumberSilde').val());

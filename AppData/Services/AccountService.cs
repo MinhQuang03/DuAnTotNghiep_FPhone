@@ -124,6 +124,22 @@ namespace AppData.Services
             return account;
         }
 
+        public Account GetUserByUserName(string userName)
+        {
+            var account = new Account();
+            try
+            {
+                account = _dbContext.Accounts.FirstOrDefault(c => c.Username == userName);
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            return account;
+        }
+
+
         public Account GetUserById(Guid idGuid)
         {
             var account = new Account();
@@ -149,6 +165,23 @@ namespace AppData.Services
             catch (Exception e)
             {
 
+            }
+
+            return account;
+        }
+
+        public Account CreateAccountForUser(Account model)
+        {
+            var account = new Account();
+            try
+            {
+                BeanUtils.CopyAllPropertySameName(model,account);
+                 _dbContext.Accounts.Add(account);
+                 _dbContext.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                account = null;
             }
 
             return account;
