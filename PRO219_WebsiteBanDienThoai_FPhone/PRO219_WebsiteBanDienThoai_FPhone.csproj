@@ -25,6 +25,7 @@
     <PackageReference Include="OpenXmlPowerTools" Version="4.5.3.2" />
     <PackageReference Include="Serilog" Version="3.1.1" />
     <PackageReference Include="System.Diagnostics.Tools" Version="4.3.0" />
+    <PackageReference Include="X.PagedList.Mvc.Core" Version="7.2.0" />
   </ItemGroup>
 
   <ItemGroup>

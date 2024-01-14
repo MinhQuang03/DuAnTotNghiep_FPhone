@@ -14,8 +14,7 @@ namespace AppData.IRepositories
         Task<Phone> Update(Phone obj);
         Task<List<Phone>> GetAll();
         Task Delete(Guid id);
-
         Task<Phone> GetById(Guid id);
-      
+        int CheckExitPhone(string phoneName);
     }
 }

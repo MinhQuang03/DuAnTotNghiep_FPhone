@@ -1,4 +1,6 @@
-﻿@model PRO219_WebsiteBanDienThoai_FPhone.ViewModel.ListPhoneViewModel
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model PRO219_WebsiteBanDienThoai_FPhone.ViewModel.ListPhoneViewModel
 @{
     ViewData["Title"] = "Phone List";
 }
@@ -34,7 +36,7 @@
         </div>
     </div>
     <div class="row">
-        <form method="post" class="col-12 px-xl-5 mx-5 row">
+        <form method="post" asp-controller="ListPhone" asp-action="Index" class="col-12 px-xl-5 mx-5 row">
             <div class="col">
                 @Html.DropDownListFor(model => model.SearchData.ProductionCompanyName, new SelectList(Model.Brand, "Name", "Name"), "Loại điện thoại", new { @class = "form-control", id = "Province" })
             </div>
@@ -112,7 +114,7 @@
                         </svg>
                     </div>
                     <div class="product__price mt-2">
-                        <h4 style="color:#da152b">@item.Price</h4>
+                        <h4 style="color:#da152b">@item.Price?.ToString("C", new CultureInfo("vi-VN"))</h4>
                     </div>
                     <a href="#">
                         @Html.ActionLink("Thêm vào giỏ hàng", "AddToCard", "Accounts", new { id = item.IdPhoneDetail }, new { @class = "product__btn", type = "submit" })

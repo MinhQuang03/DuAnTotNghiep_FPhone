@@ -7,6 +7,7 @@ using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Filters;
 using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
 using System.Net;
 using System.Net.Mail;
+using X.PagedList;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
 {
@@ -20,42 +21,42 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         {
             _context = new FPhoneDbContext();
         }
-        public async Task<IActionResult> Index(string search)
+        public async Task<IActionResult> Index(int? pageNumber, int pageSize = 10, string? search = "")
         {
             if (!string.IsNullOrEmpty(search))
             {
                 var s = _context.Bill.Where(b => b.BillCode == search && b.Status == 0).ToList().OrderByDescending(b => b.CreatedTime);
-                return View(s);
+                return View(s.ToPagedList(pageNumber ?? 1, pageSize < 1 ? 1 : pageSize));
             }
                
             var bills = _context.Bill.Where(b => b.Status == 0).ToList().OrderByDescending(b => b.CreatedTime);
             if (bills != null && bills.Any())
             {
-                return View(bills);
+                return View(bills.ToPagedList(pageNumber ?? 1, pageSize));
             }
             else
             {
-                return View();
+                return View(new List<Bill>().ToPagedList(pageNumber ?? 1, pageSize));
             }
         }
       
-        public async Task<IActionResult> xacnhan(string search)
+        public async Task<IActionResult> xacnhan(int? pageNumber, int pageSize = 10, string? search = "")
         {
             if (!string.IsNullOrEmpty(search))
             {
                 var s = _context.Bill.Where(b => b.BillCode == search && b.Status == 1).ToList().OrderByDescending(b => b.CreatedTime);
-                return View(s);
+                return View(s.ToPagedList(pageNumber ?? 1, pageSize < 1 ? 1 : pageSize));
             }
             // Lấy danh sách hóa đơn giảm dần theo thời gian đặt hàng
             var bills = _context.Bill.Where(b => b.Status == 1).ToList().OrderByDescending(b => b.CreatedTime);
             if (bills != null && bills.Any())
             {
-                return View(bills);
+                return View(bills.ToPagedList(pageNumber ?? 1, pageSize));
             }
             else
             {
-                
-                return View();
+
+                return View(new List<Bill>().ToPagedList(pageNumber ?? 1, pageSize));
             }
         }
         public  ActionResult delete(Guid id)
@@ -70,95 +71,95 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             return RedirectToAction("Dahuys");
         }
 
-        public async Task<IActionResult> Dahuys(string search)
+        public async Task<IActionResult> Dahuys(int? pageNumber, int pageSize = 10, string? search = "")
         {
             if (!string.IsNullOrEmpty(search))
             {
                 var s = _context.Bill.Where(b => b.BillCode == search && b.Status == 4).ToList().OrderByDescending(b => b.CreatedTime);
-                return View(s);
+                return View(s.ToPagedList(pageNumber ?? 1, pageSize < 1 ? 1 : pageSize));
             }
             // Lấy danh sách hóa đơn giảm dần theo thời gian đặt hàng
             var bills = _context.Bill.Where(b => b.Status == 4).ToList().OrderByDescending(b => b.CreatedTime);
             if (bills != null && bills.Any())
             {
-                return View(bills);
+                return View(bills.ToPagedList(pageNumber ?? 1, pageSize));
             }
             else
             {
-                return View();
+                return View(new List<Bill>().ToPagedList(pageNumber ?? 1, pageSize));
             }
         }
-        public async Task<IActionResult> Danggiaoview(string search)
+        public async Task<IActionResult> Danggiaoview(int? pageNumber, int pageSize = 10, string? search = "")
         {
             if (!string.IsNullOrEmpty(search))
             {
                 var s = _context.Bill.Where(b => b.BillCode == search && b.Status == 2).ToList().OrderByDescending(b => b.CreatedTime);
-                return View(s);
+                return View(s.ToPagedList(pageNumber ?? 1, pageSize < 1 ? 1 : pageSize));
             }
             // Lấy danh sách hóa đơn giảm dần theo thời gian đặt hàng
             var bills = _context.Bill.Where(b => b.Status == 2).ToList().OrderByDescending(b => b.CreatedTime);
             if (bills != null && bills.Any())
             {
-                return View(bills);
+                return View(bills.ToPagedList(pageNumber ?? 1, pageSize));
             }
             else
             {
-                return View();
+                return View(new List<Bill>().ToPagedList(pageNumber ?? 1, pageSize));
             }
         }
-        public async Task<IActionResult> Dagiaoview(string search)
+        public async Task<IActionResult> Dagiaoview(int? pageNumber, int pageSize = 10, string? search = "")
         {
             if (!string.IsNullOrEmpty(search))
             {
-                var s = _context.Bill.Where(b => b.BillCode == search && b.Status == 3).OrderByDescending(b => b.CreatedTime).ToList();
-                return View(s);
+                var s = _context.Bill.Where(b => b.BillCode == search && b.Status == 3).ToList().OrderByDescending(b => b.CreatedTime);
+                return View(s.ToPagedList(pageNumber ?? 1, pageSize < 1 ? 1 : pageSize));
             }
             // Lấy danh sách hóa đơn giảm dần theo thời gian đặt hàng
             var bills = _context.Bill.Where(b => b.Status == 3).OrderByDescending(c =>c.CreatedTime).ToList();
 
             if (bills != null && bills.Any())
             {
-                return View(bills);
+                return View(bills.ToPagedList(pageNumber ?? 1, pageSize));
             }
             else
             {
-                return View();
+                return View(new List<Bill>().ToPagedList(pageNumber ?? 1, pageSize));
             }
         }
-        public async Task<IActionResult> giaothatbaiview(string search)
+        public async Task<IActionResult> giaothatbaiview(int? pageNumber, int pageSize = 10, string? search = "")
         {
             if (!string.IsNullOrEmpty(search))
             {
                 var s = _context.Bill.Where(b => b.BillCode == search && b.Status == 6).ToList().OrderByDescending(b => b.CreatedTime);
-                return View(s);
+                return View(s.ToPagedList(pageNumber ?? 1, pageSize < 1 ? 1 : pageSize));
             }
             // Lấy danh sách hóa đơn giảm dần theo thời gian đặt hàng
             var bills = _context.Bill.Where(b => b.Status == 6).ToList().OrderByDescending(b => b.CreatedTime);
             if (bills != null && bills.Any())
             {
-                return View(bills);
+                return View(bills.ToPagedList(pageNumber ?? 1, pageSize));
             }
             else
             {
-                return View();
+                return View(new List<Bill>().ToPagedList(pageNumber ?? 1, pageSize));
             }
         }
-        public async Task<IActionResult> xoaview(string search)
+        public async Task<IActionResult> xoaview(int? pageNumber, int pageSize = 10, string? search = "")
         {
             if (!string.IsNullOrEmpty(search))
             {
                 var s = _context.Bill.Where(b => b.BillCode == search && b.Status == 5).ToList().OrderByDescending(b => b.CreatedTime);
-                return View(s);
+                return View(s.ToPagedList(pageNumber ?? 1, pageSize < 1 ? 1 : pageSize));
             }
             // Lấy danh sách hóa đơn giảm dần theo thời gian đặt hàng
             var bills = _context.Bill.Where(b => b.Status == 5).ToList().OrderByDescending(b => b.CreatedTime);
             if (bills != null && bills.Any())
             {
-                return View(bills);
+                return View(bills.ToPagedList(pageNumber ?? 1, pageSize));
             }
             else
             {
-                return View();
+                return View(new List<Bill>().ToPagedList(pageNumber ?? 1, pageSize));
             }
         }
         public ActionResult Detail(Guid id)
@@ -187,8 +188,6 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
 
             // Lấy danh sách các PhoneName và gán vào ViewBag
             ViewBag.PhoneNames = phoneNames + "|" + ramName + "|" + colorName;
-            ViewBag.ram = ramName;
-            ViewBag.color = colorName;
             ViewBag.customer = _context.Bill.Where(m => m.Id == id).First();
             var lisst = _context.BillDetails.Where(m => m.IdBill == id && m.Status != 2).ToList();
             return View("BillDetail", lisst);
@@ -237,8 +236,8 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                 _context.BillDetails.UpdateRange(a);
                 _context.SaveChanges();
             }
-           
-            return RedirectToAction("Danggiaoview");
+
+            return Json(new { success = true, data = "/Admin/Bill/Danggiaoview" });
         }
         // huỷ đơn hàng
         public async Task<IActionResult> Dahuy(Guid id,string statusInput1)
@@ -331,7 +330,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
 
             }
 
-            return RedirectToAction("Danggiaoview");
+            return Json(new { success = true, data = "/Admin/Bill/Danggiaoview" });
         }
         // xoá đơn hàng , cập nhật lưu thay đổi
    

@@ -1,4 +1,9 @@
-﻿@model IEnumerable<AppData.Models.Bill>
+﻿@using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
+@using X.PagedList;
+@using X.PagedList.Mvc.Common;
+@using X.PagedList.Mvc.Core;
+@model IPagedList<AppData.Models.Bill>
+
 
 @{
     ViewData["Title"] = "Danggiaoview";
@@ -36,9 +41,9 @@
         </tr>
     </thead>
     <tbody>
-        @if (Model == null)
+        @if (Model == null || !Model.Any())
         {
-            <h2 style="text-align:center"> Hiện đang Không có hóa đơn  </h2>
+            <h2 style="text-align:center">Hiện đang Không có hóa đơn</h2>
         }
         else
         {
@@ -82,10 +87,10 @@
                     </td>
 
                     <td>
-                        <a class="btn btn-sm btn-light text-success border" href="@Url.Action("Dagiao", "Bill", new { id = item.Id })"> Giao Thành Công  </a>
+                        <a class="btn btn-sm btn-light text-success border  btn-confirm" href="@Url.Action("Dagiao", "Bill", new { id = item.Id })"> Giao Thành Công  </a>
                     </td>
                     <td>
-                        <a class="btn btn-sm btn-light text-danger border" href="@Url.Action("Giaothatbai", "Bill", new { id = item.Id })"> Giao Thất Bại  </a>
+                        <a class="btn btn-sm btn-light text-danger border btn-confirm" href="@Url.Action("Giaothatbai", "Bill", new { id = item.Id })"> Giao Thất Bại </a>
                     </td>
                 </tr>
             }
@@ -94,4 +99,52 @@
 
     </tbody>
 </table>
+<div class="custom-pager">
+    @Html.PagedListPager(Model, pageNumber => Url.Action("Danggiaoview", new { pageNumber, pageSize = Model.PageSize }), new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded, LiElementClasses = new[] { "page-item" }, PageClasses = new[] { "page-link" } })
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.btn-confirm').click(function (e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+
+            // Hiển thị hộp thoại xác nhận
+            if (confirm('Bạn có chắc muốn chuyển trạng thái của hóa đơn không?')) {
+                // Nếu người dùng chọn "OK", gửi yêu cầu Ajax
+                $.ajax({
+                    type: 'POST', // hoặc 'GET' tùy thuộc vào cách bạn xử lý ở server
+                    url: url,
+                    success: function (data) {
+                        // Xử lý reload trang và hiển thị thông báo thành công
+                        if (data.success) {
+                            alert('Chuyển trạng thái thành công');
+                            location.reload();
+                        } else {
+                            alert('Chuyển trạng thái thất bại');
+                        }
+                    },
+                    error: function () {
+                        alert('Đã xảy ra lỗi');
+                    }
+                });
+            }
+        });
+    });
+</script>
+<style>
+    .custom-pager {
+        display: flex;
+        justify-content: flex-end;
+        margin-right: 100px; /* Điều chỉnh khoảng cách bên phải */
+    }
+
+        .custom-pager .page-item {
+            margin: 0 5px; /* Điều chỉnh khoảng cách giữa các mũi tên */
+        }
+
+        .custom-pager .page-link {
+            font-size: 13px; /* Điều chỉnh kích thước của mũi tên */
+        }
+</style>
 

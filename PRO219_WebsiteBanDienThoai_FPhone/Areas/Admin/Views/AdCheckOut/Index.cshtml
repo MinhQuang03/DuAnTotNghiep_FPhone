@@ -1,5 +1,7 @@
 ﻿@using System.Globalization
+@using System.Security.Claims
 @using AppData.Utilities
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model PRO219_WebsiteBanDienThoai_FPhone.ViewModel.AdCheckOutViewModel
 @{
     ViewData["Title"] = "Bán hàng tại quầy";
@@ -148,7 +150,7 @@
                                     <div class="row">
                                         <label class="col-form-label col-3">Tên nhân viên </label>
                                         <div class="col-9">
-                                            <input value="root" class="form-control" type="text" disabled="disabled"/>
+                                                <input value="@(string.IsNullOrEmpty(User.Identity.Name)?"root":User.Identity.Name)" class="form-control" type="text" disabled="disabled" />
                                             <input hidden asp-for="Bill.Name" type="text"/>
                                         </div>
                                     </div>
@@ -223,7 +225,6 @@
                                             <input onclick="JAdCheckOut.submitForm(event)" type="submit" class="form-control btn btn-primary text-white" value="Thanh toán"/>
                                         </div>
                                     </div>
-                                   
                                 </form>
                             </td>
                         </tr>
@@ -242,7 +243,7 @@
         <span class="close" id="closePopup">&times;</span>
         <h2>Nhập thông tin khách hàng</h2>
         <div class="row">
-            <label for="fullName" class="col-form-label col-4">Họ và tên:</label>
+            <label class="col-form-label col-4">Họ và tên:</label>
             <div class="col-8">
                 <input type="text" id="fullNamePop" class="form-control">
             </div>
@@ -262,27 +263,33 @@
     <div class="popup-content" style="background-color: whitesmoke">
         <span class="close" id="closeCreate">&times;</span>
         <h2>Tạo tài khoản cho khách</h2>
+        <form id="createAccountUser">
         <div class="row mt-2">
             <label  class="col-form-label col-2">Họ và tên:</label>
             <div class="col-4">
-                <input type="text" id="fullName" class="form-control">
+                <input asp-for="Account.Name" type="text" class="form-control">
+                    <span class="text-danger error_Name"></span>
             </div>
             <label  class="col-form-label col-2">SĐT:</label>
             <div class="col-4">
-                <input type="text" id="fullName" class="form-control">
+                <input asp-for="Account.PhoneNumber" type="text" class="form-control">
+                <span class="text-danger error_SDT"></span>
             </div>
         </div>
         <div class="row mt-2">
             <label class="col-form-label col-2">Tên ĐN:</label>
             <div class="col-4">
-                <input type="tel" id="phoneNumber" class="form-control">
+                <input asp-for="Account.Username" type="tel"  class="form-control">
+                    <span class="text-danger error_Username"></span>
             </div>
             <label  class="col-form-label col-2">Email:</label>
             <div class="col-4">
-                <input type="tel" id="phoneNumber" class="form-control">
+                <input asp-for="Account.Email" type="email" class="form-control">
+                    <span class="text-danger error_Email"></span>
             </div>
         </div>
-        <button id="submitForm" class="btn btn-primary mt-2">Xác nhận</button>
+            <button  onclick="JAdCheckOut.submitFormCreateAccount(event)" class="btn btn-primary mt-2">Xác nhận</button>
+        </form>
     </div>
 </div>
 
@@ -316,12 +323,24 @@
         });
 
         $("#cancel").click(function () {
+            //Xóa thông tin pop cũ
+            $('#fullNamePop').val('');
+            $('#phoneNumberPop').val('');
+            //đóng pop lựa chọn
             $("#closeConfirm").click();
+            //show pop nhập thông tin khách hàng
             $("#popup").show();
         });
 
         $("#confirm").click(function () {
+            //xóa thông tin form cũ
+            $('#Account_Name').val("");
+            $('#Account_Username').val("");
+            $('#Account_PhoneNumber').val("");
+            $('#Account_Email').val("");
+            //đóng pop lựa chọn
             $("#closeConfirm").click();
+            //show pop tạo tài khoản
             $("#createAccount").show();
         });
 

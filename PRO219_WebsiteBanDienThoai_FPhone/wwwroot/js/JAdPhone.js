@@ -15,6 +15,43 @@
         $form.submit();
     };
 
+    ins.submitFormCreate = function (e) {
+        e.preventDefault();
+        var form = $('#form_create');
+        var error = 0;
+        //validate nhà sản xuất
+        if ($('#IdProductionCompany').val()=='') {
+            error++;
+            $('.error_IdProductionCompany').text("Vui lòng chọn thông tin");
+        } else {
+            $('.error_IdProductionCompany').text("");
+        }
+        //validate ảnh
+        if ($('#fileInput').val()=='') {
+            $(".error_Image").text("Vui lòng chọn ảnh");
+            error++;
+        } else {
+            $(".error_Image").text("");
+        }
+        //validate tên sản phẩm
+        if ($('#PhoneName').val() == "") {
+            $('.error_PhoneName').text('Vui lòng nhập thông tin');
+            error++;
+        } else {
+            $('.error_PhoneName').text('');
+        }
+        //validate mô tả
+        if ($('#Description').val()=="") {
+            $('.error_Description').text('Vui lòng nhập thông tin');
+            error++;
+        } else {
+            $('.error_Description').text('');
+        }
+
+        if (error==0) {
+            form.submit();
+        }
+    }
     ins.changePageSize = function (event) {
         event.preventDefault();
         var sizeOptions = $("#ListOptions_PageSize");   

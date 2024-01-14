@@ -1,5 +1,6 @@
 ﻿using AppData.IRepositories;
 using AppData.IServices;
+using AppData.Models;
 using AppData.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Filters;
@@ -105,6 +106,40 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             return Json("Thanh toán không thành công. Vui lòng thử lại");
         }
 
+        [HttpPost("/AdCheckOut/CreateAccountUser")]
+        public JsonResult CreateAccountUser(AdCheckOutViewModel model)
+        {
+            Security security = new Security();
+            string passrandom =  Utility.RandomString(6);
+            var phone = _accountService.GetUserByPhoneNumber(model.Account.PhoneNumber);
+            var email = _accountService.GetUserByEmail(model.Account.Email);
+            var userName = _accountService.GetUserByUserName(model.Account.Username);
+            if (userName!=null)
+            {
+                return Json("Tên đăng nhập này đã tồn tại");
+            }
+            if (email!=null)
+            {
+                return Json("Email này đã tồn tại");
+            }
+            if (phone == null)
+            {
+                model.Account.Status = FphoneConst.HoatDong;
+                model.Account.Points = 0;
+                model.Account.Password = security.Encrypt("", passrandom);
+                var result = _accountService.CreateAccountForUser(model.Account);
+                if (result != null)
+                {
+                    return Json("Tạo tài khoản thành công");
+                }
+            }
+            else
+            {
+                return Json("Số điện thoại này đã tồn tại");
+            }
+
+            return Json("Tạo tài khoản không thành công");
+        }
        
     }
 }

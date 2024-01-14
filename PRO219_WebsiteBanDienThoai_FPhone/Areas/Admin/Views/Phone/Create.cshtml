@@ -11,12 +11,12 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/form-data">
+        <form asp-action="Create" id="form_create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <labe class="control-label">Nhà sản xuất</labe>
                 @Html.DropDownListFor(model => model.IdProductionCompany, new SelectList(Model.ListCompany, "Id", "Name"), "--- Lựa chọn ---", new { @class = "form-control" })
-                <span asp-validation-for="IdProductionCompany" class="text-danger"></span>
+                <span asp-validation-for="IdProductionCompany" class="text-danger error_IdProductionCompany"></span>
             </div>
             @*<div class="form-group">
                 <label asp-for="Id" class="control-label"></label>
@@ -26,32 +26,26 @@
             <div class="form-group">
                 <label class="control-label">Ảnh</label><br/>
                 <img id="imagePreview" class="my-2" src="" width="200px"/> <br/>
-                <input type="file" id="fileInput" name="file" />
-                <span asp-validation-for="Image" class="text-danger"></span>
+                <input type="file" id="fileInput" name="file" /> <br/>
+                <span asp-validation-for="Image" class="text-danger error_Image"></span>
             </div>
             <div class="form-group">
                 <label class="control-label">Tên nhóm sản phẩm</label>
                 <input asp-for="PhoneName" class="form-control" />
-                <span asp-validation-for="PhoneName" class="text-danger"></span>
+                <span asp-validation-for="PhoneName" class="text-danger error_PhoneName"></span>
             </div>
             <div class="form-group">
                 <label class="control-label">Mô tả</label>
                 <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <span asp-validation-for="Description" class="text-danger error_Description"></span>
             </div>
             <div class="form-group">
                 <label class="control-label">Thời hạn bảo hành</label>
                 @Html.DropDownListFor(model => model.IdWarranty, new SelectList(Model.ListWarranty, "Id", "TimeWarranty"), "--- Lựa chọn ---", new { @class = "form-control"})
             </div>
 
-          @*   <div class="form-group">
-                <label class="control-label">Chọn ảnh</label>
-                <input type="file" name="file" />
-                <span asp-validation-for="Image" class="text-danger"></span>
-            </div> *@
-            
             <div class="form-group">
-                <input type="submit" value="Tạo mới" class="btn btn-primary" />
+                <input onclick="JAdPhone.submitFormCreate(event)" type="submit" value="Tạo mới" class="btn btn-primary" />
             </div>
         </form>
     </div>

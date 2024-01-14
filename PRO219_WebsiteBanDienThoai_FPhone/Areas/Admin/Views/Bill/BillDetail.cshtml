@@ -1,9 +1,12 @@
 ﻿@model IEnumerable<AppData.Models.BillDetails>
+@using AppData.FPhoneDbContexts;
+
 
 @{
     var cus = @ViewBag.customer;
     ViewData["Title"] = "BillDetail";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    FPhoneDbContext _dbContext = new FPhoneDbContext();
 }
 
 <style>
@@ -61,6 +64,11 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
+                        var phonedetail = _dbContext.PhoneDetailds.FirstOrDefault(p => p.Id == item.IdPhoneDetail);
+                        var phone = _dbContext.Phones.FirstOrDefault(p => p.Id == phonedetail.IdPhone);
+                        var color = _dbContext.Colors.FirstOrDefault(p => p.Id == phonedetail.IdColor);
+                        var ram = _dbContext.Ram.FirstOrDefault(p => p.Id == phonedetail.IdRam);
+                        var PhoneName = phone.PhoneName + " " + ram.Name + " " + color.Name;
                         <tr>
                             <td>
                                 @if(item.Imei == null)
@@ -80,7 +88,7 @@
 
                             </td>
                             <td>
-                                @ViewBag.PhoneNames
+                                @PhoneName
                             </td>
                            
                             <td style="color:red">
