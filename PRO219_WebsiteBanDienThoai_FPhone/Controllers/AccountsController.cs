@@ -150,6 +150,11 @@ public class AccountsController : Controller
             {
                 return RedirectPermanent("/admin/accounts/index");
             }
+            else if (respo.Roles.Contains("User"))
+            {
+
+                return RedirectToAction("AddCart");
+            }
             else
             {
                 error.Success = false;
@@ -158,11 +163,6 @@ public class AccountsController : Controller
                 return View(model);
             }
 
-            //chuyển hướng đến trang chủ của web
-            if (respo.Roles.Contains("User"))
-            {
-                return RedirectToAction("AddCart");
-            }
         }
         else
         {

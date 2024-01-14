@@ -125,7 +125,7 @@ public class VwPhoneDetailService : IVwPhoneDetailService
 
     public int CountPhoneDetailFromImei(Guid idPhoneDetail)
     {
-        return _dbContext.Imei.Count(c => c.IdPhoneDetaild == idPhoneDetail);
+        return _dbContext.Imei.Count(c => c.IdPhoneDetaild == idPhoneDetail && c.Status == FphoneConst.ChuaBan);
     }
 
     public List<string> GetListImagebyIdPhoneDetail(Guid id)
