@@ -160,7 +160,11 @@
                             @* <select asp-for="@Model.DetailOfPhoneDetaild.IdPhone" asp-items="@ViewBag.IdPhone" class="form-control"></select>
                             <span asp-validation-for="@Model.DetailOfPhoneDetaild.IdPhone" class="text-danger"></span> *@
                         </div>
-                       
+                        <div class="form-group">
+                            <label class="control-label">Mã sản phẩm</label>
+                            <input placeholder="Nhập mã sản phẩm" asp-for="@Model.DetailOfPhoneDetaild.Code" class="form-control"></input>
+                            <span asp-validation-for="@Model.DetailOfPhoneDetaild.Code" class="text-danger"></span>
+                        </div>
                         <div class="form-group">
                             <label class="control-label">Màu sắc</label>
                             <select asp-for="@Model.DetailOfPhoneDetaild.IdColor" asp-items="@ViewBag.IdColor" class="form-control"></select>
