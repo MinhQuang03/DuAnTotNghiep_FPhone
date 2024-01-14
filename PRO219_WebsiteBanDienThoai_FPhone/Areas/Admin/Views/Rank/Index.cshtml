@@ -4,80 +4,76 @@
     var index = 1;
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
-
+    
 }
-<div>
-    <a asp-action="Index">Xem lịch sử</a>
+<div class="" style="background-color:blanchedalmond">
+<div class="center">
+    <r >BẢNG RANKING MEMBER</r>
 </div>
 
+<div class="d-flex align-items-center" >
+    <div class="container border border-5">
+        <div class="d-flex align-items-center" style="color:slategray">
+            @foreach (var item in Model)
+            {
+                
+                @if (item.STT == 2)
+                {
+                    <div class="card mx-5" style="width: 18rem ; color = #800000">
+                        <img src="~/img/ahihi.jpg" width="180px" height="250px">
+                        <div class="card-body">
+                            <h5 class="card-title">@item.Username</h5>
+                            <p class="card-text">Point : @item.Point</p>
+                            <p class="card-text">TotalPoint : @item.TotalPoint</p>
+                                <p class="card-text">TotalPoint : @item.Ranking</p>
+                            <a href="#" class="btn btn-primary">TOP 2</a>
+                        </div>
+                    </div>
+                }    
+
+            }
+             @foreach (var item in Model)
+            {
+                @if (item.STT == 1)
+                {
+                   
+                    <div class="card mx-5" style="width: 18rem; color = #000000">
+                        <img src="~/img/393193568_1374151863224306_5173984096911521077_n.jpg" width="260px" height="330px">
+                        <div class="card-body">
+                            <h5 class="card-title">@item.Username</h5>
+                            <p class="card-text">Point : @item.Point</p>
+                            <p class="card-text">TotalPoint : @item.TotalPoint</p>
+                                <p class="card-text">TotalPoint : @item.Ranking</p>
+                            <a href="#" class="btn btn-primary">TOP 1</a>
+                        </div>
+                    </div>
+                }
+            }
+            @foreach (var item in Model)
+            {
+                @if (item.STT == 3)
+                {
+                    <div class="card mx-5" style="width: 11rem; color = #000000">
+                        <img src="~/img/khanh.jpg" width="150px" height="220px">
+                        <div class="card-body">
+                            <h5 class="card-title">@item.Username</h5>
+                            <p class="card-text">Point : @item.Point</p>
+                            <p class="card-text">TotalPoint : @item.TotalPoint</p>
+                                <p class="card-text">TotalPoint : @item.Ranking</p>
+                            <a href="#" class="btn btn-primary">TOP 3</a>
+                        </div>
+                    </div>
+                }
+            }
+ 
+   
+    </div>
+    </div>
+</div>
 <h2>Bảng chi tiết</h2>
 
-@* <table class="table">
-    <thead>
-        <tr>
-          @*   <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th> *
-            <th>
-                @Html.DisplayNameFor(model => model.Username)
-            </th>
-
-            <th>
-                @Html.DisplayNameFor(model => model.Point)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TotalPoint)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Ranking)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateRank)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Policies)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Benefits)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-           @*  <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td> 
-            <td>
-                @Html.DisplayFor(modelItem => item.Username)
-            </td>
-     
-            <td>
-                @Html.DisplayFor(modelItem => item.Point)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TotalPoint)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ranking)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateRank)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Policies)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Benefits)
-            </td>
-           
-        </tr>
-}
-    </tbody> *@
-@* </table> *@
 <div class="table-responsive">
-    <table class="table table-hover e-commerce-table border">
+    <table class="table table-hover e-commerce-table border" >
         <thead class="thead-light">
             <tr>
                 <th>STT</th>
@@ -128,5 +124,5 @@
         </tbody>
     </table>
 </div>
-
+</div>
 <script src="~/js/adminchart.js"></script>
