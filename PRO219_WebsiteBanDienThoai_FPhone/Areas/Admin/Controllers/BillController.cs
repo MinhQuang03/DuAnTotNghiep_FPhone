@@ -188,8 +188,6 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
 
             // Lấy danh sách các PhoneName và gán vào ViewBag
             ViewBag.PhoneNames = phoneNames + "|" + ramName + "|" + colorName;
-            ViewBag.ram = ramName;
-            ViewBag.color = colorName;
             ViewBag.customer = _context.Bill.Where(m => m.Id == id).First();
             var lisst = _context.BillDetails.Where(m => m.IdBill == id && m.Status != 2).ToList();
             return View("BillDetail", lisst);
@@ -238,8 +236,8 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                 _context.BillDetails.UpdateRange(a);
                 _context.SaveChanges();
             }
-           
-            return RedirectToAction("Danggiaoview");
+
+            return Json(new { success = true, data = "/Admin/Bill/Danggiaoview" });
         }
         // huỷ đơn hàng
         public async Task<IActionResult> Dahuy(Guid id,string statusInput1)
@@ -332,7 +330,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
 
             }
 
-            return RedirectToAction("Danggiaoview");
+            return Json(new { success = true, data = "/Admin/Bill/Danggiaoview" });
         }
         // xoá đơn hàng , cập nhật lưu thay đổi
    
