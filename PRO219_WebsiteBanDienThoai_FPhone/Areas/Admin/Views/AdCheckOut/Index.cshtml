@@ -1,5 +1,7 @@
 ﻿@using System.Globalization
+@using System.Security.Claims
 @using AppData.Utilities
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model PRO219_WebsiteBanDienThoai_FPhone.ViewModel.AdCheckOutViewModel
 @{
     ViewData["Title"] = "Bán hàng tại quầy";
@@ -148,7 +150,7 @@
                                     <div class="row">
                                         <label class="col-form-label col-3">Tên nhân viên </label>
                                         <div class="col-9">
-                                            <input value="root" class="form-control" type="text" disabled="disabled"/>
+                                                <input value="@(string.IsNullOrEmpty(User.Identity.Name)?"root":User.Identity.Name)" class="form-control" type="text" disabled="disabled" />
                                             <input hidden asp-for="Bill.Name" type="text"/>
                                         </div>
                                     </div>
@@ -223,7 +225,6 @@
                                             <input onclick="JAdCheckOut.submitForm(event)" type="submit" class="form-control btn btn-primary text-white" value="Thanh toán"/>
                                         </div>
                                     </div>
-                                   
                                 </form>
                             </td>
                         </tr>

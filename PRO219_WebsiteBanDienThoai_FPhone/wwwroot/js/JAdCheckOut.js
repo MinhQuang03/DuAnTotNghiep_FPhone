@@ -140,6 +140,7 @@
         //Tổng tiền
         $('#Bill_TotalMoney').val($('#SumPhone').val());
         //Tên khách hàng
+
         if ($('#FullName').val() == "") {
             alert("Chưa có thông tin khách hàng");
             error++;
@@ -161,10 +162,14 @@
             error++;
             return false;
         } else {
-            $('#SumPhone').val('');
+            $('#SumPhone').val(0);
         }
 
+        $('#FullName').val('');
+        $('#PhoneNumber').val('');
+        $('#searchUser').val('');
 
+        //Tiến hành thanh toán
         if (error == 0) {
             var formData = form.serialize();
             $.ajax({
@@ -177,7 +182,7 @@
                     $('#Bill_CreatedTime').val('');
                     $('#Bill_TotalMoney').val('');
                     $('#Bill_Name').val('');
-                    $('#Bill_Phone').val();
+                    $('#Bill_Phone').val('');
                     $(`.row_${id}`).remove();
                     $(`#${id_full}`).remove();
                     alert(response);

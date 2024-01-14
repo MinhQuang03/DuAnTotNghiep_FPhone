@@ -56,6 +56,23 @@ namespace AppData.Repositories
             return result;
         }
 
+
+        public async Task<IdentityResult> UpdateRole(string id,string role)
+        {
+          var model =  _dbContext.AspNetUsers.FirstOrDefault(c => c.Id == id);
+          IdentityResult result = new IdentityResult();
+          if (model != null)
+          {
+              if (await _roleManager.RoleExistsAsync(role) == false)
+              {
+                  await _roleManager.CreateAsync(new IdentityRole(role)); // tạo role nếu chưa có
+              }
+              result = await _userManager.AddToRoleAsync(model, role);
+          }
+          return result;
+        }
+
+
         public async Task<bool> SignUpCl(ClAccountsViewModel model)
         {
             Security security = new Security();
@@ -177,11 +194,13 @@ namespace AppData.Repositories
                     {
                         new Claim("Id",model.ApplicationUser.Id),
                         new Claim(ClaimTypes.Name,model.ApplicationUser.Name),
-                        new Claim(ClaimTypes.Role,string.Join(",",role)),
+                        new Claim(ClaimTypes.Role,role.FirstOrDefault() ?? string.Empty),
+                        
                     }),
                     Expires = DateTime.Now.AddHours(3),
                     SigningCredentials = new SigningCredentials(authenKey, SecurityAlgorithms.HmacSha512Signature)
                 };
+               
                  var token = jwtTokenHandler.CreateToken(tokenDescriptor);
                  result.Name = model.ApplicationUser.Name;
                  result.Valid = true;

@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity.Infrastructure;
+using System.Net.Http.Json;
 using AppData.FPhoneDbContexts;
 using AppData.IRepositories;
 using AppData.IServices;
@@ -7,6 +8,7 @@ using AppData.Utilities;
 using AppData.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -23,7 +25,8 @@ public class AccountsController : Controller
     private readonly HttpClient _client;
     private IAccountService _accountsService;
     private FPhoneDbContext _context;
-
+   
+    
     public AccountsController(HttpClient client, IAccountService accountsService)
     {
         _context = new FPhoneDbContext();
@@ -69,6 +72,7 @@ public class AccountsController : Controller
             return RedirectToAction("Account");
         }
         var model = _accountsService.GetById(id);
+       
         return View(model);
     }
 
@@ -90,6 +94,10 @@ public class AccountsController : Controller
         }
 
         var result = _accountsService.Update(model.Id, model, out DataError error);
+        if (!string.IsNullOrEmpty(model.Role))
+        {
+            await _client.GetStringAsync($"/api/Accounts/UpdateRole/Admin/{model.Id}/{model.Role}");
+        }
         if (error != null)
         {
             TempData["DataError"] = Utility.ConvertObjectToJson(error);

@@ -72,7 +72,16 @@
                         <option value="1">Không hoạt động</option>
                     </select>
                 </div>
-
+            </div>
+            <div class="row mt-4">
+                <label class="text-end col-form-label col-2">Chức vụ</label>
+                <div class="col-sm-4" style="margin-right: 190px">
+                    <select asp-for="Role" class="form-control">
+                        <option value="@string.Empty">--Lựa chọn--</option>
+                        <option value="Admin">Admin</option>
+                        <option value="Staff">Nhân viên</option>
+                    </select>
+                </div>
             </div>
             <div class="row mt-4 justify-content-center">
                     <input type="submit" class="btn btn-primary " value="Lưu"/>
