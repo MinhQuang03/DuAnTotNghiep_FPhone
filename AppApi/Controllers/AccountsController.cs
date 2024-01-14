@@ -30,6 +30,16 @@ public class AccountsController : ControllerBase
         if (!result.IsCompletedSuccessfully) return Ok(result.Result);
         return BadRequest(result.Result);
     }
+
+    [HttpGet("UpdateRole/Admin/{id}/{role}")]
+    public async Task<IActionResult> Update(string id,string role)
+    {
+        var result = _accountsRepository.UpdateRole(id,role);
+        if (!result.IsCompletedSuccessfully) return Ok(result.Result);
+        return BadRequest(result.Result);
+    }
+
+
     [HttpPost("SignUp/Client/")]
 
     public async Task<IActionResult> SignUp(ClAccountsViewModel signUpModel)
