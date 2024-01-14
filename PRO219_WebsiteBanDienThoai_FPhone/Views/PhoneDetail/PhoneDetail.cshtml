@@ -14,6 +14,9 @@
                 border-radius: 2px;
             }
         */
+    .form-control {
+        font-size: 1.5rem
+    }
     .selected {
         background-color: #33FF33;
         border-radius: 2px;
@@ -167,17 +170,24 @@
                 <div class="product__pictures">
                     @foreach (var item in Model.listImageByIdPhone)
                     {
+                        <a class="fancybox-thumb" href="@item.Image" data-fancybox="gallery" data-src="@item.Image">
                         <div class="pictures__container">
-                            <img class="picture" src="@item.Image" id="pic1" />
+                            <img class="picture" src="@item.Image" id="pic1"/>
                         </div>
+                        </a>
                     }
 
                 </div>
                 <div class="product__picture" id="product__picture">
                     <!-- <div class="rect" id="rect"></div> -->
-                    <div class="picture__container">
-                        <img src="@Model.Image" id="pic" />
-                    </div>
+                    <a href="@Model.Image" class="fancybox-thumb first-item" data-fancybox data-fancybox="gallery" data-caption="Single image">
+                        <img src="@Model.Image" />
+                    </a>
+                   @*  <a class="first-item fancybox-thumb" href="@Model.Image" data-type="image" data-fancybox="gallery" data-src="@Model.Image">
+                        <div class="picture__container">
+                            <img src="@Model.Image" id="pic"/>
+                        </div>
+                    </a> *@
                 </div>
                 <div class="zoom" id="zoom"></div>
             </div>
@@ -254,17 +264,38 @@
                         <li class="row" id="colorList"></li>
 
                         <li>
-                            <span>Brand:</span>
-                            @* <a href="#">@item.Brand</a> *@
-                        </li>
-                        <li>
-                            <span>Product Type:</span>
-                            <a id="colorName" href="#">Mau den</a>
-                        </li>
-                        <li>
                             <span>Số lượng kho:</span>
                             <a href="#" class="in-stock"></a>
                         </li>
+
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal" id="ShowDetaild">
+                            Xem thông tin chi tiết <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="10" height="10"><path d="M224 416c-8.188 0-16.38-3.125-22.62-9.375l-192-192c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L224 338.8l169.4-169.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-192 192C240.4 412.9 232.2 416 224 416z"></path></svg>
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <label class="col-form-label">Tên sản phẩm</label>
+                                            <input readonly class="form-control text-center" value="abc"/>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
                     </ul>
 
                 </div>
@@ -321,7 +352,18 @@
 
 <script src="~/js/JPhoneDetail.js"></script>
 <script>
+    $('#notExits').hide();
+    $('#ShowDetaild').hide();
+
     $(document).ready(function() {
-        $('#notExits').hide();
+        $('[data-fancybox]').fancybox({
+            thumbs: {
+                autoStart: true
+            },
+            slideShow: {
+                autoStart: true,
+                speed: 3000
+            }
+        });
     });
 </script>

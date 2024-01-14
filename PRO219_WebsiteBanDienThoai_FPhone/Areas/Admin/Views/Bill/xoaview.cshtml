@@ -1,19 +1,17 @@
 ﻿@model IEnumerable<AppData.Models.Bill>
-
 @{
-    ViewData["Title"] = "Danggiaoview";
+    ViewData["Title"] = "xoaview";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Đang Giao</h1>
+<h1>Thùng rác </h1>
 <div>
-    <form method="get" action="@Url.Action("Danggiaoview", "Bill")">
+    <form method="get" action="@Url.Action("xoaview", "Bill")">
         <label for="search">Tìm kiếm:</label>
         <input type="text" name="search" id="search" placeholder="Nhập Mã Hóa Đơn" />
         <button style="background-color:#3f87f5; border-color: #3f87f5;" type="submit">Tìm kiếm</button>
     </form>
 </div>
-
 <table class="table">
     <thead>
         <tr>
@@ -44,12 +42,8 @@
         {
             @foreach (var item in Model)
             {
-                String dh0 = "Chờ xác nhận";
-                String dh1 = "Đã xác nhận";
-                String dh2 = "Đang giao";
-                String dh3 = "Đã giao";
-                String dh4 = "Đã hủy";
-                
+                String dh1 = "Thùng rác ";
+
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.Name)
@@ -61,9 +55,9 @@
                         @Html.DisplayFor(modelItem => item.CreatedTime)
                     </td>
                     <td>
-                        @if (item.Status == 2)
+                        @if (item.Status == 5)
                         {
-                            <p class="text-success"> @dh2</p>
+                            <p class="text-danger"> @dh1</p>
                         }
 
                     </td>
@@ -82,16 +76,11 @@
                     </td>
 
                     <td>
-                        <a class="btn btn-sm btn-light text-success border" href="@Url.Action("Dagiao", "Bill", new { id = item.Id })"> Giao Thành Công  </a>
-                    </td>
-                    <td>
-                        <a class="btn btn-sm btn-light text-danger border" href="@Url.Action("Giaothatbai", "Bill", new { id = item.Id })"> Giao Thất Bại  </a>
+                        @*  <a class="btn btn-sm btn-light text-success border" href@* ="@Url.Action("DangGiao", "Bill", new { id = item.Id })"> Giao Hàng </a> *@
                     </td>
                 </tr>
             }
-
         }
 
     </tbody>
 </table>
-

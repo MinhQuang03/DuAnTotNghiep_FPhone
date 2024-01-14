@@ -14,6 +14,24 @@ namespace AppData.Utilities
 
         public const int ChuaBan = 1;
         public const int Daban = 2;
+        //deliveryPaymentMethod của bảng hóa đơn
+
+        //dùng off
+        public const string ChuyenKhoan = "BANKING";
+        public const string TienMat = "TIENMAT";
+        public const string TienMat_ChuyenKhoan = "TIENMAT_CHUYENKHOAN";
+        //dùng online
+        public const string VnPay = "VnPay ";
+        public const string COD = "COD";    
+        public const string TT = "TT";
+
+        //Trạn thái hóa đơn
+        public const int DaGiao = 3;
+        public const int ChoXacNhan = 0;
+        public const int HoanThanh = 0;
+        //StatusPayment của bảng hóa đơn 
+        public const int ChuaThanhToan = 0;
+        public const int DaThanhToan = 1;
     }
 
     public static class BeanUtils

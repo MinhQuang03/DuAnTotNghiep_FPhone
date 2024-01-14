@@ -3,11 +3,18 @@
 @model List<WarrantyCard>
 
 @{
-    ViewData["Title"] = "HoanTraHoacBaoHanh";
+    ViewData["Title"] = "YeuCauBaoHanh";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h3>Danh Sách Sản Phẩm Hoàn Cần Bảo Hành</h3>
+<h3>Danh Sách Sản Phẩm Yêu Cầu Bảo Hành</h3>
+<div>
+    <form method="get" action="@Url.Action("BaoHanh", "Bill")">
+        <label for="search">Tìm kiếm:</label>
+        <input type="text" name="search" id="search" placeholder="Nhập Imei" />
+        <button style="background-color:#3f87f5; border-color: #3f87f5;" type="submit">Tìm kiếm</button>
+    </form>
+</div>
 
 <table class="table">
     <thead>
@@ -27,47 +34,58 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @if (Model == null)
         {
-            String dh0 = "Yêu cầu bảo hành";
-            String dh1 = "Đang thực hiện bảo hành";
-            String dh2 = "Bảo hành hành công";
-            FPhoneDbContext context = new FPhoneDbContext();
-            var userName = context.Accounts.FirstOrDefault(p => p.Id == item.IdAccount);
-            var phoneName = context.Phones.FirstOrDefault(p => p.Id == item.IdPhone);
-            var phoneDetail = context.PhoneDetailds.FirstOrDefault(p => p.Id == item.IdPhoneDetail);
-            var ram = context.Ram.FirstOrDefault(p => p.Id == phoneDetail.IdRam);
-            var rom = context.Rom.FirstOrDefault(p => p.Id == phoneDetail.IdRom);
-            var color = context.Colors.FirstOrDefault(p => p.Id == phoneDetail.IdColor);
-            <tr>
-                <td>
-                    @userName.Username
-                </td>
-                <td>
-                    @phoneName.PhoneName |
-                    @ram.Name/@rom.Name |
-                    @color.Name
-                </td>
-                <td>
-                    @if (item.Status == 0)
-                    {
-                        <p class="text-success"> @dh0</p>
-                    }
-                    else if (item.Status == 1)
-                    {
-                        <p class="text-success"> @dh1</p>
-                    }
-                    else if (item.Status == 2)
-                    {
-                        <p class="text-success"> @dh2</p>
-                    }
-                </td>
-                <td>
-                    <a href="@Url.Action("ChiTietBaoHanh", "Bill", new { id = item.IdBillDetail })">Xem Chi tiết</a>
-                </td>
-
-            </tr>
+            <h2 style="text-align:center"> Hiện đang Không có máy đang bảo hành </h2>
         }
+        else
+        {
+            @foreach (var item in Model)
+            {
+
+                String dh0 = "Yêu cầu bảo hành";
+                String dh1 = "Đang thực hiện bảo hành";
+                String dh2 = "Bảo hành hành công";
+                FPhoneDbContext context = new FPhoneDbContext();
+                var userName = context.Accounts.FirstOrDefault(p => p.Id == item.IdAccount);
+                var phoneName = context.Phones.FirstOrDefault(p => p.Id == item.IdPhone);
+                var phoneDetail = context.PhoneDetailds.FirstOrDefault(p => p.Id == item.IdPhoneDetail);
+                var ram = context.Ram.FirstOrDefault(p => p.Id == phoneDetail.IdRam);
+                var rom = context.Rom.FirstOrDefault(p => p.Id == phoneDetail.IdRom);
+                var color = context.Colors.FirstOrDefault(p => p.Id == phoneDetail.IdColor);
+                <tr>
+                    <td>
+                        @userName.Username
+                    </td>
+                    <td>
+                        @phoneName.PhoneName |
+                        @ram.Name/@rom.Name |
+                        @color.Name (@item.Imei)
+                    </td>
+                    <td>
+                        @if (item.Status == 0)
+                        {
+                            <p class="text-success"> @dh0</p>
+                        }
+                        else if (item.Status == 1)
+                        {
+                            <p class="text-success"> @dh1</p>
+                        }
+                        else if (item.Status == 2)
+                        {
+                            <p class="text-success"> @dh2</p>
+                        }
+                    </td>
+                    <td>
+                        <a href="@Url.Action("ChiTietBaoHanh", "Bill", new { id = item.IdBillDetail })">Xem Chi tiết</a>
+                    </td>
+
+                </tr>
+
+
+            }
+        }
+
     </tbody>
 </table>
 

@@ -27,6 +27,7 @@ builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddTransient<IContactService, ContactService>();
 builder.Services.AddTransient<IBlogService, BlogService>();
 builder.Services.AddTransient<IVwTop5PhoneServices, VwTop5PhoneService>();
+builder.Services.AddTransient<IBillRepository, BillRepository>();
 
 builder.Services.AddScoped(sp => new HttpClient()
 {

@@ -2,7 +2,7 @@
 {
     public class Bill
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         public DateTime CreatedTime { get; set; }
 
@@ -13,7 +13,7 @@
 
         public string Phone { get; set; }
 
-        public string Address { get; set; }    
+        public string? Address { get; set; }    
 
         public int Status { get; set; }
         public string? BillCode { get; set; }
@@ -22,7 +22,7 @@
 
         public DateTime? Update_at { get; set; }
         public int StatusPayment { get; set; }
-        //public string? Note { get; set; }
+        public string? Note { get; set; }
         public Guid? IdAccount { get; set; }
 
 

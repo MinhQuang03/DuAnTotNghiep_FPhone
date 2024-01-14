@@ -2,7 +2,9 @@
 using AppData.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Filters;
+using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
 using System.Net;
 using System.Net.Mail;
 
@@ -13,6 +15,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
     public class BillController : Controller
     {
         private FPhoneDbContext _context;
+
         public BillController()
         {
             _context = new FPhoneDbContext();
@@ -107,11 +110,48 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         {
             if (!string.IsNullOrEmpty(search))
             {
-                var s = _context.Bill.Where(b => b.BillCode == search && b.Status == 3).ToList().OrderByDescending(b => b.CreatedTime);
+                var s = _context.Bill.Where(b => b.BillCode == search && b.Status == 3).OrderByDescending(b => b.CreatedTime).ToList();
                 return View(s);
             }
             // Lấy danh sách hóa đơn giảm dần theo thời gian đặt hàng
-            var bills = _context.Bill.Where(b => b.Status == 3).ToList().OrderByDescending(b => b.CreatedTime);
+            var bills = _context.Bill.Where(b => b.Status == 3).OrderByDescending(c =>c.CreatedTime).ToList();
+
+            if (bills != null && bills.Any())
+            {
+                return View(bills);
+            }
+            else
+            {
+                return View();
+            }
+        }
+        public async Task<IActionResult> giaothatbaiview(string search)
+        {
+            if (!string.IsNullOrEmpty(search))
+            {
+                var s = _context.Bill.Where(b => b.BillCode == search && b.Status == 6).ToList().OrderByDescending(b => b.CreatedTime);
+                return View(s);
+            }
+            // Lấy danh sách hóa đơn giảm dần theo thời gian đặt hàng
+            var bills = _context.Bill.Where(b => b.Status == 6).ToList().OrderByDescending(b => b.CreatedTime);
+            if (bills != null && bills.Any())
+            {
+                return View(bills);
+            }
+            else
+            {
+                return View();
+            }
+        }
+        public async Task<IActionResult> xoaview(string search)
+        {
+            if (!string.IsNullOrEmpty(search))
+            {
+                var s = _context.Bill.Where(b => b.BillCode == search && b.Status == 5).ToList().OrderByDescending(b => b.CreatedTime);
+                return View(s);
+            }
+            // Lấy danh sách hóa đơn giảm dần theo thời gian đặt hàng
+            var bills = _context.Bill.Where(b => b.Status == 5).ToList().OrderByDescending(b => b.CreatedTime);
             if (bills != null && bills.Any())
             {
                 return View(bills);
@@ -146,7 +186,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                              select ph.Name).FirstOrDefault();
 
             // Lấy danh sách các PhoneName và gán vào ViewBag
-            ViewBag.PhoneNames = phoneNames /*+ " " + ramName + " " + colorName*/;
+            ViewBag.PhoneNames = phoneNames + "|" + ramName + "|" + colorName;
             ViewBag.ram = ramName;
             ViewBag.color = colorName;
             ViewBag.customer = _context.Bill.Where(m => m.Id == id).First();
@@ -177,13 +217,37 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             
         }
 
+        public async Task<IActionResult> Giaothatbai(Guid id)
+        {
+            var a = _context.BillDetails.Where(p => p.IdBill == id).ToList();
+           
+            if (a != null)
+            {
+                foreach (var item in a)
+                {
+                    Imei imei = _context.Imei.FirstOrDefault( y=>y.NameImei == item.Imei);
+                    imei.Status = 1;
+                    item.Imei = null;
+                    _context.Imei.Update(imei);
+                   
+                }
+
+                var bill = _context.Bill.FirstOrDefault(p => p.Id == id);
+                bill.Status = 6;
+                _context.BillDetails.UpdateRange(a);
+                _context.SaveChanges();
+            }
+           
+            return RedirectToAction("Danggiaoview");
+        }
         // huỷ đơn hàng
-        public ActionResult Dahuy(Guid id)
+        public async Task<IActionResult> Dahuy(Guid id,string statusInput1)
         {
             var a = _context.BillDetails.FirstOrDefault(p => p.IdBill == id);
             if(a.Imei == null)
             {
                 Bill bill = _context.Bill.Find(id);
+                bill.Note = statusInput1;
                 bill.Status = 4;
 
 
@@ -195,8 +259,8 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                 TempData["SuccessMessage"] = "Không thể hủy khi đã thêm imei !";
                 return RedirectToAction("Detail", new { id = id });
             }
-            
-            return RedirectToAction("Index");
+
+            return Json(new { success = true, data = "/Admin/Bill/Index" });
         }
         
         // đang giao hàng
@@ -214,6 +278,36 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                 _context.SaveChanges();  
             }
             return RedirectToAction("xacnhan");
+        }
+        public ActionResult xoa1(Guid id)
+        {
+            Bill bill = _context.Bill.Find(id);
+            if (bill.Status == 0)
+            {
+                //Loii
+            }
+            else
+            {
+                bill.Status = 5;
+                _context.Entry(bill).State = EntityState.Modified;
+                _context.SaveChanges();
+            }
+            return RedirectToAction("Dahuys");
+        }
+        public ActionResult xoa2(Guid id)
+        {
+            Bill bill = _context.Bill.Find(id);
+            if (bill.Status == 0)
+            {
+                //Loii
+            }
+            else
+            {
+                bill.Status = 5;
+                _context.Entry(bill).State = EntityState.Modified;
+                _context.SaveChanges();
+            }
+            return RedirectToAction("giaothatbaiview");
         }
         // thay đổi trạng thái thành đã giao
         public ActionResult Dagiao(Guid id)
@@ -294,26 +388,82 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             
             return RedirectToAction("Detail", new { id = a.IdBill });
         }
-        public ActionResult BaoHanh()
-        {
+
+        [HttpGet]
+        public ActionResult BaoHanh(string search)
+        {  
+            if (!string.IsNullOrEmpty(search))
+            {
+                var a = _context.WarrantyCards.Where(p => p.Imei.Contains(search) && p.Status == 0).ToList();
+                return View(a);
+            }
+            
             var warrantyCards = _context.WarrantyCards.Where(p => p.Status == 0).ToList();
-            return View(warrantyCards);
+            if (warrantyCards != null && warrantyCards.Any())
+            {
+                return View(warrantyCards);
+            }
+            else
+            {
+                return View();
+            }           
         }
-        public ActionResult ThucHienBaoHanh()
+
+        [HttpGet]
+        public ActionResult ThucHienBaoHanh(string search)
         {
+            if (!string.IsNullOrEmpty(search))
+            {
+                var a = _context.WarrantyCards.Where(p => p.Imei.Contains(search) && p.Status == 1).ToList();
+                return View(a);
+            }
+
             var warrantyCards = _context.WarrantyCards.Where(p => p.Status == 1).ToList();
-            return View(warrantyCards);
+            if (warrantyCards != null && warrantyCards.Any())
+            {
+                return View(warrantyCards);
+            }
+            else
+            {
+                return View();
+            }
+
         }
-        public ActionResult BaoHanhThanhCong()
+
+        [HttpGet]
+        public ActionResult BaoHanhThanhCong(string search)
         {
+            if (!string.IsNullOrEmpty(search))
+            {
+                var a = _context.WarrantyCards.Where(p => p.Imei.Contains(search) && p.Status == 2).ToList();
+                return View(a);
+            }
+
             var warrantyCards = _context.WarrantyCards.Where(p => p.Status == 2).ToList();
-            return View(warrantyCards);
+            if (warrantyCards != null && warrantyCards.Any())
+            {
+                return View(warrantyCards);
+            }
+            else
+            {
+                return View();
+            }
+
         }
 
         public ActionResult TimKiemBaoHanh(string search)
         {
-
-            return View();
+            var a = _context.WarrantyCards.FirstOrDefault(p => p.Imei == search);
+            if (a == null)
+            {
+                TempData["SuccessMessage"] = "Bạn không thể xóa sản phẩm !";
+                return View(a);
+            }
+            else
+            {
+                return View(a);
+            }
+            
         }
 
         public ActionResult ChiTietBaoHanh(Guid id) 
@@ -778,8 +928,10 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Error sending email: {ex.Message}");
+                //return StatusCode(500, $"Error sending email: {ex.Message}");
+                return NoContent();
             }
         }
     }
+ 
 }

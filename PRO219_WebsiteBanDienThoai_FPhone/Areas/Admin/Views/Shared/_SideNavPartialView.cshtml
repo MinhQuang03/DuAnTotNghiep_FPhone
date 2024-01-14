@@ -20,7 +20,7 @@
     <div class="nav-wrap">
         <ul class="nav-left">
             <li class="desktop-toggle">
-                <a href="javascript:void(0);">
+                <a id="hideMenu" href="javascript:void(0);">
                     <i class="anticon"></i>
                 </a>
             </li>
@@ -194,12 +194,6 @@
                     <li>
                         <a asp-area="Admin" asp-controller="Phone" asp-action="Index">Nhóm sản phẩm</a>
                     </li>
-                    @*<li>
-                        <a asp-area="Admin" asp-controller="Imei" asp-action="Index">Thêm mới sản phẩm</a>
-                    </li>
-                    <li>
-                        <a asp-area="Admin" asp-controller="PhoneDetaild" asp-action="Index">Danh sách sản phẩm</a>
-                    </li>*@
                     <li class="nav-item dropdown">
                         <a href="javascript:void(0);">
                             <span>Thuộc tính sản phẩm</span>
@@ -297,31 +291,45 @@
                     <li>
                         <a asp-area="Admin" asp-controller="Bill" asp-action="Dahuys">Đã Hủy</a>
                     </li>
+                    <li>
+						<a asp-area="Admin" asp-controller="Bill" asp-action="giaothatbaiview">Giao Thất Bại </a>
+                    </li>
+                    <li>
+                        <a asp-area="Admin" asp-controller="Bill" asp-action="xoaview">Thùng rác </a>
+                    </li>
                 </ul>
              </li>
-            <li class="nav-item dropdown">
-                <a class="dropdown-toggle" href="javascript:void(0);">
-                    <span class="icon-holder">
-                        <i class="anticon anticon-appstore"></i>
-                    </span>
-                    <span class="title">Quản Lý Bảo Hành</span>
-                    <span class="arrow">
-                        <i class="arrow-icon"></i>
-                    </span>
-                </a>
-                <ul class="dropdown-menu">
-                    <li>
-                        <a asp-area="Admin" asp-controller="Bill" asp-action="BaoHanh">Yêu cầu bảo hành</a>
-                    </li>
-                    <li>
-                        <a asp-area="Admin" asp-controller="Bill" asp-action="ThucHienBaoHanh">Đang thực hiện bảo hành</a>
-                    </li>
-                    <li>
-                        <a asp-area="Admin" asp-controller="Bill" asp-action="BaoHanhThanhCong">Bảo hành thành công</a>
-                    </li>
+        <li class="nav-item dropdown">
+            <a class="dropdown-toggle" href="javascript:void(0);">
+                <span class="icon-holder">
+                    <i class="anticon anticon-appstore"></i>
+                </span>
+                <span class="title">Quản Lý Bảo Hành</span>
+                <span class="arrow">
+                    <i class="arrow-icon"></i>
+                </span>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a asp-area="Admin" asp-controller="Bill" asp-action="BaoHanh">Yêu cầu bảo hành</a>
+                </li>
+                <li>
+                    <a asp-area="Admin" asp-controller="Bill" asp-action="ThucHienBaoHanh">Đang thực hiện bảo hành</a>
+                </li>
+                <li>
+                    <a asp-area="Admin" asp-controller="Bill" asp-action="BaoHanhThanhCong">Bảo hành thành công</a>
+                </li>
 
-                </ul>
-            </li>
+            </ul>
+        </li>
+        <li>
+            <a asp-area="Admin" asp-controller="AdCheckOut" asp-action="Index">
+                <span class="icon-holder">
+                        <i class="fas fa-shopping-basket text-danger"></i>
+                </span>
+                <span class="title">Bán hàng tại quầy</span>
+            </a>
+        </li>
             <li class="nav-item">
                 <a asp-area="Admin" asp-action="KhachHang" asp-controller="Accounts">
                     <span class="icon-holder">

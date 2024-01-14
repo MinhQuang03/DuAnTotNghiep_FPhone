@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppData.Migrations
 {
-    public partial class lkk : Migration
+    public partial class initdatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -176,14 +176,15 @@ namespace AppData.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    NameVoucher = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: true),
+                    MaVoucher = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: true),
+                    NameVoucher = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
                     DieuKien = table.Column<int>(type: "int", nullable: false),
                     TypeVoucher = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: true),
                     MucUuDai = table.Column<double>(type: "float", nullable: true),
                     DateStart = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateEnd = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    StatusVoucher = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    StatusVoucher = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -409,6 +410,8 @@ namespace AppData.Migrations
                 {
                     IdPhoneDetail = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IdPhone = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RamID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ColorID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PhoneName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ReducedAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     MaterialName = table.Column<string>(type: "nvarchar(max)", nullable: true),

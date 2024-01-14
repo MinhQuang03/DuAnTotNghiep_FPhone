@@ -13,6 +13,8 @@
         //    }
         //});
     };
+
+ 
     ins.ChangePay = function() {
         if ($('#paymentInStore').is(':checked')) {
             $('.displayAddress').hide();

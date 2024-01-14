@@ -756,7 +756,7 @@ CREATE TABLE dbo.Bill (
   PaymentDate datetime2 NOT NULL,
   Name nvarchar(max) NOT NULL,
   Phone nvarchar(max) NOT NULL,
-  Address nvarchar(max) NOT NULL,
+  Address nvarchar(max) NULL,
   Status int NOT NULL,
   BillCode nvarchar(max) NULL,
   deliveryPaymentMethod nvarchar(max) NULL,

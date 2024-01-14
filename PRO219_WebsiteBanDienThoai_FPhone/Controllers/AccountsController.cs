@@ -154,7 +154,7 @@ public class AccountsController : Controller
             //chuyển hướng đến trang chủ của web
             if (respo.Roles.Contains("User"))
             {
-                return RedirectToAction("Index","Home");
+                return RedirectToAction("AddCart");
             }
         }
         else
