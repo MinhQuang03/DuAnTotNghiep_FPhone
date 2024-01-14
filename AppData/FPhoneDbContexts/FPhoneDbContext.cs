@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using AppData.ViewModels.Phones;
 using System.Reflection.Emit;
+using AppData.ViewModels.ThongKe;
+
 
 namespace AppData.FPhoneDbContexts;
 
@@ -59,7 +61,8 @@ public class FPhoneDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<VW_Phone_Group> VW_Phone_Group { get; set; }
     public DbSet<VW_List_By_IdPhone> VW_List_By_IdPhone { get; set; }
     public DbSet<VTop5_PhoneSell> VTop5_PhoneSell { get; set; }
-
+    public DbSet<vOverView> OverViews { get; set; }
+    public DbSet<BillGanDay> billGanDays { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlServer(@"Data Source=.;Initial Catalog=PRO219_WebsiteBanDienThoai ;Integrated Security=True");
@@ -73,6 +76,8 @@ public class FPhoneDbContext : IdentityDbContext<ApplicationUser>
         builder.Entity<VW_Phone_Group>().ToView("VW_Phone_Group").HasNoKey();
         builder.Entity<VW_List_By_IdPhone>().ToView("VW_List_By_IdPhone").HasNoKey();
         builder.Entity<VTop5_PhoneSell>().ToView("VTop5_PhoneSell").HasNoKey();
+        builder.Entity<vOverView>().ToView("vOverView").HasNoKey();
+        builder.Entity<BillGanDay>().ToView("BillGanDay").HasNoKey();
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 }
