@@ -1,4 +1,8 @@
-﻿@model IEnumerable<AppData.Models.Bill>
+﻿@using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
+@using X.PagedList;
+@using X.PagedList.Mvc.Common;
+@using X.PagedList.Mvc.Core;
+@model IPagedList<AppData.Models.Bill>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,6 +17,7 @@
         <button style="background-color:#3f87f5; border-color: #3f87f5;" type="submit">Tìm kiếm</button>
     </form>
 </div>
+
 <table class="table">
     <thead>
         <tr>
@@ -35,9 +40,11 @@
         </tr>
     </thead>
     <tbody>
-         @if(Model == null ) {
-            <h2  style="text-align:center"> Hiện đang Không có hóa đơn  </h2>
-        }else
+        @if (Model == null || !Model.Any())
+        {
+            <h2 style="text-align:center">Hiện đang Không có hóa đơn</h2>
+        }
+        else
         {
         @foreach (var item in Model)
         {
@@ -73,15 +80,6 @@
                         <span class="text-danger">Chưa thanh toán </span>
                     }
                 </td>
-
-                @*<td>
-                        <a class="btn btn-sm btn-light text-danger border a33" href="@Url.Action("Status", "Bill", new { id = item.Id })"> <i class="fas fa-toggle-on"></i> </a>
-                    
-      
-                    <a class="btn btn-sm btn-light text-danger border" href=""> <i class="fas fa-trash-alt"></i></a>
-
-                      <a class="btn btn-sm btn-light text-orange border" href="@Url.Action("Dahuy", "Bill", new { id = item.Id })"> <i class="fas fa-ban"></i></a>
-                </td>*@
             </tr>
         }
         }
@@ -90,4 +88,21 @@
 
 </table>
 
+<div class="custom-pager">
+    @Html.PagedListPager(Model, pageNumber => Url.Action("Index", new { pageNumber, pageSize = Model.PageSize }), new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded, LiElementClasses = new[] { "page-item" }, PageClasses = new[] { "page-link" } })
+</div>
+<style>
+    .custom-pager {
+        display: flex;
+        justify-content: flex-end;
+        margin-right: 100px; /* Điều chỉnh khoảng cách bên phải */
+    }
 
+        .custom-pager .page-item {
+            margin: 0 5px; /* Điều chỉnh khoảng cách giữa các mũi tên */
+        }
+
+        .custom-pager .page-link {
+            font-size: 13px; /* Điều chỉnh kích thước của mũi tên */
+        }
+</style>
