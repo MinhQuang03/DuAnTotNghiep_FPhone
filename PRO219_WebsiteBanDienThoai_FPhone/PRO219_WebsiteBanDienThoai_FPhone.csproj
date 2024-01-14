@@ -9,6 +9,8 @@
   <ItemGroup>
     <PackageReference Include="CKEditor" Version="3.6.4" />
     <PackageReference Include="EPPlus" Version="4.5.3.3" />
+    <PackageReference Include="Google.Apis.Auth.AspNetCore" Version="1.62.1" />
+    <PackageReference Include="Google.Apis.PeopleService.v1" Version="1.62.0.3093" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
     <PackageReference Include="Microsoft.AspNet.Providers.Core" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.20" />
@@ -22,6 +24,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="OpenXmlPowerTools" Version="4.5.3.2" />
     <PackageReference Include="Serilog" Version="3.1.1" />
     <PackageReference Include="System.Diagnostics.Tools" Version="4.3.0" />
   </ItemGroup>
