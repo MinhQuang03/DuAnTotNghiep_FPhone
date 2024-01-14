@@ -480,14 +480,14 @@
             function updateChart1(fromDate, toDate) {
                 $.ajax({
                     type: "GET",
-                    url: "@Url.Action("TrangThaiHoaDonOnline1thang", "ThongKe")",
+                    url: "@Url.Action("OverView", "ThongKe")",
                     data: { fromDate: '', toDate: '' },
                     success: function (rs) {
                         var arrData = [0, 0, 0];
                         var jsonData = JSON.parse(rs);
                         $.each(jsonData.Data, function (i, item) {
-                            var soLuongHoaDonThanhCong = jsonData.Data[0].SoLuongHoaDonThanhCong;
-                            var soLuongHoaDonThatBai = jsonData.Data[0].SoluongHoaDonThatBai;
+                            var soLuongHoaDonThanhCong = jsonData.Data[0].BillThanhCong;
+                            var soLuongHoaDonThatBai = jsonData.Data[0].BillThatbai;
                             var soLuongHoaDonCho = jsonData.Data[0].SoluongHoaDonCho;
 
                             // Cập nhật giá trị mới cho biểu đồ
@@ -580,7 +580,7 @@
             function updateChart() {
                 $.ajax({
                     type: "GET",
-                    url: "@Url.Action("ThongKeBanHang", "ThongKe")",
+                    url: "@Url.Action("ThongKe", "OverView")",
                     success: function (rs) {
                         console.log("1111");
                         var jsonData = JSON.parse(rs);
