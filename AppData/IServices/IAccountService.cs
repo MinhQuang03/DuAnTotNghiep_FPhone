@@ -12,5 +12,6 @@ namespace AppData.IServices
         public Account UpdateUser(Guid id, Account user, out DataError error);
         public Account GetUserByEmail(string email);
         public Account GetUserById(Guid idGuid);
+        public Account GetUserByPhoneNumber(string phoneNumber);
     }       
 }

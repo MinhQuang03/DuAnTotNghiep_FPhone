@@ -9,17 +9,20 @@ using AppData.Models;
 using AppData.Utilities;
 using AppData.ViewModels;
 using AppData.ViewModels.Options;
+using Microsoft.AspNetCore.Identity;
 
 namespace AppData.Services
 {
     public class AccountService :IAccountService
     {
         private FPhoneDbContext _dbContext;
-
-        public AccountService(FPhoneDbContext dbContext)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public AccountService(FPhoneDbContext dbContext, UserManager<ApplicationUser> userManager)
         {
             _dbContext = dbContext;
+            _userManager = userManager;
         }
+
         public  List<ApplicationUser> GetAllAsync(ApplicationUser Search, ListOptions options)
         {
             var lst = new List<ApplicationUser>();
@@ -50,6 +53,7 @@ namespace AppData.Services
             try
             {
                 user = _dbContext.AspNetUsers.Find(id);
+                user.Role = _userManager.GetRolesAsync(user).Result.FirstOrDefault();
             }
             catch (Exception e)
             {
@@ -126,6 +130,21 @@ namespace AppData.Services
             try
             {
                 account = _dbContext.Accounts.FirstOrDefault(c => c.Id == idGuid);
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            return account;
+        }
+
+        public Account GetUserByPhoneNumber(string phoneNumber)
+        {
+            var account = new Account();
+            try
+            {
+                account = _dbContext.Accounts.FirstOrDefault(c => c.PhoneNumber == phoneNumber);
             }
             catch (Exception e)
             {

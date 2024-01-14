@@ -2,7 +2,7 @@
 {
     public partial class BillDetails
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         public Guid IdBill { get; set; }
         public Guid? IdDiscount { get; set; }
@@ -13,7 +13,7 @@
 
         public decimal Price { get; set; }
 
-        public int Status { get; set; }
+        public int Status { get; set; } = 0;
 
         public string? Imei { get; set; }
 

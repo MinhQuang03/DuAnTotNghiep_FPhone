@@ -163,21 +163,28 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateImei(ImeiPhoneViewModel obj)
         {
-
-            Imei newImei = new Imei
+            var a = _dbContext.Imei.FirstOrDefault(p => p.NameImei == obj.AddImeiOfPhone.NameImei);
+            if(a != null)
             {
-                Id = Guid.NewGuid(),
-                NameImei = obj.AddImeiOfPhone.NameImei,
-                IdPhoneDetaild = obj.PhoneDetaild.Id,
-                Status = 1
-            };
+                TempData["SuccessMessage"] = "Không được thêm trùng imei !";
+                return RedirectToAction("ListImeiPhoneDetail", new { IdPhoneDetail = a.IdPhoneDetaild });
+            }
+            else
+            {
+                Imei newImei = new Imei
+                {
+                    Id = Guid.NewGuid(),
+                    NameImei = obj.AddImeiOfPhone.NameImei,
+                    IdPhoneDetaild = obj.PhoneDetaild.Id,
+                    Status = 1
+                };
 
 
-            _dbContext.Imei.Add(newImei);
-            await _dbContext.SaveChangesAsync();
-
-
-            return RedirectToAction("ListImeiPhoneDetail", new { IdPhoneDetail = newImei.IdPhoneDetaild });
+                _dbContext.Imei.Add(newImei);
+                await _dbContext.SaveChangesAsync();
+                return RedirectToAction("ListImeiPhoneDetail", new { IdPhoneDetail = newImei.IdPhoneDetaild });
+            }
+            
         }
 
 

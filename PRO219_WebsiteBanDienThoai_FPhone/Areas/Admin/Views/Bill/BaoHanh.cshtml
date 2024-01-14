@@ -20,7 +20,7 @@
     <thead>
         <tr>
             <th>
-                Tên tài khoản  
+                Tên tài khoản
             </th>
             <th>
                 Tên sản phẩm
@@ -34,16 +34,15 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @if (Model == null)
         {
-            if (TempData["SuccessMessage"] != null)
+            <h2 style="text-align:center"> Hiện đang Không có máy đang bảo hành </h2>
+        }
+        else
+        {
+            @foreach (var item in Model)
             {
-                <div class="alert alert-danger">
-                    @TempData["SuccessMessage"]
-                </div>
-            }
-            else
-            {
+
                 String dh0 = "Yêu cầu bảo hành";
                 String dh1 = "Đang thực hiện bảo hành";
                 String dh2 = "Bảo hành hành công";
@@ -82,10 +81,11 @@
                     </td>
 
                 </tr>
-            }
 
-            
+
+            }
         }
+
     </tbody>
 </table>
 
