@@ -21,5 +21,7 @@ namespace AppData.ViewModels.ThongKe
         public int BillThanhCong { get; set; }
         public int BillThatbai { get; set; }
 
+        public List<BillGanDay> billGanDay {  get; set; }
+
     }
 }

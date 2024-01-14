@@ -259,8 +259,9 @@
                                 <div class="d-flex align-items-center">
                                     <span class="badge badge-warning badge-dot m-r-10"></span>
                                     <span class="text-gray font-weight-semibold font-size-13">Tháng trước</span>
+                                   
                                 </div>
-                                 < span class= "text-dark font-weight-semibold font-size-13" > @Model.BillOffThangTruoc.ToString("#,0") đơn hàng</span>
+                                <span class="text-dark font-weight-semibold font-size-13"> @Model.BillOffThangTruoc.ToString("#,0") đơn hàng</span>
                             </div>
 
                         </div>
@@ -276,7 +277,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <h5>Thống kê bán hàng</h5>
 
-    @*                 <div class="dropdown dropdown-animated scale-left">
+                    <div class="dropdown dropdown-animated scale-left">
                         <a class="text-gray font-size-18" href="javascript:void(0);" data-toggle="dropdown">
                             <i class="anticon anticon-ellipsis"></i>
                         </a>
@@ -329,6 +330,7 @@
                         <table class="table table-hover">
                             <thead>
                                 <tr>
+                                    <th>STT</th>
                                     <th>Mã Hóa đơn</th>
                                     <th>Khách hàng</th>
                                     <th>Ngày</th>
@@ -339,138 +341,72 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var item in DonDatHnagGanDay)
+                                @foreach (var item in Model.billGanDay)
                                 {
 
                                     <tr>
+                                        <td>@item.STT</td>
+
                                         <td>@item.MaHoaDon</td>
 
-                                        @if (item.IdNguoiDung != null)
-                                        {
-                                            var user = await UserManager.FindByIdAsync(item.IdNguoiDung);
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="avatar avatar-image" style="height: 30px; min-width: 30px; max-width:30px">
-                                                            <img src="@user.AnhDaiDien" alt="">
-                                                        </div>
-                                                        <h6 class="m-l-10 m-b-0">@user.UserName</h6>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        }
-                                        else
-                                        {
-                                            var Ten = (await _ThongTinGHServices.GetAllThongTin()).Where(x => x.IdThongTinGH == item.IdThongTinGH).FirstOrDefault().TenNguoiNhan;
-                                            if (Ten != null)
-                                            {
-                                                <td>
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="d-flex align-items-center">
+                                        <td>@item.NgayTao.ToString("hh:mm tt dd/MM/yyyy")</td>
+                                        <td>@item.TenNguoiMua</td>
+                                          <td>@item.GiaTien</td>
 
-                                                            <h6 class="m-l-10 m-b-0">@Ten</h6>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            }
-                                            else
-                                            {
-                                                <td>
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="d-flex align-items-center">
-
-                                                            <h6 class="m-l-10 m-b-0">Khách vãng lai</h6>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            }
-                                        }
+                                        
 
 
-                                        <td>@item.NgayTao.Value.ToString("hh:mm tt dd/MM/yyyy")</td>
-
-
-                                        @if (item.TongTien != null && item.TienGiam != null && item.TongTien >= item.TienGiam)
-                                        {
-                                            var giatridon = item.TongTien - item.TienGiam;
-                                            <td>@giatridon.Value.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</td>
-
-                                        }
-                                        else if (item.TongTien != null && item.TienGiam == null)
-                                        {
-
-                                            <td>@item.TongTien.Value.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</td>
-                                        }
-                                        else if (item.TongTien == null || item.TongTien < 0)
-                                        {
-                                            <td>Lỗi tổng tiền</td>
-
-                                        }
-                                        else if (item.TongTien < item.TienGiam)
-                                        {
-                                            double i = 0;
-                                            <td>@i.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</td>
-
-                                        }
-
-
-                                        @if (item.TrangThaiThanhToan == (int)TrangThaiHoaDon.ChuaThanhToan)
+                                        @if (item.TrangThaiThanhToan == 1)
                                         {
                                             <td>
-                                                Chưa thanh toán
+                                               Đã thanh toán
                                             </td>
                                         }
-                                        else if (item.TrangThaiThanhToan == (int)TrangThaiHoaDon.DaThanhToan)
+                                        else if (item.TrangThaiThanhToan == 2)
                                         {
                                             <td>
-                                                Đã thanh toán
+                                               Chưa thanh toán
                                             </td>
                                         }
-                                        else if (item.TrangThaiThanhToan == (int)TrangThaiHoaDon.Huy)
-                                        {
-                                            <td>
-                                                Hủy
-                                            </td>
-                                        }
+                                       
 
-
-                                        @if (item.TrangThaiGiaoHang == (int)TrangThaiGiaoHang.ChoXacNhan)
+                                        @if (item.TrangThaiGiaoHang == 1)
                                         {
                                             <td>
                                                 Chờ xác nhận
                                             </td>
                                         }
-                                        else if (item.TrangThaiGiaoHang == (int)TrangThaiGiaoHang.DangGiao)
+                                        else if (item.TrangThaiGiaoHang == 1)
                                         {
                                             <td>
-                                                Đang giao
+                                                Đã Xác Nhận
                                             </td>
                                         }
-                                        else if (item.TrangThaiGiaoHang == (int)TrangThaiGiaoHang.DaHuy)
+                                        else if (item.TrangThaiGiaoHang == 2)
+                                        {
+                                            <td>
+                                                Đang Giao
+                                            </td>
+                                        }
+                                        else if (item.TrangThaiGiaoHang == 3)
+                                        {
+                                            <td>
+                                                Đã Giao
+                                            </td>
+                                        }
+                                        else if (item.TrangThaiGiaoHang == 4)
                                         {
                                             <td>
                                                 Đã hủy
                                             </td>
                                         }
-                                        else if (item.TrangThaiGiaoHang == (int)TrangThaiGiaoHang.DaGiao)
+                                        else if (item.TrangThaiGiaoHang ==5)
                                         {
                                             <td>
-                                                Đã giao
+                                                Xóa
                                             </td>
                                         }
-                                        else if (item.TrangThaiGiaoHang == (int)TrangThaiGiaoHang.ChoLayHang)
-                                        {
-                                            <td>
-                                                Chờ lấy hàng
-                                            </td>
-                                        }
-                                        else if (item.TrangThaiGiaoHang == (int)TrangThaiGiaoHang.ChoHuy)
-                                        {
-                                            <td>
-                                                Chờ hủy
-                                            </td>
-                                        }
-
+                                       
 
                                     </tr>
                                 }
@@ -488,143 +424,12 @@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center"> *@
-                    @*                     <h5>Đơn hàng tại quầy gần đây</h5>
-                    <div>
-                    <a asp-controller="HoaDon" asp-action="TongQuanHoaDon" class="btn btn-sm btn-default">Xem tất cả</a>
-                    </div>
-                    </div>
-                    <div class="m-t-30">
-                    <div class="table-responsive">
-                    <table class="table table-hover">
-                    <thead>
-                    <tr>
-                    <th>Mã Hóa đơn</th>
-                    <th>Nhân viên </th>
-                    <th>Ngày tạo</th>
-                    <th>KhachHang</th>
-                    <th>Giá trị đơn</th>
-                    <th>Trạng thái</th>
+                <div class="d-flex justify-content-between align-items-center">
 
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach (var item in DonHangTaiQuayGanDay)
-                    {
-
-                    <tr>
-                    <td>@item.MaHoaDon</td>
-
-                    @if (item.IdNguoiDung != null)
-                    {
-                    var user = await UserManager.FindByIdAsync(item.IdNguoiDung);
-                    <td>
-                    <div class="d-flex align-items-center">
-                    <div class="d-flex align-items-center">
-                    <div class="avatar avatar-image" style="height: 30px; min-width: 30px; max-width:30px">
-                    <img src="@user.AnhDaiDien" alt="">
-                    </div>
-                    <h6 class="m-l-10 m-b-0">@user.UserName</h6>
-                    </div>
-                    </div>
-                    </td>
-                    }
-                    else
-                    {
-                    <td>
-                    <div class="d-flex align-items-center">
-                    <div class="d-flex align-items-center">
-
-                    <h6 class="m-l-10 m-b-0">Lỗi nhân viên</h6>
-                    </div>
-                    </div>
-                    </td>
-                    }
-                    <td>@item.NgayTao.Value.ToString("hh:mm tt dd/MM/yyyy")</td>
-
-
-                    @if (item.IdKhachHang != null)
-                    {
-                    var kh = (await _HoaDonServices.GetKhachHangs()).Where(x => x.IdKhachHang == item.IdKhachHang).FirstOrDefault();
-                    <td>
-                    <div class="d-flex align-items-center">
-                    <div class="d-flex align-items-center">
-
-                    <h6 class="m-l-10 m-b-0">@kh.TenKhachHang</h6>
-                    <h6 class="m-l-10 m-b-0">@kh.SDT</h6>
-                    </div>
-                    </div>
-                    </td>
-                    }
-                    else
-                    {
-                    <td>
-                    <div class="d-flex align-items-center">
-                    <div class="d-flex align-items-center">
-
-                    <h6 class="m-l-10 m-b-0">Khách vãng lai</h6>
-                    </div>
-                    </div>
-                    </td>
-                    }
-
-
-                    @if (item.TongTien != null && item.TienGiam != null && item.TongTien >= item.TienGiam)
-                    {
-                    var giatridon = item.TongTien - item.TienGiam;
-                    <td>@giatridon.Value.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</td>
-
-                    }
-                    else if (item.TongTien != null && item.TienGiam == null)
-                    {
-
-                    <td>@item.TongTien.Value.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</td>
-                    }
-                    else if (item.TongTien == null )
-                    {
-                    <td>Hóa đơn đang chờ</td>
-
-                    }
-                    else if (item.TongTien < item.TienGiam || item.TongTien < 0)
-                    {
-                    double i = 0;
-                    <td>@i.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</td>
-
-                    }
-
-
-
-                    @if (item.TrangThaiThanhToan == (int)TrangThaiHoaDon.ChuaThanhToan)
-                    {
-                    <td>
-                    Chưa thanh toán
-                    </td>
-                    }
-                    else if (item.TrangThaiThanhToan == (int)TrangThaiHoaDon.DaThanhToan)
-                    {
-                    <td>
-                    Đã thanh toán
-                    </td>
-                    }
-                    else if (item.TrangThaiThanhToan == (int)TrangThaiHoaDon.Huy)
-                    {
-                    <td>
-                    Hủy
-                    </td>
-                    }
-
-                    </tr>
-                    }
-
-
-                    </tbody>
-                    </table>
-                    </div>
-                    </div> *@
-  @*               </div>
+                </div>
             </div>
         </div>
-    </div> *@
+    </div>
 
     @*<script src="~/Admin/vendors/chartjs/Chart.min.js"></script>
     *@

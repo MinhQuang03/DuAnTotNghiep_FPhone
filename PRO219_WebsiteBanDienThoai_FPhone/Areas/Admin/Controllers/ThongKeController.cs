@@ -2,6 +2,8 @@
 using AppData.IServices;
 using AppData.Models;
 using AppData.Repositories;
+using AppData.ViewModels.ThongKe;
+
 //using AppData.ViewModels.DanhGia;
 
 using DocumentFormat.OpenXml.Spreadsheet;
@@ -22,17 +24,21 @@ namespace App_View.Areas.Admin.Controllers
 
 
         public IvOverViewServices _overview;
+        public IBillGanDayServices _billGanDayServices;
         public readonly HttpClient _httpClient;
 
-        public ThongKeController(IvOverViewServices overview, HttpClient httpClient)
+        public ThongKeController(IvOverViewServices overview, HttpClient httpClient , IBillGanDayServices billganday)
         {
             _overview = overview;
             _httpClient = httpClient;
+            _billGanDayServices = billganday;
         }
 
         public IActionResult OverView()
         {
-            var model =  _overview.listOverViewGroup().FirstOrDefault();
+            vOverView model = new vOverView();
+                 model =  _overview.listOverViewGroup().FirstOrDefault();
+                 model.billGanDay = _billGanDayServices.listBillGanDayViewGroup();
             return View(model);
         }
 
