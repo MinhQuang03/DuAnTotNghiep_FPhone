@@ -9,5 +9,6 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.ViewModel
         public List<ListImage> listImage { get; set; } = new List<ListImage>();
         public Bill Bill { get; set; } = new Bill();
         public List<BillDetails> ListBillDetail { get; set; } = new();
+        public Account Account { get; set; } = new Account();
     }
 }
