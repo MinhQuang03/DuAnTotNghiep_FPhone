@@ -5,6 +5,11 @@
 }
 
 <style>
+    .highlighted-name {
+        color: #ff6600; /* You can change the color code to your preferred color */
+        font-weight: bold; /* Optional: Make the text bold for emphasis */
+    }
+
     .phone-hover:hover {
         background-color: #FFFFCC;
     }
@@ -274,27 +279,93 @@
                         </button>
 
                         <!-- Modal -->
-                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="row">
-                                            <label class="col-form-label">Tên sản phẩm</label>
-                                            <input readonly class="form-control text-center" value="abc"/>
+                        @foreach(var item in Model.Records)
+                        {
+                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Thông tin chi tiết</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-                                        
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <!-- Add the custom class to highlight the product name -->
+                                                <p class="col-sm-12 text-center highlighted-name">@item.PhoneName</p>
+                                            </div>
+                                            <div class="row">
+                                                <label class="col-form-label col-sm-5">Chất liệu</label>
+                                                <p class="col-sm-7">@item.MaterialName</p>
+                                            </div>
+                                            <div class="row">
+                                                <label class="col-form-label col-sm-5">Bộ nhớ trong (ROM)</label>
+                                                <p class="col-sm-7">@item.RomName</p>
+                                            </div>
+                                            <div class="row">
+                                                <label class="col-form-label col-sm-5">RAM</label>
+                                                <p class="col-sm-7">@item.RamName</p>
+                                            </div>
+                                            <div class="row">
+                                                <label class="col-form-label col-sm-5">Hệ điều hành</label>
+                                                <p class="col-sm-7">@item.OperatingSystemName</p>
+                                            </div>
+                                            <div class="row">
+                                                <label class="col-form-label col-sm-5">Dung lượng pin</label>
+                                                <p class="col-sm-7">@item.BatteryName</p>
+                                            </div>
+                                            <div class="row">
+                                                <label class="col-form-label col-sm-5">Loại SIM</label>
+                                                <p class="col-sm-7">@item.SimName</p>
+                                            </div>
+                                            <div class="row">
+                                                <label class="col-form-label col-sm-5">Chip CPU</label>
+                                                <p class="col-sm-7">@item.ChipCPUName</p>
+                                            </div>
+                                            <div class="row">
+                                                <label class="col-form-label col-sm-5">Chip GPU</label>
+                                                <p class="col-sm-7">@item.ChipGPUName</p>
+                                            </div>
+                                            <div class="row">
+                                                <label class="col-form-label col-sm-5">Màu sắc</label>
+                                                <p class="col-sm-7">@item.ColorName</p>
+                                            </div>
+                                            <div class="row">
+                                                <label class="col-form-label col-sm-5">Loại cổng sạc</label>
+                                                <p class="col-sm-7">@item.ChargingportTypeName</p>
+                                            </div>
+                                            <div class="row">
+                                                <label class="col-form-label col-sm-5">Trọng lượng</label>
+                                                <p class="col-sm-7">@item.Weight</p>
+                                            </div>
+                                            <div class="row">
+                                                <label class="col-form-label col-sm-5">Camera trước</label>
+                                                <p class="col-sm-7">@item.FrontCamera</p>
+                                            </div>
+                                            <div class="row">
+                                                <label class="col-form-label col-sm-5">Độ phân giải</label>
+                                                <p class="col-sm-7">@item.Resolution</p>
+                                            </div>
+                                            <div class="row">
+                                                <label class="col-form-label col-sm-5">Kích thước</label>
+                                                <p class="col-sm-7">@item.Size</p>
+                                            </div>
+                                            <div class="row">
+                                                <label class="col-form-label col-sm-5">Tên công ty sản xuất</label>
+                                                <p class="col-sm-7">@item.ProductionCompanyName</p>
+                                            </div>
+                                            <!-- Thêm các dòng tương ứng với các thuộc tính còn lại của VW_PhoneDetail -->
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đóng</button>
+
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
+                        }
+                        
 
                     </ul>
 
