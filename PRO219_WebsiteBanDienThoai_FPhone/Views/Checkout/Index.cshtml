@@ -94,6 +94,11 @@
                                 <label>Phương thức vận chuyển</label>
                                 @Html.DropDownListFor(model => model.id, Enumerable.Empty<SelectListItem>(), "--Lựa chọn--", new { @class = "form-control", id = "AvailableService", onchange = "JCheckOut.ChangeService()" })
                             </div>
+                       @*      test *@
+                            <div class="col-md-6 form-group">
+                                <label>Voucher</label>
+                                <input id="maVoucher" class="form-control" type="text" placeholder="Mã Voucher">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -184,7 +189,7 @@
     <script>
         $(document).ready(function () {
             JCheckOut.init();
-
+            JCheckOut.maVoucher();
          
             // Handle form submission
             $("#checkoutForm").submit(function (e) {

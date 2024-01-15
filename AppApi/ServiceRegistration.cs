@@ -40,7 +40,7 @@ namespace AppApi
             services.AddTransient<ISellDailyRepository, SellDailyRepository>();
             services.AddTransient<ISellMonthlyRepository, SellMonthlyRepo>();
             services.AddTransient<ISellYearlyRepository, SellYearlyRepo>();
-
+            services.AddTransient<IDiscountServices, DisocountRepository>();
         }
     }
 }

@@ -13,6 +13,23 @@
         //    }
         //});
     };
+
+    ins.maVoucher = function () {
+        $('#maVoucher').keypress(function (event) {
+
+            if (event.which === 13) {
+                $.ajax({
+                    method: 'GET',
+                    url: '/CheckOut/GetVoucherByCode/' + $('#maVoucher').val(),
+                    success: (data) => {
+                        console.log(data);
+                    }
+                });
+                event.preventDefault();
+            }
+        });
+    };
+
     ins.ChangePay = function() {
         if ($('#paymentInStore').is(':checked')) {
             $('.displayAddress').hide();
