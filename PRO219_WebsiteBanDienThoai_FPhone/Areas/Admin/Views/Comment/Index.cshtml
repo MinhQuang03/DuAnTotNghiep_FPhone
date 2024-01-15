@@ -1,0 +1,95 @@
+﻿@using AppData.FPhoneDbContexts;
+@using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
+@using X.PagedList;
+@using X.PagedList.Mvc.Common;
+@using X.PagedList.Mvc.Core;
+@model IPagedList<AppData.Models.Review>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    FPhoneDbContext dbContext = new FPhoneDbContext(); 
+}
+
+<h1>Danh sách bình luận</h1>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Tên Khách Hàng
+            </th>
+            <th>Tên sản phẩm</th>
+            <th>
+                Nội dung
+            </th>
+
+            <th>Hành động</th>
+   
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model == null || !Model.Any())
+        {
+            <h2 style="text-align:center">Chưa có bình luận nào</h2>
+        }
+        else
+        {
+            @foreach (var item in Model)
+            {
+                var user = dbContext.Accounts.FirstOrDefault(p => p.Id == item.IdAccount);
+                var phone = dbContext.Phones.FirstOrDefault(p => p.Id == item.IdPhone);
+                var phoneDetaild = dbContext.PhoneDetailds.FirstOrDefault(p => p.IdPhone == item.IdPhone);
+                var color = dbContext.Colors.FirstOrDefault(p => p.Id == phoneDetaild.IdColor);
+                var ram = dbContext.Ram.FirstOrDefault(p => p.Id == phoneDetaild.IdRam);
+
+                <tr>
+                    <td>
+                        @user.Username
+                    </td>
+                    <td>
+                        @phone.PhoneName @ram.Name @color.Name
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Content)
+                    </td>
+                   
+                    <td>
+                        <div class="form-check">
+                            <a href="@Url.Action("DeleteComment", "Comment", new { Id = item.Id })" style="color:red">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </div>
+                    </td>
+                   
+                </tr>
+            }
+        }
+
+    </tbody>
+
+</table>
+
+<div class="custom-pager">
+    @Html.PagedListPager(Model, pageNumber => Url.Action("Index", new { pageNumber, pageSize = Model.PageSize }), new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded, LiElementClasses = new[] { "page-item" }, PageClasses = new[] { "page-link" } })
+</div>
+<style>
+    .custom-pager {
+        display: flex;
+        justify-content: flex-end;
+        margin-right: 100px; /* Điều chỉnh khoảng cách bên phải */
+    }
+
+        .custom-pager .page-item {
+            margin: 0 5px; /* Điều chỉnh khoảng cách giữa các mũi tên */
+        }
+
+        .custom-pager .page-link {
+            font-size: 13px; /* Điều chỉnh kích thước của mũi tên */
+        }
+</style>
