@@ -9,7 +9,9 @@
     ViewData["Title"] = "Danggiaoview";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <h1>Đang Giao</h1>
 <div>
     <form method="get" action="@Url.Action("Danggiaoview", "Bill")">
@@ -118,8 +120,17 @@
                     success: function (data) {
                         // Xử lý reload trang và hiển thị thông báo thành công
                         if (data.success) {
-                            alert('Chuyển trạng thái thành công');
-                            location.reload();
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Thành công!',
+                                text: 'Thay đổi đã được lưu thành công.',
+                                showConfirmButton: false,
+                                timer: 2000, // Thời gian hiển thị thông báo (ms)
+                                onClose: function () {
+                                    // Sau khi thông báo biến mất, reload lại trang
+                                    location.reload();
+                                }
+                            });
                         } else {
                             alert('Chuyển trạng thái thất bại');
                         }

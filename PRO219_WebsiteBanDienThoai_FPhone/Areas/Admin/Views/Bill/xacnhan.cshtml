@@ -91,7 +91,9 @@
 <div class="custom-pager">
     @Html.PagedListPager(Model, pageNumber => Url.Action("xacnhan", new { pageNumber, pageSize = Model.PageSize }), new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded, LiElementClasses = new[] { "page-item" }, PageClasses = new[] { "page-link" } })
 </div>
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
     $(document).ready(function () {
         $('.btn-confirm').click(function (e) {
@@ -107,8 +109,18 @@
                     success: function (data) {
                         // Xử lý reload trang và hiển thị thông báo thành công
                         if (data.success) {
-                            alert('Chuyển trạng thái thành công');
-                            location.reload();
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Thành công!',
+                                text: 'Thay đổi đã được lưu thành công.',
+                                showConfirmButton: false,
+                                timer: 2000, 
+                                onClose: function () {
+                                   
+                                    location.reload();
+                                }
+                            });
+                            
                         } else {
                             alert('Chuyển trạng thái thất bại');
                         }
