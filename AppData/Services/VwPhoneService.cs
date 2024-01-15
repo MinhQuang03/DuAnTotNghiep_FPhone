@@ -32,8 +32,7 @@ namespace AppData.Services
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                throw;
+               
             }
             return lst;
         }

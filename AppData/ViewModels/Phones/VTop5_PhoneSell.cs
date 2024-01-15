@@ -10,7 +10,7 @@ namespace AppData.ViewModels.Phones
 {
     public class VTop5_PhoneSell
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
         public Guid IdPhone { get; set; }
         public string? PhoneName { get; set; }
         public decimal? Price { get; set;}

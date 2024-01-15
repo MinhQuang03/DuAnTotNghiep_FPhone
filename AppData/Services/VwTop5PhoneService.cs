@@ -18,7 +18,17 @@ namespace AppData.Services
         }
         public List<VTop5_PhoneSell> listVwTop5PhoneGroup()
         {
-           return _dbContext.VTop5_PhoneSell.ToList();
+            var data = new List<VTop5_PhoneSell>();
+            try
+            {
+                data = _dbContext.VTop5_PhoneSell.ToList();
+            }
+            catch (Exception e)
+            {
+               
+            }
+
+            return data;
         }
 
     }
