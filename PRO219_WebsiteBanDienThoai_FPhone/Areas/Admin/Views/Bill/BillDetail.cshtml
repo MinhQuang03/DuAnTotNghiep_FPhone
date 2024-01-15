@@ -8,7 +8,7 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
     FPhoneDbContext _dbContext = new FPhoneDbContext();
 }
-
+@* LKK\SQLEXPRESS *@
 <style>
     .button-abc {
         display: inline-block;
@@ -206,7 +206,9 @@
                     data: { statusInput1: statusInput1 }, // Thêm id vào dữ liệu gửi đi
                     success: function (response) { // Sửa tên biến result thành response
                         if (response.success) {
+                              alert('Hủy Hóa Đơn thành công  ');
                             window.location.href = response.data;
+
                         }
                     },
                     error: function (error) {

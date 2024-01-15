@@ -70,26 +70,32 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
                 //billDetail.Status = 4; // Yêu cầu bảo hành 
                 //_context.SaveChanges();
 
-                var warrantyCard = new WarrantyCard();
-                warrantyCard.Id = Guid.NewGuid();
-                warrantyCard.IdBillDetail = billDetail.Id;
-                warrantyCard.IdAccount = billDetail.Bills.IdAccount;
-                warrantyCard.IdPhoneDetail = IdPhoneDetail;
-                warrantyCard.IdPhone = billDetail.PhoneDetaild.IdPhone;
-                warrantyCard.Imei = phoneImei;
-                warrantyCard.CreatedDate = DateTime.Now;
-                warrantyCard.Description = note; // Có thể thay đổi tùy theo yêu cầu
-                                                 //ThoiGianConBaoHanh = billDetail.Bills.PaymentDate.AddMonths(billDetail.PhoneDetaild.Phones.IdWarranty.TimeWarranty),
-                warrantyCard.Status = 0; // 1: Mới tạo
-                                         // Bổ sung thêm các thông tin khác nếu cần
+                var check = _context.WarrantyCards.FirstOrDefault(p => p.IdBillDetail == billDetail.Id);
+                if(check == null)
+                {
+                    var warrantyCard = new WarrantyCard();
+                    warrantyCard.Id = Guid.NewGuid();
+                    warrantyCard.IdBillDetail = billDetail.Id;
+                    warrantyCard.IdAccount = billDetail.Bills.IdAccount;
+                    warrantyCard.IdPhoneDetail = IdPhoneDetail;
+                    warrantyCard.IdPhone = billDetail.PhoneDetaild.IdPhone;
+                    warrantyCard.Imei = phoneImei;
+                    warrantyCard.CreatedDate = DateTime.Now;
+                    warrantyCard.Description = note; // Có thể thay đổi tùy theo yêu cầu
+                                                     //ThoiGianConBaoHanh = billDetail.Bills.PaymentDate.AddMonths(billDetail.PhoneDetaild.Phones.IdWarranty.TimeWarranty),
+                    warrantyCard.Status = 0; // 1: Mới tạo
+                                             // Bổ sung thêm các thông tin khác nếu cần
 
-                TempData["SuccessMessage"] = "Bạn đã gửi yêu cầu thành công!";
-                _context.WarrantyCards.Add(warrantyCard);
-                _context.SaveChanges();
+                    TempData["SuccessMessage"] = "Bạn đã gửi yêu cầu thành công!";
+                    _context.WarrantyCards.Add(warrantyCard);
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    TempData["SuccessMessage"] = "Máy của bạn đang được bảo hành. Không thể gửi thêm yêu cầu!";
+                }
+                
             }
-
-
-
             return RedirectToAction("XemChiTiet", new { idBill = billDetail.IdBill });
         }
     }

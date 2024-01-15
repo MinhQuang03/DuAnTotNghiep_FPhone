@@ -73,11 +73,11 @@
                     <td>
                         @if (item.Status == 0)
                     {
-                        <a class="btn btn-sm btn-light text-success border a33" href="@Url.Action("Editkhachhang", "Accounts", new { id = item.Id })"> <i class="fas fa-toggle-on"></i> </a>
+                            <a class="btn btn-sm btn-light text-success border a33 btn-confirm" href="@Url.Action("Editkhachhang", "Accounts", new { id = item.Id })"> <i class="fas fa-toggle-on"></i> </a>
                     }
                     else if (item.Status == 1)
                     {
-                        <a class="btn btn-sm btn-light text-danger border a33" href="@Url.Action("Editkhachhang1", "Accounts", new { id = item.Id })"> <i class="fas fa-toggle-on"></i> </a>
+                            <a class="btn btn-sm btn-light text-danger border a33 btn-confirm" href="@Url.Action("Editkhachhang1", "Accounts", new { id = item.Id })"> <i class="fas fa-toggle-on"></i> </a>
                     }
                     
                     </td>
@@ -105,3 +105,32 @@
             font-size: 13px; /* Điều chỉnh kích thước của mũi tên */
         }
 </style>
+<script>
+    $(document).ready(function () {
+        $('.btn-confirm').click(function (e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+
+            // Hiển thị hộp thoại xác nhận
+            if (confirm('Bạn có chắc muốn cập nhật trạng thái của khách hàng không  ?')) {
+                // Nếu người dùng chọn "OK", gửi yêu cầu Ajax
+                $.ajax({
+                    type: 'POST', // hoặc 'GET' tùy thuộc vào cách bạn xử lý ở server
+                    url: url.replace('localhost', 'Xác nhận'),
+                    success: function (data) {
+                        // Xử lý reload trang và hiển thị thông báo thành công
+                        if (data.success) {
+                            alert('Cập nhật trạng thái khách hàng thành công  ');
+                            location.reload();
+                        } else {
+                            alert('Cập nhật trạng thái khách hàng thất bại');
+                        }
+                    },
+                    error: function () {
+                        alert('Đã xảy ra lỗi');
+                    }
+                });
+            }
+        });
+    });
+</script>

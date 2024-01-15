@@ -193,7 +193,6 @@ namespace AppData.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("BillCode")
@@ -819,9 +818,6 @@ namespace AppData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("AccountsId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
 
@@ -831,17 +827,10 @@ namespace AppData.Migrations
                     b.Property<Guid>("IdAccount")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("IdPhoneDetaild")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("PhoneDetaildsId")
+                    b.Property<Guid>("IdPhone")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AccountsId");
-
-                    b.HasIndex("PhoneDetaildsId");
 
                     b.ToTable("Reviews");
                 });
@@ -1190,6 +1179,9 @@ namespace AppData.Migrations
                     b.Property<string>("ChipGPUName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid>("ColorID")
                         .HasColumnType("uniqueidentifier");
 
@@ -1250,6 +1242,68 @@ namespace AppData.Migrations
                     b.ToTable("VW_PhoneDetail");
 
                     b.ToView("VW_PhoneDetail");
+                });
+
+            modelBuilder.Entity("AppData.ViewModels.ThongKe.BillGanDay", b =>
+                {
+                    b.Property<decimal>("GiaTien")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("MaHoaDon")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("NgayTao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("STT")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("TenNguoiMua")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TrangThaiGiaoHang")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TrangThaiThanhToan")
+                        .HasColumnType("int");
+
+                    b.ToView("BillGanDay");
+                });
+
+            modelBuilder.Entity("AppData.ViewModels.ThongKe.vOverView", b =>
+                {
+                    b.Property<int>("BillOffThangNay")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BillOffThangTruoc")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BillOnlThangNay")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BillOnlThangTruoc")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BillThanhCong")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BillThatbai")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DanhGiaThangNay")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DanhGiaThangTruoc")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("DoanhThuThangNay")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("DoanhThuThangTruoc")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.ToView("vOverView");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -1588,25 +1642,6 @@ namespace AppData.Migrations
                     b.Navigation("Roms");
 
                     b.Navigation("Sims");
-                });
-
-            modelBuilder.Entity("AppData.Models.Review", b =>
-                {
-                    b.HasOne("AppData.Models.Account", "Accounts")
-                        .WithMany()
-                        .HasForeignKey("AccountsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AppData.Models.PhoneDetaild", "PhoneDetailds")
-                        .WithMany()
-                        .HasForeignKey("PhoneDetaildsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Accounts");
-
-                    b.Navigation("PhoneDetailds");
                 });
 
             modelBuilder.Entity("AppData.Models.SalePhoneDetaild", b =>
