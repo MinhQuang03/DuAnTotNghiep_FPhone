@@ -39,5 +39,7 @@ namespace AppData.ViewModels.Phones
         public int CountPhone { get; set; }
         [NotMapped]
         public List<string> ListImage { get; set; } = new List<string>();
+
+        [NotMapped] public int CountImei { get; set; } = 0;
     }
 }

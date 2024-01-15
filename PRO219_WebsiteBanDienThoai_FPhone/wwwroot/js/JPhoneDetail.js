@@ -34,27 +34,104 @@
             }
         });
     });
-
 });
+
 var JPhoneDetail = (function (window, $) {
     var ins = {};
     ins.changeColor = function (idPhoneDetail) {
         $('.btnPhoneDetail').removeClass("selected");
         $('#' + idPhoneDetail).addClass("selected");
         $('#ShowDetaild').show();
-
+        $('.showChiTiet').empty();
         var phoneName = "";
         $.ajax({
             method: "GET",
             url: '/PhoneDetail/getPhoneDetailById/' + idPhoneDetail,
             success: (data) => {
-               
+               console.log(data);
                 $('#IdPhoneDetail').val(idPhoneDetail);
                 phoneName = data.phoneName + ' - ' + data.colorName;
                 $('#phoneName').text(data.phoneName + " " + data.colorName);
                 console.log(data.price);
                 $('#phonePrice').text(parseFloat(data.price)
                     .toLocaleString('vi', { style: 'currency', currency: 'VND' }));
+                $('.showChiTiet').append(`<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Thông tin chi tiết</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <p class="col-sm-12 text-center highlighted-name">${data.phoneName}</p>
+                    </div>
+                    <div class="row">
+                        <label class="col-form-label col-sm-5">Chất liệu</label>
+                        <p class="col-sm-7">${data.materialName}</p>
+                    </div>
+                    <div class="row">
+                        <label class="col-form-label col-sm-5">Bộ nhớ trong (ROM)</label>
+                        <p class="col-sm-7">${data.romName}</p>
+                    </div>
+                    <div class="row">
+                        <label class="col-form-label col-sm-5">RAM</label>
+                        <p class="col-sm-7">${data.ramName}</p>
+                    </div>
+                    <div class="row">
+                        <label class="col-form-label col-sm-5">Hệ điều hành</label>
+                        <p class="col-sm-7">${data.operatingSystemName}</p>
+                    </div>
+                    <div class="row">
+                        <label class="col-form-label col-sm-5">Dung lượng pin</label>
+                        <p class="col-sm-7">${data.batteryName}</p>
+                    </div>
+                    <div class="row">
+                        <label class="col-form-label col-sm-5">Loại SIM</label>
+                        <p class="col-sm-7">${data.simName}</p>
+                    </div>
+                    <div class="row">
+                        <label class="col-form-label col-sm-5">Chip CPU</label>
+                        <p class="col-sm-7">${data.chipCPUName}</p>
+                    </div>
+                    <div class="row">
+                        <label class="col-form-label col-sm-5">Chip GPU</label>
+                        <p class="col-sm-7">${data.chipGPUName}</p>
+                    </div>
+                    <div class="row">
+                        <label class="col-form-label col-sm-5">Màu sắc</label>
+                        <p class="col-sm-7">${data.colorName}</p>
+                    </div>
+                    <div class="row">
+                        <label class="col-form-label col-sm-5">Loại cổng sạc</label>
+                        <p class="col-sm-7">${data.chargingportTypeName}</p>
+                    </div>
+                    <div class="row">
+                        <label class="col-form-label col-sm-5">Trọng lượng</label>
+                        <p class="col-sm-7">${data.weight}</p>
+                    </div>
+                    <div class="row">
+                        <label class="col-form-label col-sm-5">Camera trước</label>
+                        <p class="col-sm-7">${data.frontCamera}</p>
+                    </div>
+                    <div class="row">
+                        <label class="col-form-label col-sm-5">Độ phân giải</label>
+                        <p class="col-sm-7">${data.resolution}</p>
+                    </div>
+                    <div class="row">
+                        <label class="col-form-label col-sm-5">Kích thước</label>
+                        <p class="col-sm-7">${data.size}</p>
+                    </div>
+                    <div class="row">
+                        <label class="col-form-label col-sm-5">Tên công ty sản xuất</label>
+                        <p class="col-sm-7">${data.productionCompanyName}</p>
+                    </div>
+                    <!-- Thêm các dòng tương ứng với các thuộc tính còn lại của VW_PhoneDetail -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>`);
             }
         });
 
@@ -87,6 +164,7 @@ var JPhoneDetail = (function (window, $) {
       
         $('#addToCart').show();
         $('#notExits').hide();
+        $('#ShowDetaild').hide();
         var stringHtml = "";
         $('#colorList').empty();
         $('#IdPhoneDetail').val(null);
@@ -113,7 +191,7 @@ var JPhoneDetail = (function (window, $) {
             }
         });
     }
-
+   
     return ins;
 })(window, jQuery);
 const notification = function (message) {
