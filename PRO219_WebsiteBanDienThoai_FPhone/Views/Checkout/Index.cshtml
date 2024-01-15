@@ -207,7 +207,7 @@
                                     Swal.fire({
                                         icon: 'success',
                                         title: 'Thành công!',
-                                        text: 'Thay đổi đã được lưu thành công.',
+                                        text: 'Đặt hàng thành côn.',
                                         showConfirmButton: false,
                                         timer: 2000, // Thời gian hiển thị thông báo (ms)
                                         onClose: function () {
@@ -218,7 +218,12 @@
                                     
                                 } else {
                                     // Xử lý lỗi nếu cần
-                                    console.error("Banktransfer request failed.");
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Lỗi!',
+                                        text: 'Đã xảy ra lỗi khi xử lý thanh toán. Vui lòng thử lại hoặc liên hệ hỗ trợ.'
+                                    });
+
                                 }
                             },
                             error: function () {
@@ -239,7 +244,7 @@
                                     Swal.fire({
                                         icon: 'success',
                                         title: 'Thành công!',
-                                        text: 'Thay đổi đã được lưu thành công.',
+                                        text: 'Đặt hàng thành công .',
                                         showConfirmButton: false,
                                         timer: 2000, // Thời gian hiển thị thông báo (ms)
                                         onClose: function () {
@@ -250,7 +255,12 @@
                                    
                                 } else {
                                     // Xử lý lỗi nếu cần
-                                    console.error("Payment request failed.");
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Lỗi!',
+                                        text: 'Đã xảy ra lỗi khi xử lý thanh toán. Vui lòng thử lại hoặc liên hệ hỗ trợ.'
+                                    });
+
                                 }
                             },
                             error: function () {
@@ -270,7 +280,7 @@
                                     Swal.fire({
                                         icon: 'success',
                                         title: 'Thành công!',
-                                        text: 'Thay đổi đã được lưu thành công.',
+                                        text: 'Đặt hàng thành công.',
                                         showConfirmButton: false,
                                         timer: 2000, // Thời gian hiển thị thông báo (ms)
                                         onClose: function () {
@@ -280,7 +290,12 @@
                                     });
                                 } else {
                                     // Xử lý lỗi nếu cần
-                                    console.error("Banktransfer request failed.");
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Lỗi!',
+                                        text: 'Đã xảy ra lỗi khi xử lý thanh toán. Vui lòng thử lại hoặc liên hệ hỗ trợ.'
+                                    });
+
                                 }
                             },
                             error: function () {
