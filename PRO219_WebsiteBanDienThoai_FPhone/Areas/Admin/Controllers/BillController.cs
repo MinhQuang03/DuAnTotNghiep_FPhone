@@ -208,8 +208,10 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                 bill.Status = 1;
                 _context.Entry(bill).State = EntityState.Modified;
                 var acc = _context.Accounts.FirstOrDefault(p => p.Id == bill.IdAccount);
-
-                SendEmailDangGiao(acc.Email);
+                if(acc != null)
+                {
+                    SendEmailDangGiao(acc.Email);
+                }
                 _context.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -389,63 +391,63 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult BaoHanh(string search)
+        public ActionResult BaoHanh(int? pageNumber, int pageSize = 10, string search = "")
         {  
             if (!string.IsNullOrEmpty(search))
             {
                 var a = _context.WarrantyCards.Where(p => p.Imei.Contains(search) && p.Status == 0).ToList();
-                return View(a);
+                return View(a.ToPagedList(pageNumber ?? 1, pageSize < 1 ? 1 : pageSize));
             }
             
             var warrantyCards = _context.WarrantyCards.Where(p => p.Status == 0).ToList();
             if (warrantyCards != null && warrantyCards.Any())
             {
-                return View(warrantyCards);
+                return View(warrantyCards.ToPagedList(pageNumber ?? 1, pageSize));
             }
             else
             {
-                return View();
-            }           
+                return View(new List<WarrantyCard>().ToPagedList(pageNumber ?? 1, pageSize));
+            }
         }
 
         [HttpGet]
-        public ActionResult ThucHienBaoHanh(string search)
+        public ActionResult ThucHienBaoHanh(int? pageNumber, int pageSize = 10, string search = "")
         {
             if (!string.IsNullOrEmpty(search))
             {
                 var a = _context.WarrantyCards.Where(p => p.Imei.Contains(search) && p.Status == 1).ToList();
-                return View(a);
+                return View(a.ToPagedList(pageNumber ?? 1, pageSize < 1 ? 1 : pageSize));
             }
 
             var warrantyCards = _context.WarrantyCards.Where(p => p.Status == 1).ToList();
             if (warrantyCards != null && warrantyCards.Any())
             {
-                return View(warrantyCards);
+                return View(warrantyCards.ToPagedList(pageNumber ?? 1, pageSize));
             }
             else
             {
-                return View();
+                return View(new List<WarrantyCard>().ToPagedList(pageNumber ?? 1, pageSize));
             }
 
         }
 
         [HttpGet]
-        public ActionResult BaoHanhThanhCong(string search)
+        public ActionResult BaoHanhThanhCong(int? pageNumber, int pageSize = 10, string search = "")
         {
             if (!string.IsNullOrEmpty(search))
             {
                 var a = _context.WarrantyCards.Where(p => p.Imei.Contains(search) && p.Status == 2).ToList();
-                return View(a);
+                return View(a.ToPagedList(pageNumber ?? 1, pageSize < 1 ? 1 : pageSize));
             }
 
             var warrantyCards = _context.WarrantyCards.Where(p => p.Status == 2).ToList();
             if (warrantyCards != null && warrantyCards.Any())
             {
-                return View(warrantyCards);
+                return View(warrantyCards.ToPagedList(pageNumber ?? 1, pageSize));
             }
             else
             {
-                return View();
+                return View(new List<WarrantyCard>().ToPagedList(pageNumber ?? 1, pageSize));
             }
 
         }

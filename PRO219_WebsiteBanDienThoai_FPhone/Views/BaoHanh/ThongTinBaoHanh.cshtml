@@ -70,6 +70,7 @@
 
             .button-link:hover {
                 background-color: #0056b3;
+                color:black;
             }
 
         .info-container {
@@ -133,26 +134,38 @@
 
             // Thực hiện kiểm tra và xử lý dữ liệu nếu cần
 
-            $.ajax({
-                type: "POST",
-                url: "@Url.Action("YeuCauBaoHanh", "Accounts")",
-                data: {
-                    IdPhoneDetail: IdPhoneDetail,
-                    phoneImei: Imei,
-                    note: note
-                },
-                success: function (data) {
-                    console.log("Thành Công");
-                    $("#successMessage").show();
-                    // Thực hiện các hành động bổ sung sau khi thành công
-                    location.reload(); // Tải lại trang
-                },
-                error: function () {
-                    console.log("Thất bại");
-                }
-            });
+            // Hiển thị hộp thoại xác nhận
+            var confirmation = confirm("Bạn có muốn gửi yêu cầu bảo hành không?");
+
+            // Nếu người dùng chọn "OK" trong hộp thoại xác nhận
+            if (confirmation) {
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("YeuCauBaoHanh", "BaoHanh")",
+                    data: {
+                        IdPhoneDetail: IdPhoneDetail,
+                        phoneImei: Imei,
+                        note: note
+                    },
+                    success: function (data) {
+                        console.log("Gửi yêu cầu thành công");
+                        $("#successMessage").show();
+                        // Thực hiện các hành động bổ sung sau khi thành công
+                        location.reload(); // Tải lại trang
+                    },
+                    error: function () {
+                        console.log("Thất bại");
+                    }
+                });
+            }
+            // Ngược lại, nếu người dùng chọn "Cancel" trong hộp thoại xác nhận
+            else {
+                console.log("Hủy bỏ việc gửi yêu cầu");
+                // Thực hiện các hành động hoặc thông báo khác nếu cần
+            }
         }
     </script>
+
 
 </body>
 </html>
