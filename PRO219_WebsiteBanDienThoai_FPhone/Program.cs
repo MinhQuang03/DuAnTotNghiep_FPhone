@@ -1,11 +1,9 @@
 ﻿using AppData.FPhoneDbContexts;
 using AppData.IRepositories;
 using AppData.IServices;
-using AppData.Models;
 using AppData.Repositories;
 using AppData.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,7 +28,9 @@ builder.Services.AddTransient<IContactService, ContactService>();
 builder.Services.AddTransient<IBlogService, BlogService>();
 builder.Services.AddTransient<IVwTop5PhoneServices, VwTop5PhoneService>();
 builder.Services.AddTransient<IBillRepository, BillRepository>();
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<FPhoneDbContext>().AddDefaultTokenProviders();
+builder.Services.AddTransient<IvOverViewServices, OverViewServices>();
+builder.Services.AddTransient<IBillGanDayServices, BillGanDayServices>();
+
 builder.Services.AddScoped(sp => new HttpClient()
 {
     //Uri chạy iis
