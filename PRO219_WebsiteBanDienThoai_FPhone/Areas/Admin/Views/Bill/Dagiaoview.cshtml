@@ -8,6 +8,9 @@
     ViewData["Title"] = "Dagiaoview";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <h1>Đã Giao</h1>
     <div>
     <form method="get" action="@Url.Action("Dagiaoview", "Bill")">
@@ -82,9 +85,7 @@
                         }
                     </td>
 
-                    <td>
-                      @*   <a class="btn btn-sm btn-light text-success border" href="@Url.Action("Dagiao", "Bill", new { id = item.Id })"> Giao Hàng </a> *@
-                    </td>
+                  
                 </tr>
             }
         }
