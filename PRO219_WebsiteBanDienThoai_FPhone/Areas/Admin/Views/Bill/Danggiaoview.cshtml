@@ -108,7 +108,7 @@
         $('.btn-confirm').click(function (e) {
             e.preventDefault();
             var url = $(this).attr('href');
-
+            url = url.replace('localhost', 'Xác nhận')
             // Hiển thị hộp thoại xác nhận
             if (confirm('Bạn có chắc muốn chuyển trạng thái của hóa đơn không?')) {
                 // Nếu người dùng chọn "OK", gửi yêu cầu Ajax
