@@ -1,0 +1,351 @@
+﻿@using System.Globalization
+@using System.Security.Claims
+@using AppData.Utilities
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model PRO219_WebsiteBanDienThoai_FPhone.ViewModel.AdCheckOutViewModel
+@{
+    ViewData["Title"] = "Bán hàng tại quầy";
+    int index = 0;
+}
+<style>
+    .popup-container {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .popup-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 20px;
+        cursor: pointer;
+    }
+</style>
+
+<div class="container-fluid" style="margin-top: -30px">
+    <div class="row">
+        <div class="form-group col-4 border border-secondary-subtle">
+            <h2>Sản phẩm</h2>
+            <div class="row my-3 ml-1">
+                <input placeholder="Tìm kiếm" id="dataSearch" class="form-control col-6" type="text" />
+                <span class="col-2"></span>
+                <input type="submit" onclick="JAdCheckOut.searchClick()" class="btn btn-primary col-4" value="Tìm kiếm" />
+            </div>
+           
+            <div class="card ">
+                <div class="card-body form-group row overflow-auto" style="max-height: 800px; background-color: #f0f8ff">
+                    @foreach (var item in Model.ListvVwPhoneDetails)
+                    {
+                            <div id="@item.PhoneName" name="@item.Code" class="col-6 mt-2 border border-dark rounded ShowProduct" style="background-color: white;max-height: 334px">
+                                <img class="card-img-top" src="@item.FirstImage" alt="Card image cap" height="150px" width="50px">
+                                <p class="card-text text-center">@item.PhoneName</p>
+                                <p>MSP: @item.Code</p>
+                                <p class="text-danger text-center">Giá: @item.Price?.ToString("C", CultureInfo.GetCultureInfo("vi-VN"))</p>
+                                <p id="quantity_@index">Số lượng: @item.CountPhone</p>
+                                <input hidden id="quantity_hide_@index" value="@item.CountPhone"/>
+                                <input hidden id="IdPhoneDetail_@index" value="@item.IdPhoneDetail"/>
+                                <input onclick="JAdCheckOut.clickButtonAdd('@index')" id="btnAdd_@index" type="button" class="form-control text-center text-white btn-primary" value="Add"/>
+                            </div> 
+                        index++;
+                    }
+
+                </div>
+            </div>
+        </div>
+        <div class="form-group col-8">
+            <h2>Hóa đơn</h2>
+            <div>
+                <div class="">
+                    <div class="d-md-flex align-items-center justify-content-between">
+                        <div class="m-b-15">
+                            <button onclick="JAdCheckOut.clickAddProp()" class="btn btn-primary">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                                </svg>
+                                <span>Thêm mới</span>
+                            </button>
+                            <button onclick="JAdCheckOut.removeProp()" class="btn btn-primary">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                                </svg>
+                                <span>Xóa</span>
+                            </button>
+                        </div>
+                    </div>
+                    <input hidden type="number" name="Number" id="NumberSilde" value="0" style="display:none;" />
+                    <ul class="nav nav-tabs" role="tablist" id="mytab" style="background-color: white">
+                        <li class="nav-item propertity0tag border">
+                            <a onclick="JAdCheckOut.ChangeBill(0)" class="nav-link active" id="propertity0tag" data-toggle="tab" href="#propertity0" role="tab" aria-controls="propertity0" aria-selected="true">HD0</a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="tab-content m-t-15 overflow-auto" id="myTabContent" style="max-height: 300px;">
+                    <div class="tab-pane fade active show" id="propertity0" role="tabpanel" aria-labelledby="propertity0tag">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <table class="table table-bordered">
+                                        <thead class="thead-light">
+                                        <tr class="text-center">
+                                            <th widht="20%">Mã sản phẩm</th>
+                                            <th widht="20%">Tên sản phẩm</th>
+                                            <th>Giá bán</th>
+                                            <th>Xóa</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="spct_0">
+                                        
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr/>
+                <div class="border" style="background-color: #ededed">
+                    <table width="100%" class="table table-bordered">
+                        <thead class="text-center">
+                        <tr >
+                            <th width="30%">
+                                Khách hàng
+                            </th>
+                            <th>
+                                Thông tin hóa đơn
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="d-flex">
+                                <input type="text" class="form-control" id="searchUser" placeholder="Tìm kiếm khách hàng"/>
+                            </td>
+                            <td>
+                                <form asp-action="AdCheckOut" id="form_ThanhToan" method="post">
+                                    <div class="row">
+                                        <label class="col-form-label col-3">Mã hóa đơn: </label>
+                                        <div class="col-9">
+                                            <input id="maHoaDon" class="form-control" type="text" disabled="disabled" readonly/>
+                                            <input hidden asp-for="Bill.BillCode" type="text" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label class="col-form-label col-3">Tên nhân viên </label>
+                                        <div class="col-9">
+                                                <input value="@(string.IsNullOrEmpty(User.Identity.Name)?"root":User.Identity.Name)" class="form-control" type="text" disabled="disabled" />
+                                            <input hidden asp-for="Bill.Name" type="text"/>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label class="col-form-label col-3">Ngày tạo: </label>
+                                        <div class="col-9">
+                                            <input value="@DateTime.Now" id="ngayTao" class="form-control" type="text" disabled="disabled"/>
+                                            <input hidden asp-for="Bill.CreatedTime" type="text"/>
+
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label class="col-form-label col-3">Tên khách: </label>
+                                        <div class="col-9">
+                                            <input id="FullName" class="form-control" type="text" disabled="disabled"/>
+                                            <input hidden asp-for="Bill.Name"/>
+                                            <input hidden asp-for="Bill.IdAccount"/>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label class="col-form-label col-3">SĐT khách: </label>
+                                        <div class="col-9">
+                                            <input id="PhoneNumber" class="form-control" type="text" disabled="disabled"/>
+                                            <input asp-for="Bill.Phone" hidden/>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label class="col-form-label col-3">Tổng tiền hàng: </label>
+                                        <div class="col-9">
+                                            <input value="0" id="SumPhone" class="form-control" type="text" disabled="disabled"/>
+                                            <input hidden asp-for="Bill.TotalMoney"/>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <label class="col-form-label col-3">Voucher: </label>
+                                        <div class="col-9">
+                                            <input class="form-control" type="text"/>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <label class="col-form-label col-3">HT thanh toán: </label>
+                                        <div class="col-9">
+                                            <select asp-for="Bill.deliveryPaymentMethod" onchange="JAdCheckOut.selectPaymentMethod()" id="paymentMethod" class="form-control">
+                                                <option value="" selected>--lựa chọn--</option>
+                                                <option value="@FphoneConst.TienMat">Tiền mặt</option>
+                                                <option value="@FphoneConst.ChuyenKhoan">Chuyển khoản</option>
+                                                <option value="@FphoneConst.TienMat_ChuyenKhoan">Cả 2</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row tienMat">
+                                        <label class="col-form-label col-3">Tiền mặt: </label>
+                                        <div class="col-9">
+                                            <input id="TienMat" class="form-control" placeholder="nhập số tiền"/>
+                                        </div>
+                                    </div>
+                                    <div class="row banking mt-1">
+                                        <label class="col-form-label col-3">Chuyển khoản: </label>
+                                        <div class="col-9">
+                                            <input id="ChuyenKhoan" class="form-control" placeholder="nhập số tiền"/>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <label class="col-form-label col-3">Tiền thừa: </label>
+                                        <div class="col-9">
+                                            <input id="TienThua" class="form-control" value="0 đ" disabled="disabled"/>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <label class="col-form-label col-8"></label>
+                                        <div class="col-4">
+                                            <input onclick="JAdCheckOut.submitForm(event)" type="submit" class="form-control btn btn-primary text-white" value="Thanh toán"/>
+                                        </div>
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="popup" class="popup-container">
+    <div class="popup-content" style="background-color: whitesmoke">
+        <span class="close" id="closePopup">&times;</span>
+        <h2>Nhập thông tin khách hàng</h2>
+        <div class="row">
+            <label class="col-form-label col-4">Họ và tên:</label>
+            <div class="col-8">
+                <input type="text" id="fullNamePop" class="form-control">
+            </div>
+        </div>
+        <div class="row mt-2">
+            <label for="phoneNumber" class="col-form-label col-4">SĐT:</label>
+            <div class="col-8">
+                <input type="tel" id="phoneNumberPop" class="form-control">
+            </div>
+        </div>
+        <button onclick="JAdCheckOut.submitFormPop()" class="btn btn-primary mt-2">Xác nhận</button>
+    </div>
+</div>
+
+
+<div id="createAccount" class="popup-container">
+    <div class="popup-content" style="background-color: whitesmoke">
+        <span class="close" id="closeCreate">&times;</span>
+        <h2>Tạo tài khoản cho khách</h2>
+        <form id="createAccountUser">
+        <div class="row mt-2">
+            <label  class="col-form-label col-2">Họ và tên:</label>
+            <div class="col-4">
+                <input asp-for="Account.Name" type="text" class="form-control">
+                    <span class="text-danger error_Name"></span>
+            </div>
+            <label  class="col-form-label col-2">SĐT:</label>
+            <div class="col-4">
+                <input asp-for="Account.PhoneNumber" type="text" class="form-control">
+                <span class="text-danger error_SDT"></span>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <label class="col-form-label col-2">Tên ĐN:</label>
+            <div class="col-4">
+                <input asp-for="Account.Username" type="tel"  class="form-control">
+                    <span class="text-danger error_Username"></span>
+            </div>
+            <label  class="col-form-label col-2">Email:</label>
+            <div class="col-4">
+                <input asp-for="Account.Email" type="email" class="form-control">
+                    <span class="text-danger error_Email"></span>
+            </div>
+        </div>
+            <button  onclick="JAdCheckOut.submitFormCreateAccount(event)" class="btn btn-primary mt-2">Xác nhận</button>
+        </form>
+    </div>
+</div>
+
+<div id="confirmAC" class="popup-container">
+    <div class="popup-content" style="background-color: whitesmoke">
+        <span class="close" id="closeConfirm">&times;</span>
+        <h3 class="mt-1">Không tìm thấy thông tin khách hàng. Bạn có muốn tạo tài khoản cho khách ?</h3>
+        <div class="confirmation-buttons mt-2">
+            <button  id="confirm">Tạo tài khoản</button>
+            <button class="ml-2" id="cancel">Nhập thông tin</button>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/JAdCheckOut.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.banking').hide();
+        $('.tienMat').hide();
+        $('#hideMenu').click();
+
+        JAdCheckOut.searchUser();
+        JAdCheckOut.initList();
+
+        $("#closePopup").click(function () {
+            $("#popup").hide();
+        });
+
+        $("#closeConfirm").click(function () {
+            $("#confirmAC").hide();
+        });
+
+        $("#cancel").click(function () {
+            //Xóa thông tin pop cũ
+            $('#fullNamePop').val('');
+            $('#phoneNumberPop').val('');
+            //đóng pop lựa chọn
+            $("#closeConfirm").click();
+            //show pop nhập thông tin khách hàng
+            $("#popup").show();
+        });
+
+        $("#confirm").click(function () {
+            //xóa thông tin form cũ
+            $('#Account_Name').val("");
+            $('#Account_Username').val("");
+            $('#Account_PhoneNumber').val("");
+            $('#Account_Email').val("");
+            //đóng pop lựa chọn
+            $("#closeConfirm").click();
+            //show pop tạo tài khoản
+            $("#createAccount").show();
+        });
+
+        $("#closeCreate").click(function () {
+            $("#createAccount").hide();
+        });
+    });
+    </script>

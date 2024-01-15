@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace AppData.Models
 {
-    public class ApplicationUser : IdentityUser
+    public class ApplicationUser : IdentityUser 
     {
         public string? CitizenId { get; set; }
         public string? Name { get; set; }
@@ -15,6 +15,8 @@ namespace AppData.Models
         public int Status { get; set; }
         [NotMapped] 
         public IFormFile Images { get; set; }
+        [NotMapped]
+        public string? Role { get; set; }
 
     }
 }

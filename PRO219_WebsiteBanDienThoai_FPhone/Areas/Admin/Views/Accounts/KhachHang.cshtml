@@ -1,12 +1,26 @@
-﻿@model IEnumerable<AppData.Models.Account>
+﻿@using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
+@using X.PagedList;
+@using X.PagedList.Mvc.Common;
+@using X.PagedList.Mvc.Core;
+@model IPagedList<AppData.Models.Account>
+
 @{
     ViewData["Title"] = "Accounts";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <h1>Danh sách Khách Hàng</h1>
 
+<div>
+    <form method="get" action="@Url.Action("KhachHang", "Accounts")">
+        <label for="search">Tìm kiếm:</label>
+        <input type="text" name="search" id="search" placeholder="Nhập Số điện thoại " />
+        <button style="background-color:#3f87f5; border-color: #3f87f5;" type="submit">Tìm kiếm</button>
+    </form>
+</div>
 <table class="table table-bordered">
 
     <thead class="thead-light">
@@ -30,6 +44,12 @@
         </tr>
     </thead>
     <tbody>
+          @if (Model == null || !Model.Any())
+        {
+            <h2 style="text-align:center">Không có khách hàng</h2>
+        }
+        else
+        {
         
             @foreach (var item in Model)
             {
@@ -55,17 +75,73 @@
                     <td>
                         @if (item.Status == 0)
                     {
-                        <a class="btn btn-sm btn-light text-success border a33" href="@Url.Action("Editkhachhang", "Accounts", new { id = item.Id })"> <i class="fas fa-toggle-on"></i> </a>
+                            <a class="btn btn-sm btn-light text-success border a33 btn-confirm" href="@Url.Action("Editkhachhang", "Accounts", new { id = item.Id })"> <i class="fas fa-toggle-on"></i> </a>
                     }
                     else if (item.Status == 1)
                     {
-                        <a class="btn btn-sm btn-light text-danger border a33" href="@Url.Action("Editkhachhang1", "Accounts", new { id = item.Id })"> <i class="fas fa-toggle-on"></i> </a>
+                            <a class="btn btn-sm btn-light text-danger border a33 btn-confirm" href="@Url.Action("Editkhachhang1", "Accounts", new { id = item.Id })"> <i class="fas fa-toggle-on"></i> </a>
                     }
                     
                     </td>
        
                 </tr>
             }
-        
+        }
     </tbody>
 </table>
+<div class="custom-pager">
+    @Html.PagedListPager(Model, pageNumber => Url.Action("KhachHang", new { pageNumber, pageSize = Model.PageSize }), new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded, LiElementClasses = new[] { "page-item" }, PageClasses = new[] { "page-link" } })
+</div>
+<style>
+    .custom-pager {
+        display: flex;
+        justify-content: flex-end;
+        margin-right: 100px; /* Điều chỉnh khoảng cách bên phải */
+    }
+
+        .custom-pager .page-item {
+            margin: 0 5px; /* Điều chỉnh khoảng cách giữa các mũi tên */
+        }
+
+        .custom-pager .page-link {
+            font-size: 13px; /* Điều chỉnh kích thước của mũi tên */
+        }
+</style>
+<script>
+    $(document).ready(function () {
+        $('.btn-confirm').click(function (e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+
+            // Hiển thị hộp thoại xác nhận
+            if (confirm('Bạn có chắc muốn cập nhật trạng thái của khách hàng không  ?')) {
+                // Nếu người dùng chọn "OK", gửi yêu cầu Ajax
+                $.ajax({
+                    type: 'POST', // hoặc 'GET' tùy thuộc vào cách bạn xử lý ở server
+                    url: url.replace('localhost', 'Xác nhận'),
+                    success: function (data) {
+                        // Xử lý reload trang và hiển thị thông báo thành công
+                        if (data.success) {
+                             Swal.fire({
+      icon: 'success',
+      title: 'Thành công!',
+      text: 'Thay đổi đã được lưu thành công.',
+      showConfirmButton: false,
+                                timer: 2000, // Thời gian hiển thị thông báo (ms)
+      onClose: function () {
+          // Sau khi thông báo biến mất, reload lại trang
+          location.reload();
+      }
+  });
+                        } else {
+                            alert('Cập nhật trạng thái khách hàng thất bại');
+                        }
+                    },
+                    error: function () {
+                        alert('Đã xảy ra lỗi');
+                    }
+                });
+            }
+        });
+    });
+</script>

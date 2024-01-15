@@ -168,7 +168,7 @@
                     @RenderBody()
 
                 </div>
-                @RenderSection("Scripts", required: false)
+                @await RenderSectionAsync("Scripts", false)
                 <!-- Content Wrapper END -->
 
             </div>

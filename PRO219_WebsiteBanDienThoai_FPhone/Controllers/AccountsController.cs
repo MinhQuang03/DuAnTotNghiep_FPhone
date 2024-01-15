@@ -130,36 +130,42 @@ public class AccountsController : Controller
     [HttpPost]
     public async Task<IActionResult> Login(LoginModel model)
     {
+        DataError error = new DataError();
         var handler = new JwtSecurityTokenHandler();
         var result = await (await _client.PostAsJsonAsync("/api/Accounts/Login", model)).Content.ReadAsStringAsync();
         var respo = JsonConvert.DeserializeObject<LoginResponseVM>(result);
         if (respo != null && respo.Roles != null && respo.Token != null)
         {
-            var options = new CookieOptions
-            {
-                HttpOnly = true,
-                Expires = DateTime.UtcNow.AddDays(7) // Thời gian hết hạn của cookie
-            };
             var token = respo.Token;
-
             var claimsPrincipal = handler.ReadJwtToken(token);
-            var claims = claimsPrincipal.Claims;
+            var claims = claimsPrincipal.Claims.ToList();
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            identity.AddClaim(new Claim(ClaimTypes.Name, respo.Name));
             var principal = new ClaimsPrincipal(identity);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
+            
             // chuyển hướng đế trang admin
-            if (respo.Roles.Contains("Admin") || respo.Roles.Contains("Staff")) return RedirectPermanent("/admin/accounts/index");
-
-            //chuyển hướng đến trang chủ của web
-            if (respo.Roles.Contains("User"))
+            if (respo.Roles.Contains("Admin") || respo.Roles.Contains("Staff"))
             {
+                return RedirectPermanent("/admin/accounts/index");
+            }
+            else if (respo.Roles.Contains("User"))
+            {
+
                 return RedirectToAction("AddCart");
             }
+            else
+            {
+                error.Success = false;
+                error.Msg = "Tài khoản của bạn đã bị khóa, vui lòng liên hệ quản trị viên!";
+                TempData["DataError"] = Utility.ConvertObjectToJson(error);
+                return View(model);
+            }
+
         }
         else
         {
-            DataError error = new DataError();
             error.Success = false;
             error.Msg = "Sai tài khoản hoặc mật khẩu";
             TempData["DataError"] = Utility.ConvertObjectToJson(error);
@@ -398,7 +404,7 @@ public class AccountsController : Controller
         var cart = _context.CartDetails.FirstOrDefault(a => a.Id == id);
         _context.CartDetails.Remove(cart);
         _context.SaveChanges();
-        return RedirectToAction("ShowCart");
+        return Json(new { success = true, data = "/Accounts/ShowCart" });
     }
     public async Task<IActionResult> AddToCard(Guid id)
     {
@@ -482,7 +488,7 @@ public class AccountsController : Controller
             var jsonString = JsonConvert.SerializeObject(cart);
             HttpContext.Session.SetString("Cart", jsonString);
         }
-        return RedirectToAction("Cart");
+        return Json(new { success = true, data = "/Accounts/Cart" });
     }
 
     [HttpPost]

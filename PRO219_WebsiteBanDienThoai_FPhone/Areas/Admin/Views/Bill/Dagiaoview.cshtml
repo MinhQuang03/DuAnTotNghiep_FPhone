@@ -1,9 +1,16 @@
-﻿@model IEnumerable<AppData.Models.Bill>
+﻿@using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
+@using X.PagedList;
+@using X.PagedList.Mvc.Common;
+@using X.PagedList.Mvc.Core;
+@model IPagedList<AppData.Models.Bill>
 
 @{
     ViewData["Title"] = "Dagiaoview";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <h1>Đã Giao</h1>
     <div>
     <form method="get" action="@Url.Action("Dagiaoview", "Bill")">
@@ -34,9 +41,9 @@
         </tr>
     </thead>
     <tbody>
-        @if (Model == null)
+        @if (Model == null || !Model.Any())
         {
-            <h2 style="text-align:center"> Hiện đang Không có hóa đơn  </h2>
+            <h2 style="text-align:center">Hiện đang Không có hóa đơn</h2>
         }
         else
         {
@@ -78,12 +85,28 @@
                         }
                     </td>
 
-                    <td>
-                      @*   <a class="btn btn-sm btn-light text-success border" href="@Url.Action("Dagiao", "Bill", new { id = item.Id })"> Giao Hàng </a> *@
-                    </td>
+                  
                 </tr>
             }
         }
 
     </tbody>
 </table>
+<div class="custom-pager">
+    @Html.PagedListPager(Model, pageNumber => Url.Action("Dagiaoview", new { pageNumber, pageSize = Model.PageSize }), new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded, LiElementClasses = new[] { "page-item" }, PageClasses = new[] { "page-link" } })
+</div>
+<style>
+    .custom-pager {
+        display: flex;
+        justify-content: flex-end;
+        margin-right: 100px; /* Điều chỉnh khoảng cách bên phải */
+    }
+
+        .custom-pager .page-item {
+            margin: 0 5px; /* Điều chỉnh khoảng cách giữa các mũi tên */
+        }
+
+        .custom-pager .page-link {
+            font-size: 13px; /* Điều chỉnh kích thước của mũi tên */
+        }
+</style>

@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using PRO219_WebsiteBanDienThoai_FPhone.Models;
 using PRO219_WebsiteBanDienThoai_FPhone.Services;
 using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
+using System.Drawing;
 
 namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
 {
@@ -42,7 +43,8 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
                 Image = _phoneRepo.GetById(Guid.Parse(id)).Result.Image,
                 listImageByIdPhone = _imageService.GetListImageByIdPhone(Guid.Parse(id)),
                 IdPhone = id,
-                Phone = await _phoneRepo.GetById(Guid.Parse(id))
+                Phone = await _phoneRepo.GetById(Guid.Parse(id)),
+                IdAccount = User.Claims.FirstOrDefault(claim => claim.Type == "Id")?.Value
             };
 
             var phoneDetail = _phoneDetailService.listPhoneDetailByIDPhone(Guid.Parse(id));
@@ -57,6 +59,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
                     }
                 }
             }
+            ViewData["GetListComment"] = _phoneDetailService.GetListComment(id);
             return View(data);
         }
         [HttpGet("/PhoneDetail/getListPhoneDetailByIdPhone/{id}/{idRam}")]
@@ -94,25 +97,13 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
                 Success = true
             });
         }
-
         [HttpPost]
-        public void AddReview(Guid idAccount, Guid idPhoneDetaild, string content)
+        public ActionResult CreateComment(string comment, string idAccount,string idPhone)
         {
-            // Create a new Review instance
-            var newReview = new Review
-            {
-                Id = Guid.NewGuid(), // Generate a new GUID for the review
-                DateTime = DateTime.Now,
-                Content = content,
-                IdPhoneDetaild = idPhoneDetaild,
-                IdAccount = idAccount
-            };
-
-            // Add the new review to the database context
-            _context.Reviews.Add(newReview);
-
-            // Save changes to the database
-            _context.SaveChanges();
+            var isCreate = _phoneDetailService.CreateComment(comment, idAccount, idPhone);
+            return Json(isCreate);
         }
+
+     
     }
 }

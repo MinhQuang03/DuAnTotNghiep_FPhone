@@ -9,17 +9,20 @@ using AppData.Models;
 using AppData.Utilities;
 using AppData.ViewModels;
 using AppData.ViewModels.Options;
+using Microsoft.AspNetCore.Identity;
 
 namespace AppData.Services
 {
     public class AccountService :IAccountService
     {
         private FPhoneDbContext _dbContext;
-
-        public AccountService(FPhoneDbContext dbContext)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public AccountService(FPhoneDbContext dbContext, UserManager<ApplicationUser> userManager)
         {
             _dbContext = dbContext;
+            _userManager = userManager;
         }
+
         public  List<ApplicationUser> GetAllAsync(ApplicationUser Search, ListOptions options)
         {
             var lst = new List<ApplicationUser>();
@@ -50,10 +53,26 @@ namespace AppData.Services
             try
             {
                 user = _dbContext.AspNetUsers.Find(id);
+                user.Role = _userManager.GetRolesAsync(user).Result.FirstOrDefault();
             }
             catch (Exception e)
             {
                
+            }
+
+            return user;
+        }
+
+        public ApplicationUser GetByUserName(string userName)
+        {
+            var user = new ApplicationUser();
+            try
+            {
+                user = _dbContext.AspNetUsers.FirstOrDefault( c=>c.UserName == userName);
+            }
+            catch (Exception e)
+            {
+
             }
 
             return user;
@@ -120,6 +139,22 @@ namespace AppData.Services
             return account;
         }
 
+        public Account GetUserByUserName(string userName)
+        {
+            var account = new Account();
+            try
+            {
+                account = _dbContext.Accounts.FirstOrDefault(c => c.Username == userName);
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            return account;
+        }
+
+
         public Account GetUserById(Guid idGuid)
         {
             var account = new Account();
@@ -130,6 +165,38 @@ namespace AppData.Services
             catch (Exception e)
             {
 
+            }
+
+            return account;
+        }
+
+        public Account GetUserByPhoneNumber(string phoneNumber)
+        {
+            var account = new Account();
+            try
+            {
+                account = _dbContext.Accounts.FirstOrDefault(c => c.PhoneNumber == phoneNumber);
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            return account;
+        }
+
+        public Account CreateAccountForUser(Account model)
+        {
+            var account = new Account();
+            try
+            {
+                BeanUtils.CopyAllPropertySameName(model,account);
+                 _dbContext.Accounts.Add(account);
+                 _dbContext.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                account = null;
             }
 
             return account;

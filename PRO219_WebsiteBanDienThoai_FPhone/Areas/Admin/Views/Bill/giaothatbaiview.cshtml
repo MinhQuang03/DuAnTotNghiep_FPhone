@@ -1,0 +1,104 @@
+﻿@using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
+@using X.PagedList;
+@using X.PagedList.Mvc.Common;
+@using X.PagedList.Mvc.Core;
+@model IPagedList<AppData.Models.Bill>
+@{
+    ViewData["Title"] = "giaothatbaiview";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Giao thất bại </h1>
+<div>
+    <form method="get" action="@Url.Action("giaothatbaiview", "Bill")">
+        <label for="search">Tìm kiếm:</label>
+        <input type="text" name="search" id="search" placeholder="Nhập Mã Hóa Đơn" />
+        <button style="background-color:#3f87f5; border-color: #3f87f5;" type="submit">Tìm kiếm</button>
+    </form>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Tên Khách Hàng
+            </th>
+            <th>Mã Hóa Đơn</th>
+            <th>
+                Ngày Tạo
+            </th>
+            <th>
+                Tình Trạng
+            </th>
+            <th>Chi tiết</th>
+            <th>
+                Trạng Thái Thanh Toán
+            </th>
+
+            <th>Hành Động  </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model == null || !Model.Any())
+        {
+            <h2 style="text-align:center">Hiện đang Không có hóa đơn</h2>
+        }
+        else
+        {
+            @foreach (var item in Model)
+            {
+                String dh1 = "Giao thất bại ";
+
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BillCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedTime)
+                    </td>
+                    <td>
+                        @if (item.Status == 6)
+                        {
+                            <p class="text-danger"> @dh1</p>
+                        }
+
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Detail", "Bill", new { id = item.Id })">Xem Chi tiết</a>
+                    </td>
+                    <td>
+                        @item.deliveryPaymentMethod  @if (item.StatusPayment == 1)
+                        {
+                            <span class="text-success">Đã thanh toán </span>
+                        }
+                        else
+                        {
+                            <span class="text-danger">Chưa thanh toán </span>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+
+    </tbody>
+</table>
+<div class="custom-pager">
+    @Html.PagedListPager(Model, pageNumber => Url.Action("giaothatbaiview", new { pageNumber, pageSize = Model.PageSize }), new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded, LiElementClasses = new[] { "page-item" }, PageClasses = new[] { "page-link" } })
+</div>
+<style>
+    .custom-pager {
+        display: flex;
+        justify-content: flex-end;
+        margin-right: 100px; /* Điều chỉnh khoảng cách bên phải */
+    }
+
+        .custom-pager .page-item {
+            margin: 0 5px; /* Điều chỉnh khoảng cách giữa các mũi tên */
+        }
+
+        .custom-pager .page-link {
+            font-size: 13px; /* Điều chỉnh kích thước của mũi tên */
+        }
+</style>

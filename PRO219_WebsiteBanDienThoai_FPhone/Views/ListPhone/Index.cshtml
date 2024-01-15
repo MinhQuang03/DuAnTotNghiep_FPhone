@@ -1,4 +1,6 @@
-﻿@model PRO219_WebsiteBanDienThoai_FPhone.ViewModel.ListPhoneViewModel
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model PRO219_WebsiteBanDienThoai_FPhone.ViewModel.ListPhoneViewModel
 @{
     ViewData["Title"] = "Phone List";
 }
@@ -34,7 +36,7 @@
         </div>
     </div>
     <div class="row">
-        <form method="post" class="col-12 px-xl-5 mx-5 row">
+        <form method="post" asp-controller="ListPhone" asp-action="Index" class="col-12 px-xl-5 mx-5 row">
             <div class="col">
                 @Html.DropDownListFor(model => model.SearchData.ProductionCompanyName, new SelectList(Model.Brand, "Name", "Name"), "Loại điện thoại", new { @class = "form-control", id = "Province" })
             </div>
@@ -111,33 +113,38 @@
                             <use xlink:href="./images/sprite.svg#icon-star-empty"></use>
                         </svg>
                     </div>
-                    <div class="product__price mt-2">
-                        <h4 style="color:#da152b">@item.Price</h4>
-                    </div>
-                    <a href="#">
-                        @Html.ActionLink("Thêm vào giỏ hàng", "AddToCard", "Accounts", new { id = item.IdPhoneDetail }, new { @class = "product__btn", type = "submit" })
-
-                    </a>
+                    @if (item.CountImei > 0)
+                    {
+                        <div class="product__price mt-2">
+                            <h4 style="color:#da152b">@item.Price?.ToString("C", new CultureInfo("vi-VN"))</h4>
+                            <span> </span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="product__price mt-2">
+                            <h4 class=" text-decoration-line-through" style="color:#da152b">@item.Price?.ToString("C", new CultureInfo("vi-VN"))</h4><span class="text-danger"> Hết hàng</span>
+                        </div>
+                    }
+                   
+                    @if (item.CountImei > 0)
+                    {
+                        <a href="#">
+                            @Html.ActionLink("Thêm vào giỏ hàng", "AddToCard", "Accounts", new { id = item.IdPhoneDetail }, new { @class = "product__btn", type = "submit" })
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="product__btn addCart">
+                            Thêm vào giỏ hàng
+                        </a>
+                    }
                 </div>
                 <ul>
                     <li>
-                        <a data-tip="Quick View" data-place="left" href="#">
+                        <a asp-action="PhoneDetail" asp-route-id="@item.IdPhone" asp-controller="PhoneDetail" data-tip="Quick View" data-place="left" >
                             <svg>
                                 <use xlink:href="./images/sprite.svg#icon-eye"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    <li>
-                        <a data-tip="Add To Wishlist" data-place="left" href="#">
-                            <svg>
-                                <use xlink:href="./images/sprite.svg#icon-heart-o"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    <li>
-                        <a data-tip="Add To Compare" data-place="left" href="#">
-                            <svg>
-                                <use xlink:href="./images/sprite.svg#icon-loop2"></use>
                             </svg>
                         </a>
                     </li>
@@ -150,4 +157,11 @@
 <div class="pagination">
     <a asp-action="MorePhone" class="btn btn-danger text-white rounded-3">Xem thêm 10 sản phẩm</a>
 </div>
-
+<script src="~/js/JListPhone.js"></script>
+<script>
+    $(document).ready(function(){
+        $(".addCart").click(function () {
+           alert("Sản phẩm đã hết hàng, hãy để lại thông tin liên hệ chúng tôi sẽ liên lạc lại sau");
+        });
+    });
+</script>

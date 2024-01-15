@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Filters;
 using System.Text;
 using AppData.IServices;
+using AppData.Utilities;
 using AppData.ViewModels;
 using PRO219_WebsiteBanDienThoai_FPhone.ViewModel;
 
@@ -209,14 +210,15 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             model = obj.DetailOfPhoneDetaild;
             model.IdPhone = obj.PhoneDetail.Id;
             model.Id = Guid.NewGuid();
+            model.Code = Utility.RandomString(6);
             try
             {
-              var result = await _service.Add(model);
+              var result =  _service.Add(model);
                 
                 if (result!=null)
                 {
                     er.Msg = "Thêm thành công";
-                    return RedirectToAction("ListPhoneDetail", "Phone",$"{result.IdPhone}");
+                    return Redirect($"/Admin/Phone/ListPhoneDetail/{result.IdPhone}");
                 }
             }
             catch (Exception ex)

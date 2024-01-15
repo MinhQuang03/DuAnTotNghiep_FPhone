@@ -1,6 +1,8 @@
-﻿@using AppData.Models;
-@using AppData.FPhoneDbContexts;
-@model List<WarrantyCard>
+﻿@using AppData.FPhoneDbContexts;
+@using X.PagedList.Mvc.Common;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@model IPagedList<AppData.Models.WarrantyCard>
 
 @{
     ViewData["Title"] = "YeuCauBaoHanh";
@@ -20,7 +22,7 @@
     <thead>
         <tr>
             <th>
-                Tên tài khoản  
+                Tên tài khoản
             </th>
             <th>
                 Tên sản phẩm
@@ -34,16 +36,15 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @if (Model == null || !Model.Any())
         {
-            if (TempData["SuccessMessage"] != null)
+            <h2 style="text-align:center"> Hiện đang Không có máy đang bảo hành </h2>
+        }
+        else
+        {
+            @foreach (var item in Model)
             {
-                <div class="alert alert-danger">
-                    @TempData["SuccessMessage"]
-                </div>
-            }
-            else
-            {
+
                 String dh0 = "Yêu cầu bảo hành";
                 String dh1 = "Đang thực hiện bảo hành";
                 String dh2 = "Bảo hành hành công";
@@ -82,12 +83,30 @@
                     </td>
 
                 </tr>
-            }
 
-            
+
+            }
         }
+
     </tbody>
 </table>
 
+<div class="custom-pager">
+    @Html.PagedListPager(Model, pageNumber => Url.Action("BaoHanh", new { pageNumber, pageSize = Model.PageSize }), new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded, LiElementClasses = new[] { "page-item" }, PageClasses = new[] { "page-link" } })
+</div>
+<style>
+    .custom-pager {
+        display: flex;
+        justify-content: flex-end;
+        margin-right: 100px; /* Điều chỉnh khoảng cách bên phải */
+    }
 
+        .custom-pager .page-item {
+            margin: 0 5px; /* Điều chỉnh khoảng cách giữa các mũi tên */
+        }
+
+        .custom-pager .page-link {
+            font-size: 13px; /* Điều chỉnh kích thước của mũi tên */
+        }
+</style>
 

@@ -17,6 +17,15 @@ namespace AppData.IServices
         /// <returns></returns>
         VW_PhoneDetail getPhoneDetailByIdPhoneDetail(Guid id);
         int CheckPhoneDetail(Guid id);
-        Task<PhoneDetaild> Add(PhoneDetaild obj);
+        /// <summary>
+        /// đếm số lượng imei ( số lượng sản phẩm chưa bán )
+        /// </summary>
+        /// <param name="idPhoneDetail"></param>
+        /// <returns></returns>
+        public int CountPhoneDetailFromImei(Guid idPhoneDetail);
+        public List<string> GetListImagebyIdPhoneDetail(Guid id);
+        public List<Review> GetListComment(string id);
+        public int CreateComment(string comment, string idAccount, string idPhone);
+     PhoneDetaild Add(PhoneDetaild obj);
     }
 }

@@ -26,8 +26,7 @@ public class VwPhoneDetailService : IVwPhoneDetailService
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            throw;
+          
         }
 
         return lst;
@@ -124,10 +123,37 @@ public class VwPhoneDetailService : IVwPhoneDetailService
         return _dbContext.VW_PhoneDetail.Where(c => c.IdPhoneDetail == id).Count();
     }
 
-    public async Task<PhoneDetaild> Add(PhoneDetaild obj)
+    public int CountPhoneDetailFromImei(Guid idPhoneDetail)
     {
-        await _dbContext.PhoneDetailds.AddAsync(obj);
-        await _dbContext.SaveChangesAsync();
+        return _dbContext.Imei.Count(c => c.IdPhoneDetaild == idPhoneDetail && c.Status == FphoneConst.ChuaBan);
+    }
+
+    public List<string> GetListImagebyIdPhoneDetail(Guid id)
+    {
+        return _dbContext.ListImage.Where(c => c.IdPhoneDetaild == id).Select(c => c.Image).ToList();
+    }
+    public PhoneDetaild Add(PhoneDetaild obj)
+    {
+         _dbContext.PhoneDetailds.AddAsync(obj);
+         _dbContext.SaveChanges();
         return obj;
+    }
+
+    public List<Review> GetListComment(string id)
+    {
+        return _dbContext.Reviews.Where(t => t.IdPhone.ToString() == id).ToList();
+    }
+
+    public int CreateComment(string comment, string idAccount, string idPhone)
+    {
+        Review review = new Review()
+        {
+            DateTime = DateTime.Now,
+            Content = comment,
+            IdAccount = Guid.Parse(idAccount),
+            IdPhone = Guid.Parse(idPhone)
+        };
+        _dbContext.Reviews.Add(review);
+        return _dbContext.SaveChanges();
     }
 }

@@ -17,7 +17,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.ViewModel
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         [Display(Name = "Tên sản phẩm")]
-        [Required(ErrorMessage = "Vui lòng nhập thông tin")]
+       
         public string PhoneName { get; set; }
         [Display(Name = "Mô tả")]
         public string? Description { get; set; }

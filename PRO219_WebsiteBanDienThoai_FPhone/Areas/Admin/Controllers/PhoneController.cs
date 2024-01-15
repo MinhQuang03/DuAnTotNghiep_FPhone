@@ -82,6 +82,15 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(AdPhoneInsertViewModel obj, IFormFile file)
         {
+            obj.ListWarranty = _service.ListWarrty();
+            obj.ListCompany = _service.ListCompany();
+
+            if (_phoneRepository.CheckExitPhone(obj.PhoneName)>0)
+            {
+                ModelState.AddModelError("PhoneName", "Tên sản phẩm này đã tồn tại");
+                return View(obj);
+            }
+
             if (file != null && file.Length > 0) // khong null va khong trong 
             {
                 var fileName = Path.GetFileName(file.FileName);
@@ -163,21 +172,28 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateImei(ImeiPhoneViewModel obj)
         {
-
-            Imei newImei = new Imei
+            var a = _dbContext.Imei.FirstOrDefault(p => p.NameImei == obj.AddImeiOfPhone.NameImei);
+            if(a != null)
             {
-                Id = Guid.NewGuid(),
-                NameImei = obj.AddImeiOfPhone.NameImei,
-                IdPhoneDetaild = obj.PhoneDetaild.Id,
-                Status = 1
-            };
+                TempData["SuccessMessage"] = "Không được thêm trùng imei !";
+                return RedirectToAction("ListImeiPhoneDetail", new { IdPhoneDetail = a.IdPhoneDetaild });
+            }
+            else
+            {
+                Imei newImei = new Imei
+                {
+                    Id = Guid.NewGuid(),
+                    NameImei = obj.AddImeiOfPhone.NameImei,
+                    IdPhoneDetaild = obj.PhoneDetaild.Id,
+                    Status = 1
+                };
 
 
-            _dbContext.Imei.Add(newImei);
-            await _dbContext.SaveChangesAsync();
-
-
-            return RedirectToAction("ListImeiPhoneDetail", new { IdPhoneDetail = newImei.IdPhoneDetaild });
+                _dbContext.Imei.Add(newImei);
+                await _dbContext.SaveChangesAsync();
+                return RedirectToAction("ListImeiPhoneDetail", new { IdPhoneDetail = newImei.IdPhoneDetaild });
+            }
+            
         }
 
 
@@ -200,6 +216,9 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         {
             obj.ListCompany = _service.ListCompany();
             obj.ListWarranty = _service.ListWarrty();
+
+
+
             if (file != null && file.Length > 0) // khong null va khong trong 
             {
                 var fileName = Path.GetFileName(file.FileName);
