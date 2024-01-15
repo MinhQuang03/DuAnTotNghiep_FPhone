@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppData.Migrations
 {
-    public partial class initdatabase : Migration
+    public partial class inti : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -277,6 +277,21 @@ namespace AppData.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Reviews",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IdPhone = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IdAccount = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reviews", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Rom",
                 columns: table => new
                 {
@@ -412,6 +427,7 @@ namespace AppData.Migrations
                     IdPhone = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RamID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ColorID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhoneName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ReducedAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     MaterialName = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -503,7 +519,7 @@ namespace AppData.Migrations
                     PaymentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
                     BillCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     deliveryPaymentMethod = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -882,35 +898,6 @@ namespace AppData.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Reviews",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IdPhoneDetaild = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IdAccount = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PhoneDetaildsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AccountsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Reviews", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Reviews_Accounts_AccountsId",
-                        column: x => x.AccountsId,
-                        principalTable: "Accounts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Reviews_PhoneDetailds_PhoneDetaildsId",
-                        column: x => x.PhoneDetaildsId,
-                        principalTable: "PhoneDetailds",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "SalePhoneDetailds",
                 columns: table => new
                 {
@@ -1089,16 +1076,6 @@ namespace AppData.Migrations
                 name: "IX_Phones_IdWarranty",
                 table: "Phones",
                 column: "IdWarranty");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Reviews_AccountsId",
-                table: "Reviews",
-                column: "AccountsId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Reviews_PhoneDetaildsId",
-                table: "Reviews",
-                column: "PhoneDetaildsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SalePhoneDetailds_IdPhoneDetaild",

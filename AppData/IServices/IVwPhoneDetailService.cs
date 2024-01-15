@@ -19,6 +19,8 @@ namespace AppData.IServices
         int CheckPhoneDetail(Guid id);
         public int CountPhoneDetailFromImei(Guid idPhoneDetail);
         public List<string> GetListImagebyIdPhoneDetail(Guid id);
+        public List<Review> GetListComment(string id);
+        public int CreateComment(string comment, string idAccount, string idPhone);
      PhoneDetaild Add(PhoneDetaild obj);
     }
 }
