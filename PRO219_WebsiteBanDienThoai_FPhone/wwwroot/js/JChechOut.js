@@ -2,6 +2,9 @@
     const ins = {};
     const fromDistrict = "1542"; // Quận huyện người gửi
     const shopId = "4189088";
+    const tienMat = 0;
+   /* const phanTram = 1;*/
+    const freeShip = 2;
     ins.init = function () {
         //$('input[type="radio"]').change(function () {
 
@@ -16,21 +19,73 @@
 
     ins.maVoucher = function () {
         $('#maVoucher').keypress(function (event) {
-
             if (event.which === 13) {
-                $.ajax({
-                    method: 'GET',
-                    url: '/CheckOut/GetVoucherByCode/' + $('#maVoucher').val(),
-                    success: (data) => {
-                        console.log(data);
-                    }
-                });
+                $('#voucher').text("0");
+                    $.ajax({
+                        method: 'GET',
+                        url: '/CheckOut/GetVoucherByCode/' + $('#maVoucher').val(),
+                        success: (data) => {
+                            console.log(data);
+                            $('#mucVoucher').val(data.mucUuDai);
+                            if (data.typeVoucher == freeShip && $('#paymentInStore').is(':checked')) {
+                                alert("Không thể áp dụng Voucher này");
+                                return false;
+                            }
+
+                            if ($('#paymentInStore').is(':checked') == false && $('#AvailableService').val() =='') {
+                                alert("Vui lòng nhập đầy đủ thông tin trước khi dùng voucher");
+                                return false;
+                            }
+
+                            if (data != '') {
+                                switch (data.typeVoucher) {
+                                case tienMat:
+                                    var insurance = $("#TotalPhone").val(); // tổng tiền sản phẩm
+                                    $('#voucher').text(parseFloat(data.mucUuDai)
+                                        .toLocaleString('vi', { style: 'currency', currency: 'VND' })); //Giảm giá
+                                     /*   $("#TotalMoney").val(parseFloat(insurance) - parseFloat(data.mucUuDai));*/
+
+                                    if ($('#paymentInStore').is(':checked')) {
+
+                                        $("#TotalPayment")
+                                            .text((parseFloat(insurance) - parseFloat(data.mucUuDai))
+                                                .toLocaleString('vi',
+                                                    { style: 'currency', currency: 'VND' })); //Tổng tiền thanh toán
+                                        $("#TotalMoney").val(parseFloat(insurance) - parseFloat(data.mucUuDai));
+                                    } else {
+                                        $("#TotalMoney").val(parseFloat(insurance) +
+                                            parseFloat($("#ToTalShipHide").val()) -
+                                            parseFloat(data.mucUuDai));;
+                                        $("#TotalPayment").text((parseFloat(insurance) +
+                                            parseFloat($("#ToTalShipHide").val()) -
+                                            parseFloat(data.mucUuDai)).toLocaleString('vi',
+                                            { style: 'currency', currency: 'VND' }));
+
+
+                                    }
+                                    break;
+                                case freeShip:
+                                    var insurance = $("#TotalPhone").val(); // tổng tiền sản phẩm
+                                    $("#TotalMoney").val(parseFloat(insurance));
+                                    $("#TotalPayment").text(parseFloat(insurance)
+                                        .toLocaleString('vi', { style: 'currency', currency: 'VND' }));
+                                    $("#TotalShip").val("0");
+                                    $("#TotalShip").text("0");
+                                    $('#voucher').text("freeship");
+                                    break;
+                                }
+                            }
+                        }
+                    });
+                
+                
                 event.preventDefault();
             }
         });
     };
 
-    ins.ChangePay = function() {
+    ins.ChangePay = function () {
+        $('#voucher').text(0);
         if ($('#paymentInStore').is(':checked')) {
             $('.displayAddress').hide();
             var insurance = $("#TotalPhone").val(); // tổng tiền sản phẩm
@@ -126,7 +181,7 @@
         } else {
             $("#WardName").empty();
         }
-    }
+    };
     //Lấy gói dịch vụ
     ins.AvailableService = function (toDistrict) {
         var url = "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/available-services";
@@ -153,7 +208,7 @@
                 $("#AvailableService").html(stringHtml);
             }
         });
-    }
+    };
 
     //Tính phí ship
     ins.TotalShip = function() {
@@ -166,7 +221,7 @@
         var length = 20; // chiều dài
         var width = 10; //chiều rộng
         var height = 3; // chiều cao
-
+       var voucher = $('#mucVoucher').val();
         if (parseInt(sumPhone)>1) {
             weight *= parseInt(sumPhone);
             height *= parseInt(sumPhone);
@@ -198,8 +253,10 @@
                 data: data,
                 success: (data) => {
                     $("#TotalShip").text((data.data.total).toLocaleString('vi', { style: 'currency', currency: 'VND' }));
+                    $("#ToTalShipHide").val(data.data.total);
                     $("#TotalPayment").text((parseFloat(data.data.total) + parseFloat(insurance)).toLocaleString('vi', { style: 'currency', currency: 'VND' }));
                     $("#TotalMoney").val((data.data.total) + parseFloat(insurance));
+                   
                 },
                 error: (error) => {
                     $("#TotalShip").empty();
@@ -213,7 +270,7 @@
             });
         }
        
-    }
+    };
 
     //khi chọn gói dịch vụ sẽ tính phí ship
     ins.ChangeService = function () {
@@ -233,7 +290,7 @@
             }
         }
        
-    }
+    };
 
     return ins;
 })(window, jQuery);
