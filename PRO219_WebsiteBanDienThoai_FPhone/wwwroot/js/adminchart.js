@@ -4,10 +4,11 @@
 var colors = ['#007bff', '#28a745', '#333333', '#c3e6cb', '#dc3545', '#6c757d'];
 /* bar chart */
 
-$("#select_year").change(function () {
-    var year = $("#select_year").val();
+$("#select_month").change(function () {
+    var month = $("#select_month").val();
+    var current = new Date();
     $.ajax({
-        url: "https://localhost:7129/api/SellDaillys/getYearId/"+year, success: function (result) {
+        url: "https://localhost:44373/api/SellDaillys/getMonthId/1/2024"+ month, success: function (result) {
             console.log(result);
             var chBar = document.getElementById("chBar");
             if (chBar) {
@@ -65,7 +66,7 @@ $("#select_year").change(function () {
 });
 
 $.ajax({
-    url: "https://localhost:7129/api/SellDaillys/getYearId/2023", success: function (result) {
+    url: "https://localhost:44373/api/SellDaillys/getMonthId/1", success: function (result) {
         console.log(result);
         var chBar = document.getElementById("chBar");
         if (chBar) {

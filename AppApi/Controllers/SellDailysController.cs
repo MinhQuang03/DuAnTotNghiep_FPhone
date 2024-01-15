@@ -1,6 +1,7 @@
 ﻿using AppApi.ViewModels.SelldaillysViewModels;
 using AppData.IRepositories;
 using Microsoft.AspNetCore.Mvc;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 
 namespace AppApi.Controllers
 {
@@ -42,6 +43,32 @@ namespace AppApi.Controllers
             {
                 var dataMonth = datas.Where(e => e.CreateTime.Month == i);
                 var time = $"{i}/{year}";
+                date.Add(time);
+                data_money.Add(dataMonth.Sum(e => e.TotalMoneys));
+                data_quantity.Add(dataMonth.Sum(e => e.TotalQuantity));
+            }
+            results.Date = date;
+            results.DataQuantiy = data_quantity;
+            results.DataMoney = data_money;
+
+            return Ok(results);
+        }
+
+        [HttpGet("getMonthId/{month}")]
+        public async Task<IActionResult> GetByMonth(int month)
+        {
+            var results = new SellDaillysViewModel();
+            var datas = await _sellDailyRepository.GetByMonth(month);
+            DateTime now = DateTime.Now;
+            int day = now.Day;
+            List<string> date = new List<string>();
+            List<decimal?> data_money = new List<decimal?>();
+            List<decimal?> data_quantity = new List<decimal?>();
+      
+            for (int i = day - 14; i <= day ; i++)
+            {
+                var dataMonth = datas.Where(e => e.CreateTime.Day == i);
+                var time = $"{i}/{month}";
                 date.Add(time);
                 data_money.Add(dataMonth.Sum(e => e.TotalMoneys));
                 data_quantity.Add(dataMonth.Sum(e => e.TotalQuantity));

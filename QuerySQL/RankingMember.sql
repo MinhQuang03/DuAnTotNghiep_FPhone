@@ -9,9 +9,7 @@ declare @timefrom Datetime,
 	Set @timeto = Coalesce(@timeto ,DATEADD(day, +1, DATETRUNC( day, GETDATE())))
 	
 	-------------Update IF EXISTS------------------------------
-	Update Ranks
-	Set [Status] = 0
-	Where [Status] = 1
+	Delete Ranks
 	---------------------------INSERT INTO---------------------------------------------
 	INSERT INTO Ranks(Id,STT,Username,IdAccount,Point,TotalPoint,Ranking,DateRank,Policies,Benefits,[Status])
 	
@@ -81,6 +79,7 @@ END
 --------------------END------------------------------------------
 EXEC [dbo].[PROC_RANKING_PERMONTH]
 select * from Ranks
+delete Ranks
 
 
 
