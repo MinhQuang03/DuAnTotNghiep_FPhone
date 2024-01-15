@@ -38,7 +38,7 @@ public class AccountsController : Controller
     public IActionResult Index()
     {
 
-        ViewBag.product = _context.PhoneDetailds.Count();
+        ViewBag.product = _context.WarrantyCards.Where(a => a.Status == 0).Count();
         ViewBag.Neworder = _context.Bill.Where(a => a.Status == 0).Count();
         ViewBag.contact = _context.Bill.Where(a => a.Status == 2).Count();
         ViewBag.user = _context.Accounts.Count();
