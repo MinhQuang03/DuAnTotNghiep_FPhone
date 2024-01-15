@@ -47,5 +47,13 @@ namespace App_View.Areas.Admin.Controllers
             return Json(model);
         }
 
+        public IActionResult TiLeBill()
+        {
+            vOverView model = new vOverView();
+            model = _overview.listOverViewGroup().FirstOrDefault();
+            
+            return View(model);
+        }
+
     }
 }
