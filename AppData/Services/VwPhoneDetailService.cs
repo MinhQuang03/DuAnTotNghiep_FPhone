@@ -138,4 +138,22 @@ public class VwPhoneDetailService : IVwPhoneDetailService
          _dbContext.SaveChanges();
         return obj;
     }
+
+    public List<Review> GetListComment(string id)
+    {
+        return _dbContext.Reviews.Where(t => t.IdPhone.ToString() == id).ToList();
+    }
+
+    public int CreateComment(string comment, string idAccount, string idPhone)
+    {
+        Review review = new Review()
+        {
+            DateTime = DateTime.Now,
+            Content = comment,
+            IdAccount = Guid.Parse(idAccount),
+            IdPhone = Guid.Parse(idPhone)
+        };
+        _dbContext.Reviews.Add(review);
+        return _dbContext.SaveChanges();
+    }
 }

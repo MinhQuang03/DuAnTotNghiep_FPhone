@@ -1,4 +1,42 @@
-﻿var JPhoneDetail = (function(window,$) {
+﻿$(document).ready(function () {
+    $("#notification").modal("hide");
+
+    document.getElementById('submit').addEventListener('click', function () {
+        var comment = $('#message')[0].value;
+
+        if (!idAccount) {
+            notification('Vui lòng đăng nhập để sử dụng tính năng này');
+            return;
+        }
+        $.ajax({
+            url: '/PhoneDetail/CreateComment/',
+            data: {
+                comment: comment,
+                idAccount: idAccount,
+                idPhone: idPhone
+            },
+            method: 'POST',
+            success: function (res) {
+                if (res > 0) {
+                    notification('Thành công');
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 2000);
+
+                }
+                else {
+                    notification('Thất bại');
+
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error: ' + status, error);
+            }
+        });
+    });
+
+});
+var JPhoneDetail = (function (window, $) {
     var ins = {};
     ins.changeColor = function (idPhoneDetail) {
         $('.btnPhoneDetail').removeClass("selected");
@@ -77,4 +115,11 @@
     }
 
     return ins;
-})(window,jQuery);
+})(window, jQuery);
+const notification = function (message) {
+    $("#notification").modal("show");
+    $('#notification-content')[0].innerHTML = message;
+    setTimeout(function () {
+        $("#notification").modal("hide");
+    }, 5000);
+}
