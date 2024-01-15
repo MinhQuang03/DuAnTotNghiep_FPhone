@@ -72,7 +72,7 @@
 
                                         </td>
                                         <td>
-                                            <a href="@Url.Action("DeleteCartAccount", "Accounts", new { id = item.Id })" style="color:red">
+                                            <a class=" btn-confirm " href="@Url.Action("DeleteCartAccount", "Accounts", new { id = item.Id })" style="color:red">
                                                 <i class="fas fa-trash"></i>
                                             </a>
                                         </td>
@@ -102,3 +102,32 @@
         });
     </script>
 </main>
+<script>
+    $(document).ready(function () {
+        $('.btn-confirm').click(function (e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+           
+            // Hiển thị hộp thoại xác nhận
+            if (confirm('Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng không ?')) {
+                // Nếu người dùng chọn "OK", gửi yêu cầu Ajax
+                $.ajax({
+                    type: 'POST', // hoặc 'GET' tùy thuộc vào cách bạn xử lý ở server
+                    url:url.replace('localhost', 'Xác nhận'),
+                    success: function (data) {
+                        // Xử lý reload trang và hiển thị thông báo thành công
+                        if (data.success) {
+                            alert('Xóa sản phẩm khỏi giỏ hàng thành công ');
+                            location.reload();
+                        } else {
+                            alert('Chuyển sản phẩm khỏi giỏ hàng thất bại');
+                        }
+                    },
+                    error: function () {
+                        alert('Đã xảy ra lỗi');
+                    }
+                });
+            }
+        });
+    });
+</script>

@@ -278,38 +278,9 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                 _context.Entry(bill).State = EntityState.Modified;
                 _context.SaveChanges();  
             }
-            return RedirectToAction("xacnhan");
+            return Json(new { success = true, data = "/Admin/Bill/xacnhan" });
         }
-        public ActionResult xoa1(Guid id)
-        {
-            Bill bill = _context.Bill.Find(id);
-            if (bill.Status == 0)
-            {
-                //Loii
-            }
-            else
-            {
-                bill.Status = 5;
-                _context.Entry(bill).State = EntityState.Modified;
-                _context.SaveChanges();
-            }
-            return RedirectToAction("Dahuys");
-        }
-        public ActionResult xoa2(Guid id)
-        {
-            Bill bill = _context.Bill.Find(id);
-            if (bill.Status == 0)
-            {
-                //Loii
-            }
-            else
-            {
-                bill.Status = 5;
-                _context.Entry(bill).State = EntityState.Modified;
-                _context.SaveChanges();
-            }
-            return RedirectToAction("giaothatbaiview");
-        }
+       
         // thay đổi trạng thái thành đã giao
         public ActionResult Dagiao(Guid id)
         {
