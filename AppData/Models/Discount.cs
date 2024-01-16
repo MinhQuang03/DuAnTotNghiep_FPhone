@@ -27,6 +27,6 @@ namespace AppData.Models
         public DateTime DateStart { get; set; }
         [Required(ErrorMessage = "Ngày kết thúc là trường bắt buộc")]
         public DateTime DateEnd { get; set; }
-        public int? StatusVoucher { get; set; }
+        public string? StatusVoucher { get; set; }
     }
 }

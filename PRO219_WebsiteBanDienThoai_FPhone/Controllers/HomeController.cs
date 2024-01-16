@@ -32,7 +32,7 @@ public class HomeController : Controller
     public async Task<IActionResult> Index()
     {
         HomeGroupViewModel model = new HomeGroupViewModel();
-        model.vPhoneGroup = _phoneService.listVwPhoneGroup(model._VW_Phone_Group);
+        model.vPhoneGroup = _phoneService.listVwPhoneGroup(model._VW_Phone_Group).Take(20).ToList();
         model.vTop5 = _top5PhoneService.listVwTop5PhoneGroup();
         return View(model);
     }
