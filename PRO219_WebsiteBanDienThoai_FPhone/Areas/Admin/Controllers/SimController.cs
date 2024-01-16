@@ -30,6 +30,10 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Sim obj)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(obj);
+            }
             try
             {
                 var jsonData = JsonConvert.SerializeObject(obj);
@@ -60,6 +64,10 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(Guid id, Sim obj)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(obj);
+            }
             var jsonData = JsonConvert.SerializeObject(obj);
 
             HttpContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");

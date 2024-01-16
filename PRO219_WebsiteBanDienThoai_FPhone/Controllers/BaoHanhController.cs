@@ -85,6 +85,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
                                                      //ThoiGianConBaoHanh = billDetail.Bills.PaymentDate.AddMonths(billDetail.PhoneDetaild.Phones.IdWarranty.TimeWarranty),
                     warrantyCard.Status = 0; // 1: Mới tạo
                                              // Bổ sung thêm các thông tin khác nếu cần
+                    warrantyCard.ThoiGianConBaoHanh = DateTime.Now;
 
                     TempData["SuccessMessage"] = "Bạn đã gửi yêu cầu thành công!";
                     _context.WarrantyCards.Add(warrantyCard);

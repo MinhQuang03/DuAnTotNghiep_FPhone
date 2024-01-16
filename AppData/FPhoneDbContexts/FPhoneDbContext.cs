@@ -66,7 +66,7 @@ public class FPhoneDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<PhoneStatitics> PhoneStatitics { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer(@"Data Source=.;Initial Catalog=PRO219_WebsiteBanDienThoai ;Integrated Security=True");
+        optionsBuilder.UseSqlServer(@"Data Source=MSI\SQLEXPRESS;Initial Catalog=PRO219_WebsiteBanDienThoai ;Integrated Security=True");
     }
     protected override void OnModelCreating(ModelBuilder builder)
     {

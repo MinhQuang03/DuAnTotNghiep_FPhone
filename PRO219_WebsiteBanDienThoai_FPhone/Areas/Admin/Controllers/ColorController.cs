@@ -34,6 +34,10 @@ public class ColorController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(Color obj)
     {
+        if (!ModelState.IsValid)
+        {
+            return View(obj);
+        }
         try
         {
             var jsonData = JsonConvert.SerializeObject(obj);
@@ -65,6 +69,10 @@ public class ColorController : Controller
     [HttpPost]
     public async Task<IActionResult> Edit(Guid id, Color obj)
     {
+        if (!ModelState.IsValid)
+        {
+            return View(obj);
+        }
         var jsonData = JsonConvert.SerializeObject(obj);
 
         HttpContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");

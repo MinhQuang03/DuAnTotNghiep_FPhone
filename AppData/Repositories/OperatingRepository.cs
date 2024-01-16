@@ -15,6 +15,7 @@ namespace AppData.Repositories
         }
         public async Task<OperatingSystems> Add(OperatingSystems obj)
         {
+            
             await _dbContext.OperatingSystem.AddAsync(obj);
             await _dbContext.SaveChangesAsync();
             return obj;

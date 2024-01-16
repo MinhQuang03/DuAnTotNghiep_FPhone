@@ -168,7 +168,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             if (obj.AddImeiOfPhone.NameImei.Length != 15)
             {
                 TempData["ErrorMessage"] = "Độ dài của Imei phải là 15 ký tự!";
-                return RedirectToAction("CreateImei", new { IdPhoneDetail = a.IdPhoneDetaild });
+                return RedirectToAction("CreateImei", new { IdPhoneDetail = obj.PhoneDetaild.Id });
             }
 
                 if (a != null)

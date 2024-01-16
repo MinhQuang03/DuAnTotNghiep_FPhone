@@ -19,6 +19,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         }
         public async Task<IActionResult> Index()
         {
+            
             var datajson = await _httpClient.GetStringAsync("api/Battery/get");
             var obj = JsonConvert.DeserializeObject<List<Battery>>(datajson);
             return View(obj);
@@ -31,6 +32,10 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Battery obj)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(obj);
+            }
             try
             {
                 var jsonData = JsonConvert.SerializeObject(obj);
@@ -61,6 +66,10 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(Guid id, Battery obj)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(obj);
+            }
             var jsonData = JsonConvert.SerializeObject(obj);
 
             HttpContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
