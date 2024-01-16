@@ -86,11 +86,11 @@
     </div>
 </div>
 <!-- Shop End -->
-<section class="category__section section">
+<section class="category__section section container">
     <div class="row container-fluid justify-content-center" id="productList">
         @foreach (var item in Model.ListvVwPhoneDetails)
         {
-            <div class="product category__products mx-2" style="width: 250px;height: 450px">
+            <div class="product category__products mx-2 col-3" style="width: 250px;height: 450px">
                 <div class="product__header">
                     <img src="@item.FirstImage" alt="product">
                 </div>

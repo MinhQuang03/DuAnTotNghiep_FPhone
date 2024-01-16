@@ -36,6 +36,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
         public async Task<IActionResult> Index()
         { 
             ListPhoneViewModel model = new ListPhoneViewModel();
+            model.Options.PageSize = 8;
             model.ListvVwPhoneDetails = _phoneDetailService.listVwPhoneDetails(model.SearchData, model.Options);
             //Gán ảnh cho sản phẩm(avatar)
             foreach (var item in model.ListvVwPhoneDetails)

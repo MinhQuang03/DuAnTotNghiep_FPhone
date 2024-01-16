@@ -25,7 +25,7 @@ namespace AppData.Services
                 data = _dbContext.VTop5_PhoneSell.ToList();
                 foreach (var item in data)
                 {
-                    item.countPhone = _dbContext.Imei.Count(c =>c.IdPhoneDetaild == item.Id);
+                    item.countPhone = _dbContext.Imei.Count(c =>c.IdPhoneDetaild == item.Id && c.Status==1);
                 }
             }
             catch (Exception e)
