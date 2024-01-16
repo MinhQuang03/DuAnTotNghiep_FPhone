@@ -206,11 +206,30 @@
         {
             <a href="~/Admin/Bill/XacNhanBaoHanh?IdPhoneDetail=@bh.IdPhoneDetail&phoneImei=@bh.Imei" class="button-abc">Chấp nhận bảo hành</a>
 
-            <a href="~/Admin/Bill/HuyBaoHanh?IdPhoneDetail=@bh.IdPhoneDetail&phoneImei=@bh.Imei" class="button-abc">Xác nhận hủy</a>
+            <a href="~/Admin/Bill/HuyBaoHanh?IdPhoneDetail=@bh.IdPhoneDetail&phoneImei=@bh.Imei" class="button-abc" data-toggle="modal" data-target="#exampleModalCenter">Xác nhận hủy</a>
         }
         else if (bh.Status == 1)
         {
             <a href="~/Admin/Bill/BaoHanhThanhCong?IdPhoneDetail=@bh.IdPhoneDetail&phoneImei=@bh.Imei" class="button-abc">Bảo hành thành công</a>
         }
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Xác nhận hủy</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Bạn có muốn hủy yêu cầu này không ?
+                    </div>
+                    <div class="modal-footer">
+                        <a type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</a>
+                        <a type="button" class="btn btn-primary" href="~/Admin/Bill/HuyBaoHanh?IdPhoneDetail=@bh.IdPhoneDetail&phoneImei=@bh.Imei">Xác nhận</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     }
 </div>
