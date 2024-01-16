@@ -3,6 +3,11 @@
 @{
     ViewData["Title"] = "CreateImei";
 }
+<!-- Thêm liên kết đến thư viện Toastr -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
 
 <h1>Thêm mới imei cho</h1>
 <h4>@Model.PhoneDetailName</h4>
@@ -31,3 +36,10 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+<!-- Hiển thị thông báo lỗi bằng Toastr -->
+@if (TempData["ErrorMessage"] != null)
+{
+    <script>
+        toastr.error('@TempData["ErrorMessage"]');
+    </script>
+}

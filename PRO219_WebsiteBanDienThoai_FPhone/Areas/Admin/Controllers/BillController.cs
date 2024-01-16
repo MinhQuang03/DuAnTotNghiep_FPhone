@@ -200,7 +200,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             var billdetail = _context.BillDetails.FirstOrDefault(p => p.IdBill == id);
             if(billdetail.Imei == null)
             {
-                TempData["SuccessMessage"] = "Vui lòng thêm imei trước khi xác nhận !";
+                TempData["ErrorMessage"] = "Vui lòng thêm imei trước khi xác nhận !";
                 return RedirectToAction("Detail", new { id = id });
             }
             else
@@ -257,7 +257,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             }
             else
             {
-                TempData["SuccessMessage"] = "Không thể hủy khi đã thêm imei !";
+                TempData["ErrorMessage"] = "Không thể hủy khi đã thêm imei !";
                 return RedirectToAction("Detail", new { id = id });
             }
 
@@ -316,7 +316,12 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             var a = _context.Imei.FirstOrDefault(p => p.NameImei == name);
             if (a == null)
             {
-                TempData["SuccessMessage"] = "Không tìm thấy sản phẩm !";
+                TempData["ErrorMessage"] = "Không tìm thấy sản phẩm !";
+                return RedirectToAction("Detail", new { id = id });
+            }
+            else if(a != null && a.Status == 2)
+            {
+                TempData["ErrorMessage"] = "Sản phẩm có imei này đã được bán !";
                 return RedirectToAction("Detail", new { id = id });
             }
             else
@@ -352,7 +357,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                 }
                 else
                 {
-                    TempData["SuccessMessage"] = "Bạn không thể xóa sản phẩm !";
+                    TempData["ErrorMessage"] = "Bạn không thể xóa sản phẩm !";
                 }
 
                 

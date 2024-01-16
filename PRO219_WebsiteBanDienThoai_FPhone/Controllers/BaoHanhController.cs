@@ -92,7 +92,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
                 }
                 else
                 {
-                    TempData["SuccessMessage"] = "Máy của bạn đang được bảo hành. Không thể gửi thêm yêu cầu!";
+                    TempData["ErrorMessage"] = "Máy của bạn đang được bảo hành. Không thể gửi thêm yêu cầu!";
                 }
                 
             }

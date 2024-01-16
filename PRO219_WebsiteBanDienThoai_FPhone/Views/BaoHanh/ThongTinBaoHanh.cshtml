@@ -83,14 +83,10 @@
             margin-top: 30px;
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </head>
 <body class="main-container">
-    @if (TempData["SuccessMessage"] != null)
-    {
-        <div class="alert alert-danger">
-            @TempData["SuccessMessage"]
-        </div>
-    }
     <div class="info-container">
         <h1 class="main-title">Thông tin bảo hành điện thoại</h1>
 
@@ -126,7 +122,19 @@
             }
         }
     </div>
-
+    <!-- Hiển thị thông báo lỗi bằng Toastr -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <script>
+            toastr.success('@TempData["SuccessMessage"]');
+        </script>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <script>
+            toastr.error('@TempData["ErrorMessage"]');
+        </script>
+    }
     <script>
         function submitWithNote(IdPhoneDetail, Imei) {
             var noteId = "#statusInput_" + IdPhoneDetail;

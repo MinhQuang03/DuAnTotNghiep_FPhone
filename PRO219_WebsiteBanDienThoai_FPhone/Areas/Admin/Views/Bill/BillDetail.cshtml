@@ -8,6 +8,10 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
     FPhoneDbContext _dbContext = new FPhoneDbContext();
 }
+<!-- Thêm liên kết đến thư viện Toastr -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
 @* LKK\SQLEXPRESS *@
 <style>
     .button-abc {
@@ -32,12 +36,6 @@
 </style>
 
 <h2>Chi tiết đơn hàng</h2> 
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success">
-        @TempData["SuccessMessage"]
-    </div>
-}
 <div class="container">
     <div class="row">
         <div class="col-sm 8">
@@ -73,11 +71,11 @@
                             <td>
                                 @if(item.Imei == null)
                                 {
-                                    <div class="form-check">
-                                        <a href="@Url.Action("DeleteBilDetail", "Bill", new { id = item.Id })" style="color:red">
+
+                                    <a data-toggle="modal" data-target="#exampleModalCenter" style="color:red">
                                             <i class="fas fa-trash"></i>
                                         </a>
-                                    </div>
+
                                 }else
                                 {
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" color="#33ff66" fill="currentColor" class="bi bi-check2-circle" viewBox="0 0 16 16">
@@ -116,6 +114,26 @@
                                 
                             </td>
                         </tr>
+
+                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Xác nhận xóa</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Bạn có muốn xóa sản phẩm ra khỏi hóa đơn này không ?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</a>
+                                        <a type="button" class="btn btn-primary" href="@Url.Action("DeleteBilDetail", "Bill", new { id = item.Id })">Xác nhận</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     }
                 </tbody>
             </table>
@@ -190,6 +208,23 @@
             </div>
         </div>
     </div>
+
+
+    <!-- Modal -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <script>
+            toastr.success('@TempData["SuccessMessage"]');
+        </script>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <script>
+            toastr.error('@TempData["ErrorMessage"]');
+        </script>
+    }
+
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
