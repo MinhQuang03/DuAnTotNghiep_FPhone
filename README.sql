@@ -4,7 +4,7 @@
 -- Script date 1/16/2024 11:48:58 PM
 -- Server version: 16.00.1000
 --
-
+--Version 2.0 final by thành ( méo code nữa )
 
 SET DATEFORMAT ymd
 SET ARITHABORT, ANSI_PADDING, ANSI_WARNINGS, CONCAT_NULL_YIELDS_NULL, QUOTED_IDENTIFIER, ANSI_NULLS, NOCOUNT ON
