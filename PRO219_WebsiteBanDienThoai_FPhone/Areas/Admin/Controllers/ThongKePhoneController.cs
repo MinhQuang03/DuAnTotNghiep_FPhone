@@ -2,6 +2,8 @@
 using AppData.IServices;
 using AppData.Models;
 using AppData.Repositories;
+using AppData.Services;
+using AppData.Utilities;
 using AppData.ViewModels.ThongKe;
 
 //using AppData.ViewModels.DanhGia;
@@ -38,15 +40,69 @@ namespace App_View.Areas.Admin.Controllers
  
             return View(model);
         }
-        //public JsonResult Chart()
-        //{
-        //    vOverView model = new vOverView();
-        //    model = _overview.listOverViewGroup().FirstOrDefault();
-        //    model.billGanDay = _billGanDayServices.listBillGanDayViewGroup();
-        //    return Json(model);
-        //}
 
-   
+
+        [HttpGet("ThongKePhone/Chart1")]
+        public JsonResult Chart()
+        {
+            PhoneStatitics model = new PhoneStatitics();
+            model = _phoneStatitics.listPhoneStaticsGroup().FirstOrDefault();
+
+
+            List<OverView2> over = new List<OverView2>()
+            {
+                new OverView2()
+                {
+                    BillStatus = "Buổi sáng",
+                    CoutBill = model.BuoiSang.Value,
+                },
+                new OverView2()
+                {
+                   BillStatus = "Buổi Chiều",
+                    CoutBill = model.BuoiChieu.Value,
+                },
+                new OverView2()
+                {
+                    BillStatus = "Buổi Tối",
+                    CoutBill = model.BuoiToi.Value,
+                },
+               
+            };
+
+            return Json(over);
+        }
+
+        [HttpGet("ThongKePhone/Chart2")]
+        public JsonResult Chart2()
+        {
+            PhoneStatitics model = new PhoneStatitics();
+            model = _phoneStatitics.listPhoneStaticsGroup().FirstOrDefault();
+
+
+            List<OverView2> over = new List<OverView2>()
+            {
+                new OverView2()
+                {
+                    BillStatus = "Phân khúc tầm thấp",
+                    CoutBill = model.PhanKhucThap.Value,
+                },
+                new OverView2()
+                {
+                   BillStatus = "Phân khúc tầm trung",
+                    CoutBill = model.PhanKhucTrungCap.Value,
+                },
+                new OverView2()
+                {
+                    BillStatus = "Phân khúc cao cấp",
+                    CoutBill = model.PhanKhucCaoCap.Value,
+                },
+
+            };
+
+            return Json(over);
+        }
+
+
 
     }
 }

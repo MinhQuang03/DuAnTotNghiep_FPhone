@@ -24,7 +24,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
-                                <p class="m-b-0 text-muted">Doanh thu</p>
+                                <p class="m-b-0 text-muted">Sản phẩm bán chạy</p>
                                 <h2 class="m-b-0">
                                     @Model.NamePhoneThangNay
                                 </h2>
@@ -50,7 +50,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
-                                <p class="m-b-0 text-muted">Đánh giá</p>
+                                <p class="m-b-0 text-muted">Số lượng bán sản phẩm</p>
                                 <h2 class="m-b-0">@Model.SlBanThangNay</h2>
                             </div>
 
@@ -115,7 +115,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
-                                <p class="m-b-0 text-muted">Đơn đặt hàng</p>
+                                <p class="m-b-0 text-muted">Mã màu hot</p>
                                 <h2 class="m-b-0">@Model.NameColorThangNay</h2>
                             </div>
                             
@@ -139,7 +139,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
-                                <p class="m-b-0 text-muted">Đơn hàng tại quầy</p>
+                                <p class="m-b-0 text-muted">Số lượng màu </p>
                                 <h2 class="m-b-0">@Model.SlColorThangNay</h2>
                             </div>
                             @if (@Model.SlColorThangNay > @Model.SlColorThangTruoc)
@@ -199,7 +199,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h5>Thống kê bán hàng</h5>
+                    <h5>Phân khúc sản phẩm khách hàng</h5>
 
                     <div class="dropdown dropdown-animated scale-left">
                         <a class="text-gray font-size-18" href="javascript:void(0);" data-toggle="dropdown">
@@ -209,7 +209,7 @@
 
                             <button class="dropdown-item" type="button">
                                 <i class="anticon anticon-download"></i>
-                                <span class="m-l-10">Download & Export</span>
+                               
                             </button>
 
                         </div>
@@ -217,41 +217,25 @@
                 </div>
 
                 <div class="m-t-50">
-                    <canvas class="chart" style="height: 230px" id="ThongKeBanHang-chart"></canvas>
+                    <div id="detailContent3" style="min-width: 75%; height: 350px; border: 1px solid #ccc"> </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-
 <div class="row">
     <div class="col-lg-5">
         <div class="card">
             <div class="card-body">
-                <h5>Tỉ lệ Đơn hàng thành công tháng này</h5>
-
-
-
-                <canvas id="myChart" style="min-height: 250px; height: 250px; max-height: 400px; max-width: 100%;"></canvas>
-
+                <h5>Thời gian khách hàng mua hàng trong ngày</h5>
+                <div id="detailContent2" style="min-width: 100%; height: 400px; border: 1px solid #ccc" ;marin-top:-20> </div>
 
             </div>
         </div>
     </div>
 
-    <div class="col-lg-7">
-        <div class="card">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h5>Đơn đặt hàng gần đây</h5>
-                    <div>
-                        <a asp-controller="HoaDon" asp-action="TongQuanHoaDon" class="btn btn-sm btn-default">Xem tất cả</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+
 </div>
 <div class="row">
     <div class="col-lg-12">
@@ -263,22 +247,7 @@
         </div>
     </div>
 
-    @*<script src="~/Admin/vendors/chartjs/Chart.min.js"></script>
-    *@
-    @*<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.6/css/jquery.dataTables.css">
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.6/js/jquery.dataTables.js"></script>
-    *@
-    @*<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
-    <script src="~/Admin/moment/moment.min.js"></script>
-
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    *@
+  
 
 
     @section scripts {
@@ -292,230 +261,19 @@
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
         <script src="~/Admin/moment/moment.min.js"></script>
 
+        <script src="~/js/JChart.js"></script>
         <script>
-
-            var arrLabels = ["Thành công", "Hủy", "Các trạng thái khác"];
-            var arrData = [0, 0, 0];
-            var myChart1;
-            function generateRandomColors(count) {
-                const colors = [];
-                for (let i = 0; i < count; i++) {
-                    const color = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 0.9)`;
-                    colors.push(color);
-                }
-                return colors;
-            }
-
-            const colors = generateRandomColors(20);
-            function updateChart1(fromDate, toDate) {
-                $.ajax({
-                    type: "GET",
-                    url: "@Url.Action("Chart", "ThongKe")",
-                    data: { fromDate: '', toDate: '' },
-                    success: function (rs) {
-                        var arrData = [0, 0, 0];
-                        var jsonData = JSON.parse(rs);
-                        $.each(jsonData.Data, function (i, item) {
-                            var soLuongHoaDonThanhCong = jsonData.Data[0].BillThanhCong;
-                            var soLuongHoaDonThatBai = jsonData.Data[0].BillThatbai;
-                            //    var soLuongHoaDonCho = jsonData.Data[0].SoluongHoaDonCho;
-
-                            // Cập nhật giá trị mới cho biểu đồ
-                            arrData[0] = soLuongHoaDonThanhCong;
-                            arrData[1] = soLuongHoaDonThatBai;
-                            //       arrData[2] = soLuongHoaDonCho;
-
-                        });
-                        // Cập nhật dữ liệu cho biểu đồ hiện tại
-                        myChart1.data.labels = arrLabels;
-                        myChart1.data.datasets[0].data = arrData;
-                        myChart1.update();
-                    }
-                });
-            }
-
-            // Khởi tạo biểu đồ ban đầu
             $(document).ready(function () {
-                const data1 = {
-                    labels: [],
-                    datasets: [
-                        {
-                            label: '',
-                            backgroundColor: colors,
-                            borderColor: colors,
-                            pointRadius: false,
-                            pointColor: '#3b8bba',
-                            pointStrokeColor: 'rgba(60,141,188,1)',
-                            pointHighlightFill: '#fff',
-                            pointHighlightStroke: 'rgba(60,141,188,1)',
-                            data: []
-                        }
-                    ]
-                };
-
-                const config1 = {
-                    type: 'doughnut',
-                    data: data1,
-                    options: {
-                        layout: {
-                            padding: 10
-                        },
-                        plugins: {
-                            legend: {
-                                display: true,
-                                position: 'right',
-                                padding: 30
-                            },
-                            datalabels: {
-                                formatter: (value, ctx) => {
-                                    console.log(value);
-                                    console.log(ctx);
-                                    const total = ctx.chart.data.datasets[0].data.reduce((acc, val) => acc + val, 0);
-                                    console.log("Hi, chúng ta lại gặp nhau rồi ");
-                                    console.log(total);
-                                    const percentage = total !== 0 ? ((value / total) * 100).toFixed(2) + '%' : '0.00%';
-
-                                    return percentage;
-                                },
-                                anchor: 'center',
-                                align: 'end',
-                                color: 'white',
-
-                            },
-                        },
-                    },
-                    plugins: [ChartDataLabels]
-                };
-
-                myChart1 = new Chart(
-                    document.getElementById('myChart'),
-                    config1
-                );
-
-                updateChart1();
-
+            
+                JChart2.char1();
+                JChart2.char2();
             });
-
-
-
-
         </script>
+       
 
-        <script>
-
-            var dates = [];
-            var arrOnline = [];
-            var arrOffline = [];
-            var myChart;
-            function updateChart() {
-                $.ajax({
-                    type: "GET",
-                    url: "@Url.Action("ThongKe", "OverView")",
-                    success: function (rs) {
-                        console.log("1111");
-                        var jsonData = JSON.parse(rs);
-                        console.log(rs);
-
-                        dates = [];
-                        arrOnline = [];
-                        arrOffline = [];
-
-                        $.each(jsonData.Data, function (i, item) {
-                            console.log("Hi, chào cậu ");
-
-                            arrOnline.push(item.Online);
-                            arrOffline.push(item.Ofline);
-                            dates.push(item.ThoiGian);
-                            console.log(dates);
-                            console.log(arrOffline);
-
-                        });
-                        console.log(dates);
-                        myChart.data.labels = dates;
-                        myChart.data.datasets[0].data = arrOffline;
-                        myChart.data.datasets[1].data = arrOnline;
-
-                        myChart.update();
-                        //load_data(rs.data);
-                    }
-                });
-            }
-
-            // Khởi tạo biểu đồ ban đầu
-            $(document).ready(function () {
-                const data = {
-                    labels: [],
-                    datasets: [
-                        {
-                            label: 'Online',
-                            backgroundColor: 'rgba(63, 135, 245, 1)',
-                            borderColor: 'rgba(60,141,188,0.8)',
-                            pointRadius: false,
-                            pointColor: '#3b8bba',
-                            pointStrokeColor: 'rgba(60,141,188,1)',
-                            pointHighlightFill: '#fff',
-                            pointHighlightStroke: 'rgba(60,141,188,1)',
-                            data: []
-                        },
-                        {
-                            label: 'Offline',
-                            backgroundColor: 'rgba(210, 214, 222, 1)',
-                            borderColor: 'rgba(210, 214, 222, 1)',
-                            pointRadius: false,
-                            pointColor: 'rgba(210, 214, 222, 1)',
-                            pointStrokeColor: '#c1c7d1',
-                            pointHighlightFill: '#fff',
-                            pointHighlightStroke: 'rgba(220,220,220,1)',
-                            data: []
-                        }
-                    ]
-                };
-
-                const config = {
-                    type: 'bar',
-                    data: data,
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        //datasetFill: false,
-                        //scales: {
-                        //    y: beginAtZero: true,
-                        //} lừa đấy
-                    }
-                };
-
-                myChart = new Chart(
-                    document.getElementById('ThongKeBanHang-chart'),
-                    config
-                );
-
-                updateChart();
-
-            });
-
-            //// Xử lý sự kiện khi ngày thay đổi
-            //$('#fromDate, #toDate').change(function () {
-            //    var fromDate = $('#fromDate').val();
-            //    var toDate = $('#toDate').val();
-            //    updateChart(fromDate, toDate);
-            //});
-            //function load_data(data) {
-            //    var strHtml = "";
-            //    $.each(data, function (i, item) {
-            //        var strDate = moment(item.date).format('DD/MM/yyyy');
-            //        strHtml += "<tr>";
-            //        strHtml += "<td>" + (i + 1) + "</td>";
-            //        strHtml += "<td>" + strDate + "</td>";
-            //        strHtml += "<td>" + item.doanhThu + "</td>";
-            //        strHtml += "<td>" + item.loiNhuan + "</td>";
-            //        strHtml += "</tr>";
-            //    });
-            //    $('#load_data').html(strHtml);
-            //}
-
-        </script>
     }
 
 
