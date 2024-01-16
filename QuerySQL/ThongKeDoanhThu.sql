@@ -218,7 +218,7 @@ declare @timefrom Datetime,
 	--------------------------------------------------------------------------------------------------------------------------------------	
 
 	------------------------INSERT--------------------------------------------------	
-	Insert Into SellMonthly(Id,CreateTime,TotalMoneys,Refund,TotalQuantity,
+	Insert Into SellMonthlys(Id,CreateTime,TotalMoneys,Refund,TotalQuantity,
 	SellOnl,SellOff,BestSeller, [Status])
 	
 	----------------------------------------------------------------------------------------		

@@ -10,9 +10,8 @@ using AppData.ViewModels.Phones;
 
 namespace AppData.IServices
 {
-    public interface IBillGanDayServices
+    public interface IPhoneStatiticsServices
     {
-      List<BillGanDay> listBillGanDayViewGroup();
-      List<Bill> BillThang();
+      List<PhoneStatitics> listPhoneStaticsGroup();
     }
 }

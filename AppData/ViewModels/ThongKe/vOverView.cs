@@ -22,6 +22,13 @@ namespace AppData.ViewModels.ThongKe
         public int BillThatbai { get; set; }
 
         public List<BillGanDay> billGanDay {  get; set; }
+        public List<OverView2> listData { get; set; } = new();
 
+    }
+
+    public class OverView2
+    {
+        public string BillStatus { get; set; }
+        public int CoutBill { get; set; }
     }
 }

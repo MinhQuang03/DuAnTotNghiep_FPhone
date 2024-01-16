@@ -32,6 +32,7 @@ builder.Services.AddTransient<IVwTop5PhoneServices, VwTop5PhoneService>();
 builder.Services.AddTransient<IBillRepository, BillRepository>();
 builder.Services.AddTransient<IvOverViewServices, OverViewServices>();
 builder.Services.AddTransient<IBillGanDayServices, BillGanDayServices>();
+builder.Services.AddTransient<IPhoneStatiticsServices, PhoneStatiticsServices>();
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<FPhoneDbContext>().AddDefaultTokenProviders();
 
 builder.Services.AddScoped(sp => new HttpClient()

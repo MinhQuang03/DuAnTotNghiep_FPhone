@@ -63,6 +63,7 @@ public class FPhoneDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<VTop5_PhoneSell> VTop5_PhoneSell { get; set; }
     public DbSet<vOverView> OverViews { get; set; }
     public DbSet<BillGanDay> billGanDays { get; set; }
+    public DbSet<PhoneStatitics> PhoneStatitics { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlServer(@"Data Source=.;Initial Catalog=PRO219_WebsiteBanDienThoai ;Integrated Security=True");
@@ -78,6 +79,7 @@ public class FPhoneDbContext : IdentityDbContext<ApplicationUser>
         builder.Entity<VTop5_PhoneSell>().ToView("VTop5_PhoneSell").HasNoKey();
         builder.Entity<vOverView>().ToView("vOverView").HasNoKey();
         builder.Entity<BillGanDay>().ToView("BillGanDay").HasNoKey();
+        builder.Entity<PhoneStatitics>().ToView("PhoneStatitics").HasNoKey();
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 }

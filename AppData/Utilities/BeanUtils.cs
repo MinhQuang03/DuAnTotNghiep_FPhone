@@ -27,6 +27,13 @@ namespace AppData.Utilities
 
         //Trạn thái hóa đơn
         public const int DaGiao = 3;
+        public const int DaXacNhan = 1;
+        public const int DangGiao = 2;
+        public const int Huy = 4;
+        public const int GiaoThatBai = 5;
+
+
+
         public const int ChoXacNhan = 0;
         public const int HoanThanh = 0;
         //StatusPayment của bảng hóa đơn 
