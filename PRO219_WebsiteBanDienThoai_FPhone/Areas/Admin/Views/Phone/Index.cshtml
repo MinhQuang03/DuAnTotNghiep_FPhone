@@ -66,7 +66,8 @@
                 @Html.DisplayFor(modelItem => item.CreateDate)
             </td>
                 <td class="text-center">
-                @Html.ActionLink("Chỉnh sửa", "Edit", new { id=item.IdPhone })
+                @Html.ActionLink("Chỉnh sửa", "Edit", new { id=item.IdPhone }) |
+                    @Html.ActionLink("Bình luận", "Index","Comment", new { Id=item.IdPhone })
                 @* @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
                 @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ }) *@
             </td>

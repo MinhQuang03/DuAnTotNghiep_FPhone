@@ -8,7 +8,7 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
     FPhoneDbContext _dbContext = new FPhoneDbContext();
 }
-
+@* LKK\SQLEXPRESS *@
 <style>
     .button-abc {
         display: inline-block;
@@ -190,7 +190,9 @@
             </div>
         </div>
     </div>
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
         $(document).ready(function () {
@@ -206,7 +208,18 @@
                     data: { statusInput1: statusInput1 }, // Thêm id vào dữ liệu gửi đi
                     success: function (response) { // Sửa tên biến result thành response
                         if (response.success) {
-                            window.location.href = response.data;
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Thành công!',
+                                text: 'Thay đổi đã được lưu thành công.',
+                                showConfirmButton: false,
+                                timer: 2000, // Thời gian hiển thị thông báo (ms)
+                                onClose: function () {
+                                    window.location.href = response.data;
+                                }
+                            });
+                           
+
                         }
                     },
                     error: function (error) {

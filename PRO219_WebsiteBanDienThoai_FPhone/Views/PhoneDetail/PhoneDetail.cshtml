@@ -1,7 +1,14 @@
-﻿@using PRO219_WebsiteBanDienThoai_FPhone.ViewModel
+﻿@using AppData.FPhoneDbContexts;
+@using AppData.Models;
+@using PRO219_WebsiteBanDienThoai_FPhone.ViewModel
 @model VwProductDetailViewModel;
 @{
     ViewData["Title"] = "PhoneDetail";
+    var lstComment = ViewData["GetListComment"] as List<Review>;
+    var idAccount = Model.IdAccount;
+    var idPhone = Model.IdPhone;
+    int index = 0;
+    FPhoneDbContext dbContext = new FPhoneDbContext();
 }
 
 <style>
@@ -9,7 +16,9 @@
         color: #ff6600; /* You can change the color code to your preferred color */
         font-weight: bold; /* Optional: Make the text bold for emphasis */
     }
-
+    .fs-5 {
+        font-size: 2rem!important;
+    }
     .phone-hover:hover {
         background-color: #FFFFCC;
     }
@@ -167,6 +176,11 @@
             }
 
 </style>
+<script>
+    var idAccount = '@idAccount';
+    var idPhone = '@idPhone';
+
+</script>
 
 <section class="section product-details__section container">
     <div class="product-detail__container">
@@ -175,11 +189,24 @@
                 <div class="product__pictures">
                     @foreach (var item in Model.listImageByIdPhone)
                     {
-                        <a class="fancybox-thumb" href="@item.Image" data-fancybox="gallery" data-src="@item.Image">
-                        <div class="pictures__container">
-                            <img class="picture" src="@item.Image" id="pic1"/>
-                        </div>
-                        </a>
+                        if (index>=4)
+                        {
+                            <a class="fancybox-thumb hide" href="@item.Image" data-fancybox="gallery" data-src="@item.Image">
+                                <div class="pictures__container">
+                                    <img class="picture" src="@item.Image" id="pic1"/>
+                                </div>
+                            </a>
+                        }
+                        else
+                        {
+                            <a class="fancybox-thumb" href="@item.Image" data-fancybox="gallery" data-src="@item.Image">
+                                <div class="pictures__container">
+                                    <img class="picture" src="@item.Image" id="pic1"/>
+                                </div>
+                            </a>
+                        }
+                       
+                        index++;
                     }
 
                 </div>
@@ -274,101 +301,14 @@
                         </li>
 
                         <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal" id="ShowDetaild">
+                        <button  type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal" id="ShowDetaild">
                             Xem thông tin chi tiết <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="10" height="10"><path d="M224 416c-8.188 0-16.38-3.125-22.62-9.375l-192-192c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L224 338.8l169.4-169.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-192 192C240.4 412.9 232.2 416 224 416z"></path></svg>
                         </button>
-
                         <!-- Modal -->
-                        @foreach(var item in Model.Records)
-                        {
-                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Thông tin chi tiết</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="row">
-                                                <!-- Add the custom class to highlight the product name -->
-                                                <p class="col-sm-12 text-center highlighted-name">@item.PhoneName</p>
-                                            </div>
-                                            <div class="row">
-                                                <label class="col-form-label col-sm-5">Chất liệu</label>
-                                                <p class="col-sm-7">@item.MaterialName</p>
-                                            </div>
-                                            <div class="row">
-                                                <label class="col-form-label col-sm-5">Bộ nhớ trong (ROM)</label>
-                                                <p class="col-sm-7">@item.RomName</p>
-                                            </div>
-                                            <div class="row">
-                                                <label class="col-form-label col-sm-5">RAM</label>
-                                                <p class="col-sm-7">@item.RamName</p>
-                                            </div>
-                                            <div class="row">
-                                                <label class="col-form-label col-sm-5">Hệ điều hành</label>
-                                                <p class="col-sm-7">@item.OperatingSystemName</p>
-                                            </div>
-                                            <div class="row">
-                                                <label class="col-form-label col-sm-5">Dung lượng pin</label>
-                                                <p class="col-sm-7">@item.BatteryName</p>
-                                            </div>
-                                            <div class="row">
-                                                <label class="col-form-label col-sm-5">Loại SIM</label>
-                                                <p class="col-sm-7">@item.SimName</p>
-                                            </div>
-                                            <div class="row">
-                                                <label class="col-form-label col-sm-5">Chip CPU</label>
-                                                <p class="col-sm-7">@item.ChipCPUName</p>
-                                            </div>
-                                            <div class="row">
-                                                <label class="col-form-label col-sm-5">Chip GPU</label>
-                                                <p class="col-sm-7">@item.ChipGPUName</p>
-                                            </div>
-                                            <div class="row">
-                                                <label class="col-form-label col-sm-5">Màu sắc</label>
-                                                <p class="col-sm-7">@item.ColorName</p>
-                                            </div>
-                                            <div class="row">
-                                                <label class="col-form-label col-sm-5">Loại cổng sạc</label>
-                                                <p class="col-sm-7">@item.ChargingportTypeName</p>
-                                            </div>
-                                            <div class="row">
-                                                <label class="col-form-label col-sm-5">Trọng lượng</label>
-                                                <p class="col-sm-7">@item.Weight</p>
-                                            </div>
-                                            <div class="row">
-                                                <label class="col-form-label col-sm-5">Camera trước</label>
-                                                <p class="col-sm-7">@item.FrontCamera</p>
-                                            </div>
-                                            <div class="row">
-                                                <label class="col-form-label col-sm-5">Độ phân giải</label>
-                                                <p class="col-sm-7">@item.Resolution</p>
-                                            </div>
-                                            <div class="row">
-                                                <label class="col-form-label col-sm-5">Kích thước</label>
-                                                <p class="col-sm-7">@item.Size</p>
-                                            </div>
-                                            <div class="row">
-                                                <label class="col-form-label col-sm-5">Tên công ty sản xuất</label>
-                                                <p class="col-sm-7">@item.ProductionCompanyName</p>
-                                            </div>
-                                            <!-- Thêm các dòng tương ứng với các thuộc tính còn lại của VW_PhoneDetail -->
-                                        </div>
-
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đóng</button>
-
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="modal fade showChiTiet" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                
                             </div>
-
-                        }
-                        
-
                     </ul>
-
                 </div>
             </div>
         </div>
@@ -383,8 +323,8 @@
         <div class="row">
             <div class="col-sm-8">
                 <form id="commentForm">
-                    <h3 class="pull-left">New Comment</h3>
-                    <button type="submit" class="btn btn-normal pull-right btn-light">Submit</button>
+                    <h3 class="pull-left">Bình luận mới</h3>
+                    <button type="button" class="btn btn-normal pull-right btn-light" id="submit">Gửi</button>
                     <fieldset>
                         <div class="row">
                             <div class="col-sm-3 col-lg-2 hidden-xs">
@@ -396,35 +336,56 @@
                         </div>
                     </fieldset>
                 </form>
+                @if (lstComment != null)
+                {
+                    <h3>@(lstComment.Count + " Bình luận")</h3>
 
-                <h3>4 Comments</h3>
-
-                <!-- COMMENT 1 - START -->
-                <div class="media">
-                    <a class="pull-left" href="#"><img class="media-object" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt=""></a>
-                    <div class="media-body">
-                        <h4 class="media-heading">John Doe</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                        <ul class="list-unstyled list-inline media-detail pull-left">
-                            <li><i class="fa fa-calendar"></i>27/02/2014</li>
-                            <li><i class="fa fa-thumbs-up"></i>13</li>
-                        </ul>
-                        <ul class="list-unstyled list-inline media-detail pull-right">
-                            <li class=""><a href="">Like</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- COMMENT 1 - END -->
+                    <!-- COMMENT 1 - START -->
+                    foreach (var item in lstComment)
+                    {
+                        var username = dbContext.Accounts.FirstOrDefault(p => p.Id == item.IdAccount);
+                        <div class="media">
+                            <a class="pull-left" href="#"><img class="media-object" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt=""></a>
+                            <div class="media-body">
+                                <h4 class="media-heading">@username.Username</h4>
+                                <p>@item.Content</p>
+                                <ul class="list-unstyled list-inline media-detail pull-left">
+                                    <li><i class="fa fa-calendar"></i>@item.DateTime.ToString("dd/MM/yyyy")</li>
+                                    <li><i class="fa fa-thumbs-up"></i>13</li>
+                                </ul>
+                                <ul class="list-unstyled list-inline media-detail pull-right">
+                                    <li class=""><a href="">Thích</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    }
+                    
+                    <!-- COMMENT 1 - END -->
+                }                
 
             </div>
         </div>
     </div>
 </section>
-
+<div class="modal " tabindex="-1" id="notification">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Notification</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="notification-content"></p>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="~/js/JPhoneDetail.js"></script>
 <script>
     $('#notExits').hide();
     $('#ShowDetaild').hide();
+    $('.hide').hide();
+   
 
     $(document).ready(function() {
         $('[data-fancybox]').fancybox({

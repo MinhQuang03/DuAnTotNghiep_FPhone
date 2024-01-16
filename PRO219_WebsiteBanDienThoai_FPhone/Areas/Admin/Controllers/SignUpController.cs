@@ -1,4 +1,6 @@
 ﻿using System.Net.Http.Headers;
+using AppData.FPhoneDbContexts;
+using AppData.IServices;
 using AppData.Models;
 using AppData.ViewModels.Accounts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -14,11 +16,13 @@ public class SignUpController : Controller
 {
     private readonly HttpClient _client;
     private readonly IHttpContextAccessor _contextAccessor;
+    private IAccountService _service;
 
-    public SignUpController(HttpClient client, IHttpContextAccessor contextAccessor)
+    public SignUpController(HttpClient client, IHttpContextAccessor contextAccessor,IAccountService service)
     {
         _client = client;
         _contextAccessor = contextAccessor;
+        _service = service;
     }
 
 
@@ -28,16 +32,28 @@ public class SignUpController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> SignUp(AdSignUpViewModel model)    
+    public async Task<IActionResult> SignUp(AdSignUpViewModel model)
     {
-        model.Status = 0;
-        model.ImageUrl = string.Empty;
-        var result = await _client.PostAsJsonAsync("/api/Accounts/SignUp/Admin", model);
-        if (result.IsSuccessStatusCode)
+        var data = _service.GetUserByUserName(model.UserName);
+        var admin = _service.GetByUserName(model.UserName);
+        if (data==null && admin==null)
         {
-            return RedirectToAction("Index", "Accounts"); 
+            model.Status = 0;
+            model.ImageUrl = string.Empty;
+            var result = await _client.PostAsJsonAsync("/api/Accounts/SignUp/Admin", model);
+            if (result.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index", "Accounts");
+            }
         }
+        else
+        {
+            ModelState.AddModelError("UserName", "Tên đăng nhập này đã tồn tại");
+            return View(model);
+        }
+       
 
-        return View();
+        
+        return View(model);
     }
 }

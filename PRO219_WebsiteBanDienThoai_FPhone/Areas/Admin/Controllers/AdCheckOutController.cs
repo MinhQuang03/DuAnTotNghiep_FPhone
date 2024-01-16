@@ -1,6 +1,7 @@
 ﻿using AppData.IRepositories;
 using AppData.IServices;
 using AppData.Models;
+using AppData.Services;
 using AppData.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Filters;
@@ -17,13 +18,15 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         private IListImageService _imageService;
         private IAccountService _accountService;
         private IBillRepository _billRepository;
+        private IEmailService _emailService;
 
-        public AdCheckOutController(  IVwPhoneDetailService phoneDetailService, IListImageService imageService, IAccountService accountService, IBillRepository billRepository)
+        public AdCheckOutController(  IVwPhoneDetailService phoneDetailService, IListImageService imageService, IAccountService accountService, IBillRepository billRepository, IEmailService emailService)
         {
             _phoneDetailService = phoneDetailService;
             _imageService = imageService;
             _accountService = accountService;
             _billRepository = billRepository;
+            _emailService = emailService;
         }
         public async Task<IActionResult> Index()
         {
@@ -126,10 +129,18 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             {
                 model.Account.Status = FphoneConst.HoatDong;
                 model.Account.Points = 0;
-                model.Account.Password = security.Encrypt("", passrandom);
+                model.Account.Password = security.Encrypt("B3C1035D5744220E", passrandom);
                 var result = _accountService.CreateAccountForUser(model.Account);
                 if (result != null)
                 {
+                    ObjectEmailInput emailInput = new ObjectEmailInput()
+                    {
+                        FullName = model.Account.Name,
+                        SendTo = model.Account.Email,
+                        Subject = "Thông báo tạo tài khoản",
+                        Message = Utility.EmailCreateAccountTemplate(model.Account.Name,model.Account.Username, passrandom)
+                    };
+                     _emailService.SendEmail(emailInput); // gửi email
                     return Json("Tạo tài khoản thành công");
                 }
             }

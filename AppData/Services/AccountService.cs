@@ -63,6 +63,21 @@ namespace AppData.Services
             return user;
         }
 
+        public ApplicationUser GetByUserName(string userName)
+        {
+            var user = new ApplicationUser();
+            try
+            {
+                user = _dbContext.AspNetUsers.FirstOrDefault( c=>c.UserName == userName);
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            return user;
+        }
+
         public ApplicationUser Update(string id, ApplicationUser user,out DataError error)
         {
             error = new DataError() { Success = true };

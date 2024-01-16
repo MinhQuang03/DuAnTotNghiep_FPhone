@@ -43,6 +43,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
                 item.FirstImage = _imageService.GetFirstImageByIdPhondDetail(item.IdPhoneDetail) == ""
                     ? " "
                     : _imageService.GetFirstImageByIdPhondDetail(item.IdPhoneDetail);
+                item.CountImei = _phoneDetailService.CountPhoneDetailFromImei(item.IdPhoneDetail);
             }
             model.Brand = await _companyRepository.GetAll();
            model.listRam = await _ramRepository.GetAll();

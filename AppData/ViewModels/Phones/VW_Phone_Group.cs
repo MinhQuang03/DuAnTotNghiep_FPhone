@@ -8,7 +8,7 @@ namespace AppData.ViewModels.Phones
     public class VW_Phone_Group
     {
         [Key]
-        public Guid IdPhone { get; set; }
+        public Guid IdPhone { get; set; } = Guid.NewGuid();
         public string? PhoneName { get; set; }
         public string? Image { get; set; }
         public string? ProductionComanyName { get; set; }

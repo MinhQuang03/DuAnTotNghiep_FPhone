@@ -38,7 +38,7 @@ public class AccountsController : Controller
     public IActionResult Index()
     {
 
-        ViewBag.product = _context.PhoneDetailds.Count();
+        ViewBag.product = _context.WarrantyCards.Where(a => a.Status == 0).Count();
         ViewBag.Neworder = _context.Bill.Where(a => a.Status == 0).Count();
         ViewBag.contact = _context.Bill.Where(a => a.Status == 2).Count();
         ViewBag.user = _context.Accounts.Count();
@@ -131,14 +131,16 @@ public class AccountsController : Controller
         Account Accounts = _context.Accounts.Find(id);
         Accounts.Status = 1;
         _context.SaveChanges();
-        return RedirectToAction("KhachHang");
+        return Json(new { success = true, data = "/Accounts/KhachHang" });
+
+    
     }
     public IActionResult Editkhachhang1(Guid id)
     {
         Account Accounts = _context.Accounts.Find(id);
         Accounts.Status = 0;
         _context.SaveChanges();
-        return RedirectToAction("KhachHang");
+        return Json(new { success = true, data = "/Accounts/KhachHang" });
     }
     public async Task<RedirectResult> LogOut()
     {
@@ -152,7 +154,7 @@ public class AccountsController : Controller
         Response.Cookies.Delete(CookieAuthenticationDefaults.AuthenticationScheme);
         return RedirectPermanent("/home");
     }
-    public async Task<IActionResult> KhachHang(int? pageNumber, int pageSize = 5, string? search = "")
+    public async Task<IActionResult> KhachHang(int? pageNumber, int pageSize = 10, string? search = "")
     {
         if (!string.IsNullOrEmpty(search))
         {

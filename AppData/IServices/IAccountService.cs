@@ -8,6 +8,7 @@ namespace AppData.IServices
     {
         public List<ApplicationUser> GetAllAsync(ApplicationUser Search, ListOptions options);
         public ApplicationUser GetById(string id);
+        public ApplicationUser GetByUserName(string userName);
         public ApplicationUser Update(string id, ApplicationUser user,out DataError error);
         public Account UpdateUser(Guid id, Account user, out DataError error);
         public Account GetUserByEmail(string email);

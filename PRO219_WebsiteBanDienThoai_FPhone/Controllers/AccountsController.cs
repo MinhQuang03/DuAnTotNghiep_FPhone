@@ -404,7 +404,7 @@ public class AccountsController : Controller
         var cart = _context.CartDetails.FirstOrDefault(a => a.Id == id);
         _context.CartDetails.Remove(cart);
         _context.SaveChanges();
-        return RedirectToAction("ShowCart");
+        return Json(new { success = true, data = "/Accounts/ShowCart" });
     }
     public async Task<IActionResult> AddToCard(Guid id)
     {
@@ -488,7 +488,7 @@ public class AccountsController : Controller
             var jsonString = JsonConvert.SerializeObject(cart);
             HttpContext.Session.SetString("Cart", jsonString);
         }
-        return RedirectToAction("Cart");
+        return Json(new { success = true, data = "/Accounts/Cart" });
     }
 
     [HttpPost]

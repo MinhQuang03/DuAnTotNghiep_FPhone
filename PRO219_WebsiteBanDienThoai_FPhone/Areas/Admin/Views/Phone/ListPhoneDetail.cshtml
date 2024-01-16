@@ -1,4 +1,6 @@
-﻿@model PRO219_WebsiteBanDienThoai_FPhone.ViewModel.AdPhoneDetailViewModel
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model PRO219_WebsiteBanDienThoai_FPhone.ViewModel.AdPhoneDetailViewModel
 
 @{
     ViewData["Title"] = "Quản lý sản phẩm";
@@ -63,6 +65,9 @@
           <th>
               Màu sắc
           </th>
+            <th>
+                Ram
+            </th>
           <th>
               Giá tiền
           </th>
@@ -90,7 +95,9 @@
                 <img src="@item.FirstImage" width="80px"/>
             </td>
             <td class="text-center"> @item.ColorName</td>
-            <td class="text-center">@item.Price</td>
+                <td class="text-center">@item.RamName</td>
+                <td class="text-center">@item.Price?.ToString("C", new CultureInfo("vi-VN"))</td>
+            
             <td class="text-center">@item.ProductionCompanyName</td>
             <td class="text-center">@(item.Status == 0?"Hoạt động":"Ngưng hoạt động")</td>
             <td class="text-center">

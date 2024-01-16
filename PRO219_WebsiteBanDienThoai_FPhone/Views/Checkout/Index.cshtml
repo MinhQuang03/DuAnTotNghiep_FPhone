@@ -172,7 +172,9 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script src="~/Checkout/lib/easing/easing.min.js"></script>
     <script src="~/Checkout/lib/owlcarousel/owl.carousel.min.js"></script>
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <!-- Contact Javascript File -->
     <script src="~/Checkout/mail/jqBootstrapValidation.min.js"></script>
     <script src="~/Checkout/mail/contact.js"></script>
@@ -202,11 +204,26 @@
                             data: $("#checkoutForm").serialize(),
                             success: function (response) {
                                 if (response.success) {
-                                    // Chuyển hướng đến trang thanh toán cod (thanh toán khi nhận hàng)
-                                    window.location.href = response.data;
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Thành công!',
+                                        text: 'Đặt hàng thành côn.',
+                                        showConfirmButton: false,
+                                        timer: 2000, // Thời gian hiển thị thông báo (ms)
+                                        onClose: function () {
+                                            // Sau khi thông báo biến mất, reload lại trang
+                                            window.location.href = response.data;
+                                        }
+                                    });
+                                    
                                 } else {
                                     // Xử lý lỗi nếu cần
-                                    console.error("Banktransfer request failed.");
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Lỗi!',
+                                        text: 'Đã xảy ra lỗi khi xử lý thanh toán. Vui lòng thử lại hoặc liên hệ hỗ trợ.'
+                                    });
+
                                 }
                             },
                             error: function () {
@@ -224,11 +241,26 @@
                             data: $("#checkoutForm").serialize(),
                             success: function (response) {
                                 if (response.success) {
-                                    // Chuyển hướng đến trang thanh toán của VNPAY
-                                    window.location.href = response.data;
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Thành công!',
+                                        text: 'Đặt hàng thành công .',
+                                        showConfirmButton: false,
+                                        timer: 2000, // Thời gian hiển thị thông báo (ms)
+                                        onClose: function () {
+                                            // Sau khi thông báo biến mất, reload lại trang
+                                            window.location.href = response.data;
+                                        }
+                                    });
+                                   
                                 } else {
                                     // Xử lý lỗi nếu cần
-                                    console.error("Payment request failed.");
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Lỗi!',
+                                        text: 'Đã xảy ra lỗi khi xử lý thanh toán. Vui lòng thử lại hoặc liên hệ hỗ trợ.'
+                                    });
+
                                 }
                             },
                             error: function () {
@@ -245,11 +277,25 @@
                             data: $("#checkoutForm").serialize(),
                             success: function (response) {
                                 if (response.success) {
-                                    // Chuyển hướng đến trang thanh toán cod (thanh toán khi nhận hàng)
-                                    window.location.href = response.data;
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Thành công!',
+                                        text: 'Đặt hàng thành công.',
+                                        showConfirmButton: false,
+                                        timer: 2000, // Thời gian hiển thị thông báo (ms)
+                                        onClose: function () {
+                                            // Sau khi thông báo biến mất, reload lại trang
+                                            window.location.href = response.data;
+                                        }
+                                    });
                                 } else {
                                     // Xử lý lỗi nếu cần
-                                    console.error("Banktransfer request failed.");
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Lỗi!',
+                                        text: 'Đã xảy ra lỗi khi xử lý thanh toán. Vui lòng thử lại hoặc liên hệ hỗ trợ.'
+                                    });
+
                                 }
                             },
                             error: function () {
