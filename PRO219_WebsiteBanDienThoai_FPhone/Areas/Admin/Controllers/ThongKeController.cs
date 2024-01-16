@@ -39,6 +39,7 @@ namespace App_View.Areas.Admin.Controllers
                  model.billGanDay = _billGanDayServices.listBillGanDayViewGroup();
             return View(model);
         }
+        [HttpGet("ThongKe/Chart")]
         public JsonResult Chart()
         {
             vOverView model = new vOverView();
@@ -46,7 +47,7 @@ namespace App_View.Areas.Admin.Controllers
             model.billGanDay = _billGanDayServices.listBillGanDayViewGroup();
             return Json(model);
         }
-
+        [HttpGet]
         public IActionResult TiLeBill()
         {
             vOverView model = new vOverView();

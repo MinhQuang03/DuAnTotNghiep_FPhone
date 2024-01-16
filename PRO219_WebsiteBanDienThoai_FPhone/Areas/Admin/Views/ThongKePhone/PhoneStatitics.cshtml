@@ -1,4 +1,4 @@
-﻿@model AppData.ViewModels.ThongKe.vOverView;
+﻿@model AppData.ViewModels.ThongKe.PhoneStatitics;
 @using Microsoft.AspNetCore.Identity;
 
 
@@ -26,52 +26,10 @@
                             <div>
                                 <p class="m-b-0 text-muted">Doanh thu</p>
                                 <h2 class="m-b-0">
-                                    @Model.DoanhThuThangNay.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))
+                                    @Model.NamePhoneThangNay
                                 </h2>
                             </div>
-
-
-
-                            @if (Model.DoanhThuThangNay > @Model.DoanhThuThangTruoc)
-                            {
-                                if (@Model.DoanhThuThangNay > 0)
-                                {
-                                    decimal TileDoanhThu = ((@Model.DoanhThuThangNay - @Model.DoanhThuThangTruoc) / @Model.DoanhThuThangTruoc) * 100;
-                                    decimal TiLeTangGiamDoanhThu = Math.Round(TileDoanhThu, 2);
-                                    <span class="badge badge-pill badge-cyan font-size-12">
-                                        <i class="anticon anticon-arrow-up"></i>
-                                        <span class="font-weight-semibold m-l-5">@TiLeTangGiamDoanhThu %</span>
-                                    </span>
-                                }
-                                else
-                                {
-
-                                    <span class="badge badge-pill badge-cyan font-size-12">
-                                        <i class="anticon anticon-arrow-up"></i>
-                                        <span class="font-weight-semibold m-l-5">@Model.DoanhThuThangNay</span>
-                                    </span>
-                                }
-
-                            }
-                            else if (@Model.DoanhThuThangNay < @Model.DoanhThuThangTruoc)
-                            {
-
-                                decimal TileDoanhThu = ((@Model.DoanhThuThangTruoc - @Model.DoanhThuThangNay) / @Model.DoanhThuThangTruoc) * 100;
-                                decimal TiLeTangGiamDoanhThu = Math.Round(TileDoanhThu, 2);
-                                <span class="badge badge-pill badge-red font-size-12">
-                                    <i class="anticon anticon-arrow-down"></i>
-                                    <span class="font-weight-semibold m-l-5">@TiLeTangGiamDoanhThu %</span>
-                                </span>
-                            }
-                            else
-                            {
-
-                                <span class="badge badge-pill badge-cyan font-size-12">
-                                    <i class="anticon anticon-arrow-up"></i>
-                                    <span class="font-weight-semibold m-l-5">0 %</span>
-                                </span>
-                            }
-
+              
 
                         </div>
                         <div class="m-t-40">
@@ -80,7 +38,7 @@
                                     <span class="badge badge-primary badge-dot m-r-10"></span>
                                     <span class="text-gray font-weight-semibold font-size-13">Tháng trước</span>
                                 </div>
-                                <span class="text-dark font-weight-semibold font-size-13">@Model.DoanhThuThangTruoc.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</span>
+                                <span class="text-dark font-weight-semibold font-size-13">@Model.NamePhoneThangTruoc</span>
                             </div>
 
                         </div>
@@ -93,18 +51,18 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <p class="m-b-0 text-muted">Đánh giá</p>
-                                <h2 class="m-b-0">@Model.DanhGiaThangNay.ToString("#,0") Đánh giá</h2>
+                                <h2 class="m-b-0">@Model.SlBanThangNay</h2>
                             </div>
 
-                            @if (@Model.DanhGiaThangNay > @Model.DanhGiaThangTruoc)
+                            @if (@Model.SlBanThangNay > @Model.SlBanThangTruoc)
                             {
-                                if (@Model.DanhGiaThangTruoc > 0)
+                                if (@Model.SlBanThangTruoc > 0)
                                 {
-                                    double TileDoanhThu = ((@Model.DanhGiaThangNay - @Model.DanhGiaThangTruoc) / @Model.DanhGiaThangTruoc) * 100;
-                                    double TiLeTangGiamDoanhThu = Math.Round(TileDoanhThu, 2);
+                                    int? TileDoanhThu = ((@Model.SlBanThangNay - @Model.SlBanThangTruoc) / @Model.SlBanThangTruoc) * 100;
+                                
                                     <span class="badge badge-pill badge-cyan font-size-12">
                                         <i class="anticon anticon-arrow-up"></i>
-                                        <span class="font-weight-semibold m-l-5">@TiLeTangGiamDoanhThu %</span>
+                                        <span class="font-weight-semibold m-l-5">@TileDoanhThu %</span>
                                     </span>
                                 }
                                 else
@@ -112,19 +70,19 @@
 
                                     <span class="badge badge-pill badge-cyan font-size-12">
                                         <i class="anticon anticon-arrow-up"></i>
-                                        <span class="font-weight-semibold m-l-5">@Model.DanhGiaThangNay.ToString("#,0") Đánh giá </span>
+                                        <span class="font-weight-semibold m-l-5">@Model.SlBanThangNay</span>
                                     </span>
                                 }
 
                             }
-                            else if (@Model.DanhGiaThangNay < @Model.DanhGiaThangTruoc)
+                            else if (@Model.SlBanThangNay < @Model.SlBanThangTruoc)
                             {
 
-                                double TileDoanhThu = ((@Model.DanhGiaThangTruoc - @Model.DanhGiaThangNay) / @Model.DanhGiaThangTruoc) * 100;
-                                double TiLeTangGiamDoanhThu = Math.Round(TileDoanhThu, 2);
+                                int? TileDoanhThu = ((@Model.SlBanThangTruoc - @Model.SlBanThangNay) / @Model.SlBanThangTruoc) * 100;
+                            
                                 <span class="badge badge-pill badge-red font-size-12">
                                     <i class="anticon anticon-arrow-down"></i>
-                                    <span class="font-weight-semibold m-l-5">@TiLeTangGiamDoanhThu %</span>
+                                    <span class="font-weight-semibold m-l-5">@TileDoanhThu %</span>
                                 </span>
                             }
                             else
@@ -143,7 +101,7 @@
                                     <span class="badge badge-success badge-dot m-r-10"></span>
                                     <span class="text-gray font-weight-semibold font-size-13">Tháng trước</span>
                                 </div>
-                                <span class="text-dark font-weight-semibold font-size-13">@Model.DanhGiaThangTruoc.ToString("#,0") Đánh giá</span>
+                                <span class="text-dark font-weight-semibold font-size-13">@Model.SlBanThangTruoc</span>
                             </div>
 
                         </div>
@@ -158,43 +116,9 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <p class="m-b-0 text-muted">Đơn đặt hàng</p>
-                                <h2 class="m-b-0">@Model.BillOnlThangNay.ToString("#,0") đơn hàng</h2>
+                                <h2 class="m-b-0">@Model.NameColorThangNay</h2>
                             </div>
-                            @if (@Model.BillOnlThangNay > @Model.BillOnlThangTruoc)
-                            {
-                                if (@Model.BillOnlThangTruoc > 0)
-                                {
-                                    double TileDoanhThu = ((@Model.BillOnlThangNay - @Model.BillOnlThangTruoc) / @Model.BillOnlThangTruoc) * 100;
-                                    double TiLeTangGiamDoanhThu = Math.Round(TileDoanhThu, 2);
-                                    <span class="badge badge-pill badge-cyan font-size-12">
-                                        <i class="anticon anticon-arrow-up"></i>
-                                        <span class="font-weight-semibold m-l-5">@TiLeTangGiamDoanhThu %</span>
-                                    </span>
-                                }
-                                else
-                                {
-                                    <span class="badge badge-pill badge-cyan font-size-12">
-                                        <i class="anticon anticon-arrow-up"></i>
-                                        <span class="font-weight-semibold m-l-5">@Model.BillOnlThangNay.ToString("#,0") đơn hàng</span>
-                                    </span>
-                                }
-                            }
-                            else if (@Model.BillOnlThangNay < @Model.BillOnlThangTruoc)
-                            {
-                                double TileDoanhThu = ((@Model.BillOnlThangTruoc - @Model.BillOnlThangNay) / @Model.BillOnlThangTruoc) * 100;
-                                double TiLeTangGiamDoanhThu = Math.Round(TileDoanhThu, 2);
-                                <span class="badge badge-pill badge-red font-size-12">
-                                    <i class="anticon anticon-arrow-down"></i>
-                                    <span class="font-weight-semibold m-l-5">@TiLeTangGiamDoanhThu %</span>
-                                </span>
-                            }
-                            else
-                            {
-                                <span class="badge badge-pill badge-red font-size-12">
-                                    <i class="anticon anticon-arrow-up"></i>
-                                    <span class="font-weight-semibold m-l-5">0 %</span>
-                                </span>
-                            }
+                            
                         </div>
                         <div class="m-t-40">
                             <div class="d-flex justify-content-between">
@@ -202,7 +126,7 @@
                                     <span class="badge badge-warning badge-dot m-r-10"></span>
                                     <span class="text-gray font-weight-semibold font-size-13">Tháng trước</span>
                                 </div>
-                                <span class="text-dark font-weight-semibold font-size-13">@Model.BillOnlThangTruoc.ToString("#,0") đơn hàng </span>
+                                <span class="text-dark font-weight-semibold font-size-13">@Model.NameColorThangTruoc</span>
                             </div>
 
                         </div>
@@ -216,34 +140,34 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <p class="m-b-0 text-muted">Đơn hàng tại quầy</p>
-                                <h2 class="m-b-0">@Model.BillOffThangNay.ToString("#,0") đơn hàng</h2>
+                                <h2 class="m-b-0">@Model.SlColorThangNay</h2>
                             </div>
-                                        @if(@Model.BillOffThangNay > @Model.BillOffThangTruoc)
+                            @if (@Model.SlColorThangNay > @Model.SlColorThangTruoc)
                             {
-                                        if (@Model.BillOffThangTruoc > 0)
+                                if (@Model.SlColorThangTruoc > 0)
                                 {
-                                            double TileDoanhThu = ((@Model.BillOffThangNay - @Model.BillOffThangTruoc) / @Model.BillOffThangTruoc) * 100;
-                                    double TiLeTangGiamDoanhThu = Math.Round(TileDoanhThu, 2);
+                                    int? TileDoanhThu = ((@Model.SlColorThangNay - @Model.SlColorThangTruoc) / @Model.SlColorThangTruoc) * 100;
+                                   
                                     <span class="badge badge-pill badge-cyan font-size-12">
                                         <i class="anticon anticon-arrow-up"></i>
-                                        <span class="font-weight-semibold m-l-5">@TiLeTangGiamDoanhThu %</span>
+                                        <span class="font-weight-semibold m-l-5">@TileDoanhThu %</span>
                                     </span>
                                 }
                                 else
                                 {
                                     <span class="badge badge-pill badge-cyan font-size-12">
                                         <i class="anticon anticon-arrow-up"></i>
-                                                        <span class="font-weight-semibold m-l-5">(@Model.BillOffThangNay.ToString("#,0") đơn hàng</span>
+                                        <span class="font-weight-semibold m-l-5">@Model.SlColorThangNay</span>
                                     </span>
                                 }
                             }
-                            else if (@Model.BillOffThangNay < @Model.BillOffThangTruoc)
+                            else if (@Model.SlColorThangNay < @Model.SlColorThangTruoc)
                             {
-                                 double TileDoanhThu = (@Model.BillOffThangTruoc - (@Model.BillOffThangNay) / @Model.BillOffThangTruoc) * 100;
-                                double TiLeTangGiamDoanhThu = Math.Round(TileDoanhThu, 2);
+                                int? TileDoanhThu = (@Model.SlColorThangTruoc - (@Model.SlColorThangNay) / @Model.SlColorThangTruoc) * 100;
+                               
                                 <span class="badge badge-pill badge-red font-size-12">
                                     <i class="anticon anticon-arrow-down"></i>
-                                    <span class="font-weight-semibold m-l-5">@TiLeTangGiamDoanhThu %</span>
+                                    <span class="font-weight-semibold m-l-5">@TileDoanhThu %</span>
                                 </span>
                             }
                             else
@@ -259,9 +183,9 @@
                                 <div class="d-flex align-items-center">
                                     <span class="badge badge-warning badge-dot m-r-10"></span>
                                     <span class="text-gray font-weight-semibold font-size-13">Tháng trước</span>
-                                   
+
                                 </div>
-                                <span class="text-dark font-weight-semibold font-size-13"> @Model.BillOffThangTruoc.ToString("#,0") đơn hàng</span>
+                                <span class="text-dark font-weight-semibold font-size-13"> @Model.SlColorThangTruoc đơn hàng</span>
                             </div>
 
                         </div>
@@ -325,97 +249,6 @@
                         <a asp-controller="HoaDon" asp-action="TongQuanHoaDon" class="btn btn-sm btn-default">Xem tất cả</a>
                     </div>
                 </div>
-                <div class="m-t-30">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>STT</th>
-                                    <th>Mã Hóa đơn</th>
-                                    <th>Khách hàng</th>
-                                    <th>Ngày</th>
-                                    <th>Giá trị</th>
-                                    <th>Trạng thái thanh toán</th>
-                                    <th>Trạng thái giao hàng</th>
-
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in Model.billGanDay)
-                                {
-
-                                    <tr>
-                                        <td>@item.STT</td>
-
-                                        <td>@item.MaHoaDon</td>
-
-                                        <td>@item.NgayTao.ToString("hh:mm tt dd/MM/yyyy")</td>
-                                        <td>@item.TenNguoiMua</td>
-                                          <td>@item.GiaTien</td>
-
-                                        
-
-
-                                        @if (item.TrangThaiThanhToan == 1)
-                                        {
-                                            <td>
-                                               Đã thanh toán
-                                            </td>
-                                        }
-                                        else if (item.TrangThaiThanhToan == 2)
-                                        {
-                                            <td>
-                                               Chưa thanh toán
-                                            </td>
-                                        }
-                                       
-
-                                        @if (item.TrangThaiGiaoHang == 1)
-                                        {
-                                            <td>
-                                                Chờ xác nhận
-                                            </td>
-                                        }
-                                        else if (item.TrangThaiGiaoHang == 1)
-                                        {
-                                            <td>
-                                                Đã Xác Nhận
-                                            </td>
-                                        }
-                                        else if (item.TrangThaiGiaoHang == 2)
-                                        {
-                                            <td>
-                                                Đang Giao
-                                            </td>
-                                        }
-                                        else if (item.TrangThaiGiaoHang == 3)
-                                        {
-                                            <td>
-                                                Đã Giao
-                                            </td>
-                                        }
-                                        else if (item.TrangThaiGiaoHang == 4)
-                                        {
-                                            <td>
-                                                Đã hủy
-                                            </td>
-                                        }
-                                        else if (item.TrangThaiGiaoHang ==5)
-                                        {
-                                            <td>
-                                                Xóa
-                                            </td>
-                                        }
-                                       
-
-                                    </tr>
-                                }
-
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -425,7 +258,6 @@
         <div class="card">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
-
                 </div>
             </div>
         </div>
@@ -460,9 +292,8 @@
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
-      <script src="~/js/moment.js"></script> 
-   
-   
+        <script src="~/Admin/moment/moment.min.js"></script>
+
         <script>
 
             var arrLabels = ["Thành công", "Hủy", "Các trạng thái khác"];
@@ -478,24 +309,23 @@
             }
 
             const colors = generateRandomColors(20);
-            function updateChart1() {
+            function updateChart1(fromDate, toDate) {
                 $.ajax({
-                    method: "GET",
-                    url: "ThongKe/Chart",
-                    // data: { fromDate: '', toDate: '' },
+                    type: "GET",
+                    url: "@Url.Action("Chart", "ThongKe")",
+                    data: { fromDate: '', toDate: '' },
                     success: function (rs) {
-                        console.log(rs);
                         var arrData = [0, 0, 0];
                         var jsonData = JSON.parse(rs);
                         $.each(jsonData.Data, function (i, item) {
                             var soLuongHoaDonThanhCong = jsonData.Data[0].BillThanhCong;
                             var soLuongHoaDonThatBai = jsonData.Data[0].BillThatbai;
-                        //    var soLuongHoaDonCho = jsonData.Data[0].SoluongHoaDonCho;
+                            //    var soLuongHoaDonCho = jsonData.Data[0].SoluongHoaDonCho;
 
                             // Cập nhật giá trị mới cho biểu đồ
                             arrData[0] = soLuongHoaDonThanhCong;
                             arrData[1] = soLuongHoaDonThatBai;
-                     //       arrData[2] = soLuongHoaDonCho;
+                            //       arrData[2] = soLuongHoaDonCho;
 
                         });
                         // Cập nhật dữ liệu cho biểu đồ hiện tại
@@ -595,8 +425,8 @@
                         $.each(jsonData.Data, function (i, item) {
                             console.log("Hi, chào cậu ");
 
-                            arrOnline.push(item.BillThanhCong);
-                            arrOffline.push(item.BillThanhCong);
+                            arrOnline.push(item.Online);
+                            arrOffline.push(item.Ofline);
                             dates.push(item.ThoiGian);
                             console.log(dates);
                             console.log(arrOffline);
@@ -687,3 +517,5 @@
 
         </script>
     }
+
+
