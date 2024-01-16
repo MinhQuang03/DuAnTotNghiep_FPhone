@@ -124,7 +124,7 @@ namespace AppData.Repositories
             if (adminResult.Succeeded)
             {
                 var staff = _dbContext.AspNetUsers.FirstOrDefault(c => c.UserName == model.UserName);
-                if (staff.Status ==0)
+                if (staff.Status ==FphoneConst.HoatDong)
                 {
                     x.ApplicationUser = staff;
                     return await GenerateToken(x);
@@ -138,7 +138,7 @@ namespace AppData.Repositories
             LoginInputVM x = new LoginInputVM();
             Security security = new Security();
             var userResult = _dbContext.Accounts.FirstOrDefault(c => c.Username == model.UserName);
-            if (userResult != null && userResult.Status == 0)
+            if (userResult != null && userResult.Status == FphoneConst.HoatDong)
             {
                 string giaima = security.Encrypt("B3C1035D5744220E", model.Password);
                 if (userResult.Password == giaima)

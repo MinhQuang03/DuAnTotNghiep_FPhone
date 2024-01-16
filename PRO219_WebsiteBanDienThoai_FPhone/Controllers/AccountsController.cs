@@ -144,7 +144,6 @@ public class AccountsController : Controller
             var principal = new ClaimsPrincipal(identity);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-            
             // chuyển hướng đế trang admin
             if (respo.Roles.Contains("Admin") || respo.Roles.Contains("Staff"))
             {
