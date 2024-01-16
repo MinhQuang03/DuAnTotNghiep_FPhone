@@ -14,9 +14,9 @@
                 <li class="glide__slide">
                     <div class="hero__center">
                         <div class="hero__left">
-                            <span class="">New Inspiration 2020</span>
-                            <h1 class="">PHONES MADE FOR YOU!</h1>
-                            <p>Trending from mobile and headphone style collection</p>
+                            <span class="">Sản phẩm mới 2024</span>
+                            <h1 class="">Điện thoại dành cho bạn!</h1>
+                            <p>Top điện thoại hàng đầu</p>
                             <a href="#">
                                 <button class="hero__btn">SHOP NOW</button>
                             </a>
@@ -31,9 +31,9 @@
                 <li class="glide__slide">
                     <div class="hero__center">
                         <div class="hero__left">
-                            <span>New Inspiration 2020</span>
-                            <h1>PHONES MADE FOR YOU!</h1>
-                            <p>Trending from mobile and headphone style collection</p>
+                            <span>Sản phẩm mới 2024</span>
+                            <h1>Điện thoại dành cho bạn!</h1>
+                            <p>Top điện thoại hàng đầu</p>
                             <a href="#">
                                 <button class="hero__btn">SHOP NOW</button>
                             </a>
@@ -75,9 +75,9 @@
             </div>
             <div class="collection__content">
                 <div class="collection__data">
-                    <span>New Colors Introduced</span>
+                    <span>Mẫu mới</span>
                     <h1>HEADPHONES</h1>
-                    <a href="#shop">SHOP NOW</a>
+                    <a href="#show-phone">SHOP NOW</a>
                 </div>
             </div>
         </div>
@@ -87,9 +87,9 @@
             </div>
             <div class="collection__content">
                 <div class="collection__data">
-                    <span>Phone Device Presets</span>
+                    <span>Mẫu mới</span>
                     <h1>SMARTPHONES</h1>
-                    <a href="#">SHOP NOW</a>
+                    <a href="#show-phone">SHOP NOW</a>
                 </div>
             </div>
         </div>
@@ -142,9 +142,17 @@
                                 <div class="product__price">
                                         <h4>@item.Price?.ToString("C", new CultureInfo("vi-VN"))</h4>
                                 </div>
-                                <a asp-controller="Accounts" asp-action="AddToCard" asp-route-id="@item.Id">
-                                    <button type="submit" class="product__btn">Thêm vào giỏ hàng</button>
-                                </a>
+                                @if(item.countPhone>0){
+                                            <a asp-controller="Accounts" asp-action="AddToCard" asp-route-id="@item.Id">
+                                                <button type="submit" class="product__btn">Thêm vào giỏ hàng</button>
+                                            </a>
+                                        }else
+                                        {
+                                            <a asp-controller="PhoneDetail" asp-action="PhoneDetail" asp-route-id="@item.IdPhone">
+                                                <button type="submit" class="product__btn">Chi tiết</button>
+                                            </a>
+                                        }
+
                             </div>
                             </div>
                         </li>
@@ -176,34 +184,15 @@
         <div class="section__titles category__titles ">
             <div class="section__title filter-btn active" data-id="All Products">
                 <span class="dot"></span>
-                <h1 class="primary__title">All Products</h1>
+                <h1 class="primary__title">Tất cả sản phẩm</h1>
             </div>
         </div>
-        <div class="section__titles">
-            <div class="section__title filter-btn" data-id="Trending Products">
-                <span class="dot"></span>
-                <h1 class="primary__title">Trending Products</h1>
-            </div>
-        </div>
-
-        <div class="section__titles">
-            <div class="section__title filter-btn" data-id="Special Products">
-                <span class="dot"></span>
-                <h1 class="primary__title">Special Products</h1>
-            </div>
-        </div>
-
-        <div class="section__titles">
-            <div class="section__title filter-btn" data-id="Featured Products">
-                <span class="dot"></span>
-                <h1 class="primary__title">Featured Products</h1>
-            </div>
-        </div>
+        
 
     </div>
 </div>
 
-<div class="row container justify-content-between">
+<div id="show-phone" class="row container justify-content-between">
     @foreach (var item in Model.vPhoneGroup)
     {
         <div class="product category__products mt-2" style="height: 414.8px; width: 250px;">
