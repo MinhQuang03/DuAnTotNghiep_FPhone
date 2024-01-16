@@ -78,10 +78,6 @@
                     {
                         <span>Giảm giá theo tiền mặt</span>
                     }
-                    @if (item.TypeVoucher == 1)
-                    {
-                        <span>Giảm giá %</span>
-                    }
                     @if (item.TypeVoucher == 2)
                     {
                         <span>Miễn phí vận chuyển</span>
@@ -118,27 +114,7 @@
                     }
                 </td>
                 <td>
-                    @if (item.StatusVoucher == "0")
-                    {
-                        <div class="btn-group dropdown" style="cursor: pointer">
-                            <i class="fas fa-bars" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
-                            @* <a asp-action="EditDiscount" class="dropdown-item" asp-route-maVoucher="@item.Id">
-                                <i class="anticon anticon-gift"></i>
-                                Chỉnh sửa
-                            </a> *@
-                                <a asp-action="Edit" class="dropdown-item" asp-route-id="@item.Id"><i class="anticon anticon-edit"></i> Chỉnh sửa</a>
 
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="btn-group dropdown" style="cursor: pointer">
-                            <i class="fas fa-bars" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
-                            <div class="dropdown-menu">
-                                <a asp-action="EditDiscount" class="dropdown-item" asp-route-id="@item.Id"><i class="anticon anticon-edit"></i> Chỉnh sửa</a>
-                            </div>
-                        </div>
-                    }
 
                 </td>
                 <td>
