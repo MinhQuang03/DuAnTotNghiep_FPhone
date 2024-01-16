@@ -4,7 +4,6 @@
 @model VwProductDetailViewModel;
 @{
     ViewData["Title"] = "PhoneDetail";
-    var lstComment = ViewData["GetListComment"] as List<Review>;
     var idAccount = Model.IdAccount;
     var idPhone = Model.IdPhone;
     int index = 0;
@@ -310,7 +309,6 @@
                         </button>
                         <!-- Modal -->
                             <div class="modal fade showChiTiet" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                
                             </div>
                     </ul>
                 </div>
@@ -340,18 +338,25 @@
                         </div>
                     </fieldset>
                 </form>
-                @if (lstComment != null)
-                {
-                    <h3>@(lstComment.Count + " Bình luận")</h3>
+                
+                    <h3>@(Model.ListReview.Count + " Bình luận")</h3>
 
                     <!-- COMMENT 1 - START -->
-                    foreach (var item in lstComment)
+                    @foreach (var item in Model.ListReview)
                     {
                         var username = dbContext.Accounts.FirstOrDefault(p => p.Id == item.IdAccount);
                         <div class="media">
                             <a class="pull-left" href="#"><img class="media-object" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt=""></a>
                             <div class="media-body">
-                                <h4 class="media-heading">@username.Username</h4>
+                                @if (username == null)
+                                {
+                                    <h4 class="media-heading">Ẩn danh</h4>
+                                }
+                                else
+                                {
+                                    <h4 class="media-heading">@username.Username</h4>
+                                }
+                               
                                 <p>@item.Content</p>
                                 <ul class="list-unstyled list-inline media-detail pull-left">
                                     <li><i class="fa fa-calendar"></i>@item.DateTime.ToString("dd/MM/yyyy")</li>
@@ -364,9 +369,6 @@
                         </div>
                     }
                     
-                    <!-- COMMENT 1 - END -->
-                }                
-
             </div>
         </div>
     </div>

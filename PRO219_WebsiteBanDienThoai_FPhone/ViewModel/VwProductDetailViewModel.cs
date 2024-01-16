@@ -15,6 +15,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.ViewModel
       public string IdPhoneDetail { get; set; }
       public string? IdAccount { get; set; }
       public Phone Phone { get; set; } = new Phone();
+      public List<Review> ListReview { get; set; } = new List<Review>();
     }   
     
 }
