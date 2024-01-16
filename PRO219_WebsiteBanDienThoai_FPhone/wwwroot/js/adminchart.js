@@ -122,6 +122,128 @@ $.ajax({
     }
 });
 
+
+//-----------------------------------------------------------------------------------------------------
+
+$("#select_year").change(function () {
+    var month = $("#select_year").val();
+    var current = new Date();
+    $.ajax({
+        url: "https://localhost:44373/api/SellMonthlys/getYearId/2024" + month, success: function (result) {
+            console.log(result);
+            var chBar = document.getElementById("chBarmonth");
+            if (chBar) {
+                new Chart(chBar, {
+                    type: 'bar',
+                    data: {
+                        labels: result.date,
+                        datasets: [{
+                            data: result.dataQuantiy,
+                            backgroundColor: colors[0],
+                            label: "Bán ra"
+                        }]
+                    },
+                    options: {
+                        legend: {
+                            display: true
+                        },
+                        scales: {
+                            xAxes: [{
+                                barPercentage: 0.4,
+                                categoryPercentage: 0.5
+                            }]
+                        }
+                    }
+                });
+            }
+            /* bar chart */
+            var chBar2 = document.getElementById("chBar2month");
+            if (chBar2) {
+                new Chart(chBar2, {
+                    type: 'bar',
+                    data: {
+                        labels: result.date,
+                        datasets: [{
+                            data: result.dataMoney,
+                            backgroundColor: colors[1],
+                            label: "Doanh Thu"
+                        }]
+                    },
+                    options: {
+                        legend: {
+                            display: true
+                        },
+                        scales: {
+                            xAxes: [{
+                                barPercentage: 0.4,
+                                categoryPercentage: 0.5
+                            }]
+                        }
+                    }
+                });
+            }
+        }
+    });
+});
+
+$.ajax({
+    url: "https://localhost:44373/api/SellMonthlys/getYearId/2024", success: function (result) {
+        console.log(result);
+        var chBar = document.getElementById("chBarmonth");
+        if (chBar) {
+            new Chart(chBar, {
+                type: 'bar',
+                data: {
+                    labels: result.date,
+                    datasets: [{
+                        data: result.dataQuantiy,
+                        backgroundColor: colors[0],
+                        label: "Bán ra"
+                    }]
+                },
+                options: {
+                    legend: {
+                        display: true
+                    },
+                    scales: {
+                        xAxes: [{
+                            barPercentage: 0.4,
+                            categoryPercentage: 0.5
+                        }]
+                    }
+                }
+            });
+        }
+        /* bar chart */
+        var chBar2 = document.getElementById("chBar2month");
+        if (chBar2) {
+            new Chart(chBar2, {
+                type: 'bar',
+                data: {
+                    labels: result.date,
+                    datasets: [{
+                        data: result.dataMoney,
+                        backgroundColor: colors[1],
+                        label: "Doanh Thu"
+                    }]
+                },
+                options: {
+                    legend: {
+                        display: true
+                    },
+                    scales: {
+                        xAxes: [{
+                            barPercentage: 0.4,
+                            categoryPercentage: 0.5
+                        }]
+                    }
+                }
+            });
+        }
+    }
+});
+
+
 /* 3 donut charts */
 var donutOptions = {
     cutoutPercentage: 85,

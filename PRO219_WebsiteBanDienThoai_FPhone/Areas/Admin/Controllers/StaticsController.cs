@@ -37,5 +37,15 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             sellDailysViewmodel.LstSellDailys = obj.Where(c => (sellDailysViewmodel.Search.Month == null || c.CreateTime.Month == sellDailysViewmodel.Search.Month) && (sellDailysViewmodel.Search.Year == null || c.CreateTime.Year == sellDailysViewmodel.Search.Year)).ToList();
             return View(sellDailysViewmodel);
         }
+
+
+        public async Task<IActionResult> Monthly()
+        {
+            SellMonthlyViewModel sellMonthlyViewModel = new SellMonthlyViewModel();
+            var datajson = await _httpClient.GetStringAsync("api/SellMonthlys/get");
+            sellMonthlyViewModel.lstsellMonthlys = JsonConvert.DeserializeObject<List<SellMonthlys>>(datajson);
+            return View(sellMonthlyViewModel);
+        }
+
     }
 }

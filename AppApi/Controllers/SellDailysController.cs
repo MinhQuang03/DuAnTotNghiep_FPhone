@@ -34,7 +34,7 @@ namespace AppApi.Controllers
         [HttpGet("getYearId/{year}")]
         public async Task<IActionResult> GetByYear(int year)
         {
-            var results = new SellDaillysViewModel();
+            var results = new SellMonthllysViewModel();
             var datas = await _sellDailyRepository.GetByYear(year);
             List<string> date = new List<string>();
             List<decimal?> data_money = new List<decimal?>();
@@ -57,7 +57,7 @@ namespace AppApi.Controllers
         [HttpGet("getMonthId/{month}")]
         public async Task<IActionResult> GetByMonth(int month)
         {
-            var results = new SellDaillysViewModel();
+            var results = new SellMonthllysViewModel();
             var datas = await _sellDailyRepository.GetByMonth(month);
             DateTime now = DateTime.Now;
             int day = now.Day;
@@ -65,7 +65,7 @@ namespace AppApi.Controllers
             List<decimal?> data_money = new List<decimal?>();
             List<decimal?> data_quantity = new List<decimal?>();
       
-            for (int i = day - 14; i <= day ; i++)
+            for (int i = day - 7; i <= day ; i++)
             {
                 var dataMonth = datas.Where(e => e.CreateTime.Day == i);
                 var time = $"{i}/{month}";
