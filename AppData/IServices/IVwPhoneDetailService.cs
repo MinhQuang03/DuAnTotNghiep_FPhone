@@ -17,6 +17,8 @@ namespace AppData.IServices
         /// <param name="id">IdPhoneDetail</param>
         /// <returns></returns>
         VW_PhoneDetail getPhoneDetailByIdPhoneDetail(Guid id);
+
+        public PhoneDetaild getPhoneDetailById(Guid id);
         int CheckPhoneDetail(Guid id);
         /// <summary>
         /// đếm số lượng imei ( số lượng sản phẩm chưa bán )
@@ -28,5 +30,6 @@ namespace AppData.IServices
         public List<Review> GetListComment(string id);
         public int CreateComment(string comment, string idAccount, string idPhone);
      PhoneDetaild Add(PhoneDetaild obj);
+     public PhoneDetaild Update(PhoneDetaild obj);
     }
 }
