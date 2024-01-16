@@ -17,7 +17,7 @@
             @foreach (var item in Model)
             {
                 
-                @if (item.STT == 2)
+                @if (item.STT == 2 && item.Status == 1)
                 {
                     <div class="card mx-5" style="width: 18rem ; color = #800000">
                         <img src="~/img/ahihi.jpg" width="180px" height="250px">
@@ -34,7 +34,7 @@
             }
              @foreach (var item in Model)
             {
-                @if (item.STT == 1)
+                    @if (item.STT == 1 && item.Status == 1)
                 {
                    
                     <div class="card mx-5" style="width: 18rem; color = #000000">
@@ -51,7 +51,7 @@
             }
             @foreach (var item in Model)
             {
-                @if (item.STT == 3)
+                    @if (item.STT == 3 && item.Status == 1)
                 {
                     <div class="card mx-5" style="width: 11rem; color = #000000">
                         <img src="~/img/khanh.jpg" width="150px" height="220px">

@@ -8,20 +8,17 @@
 
 <h1>Thống Kê</h1>
 
-<div>
-    <span>Chọn năm</span>
-    <input id="select_year" type="number" min="1900" max="@(DateTime.Now.Year)" step="1" value="2023" />
-</div>
+
 <div class="w-100">
     <div class="inline-block w-45 float-left">
-        <canvas id="chBar"></canvas>
+        <canvas id="chBarmonth"></canvas>
     </div>
     <div class="inline-block w-45 float-right">
-        <canvas id="chBar1"></canvas>
+        <canvas id="chBar2month"></canvas>
     </div>
 </div>
 
-    <form method="post" class="col-12 px-xl-5 mx-5 row" asp-action="Index">
+    <form method="post" class="col-12 px-xl-5 mx-5 row" asp-action="Monthly">
         <div class="col">
             <span>Chọn Tháng </span>
             <input id="selection_month" asp-for="Search.Month" type="number" min="1" max="12" step="1" value="1" />

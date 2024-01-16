@@ -3,7 +3,7 @@
 --select *from BillDetails
 ----/****** Object:  StoredProcedure [dbo].[Caclu_Statitics_PerDay]    Script Date: 23/11/2023 09:49:08 ******/
 --EXEC [dbo].[Caclu_Statitics_PerDay]
---Select * from SellDaily
+--Select * from SellDailys
 --delete SellDaily
 --DELETE [Ranks]
 ----SET ANSI_NULLS ON
@@ -24,7 +24,7 @@ declare @timefrom Datetime,
 		@topquantity nvarchar(MAX),
 		@trahang decimal(18,2),
 		@totalmoneyafter decimal(18,2)
-	Set @timefrom = Coalesce(@timefrom, DATEADD(day, -60,  DATETRUNC( day,GETDATE())))
+	Set @timefrom = Coalesce(@timefrom, DATEADD(day, -2,  DATETRUNC( day,GETDATE())))
 	Set @timeto = Coalesce(@timeto ,DATEADD(minute, -1, DATETRUNC( day, GETDATE())))
 	Set @rate = CASE 
 							WHEN(Select SUM(Price)
@@ -83,8 +83,8 @@ declare @timefrom Datetime,
 	--------------------------------------------------------------------------------------------------------------------------------------	
 
 	------------------------INSERT--------------------------------------------------	
---	Insert Into SellDaily(Id,CreateTime,TotalMoneys,Refund,TotalQuantity,
-	--SellOnl,SellOff,BestSeller, [Status])
+Insert Into SellDailys(Id,CreateTime,TotalMoneys,Refund,TotalQuantity,
+	SellOnl,SellOff,BestSeller, [Status])
 	
 	----------------------------------------------------------------------------------------		
 	

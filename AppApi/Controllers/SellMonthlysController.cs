@@ -1,6 +1,7 @@
 ﻿using AppApi.ViewModels.SelldaillysViewModels;
 using AppData.IRepositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace AppApi.Controllers
 {
@@ -33,12 +34,14 @@ namespace AppApi.Controllers
         [HttpGet("getYearId/{year}")]
         public async Task<IActionResult> GetByYear(int year)
         {
-            var results = new SellDaillysViewModel();
+            var results = new SellMonthllysViewModel();
             var datas = await _sell.GetByYear(year);
+            DateTime now = DateTime.Now;
+            int y = now.Year;
             List<string> date = new List<string>();
             List<decimal?> data_money = new List<decimal?>();
             List<decimal?> data_quantity = new List<decimal?>();
-            for (int i = 1; i <= 12; i++)
+            for (int i = 1 ; i <= 12; i++)
             {
                 var dataMonth = datas.Where(e => e.CreateTime.Month == i);
                 var time = $"{i}/{year}";

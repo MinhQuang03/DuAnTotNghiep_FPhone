@@ -1,11 +1,23 @@
 Create View vOverView
 AS Select TOP(1)
 --------------------------------
-	(Select SUM(TotalMoney) From Bill 
-	WHERE PaymentDate > DATETRUNC(month ,GETDATE()) And PaymentDate < Getdate() and [Status] = 3 ) AS DoanhThuThangNay , 
+	Case 
+		WHEN (Select SUM(TotalMoney) From Bill 
+		WHERE PaymentDate > DATETRUNC(month ,GETDATE()) And PaymentDate < Getdate() and [Status] = 3 ) is null THEN 0
+		WHEN (Select SUM(TotalMoney) From Bill 
+	WHERE PaymentDate > DATETRUNC(month ,GETDATE()) And PaymentDate < Getdate() and [Status] = 3 ) is not null THEN (Select SUM(TotalMoney) From Bill 
+	WHERE PaymentDate > DATETRUNC(month ,GETDATE()) And PaymentDate < Getdate() and [Status] = 3 )
+	END 
+	AS DoanhThuThangNay , 
 	----------
+	CASE 
+		WHEN (Select SUM(TotalMoney) From Bill 
+	WHERE PaymentDate > DATEADD(MONTH, -1, DATETRUNC(month ,GETDATE())) And PaymentDate < DATETRUNC(month ,GETDATE()) and [Status] = 3 ) is null THEN 0
+		WHEN (Select SUM(TotalMoney) From Bill 
+	WHERE PaymentDate > DATEADD(MONTH, -1, DATETRUNC(month ,GETDATE())) And PaymentDate < DATETRUNC(month ,GETDATE()) and [Status] = 3 ) > 0 Then
 	(Select SUM(TotalMoney) From Bill 
-	WHERE PaymentDate > DATEADD(MONTH, -1, DATETRUNC(month ,GETDATE())) And PaymentDate < DATETRUNC(month ,GETDATE()) and [Status] = 3 ) AS DoanhThuThangTruoc ,
+	WHERE PaymentDate > DATEADD(MONTH, -1, DATETRUNC(month ,GETDATE())) And PaymentDate < DATETRUNC(month ,GETDATE()) and [Status] = 3 ) END 
+	AS DoanhThuThangTruoc ,
 	----------
 	(Select COUNT(Id) from Reviews
 	WHERE [DateTime] > DATETRUNC(month ,GETDATE()) And [DateTime] < Getdate() ) AS DanhGiaThangNay,
@@ -37,3 +49,18 @@ LEft join BillDetails  on  BillDetails.IdBill = Bill.Id
 
 select * from Bill
 select * from vOverView
+
+-----------------------------------------
+Create View BillGanDay
+as Select TOP(6)
+ROW_NUMBER() OVER(ORDER BY(SELECT NULL)) as STT,
+BillCode as MaHoaDon,
+CreatedTime As NgayTao , 
+[Name] AS TenNguoiMua,
+TotalMoney as GiaTien,
+[Status] TrangThaiGiaoHang,
+StatusPayment as TrangThaiThanhToan
+from Bill
+Order BY CreatedTime DESC
+
+Select * from BillGanDay

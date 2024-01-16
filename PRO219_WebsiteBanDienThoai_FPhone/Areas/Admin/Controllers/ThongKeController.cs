@@ -6,8 +6,6 @@ using AppData.ViewModels.ThongKe;
 
 //using AppData.ViewModels.DanhGia;
 
-using DocumentFormat.OpenXml.Spreadsheet;
-using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -39,6 +37,21 @@ namespace App_View.Areas.Admin.Controllers
             vOverView model = new vOverView();
                  model =  _overview.listOverViewGroup().FirstOrDefault();
                  model.billGanDay = _billGanDayServices.listBillGanDayViewGroup();
+            return View(model);
+        }
+        public JsonResult Chart()
+        {
+            vOverView model = new vOverView();
+            model = _overview.listOverViewGroup().FirstOrDefault();
+            model.billGanDay = _billGanDayServices.listBillGanDayViewGroup();
+            return Json(model);
+        }
+
+        public IActionResult TiLeBill()
+        {
+            vOverView model = new vOverView();
+            model = _overview.listOverViewGroup().FirstOrDefault();
+            
             return View(model);
         }
 

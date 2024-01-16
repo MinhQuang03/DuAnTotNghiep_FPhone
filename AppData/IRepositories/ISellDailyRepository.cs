@@ -12,5 +12,6 @@ namespace AppData.IRepositories
         Task<List<SellDailys>> GetAll();
         Task<SellDailys> GetById(Guid id);
         Task<List<SellDailys>> GetByYear(int year);
+        Task<List<SellDailys>> GetByMonth(int month);
     }
 }
