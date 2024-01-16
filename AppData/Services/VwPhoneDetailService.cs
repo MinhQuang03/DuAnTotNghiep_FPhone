@@ -159,6 +159,19 @@ public class VwPhoneDetailService : IVwPhoneDetailService
         }
         return lst;
     }
+    public PhoneDetaild getPhoneDetailById(Guid id)
+    {
+        var lst = new PhoneDetaild();
+        try
+        {
+            lst = _dbContext.PhoneDetailds.FirstOrDefault(c => c.Id == id);
+        }
+        catch (Exception e)
+        {
+
+        }
+        return lst;
+    }
 
     public int CheckPhoneDetail(Guid id)
     {
@@ -181,6 +194,23 @@ public class VwPhoneDetailService : IVwPhoneDetailService
         return obj;
     }
 
+    public PhoneDetaild Update(PhoneDetaild obj)
+    {
+        var dbo =  new PhoneDetaild();
+        try
+        {
+            dbo = _dbContext.PhoneDetailds.FirstOrDefault(c => c.Id == obj.Id);
+            BeanUtils.CopyAllPropertySameName(obj,dbo);
+            _dbContext.PhoneDetailds.Update(dbo);
+            _dbContext.SaveChanges();
+        }
+        catch (Exception e)
+        {
+           
+        }
+        
+        return dbo;
+    }
     public List<Review> GetListComment(string id)
     {
         return _dbContext.Reviews.Where(t => t.IdPhone.ToString() == id).ToList();

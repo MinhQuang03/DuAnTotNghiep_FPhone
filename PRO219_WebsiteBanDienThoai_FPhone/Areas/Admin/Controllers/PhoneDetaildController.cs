@@ -286,12 +286,18 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(Guid id, PhoneDetaild obj)
         {
-            var jsonData = JsonConvert.SerializeObject(obj);
+            //var jsonData = JsonConvert.SerializeObject(obj);
 
-            HttpContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+            //HttpContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PutAsync("api/PhoneDetaild/update", content);
-            return RedirectToAction("Index");
+            //var response = await _httpClient.PutAsync("api/PhoneDetaild/update", content);
+          var data =   _service.Update(obj);
+          if (data!=null)
+          {
+              return RedirectToAction("Index","Phone");
+            }
+
+          return View(obj);
         }
 
         public IActionResult ViewDetail(Guid id)    
