@@ -94,6 +94,11 @@
                                 <label>Phương thức vận chuyển</label>
                                 @Html.DropDownListFor(model => model.id, Enumerable.Empty<SelectListItem>(), "--Lựa chọn--", new { @class = "form-control", id = "AvailableService", onchange = "JCheckOut.ChangeService()" })
                             </div>
+                       @*      test *@
+                            <div class="col-md-6 form-group">
+                                <label>Voucher</label>
+                                <input id="maVoucher" class="form-control" type="text" placeholder="Mã Voucher">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -120,13 +125,18 @@
                             <div class="d-flex justify-content-between">
                                 <h6 class="font-weight-medium">Phí vận chuyển</h6>
                                 <h6 id="TotalShip" class="font-weight-medium">@totalShip</h6>
-                                <input hidden="" asp-for="ToTalShip" id="TotalShip" />
+                                <input hidden="" asp-for="ToTalShip" id="ToTalShipHide" />
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <h6 class="font-weight-medium">Giảm giá</h6>
+                                <h6 id="voucher" class="font-weight-medium"></h6>
+                                <input hidden  id="mucVoucher" />
                             </div>
                         </div>
                         <div class="pt-2">
                             <div class="d-flex justify-content-between mt-2">
                                 <h5>Tổng tiền thanh toán</h5>
-                                <input hidden="" asp-for="TotalMoney" id="TotalMoney" />
+                                <input hidden="" asp-for="TotalMoney" />
                                 <h5 id="TotalPayment">
                                     @{
                                         (total + totalShip)?.ToString("C0");
@@ -162,7 +172,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </form>
     </div>
@@ -186,7 +195,7 @@
     <script>
         $(document).ready(function () {
             JCheckOut.init();
-
+            JCheckOut.maVoucher();
          
             // Handle form submission
             $("#checkoutForm").submit(function (e) {
@@ -260,7 +269,7 @@
                         });
                         break;
                     case "paymentInStore":
-                        JCheckOut.ChangePay();
+                        // JCheckOut.ChangePay();
                         $.ajax({
                             type: "POST",
                             url: "Accounts/ORDERTT", // Đến method xử lý Order

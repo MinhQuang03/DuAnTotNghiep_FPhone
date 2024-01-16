@@ -100,5 +100,15 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
 	       var name =  data.Content.ReadAsStringAsync();
            return Json(name);
         }
+        [HttpGet("/CheckOut/GetVoucherByCode/{maVoucher}")]
+        public JsonResult GetVoucherByCode(string maVoucher)
+        {
+            var voucher = _context.Discount.FirstOrDefault(c =>c.NameVoucher == maVoucher);
+            if (voucher != null)
+            {
+                return Json(voucher);
+            }
+           return Json(null);
+        }
     }
 }

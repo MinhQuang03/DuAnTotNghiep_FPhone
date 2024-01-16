@@ -1,0 +1,182 @@
+﻿@using AppData.FPhoneDbContexts;
+@model IEnumerable<AppData.Models.Discount>
+
+@{
+    FPhoneDbContext context = new FPhoneDbContext();
+}
+<table id="data-table" class="table" style="text-align:center">
+
+    <thead>
+        <tr>
+            <th>
+                Mã Voucher
+            </th>
+            <th>
+                Tên
+            </th>
+            <th>
+                Mức ưu đãi
+            </th>
+            <th>
+                Điều kiện
+            </th>
+            <th>
+                Loại hình
+            </th>
+            <th>
+                Số lượng
+            </th>
+            @*    <th>
+            Ngày khởi tạo
+            </th> *@
+            <th>
+                Ngày bắt đầu
+            </th>
+            <th>
+                Ngày kết thúc
+            </th>
+            <th>
+                Trạng thái
+            </th>
+            <th>
+                <i class="anticon anticon-tool"></i>
+            </th>
+            <th>
+                <input type="checkbox" id="select-all-checkbox" class="checkbox_css" />
+            </th>
+        </tr>
+
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.MaVoucher
+                </td>
+                <td>
+                    @item.NameVoucher
+                </td>
+                <td>
+                    @if (item.TypeVoucher == 1)
+                    {
+                        decimal mucUuDai = decimal.Parse(item.MucUuDai.ToString());
+                        string mucUuDaiPhanTram = mucUuDai.ToString("0.0") + "%";
+                        @mucUuDaiPhanTram
+                    }
+
+                    else
+                    {
+                        @string.Format("{0:N0}đ", item.MucUuDai)
+                    }
+                </td>
+                <td>
+                    @string.Format("{0:N0}đ", item.DieuKien)
+                </td>
+                <td>
+                    @if (item.TypeVoucher == 0)
+                    {
+                        <span>Giảm giá theo tiền mặt</span>
+                    }
+                    @if (item.TypeVoucher == 1)
+                    {
+                        <span>Giảm giá %</span>
+                    }
+                    @if (item.TypeVoucher == 2)
+                    {
+                        <span>Miễn phí vận chuyển</span>
+                    }
+                </td>
+                <td>
+                    @item.Quantity
+                </td>
+                @*         <td>
+            @item.NgayTao
+            </td> *@
+                <td>
+                    @string.Format("{0:dd/MM/yyyy HH:mm}", item.DateStart)
+                </td>
+                <td>
+                    @string.Format("{0:dd/MM/yyyy HH:mm}", item.DateEnd)
+                </td>
+                <td>
+                    @if (item.StatusVoucher == "0")
+                    {
+                        <span>Hoạt động</span>
+                    }
+                    else if (item.StatusVoucher == "1")
+                    {
+                        <span>Không hoạt động</span>
+                    }
+                    else if (item.StatusVoucher == "2")
+                    {
+                        <span>Chưa bắt đầu</span>
+                    }
+                    else if (item.StatusVoucher == "3")
+                    {
+                        <span>Đã huỷ</span>
+                    }
+                </td>
+                <td>
+                    @if (item.StatusVoucher == "0")
+                    {
+                        <div class="btn-group dropdown" style="cursor: pointer">
+                            <i class="fas fa-bars" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+                            @* <a asp-action="EditDiscount" class="dropdown-item" asp-route-maVoucher="@item.Id">
+                                <i class="anticon anticon-gift"></i>
+                                Chỉnh sửa
+                            </a> *@
+                                <a asp-action="Edit" class="dropdown-item" asp-route-id="@item.Id"><i class="anticon anticon-edit"></i> Chỉnh sửa</a>
+
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="btn-group dropdown" style="cursor: pointer">
+                            <i class="fas fa-bars" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+                            <div class="dropdown-menu">
+                                <a asp-action="EditDiscount" class="dropdown-item" asp-route-id="@item.Id"><i class="anticon anticon-edit"></i> Chỉnh sửa</a>
+                            </div>
+                        </div>
+                    }
+
+                </td>
+                <td>
+                    <input type="checkbox" class="voucher-checkbox" data-value="@item.Id" />
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+    $(document).ready(function () {
+        $('#data-table').DataTable()
+        $('#select-all-checkbox').click(function () {
+            $('.voucher-checkbox').prop('checked', $(this).prop('checked'));
+        });
+
+
+        $('#delete-button').on('click', function () {
+            // Lấy danh sách id voucher đã chọn
+            var selectedIds = [];
+
+            $('.voucher-checkbox:checked').each(function () {
+                selectedIds.push($(this).data('value'));
+            });
+            // Gọi hàm để huỷ hoạt động voucher
+            huyHoatDongVoucher(selectedIds);
+        });
+        $('#restore-button').on('click', function () {
+            // Lấy danh sách id voucher đã chọn
+            var selectedIds = [];
+
+            $('.voucher-checkbox:checked').each(function () {
+                selectedIds.push($(this).data('value'));
+            });
+            // Gọi hàm để huỷ hoạt động voucher
+            KhoiPhucVoucher(selectedIds);
+        });
+
+    });
+</script>
