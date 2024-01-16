@@ -36,6 +36,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
         public async Task<IActionResult> Index()
         { 
             ListPhoneViewModel model = new ListPhoneViewModel();
+            model.Options.PageSize = 8;
             model.ListvVwPhoneDetails = _phoneDetailService.listVwPhoneDetails(model.SearchData, model.Options);
             //Gán ảnh cho sản phẩm(avatar)
             foreach (var item in model.ListvVwPhoneDetails)
@@ -62,6 +63,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
                 item.FirstImage = _imageService.GetFirstImageByIdPhondDetail(item.IdPhoneDetail) == ""
                     ? " "
                     : _imageService.GetFirstImageByIdPhondDetail(item.IdPhoneDetail);
+                item.CountImei = _phoneDetailService.CountPhoneDetailFromImei(item.IdPhoneDetail);
             }
             model.Brand = await _companyRepository.GetAll();
             model.listRam = await _ramRepository.GetAll();
@@ -80,6 +82,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
                 item.FirstImage = _imageService.GetFirstImageByIdPhondDetail(item.IdPhoneDetail) == ""
                     ? " "
                     : _imageService.GetFirstImageByIdPhondDetail(item.IdPhoneDetail);
+                item.CountImei = _phoneDetailService.CountPhoneDetailFromImei(item.IdPhoneDetail);
             }
             model.Brand = await _companyRepository.GetAll();
             model.listRam = await _ramRepository.GetAll();
@@ -99,6 +102,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
                 item.FirstImage = _imageService.GetFirstImageByIdPhondDetail(item.IdPhoneDetail) == ""
                     ? " "
                     : _imageService.GetFirstImageByIdPhondDetail(item.IdPhoneDetail);
+                item.CountImei = _phoneDetailService.CountPhoneDetailFromImei(item.IdPhoneDetail);
             }
             model.Brand = await _companyRepository.GetAll();
             model.listRam = await _ramRepository.GetAll();
@@ -112,12 +116,13 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
         {
             ListPhoneViewModel model = new ListPhoneViewModel();
             model.Options.PageSize += 10;
-            model.ListvVwPhoneDetails = _phoneDetailService.listVwPhoneDetails(model.SearchData, model.Options);
+            model.ListvVwPhoneDetails = _phoneDetailService.listVwPhoneDetails2(model.SearchData, model.Options);
             foreach (var item in model.ListvVwPhoneDetails)
             {
                 item.FirstImage = _imageService.GetFirstImageByIdPhondDetail(item.IdPhoneDetail) == ""
                     ? " "
                     : _imageService.GetFirstImageByIdPhondDetail(item.IdPhoneDetail);
+                item.CountImei = _phoneDetailService.CountPhoneDetailFromImei(item.IdPhoneDetail);
             }
             model.Brand = await _companyRepository.GetAll();
             model.listRam = await _ramRepository.GetAll();
