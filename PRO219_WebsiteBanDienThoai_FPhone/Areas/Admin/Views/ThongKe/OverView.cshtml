@@ -36,12 +36,12 @@
                             {
                                 if (@Model.DoanhThuThangNay > 0)
                                 {
-                                    decimal TileDoanhThu = ((@Model.DoanhThuThangNay - @Model.DoanhThuThangTruoc) / @Model.DoanhThuThangTruoc) * 100;
+                               @*      decimal TileDoanhThu = ((@Model.DoanhThuThangNay - @Model.DoanhThuThangTruoc) / @Model.DoanhThuThangTruoc) * 100;
                                     decimal TiLeTangGiamDoanhThu = Math.Round(TileDoanhThu, 2);
                                     <span class="badge badge-pill badge-cyan font-size-12">
                                         <i class="anticon anticon-arrow-up"></i>
                                         <span class="font-weight-semibold m-l-5">@TiLeTangGiamDoanhThu %</span>
-                                    </span>
+                                    </span> *@
                                 }
                                 else
                                 {
@@ -304,14 +304,9 @@
 <div class="row">
     <div class="col-lg-5">
         <div class="card">
-            <div class="card-body">
+            <div class="card-body" @* style="min-width: 100%; height: 400px; border: 1px solid #ccc" *@>
                 <h5>Tỉ lệ Đơn hàng thành công tháng này</h5>
-
-
-
-                <canvas id="myChart" style="min-height: 250px; height: 250px; max-height: 400px; max-width: 100%;"></canvas>
-
-
+                <div id="detailContent" style="min-width: 100%; height: 400px; border: 1px solid #ccc"> </div>
             </div>
         </div>
     </div>
@@ -431,24 +426,6 @@
         </div>
     </div>
 
-    @*<script src="~/Admin/vendors/chartjs/Chart.min.js"></script>
-    *@
-    @*<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.6/css/jquery.dataTables.css">
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.6/js/jquery.dataTables.js"></script>
-    *@
-    @*<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
-    <script src="~/Admin/moment/moment.min.js"></script>
-
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    *@
-
-
     @section scripts {
         @{
             await Html.RenderPartialAsync("_ValidationScriptsPartial");
@@ -460,10 +437,16 @@
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
       <script src="~/js/moment.js"></script> 
+      <script src="~/js/JChart.js"></script> 
+        <script >
+            $(document).ready(function(){
+                JChart.initList();
+            });
+        </script>
    
-   
-        <script>
+     @*    <script>
 
             var arrLabels = ["Thành công", "Hủy", "Các trạng thái khác"];
             var arrData = [0, 0, 0];
@@ -481,15 +464,14 @@
             function updateChart1() {
                 $.ajax({
                     method: "GET",
-                    url: "ThongKe/Chart",
+                    url: "/ThongKe/Chart",
                     // data: { fromDate: '', toDate: '' },
                     success: function (rs) {
                         console.log(rs);
-                        var arrData = [0, 0, 0];
-                        var jsonData = JSON.parse(rs);
-                        $.each(jsonData.Data, function (i, item) {
-                            var soLuongHoaDonThanhCong = jsonData.Data[0].BillThanhCong;
-                            var soLuongHoaDonThatBai = jsonData.Data[0].BillThatbai;
+                       
+                        $.each(rs, function (i, item) {
+                            var soLuongHoaDonThanhCong = rs[0].billThanhCong;
+                            var soLuongHoaDonThatBai = rs[0].billThatbai;
                         //    var soLuongHoaDonCho = jsonData.Data[0].SoluongHoaDonCho;
 
                             // Cập nhật giá trị mới cho biểu đồ
@@ -572,8 +554,8 @@
 
 
         </script>
-
-        <script>
+ *@
+       @*  <script>
 
             var dates = [];
             var arrOnline = [];
@@ -582,9 +564,9 @@
             function updateChart() {
                 $.ajax({
                     type: "GET",
-                    url: "@Url.Action("ThongKe", "OverView")",
+                    url: "@Url.Action("OverView", "ThongKe")",
                     success: function (rs) {
-                        console.log("1111");
+                        console.log(rs);
                         var jsonData = JSON.parse(rs);
                         console.log(rs);
 
@@ -685,5 +667,5 @@
             //    $('#load_data').html(strHtml);
             //}
 
-        </script>
+        </script> *@
     }

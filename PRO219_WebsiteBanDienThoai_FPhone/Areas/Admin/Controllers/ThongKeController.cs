@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 using PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Filters;
 using System.Globalization;
+using AppData.Utilities;
 
 namespace App_View.Areas.Admin.Controllers
 {
@@ -45,7 +46,37 @@ namespace App_View.Areas.Admin.Controllers
             vOverView model = new vOverView();
             model = _overview.listOverViewGroup().FirstOrDefault();
             model.billGanDay = _billGanDayServices.listBillGanDayViewGroup();
-            return Json(model);
+            var bill = _billGanDayServices.BillThang();
+            List<OverView2> over = new List<OverView2>()
+            {
+                new OverView2()
+                {
+                    BillStatus = "Chờ xác nhận",
+                    CoutBill = bill.Count(c =>c.Status == FphoneConst.ChoXacNhan)
+                },
+                new OverView2()
+                {
+                    BillStatus = "Đã xác nhận",
+                    CoutBill = bill.Count(c =>c.Status == FphoneConst.DaXacNhan)
+                },
+                new OverView2()
+                {
+                    BillStatus = "Đang giao",
+                    CoutBill = bill.Count(c =>c.Status == FphoneConst.DangGiao)
+                },
+                new OverView2()
+                {
+                    BillStatus = "Hủy",
+                    CoutBill = bill.Count(c =>c.Status == FphoneConst.Huy)
+                },
+                new OverView2()
+                {
+                    BillStatus = "Giao thất bại",
+                    CoutBill = bill.Count(c =>c.Status == FphoneConst.GiaoThatBai)
+                }
+            };
+
+            return Json(over);
         }
         [HttpGet]
         public IActionResult TiLeBill()

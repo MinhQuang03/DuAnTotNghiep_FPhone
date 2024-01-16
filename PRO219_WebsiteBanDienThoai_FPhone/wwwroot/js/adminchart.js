@@ -4,11 +4,12 @@
 var colors = ['#007bff', '#28a745', '#333333', '#c3e6cb', '#dc3545', '#6c757d'];
 /* bar chart */
 
-$("#select_month").change(function () {
-    var month = $("#select_month").val();
-    var current = new Date();
+$("#selection_month").change(function () {
+  
     $.ajax({
-        url: "https://localhost:44373/api/SellDaillys/getMonthId/1/2024"+ month, success: function (result) {
+        method:'GET',
+        url: "https://localhost:44373/api/SellDaillys/getMonthId/1",
+        success: function (result) {
             console.log(result);
             var chBar = document.getElementById("chBar");
             if (chBar) {
