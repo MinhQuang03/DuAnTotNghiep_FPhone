@@ -1,4 +1,6 @@
-﻿@model PRO219_WebsiteBanDienThoai_FPhone.ViewModel.AccountViewModel
+﻿@using AppData.FPhoneDbContexts
+@using AppData.Utilities
+@model PRO219_WebsiteBanDienThoai_FPhone.ViewModel.AccountViewModel
 
 @{
     ViewData["Title"] = "Accounts";
@@ -72,7 +74,7 @@
                     @Html.DisplayFor(modelItem => item.Address)
                 </td>
                 <td>
-                    @(item.Status ==0?"Hoạt động":"Không hoạt động")
+                    @(item.Status ==FphoneConst.HoatDong?"Hoạt động":"Không hoạt động")
                 </td>
                 <td >
                     <a asp-action="EditAccount" asp-route-id="@item.Id">
