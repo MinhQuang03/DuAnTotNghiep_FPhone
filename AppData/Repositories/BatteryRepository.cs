@@ -14,6 +14,7 @@ namespace AppData.Repositories
         }
         public async Task<Battery> Add(Battery obj)
         {
+            
             await _dbContext.Battery.AddAsync(obj);
             await _dbContext.SaveChangesAsync();
             return obj;

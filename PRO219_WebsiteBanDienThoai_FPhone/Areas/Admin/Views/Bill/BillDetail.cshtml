@@ -183,10 +183,11 @@
   
         @if(cus.Status == 0)
         {
-        <a href="@Url.Action("Status", "Bill", new { id = cus.Id })" class="btn btn-primary">Xác nhận đơn hàng</a>
+        <a href="@Url.Action("Status", "Bill", new { id = cus.Id })" class="btn btn-primary btn-confirm">Xác nhận đơn hàng</a>
 
-        <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Hủy</a>
+        <a class="btn btn-primary text-white" data-bs-toggle="modal" data-bs-target="#exampleModal">Hủy</a>
         }
+        
 
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -208,7 +209,13 @@
             </div>
         </div>
     </div>
+    <br />
+    <br />
+    <br />
 
+    <div>
+        <a class="btn btn-primary" asp-action="Index">Trở lại</a>
+    </div>
 
     <!-- Modal -->
     @if (TempData["SuccessMessage"] != null)
@@ -265,4 +272,51 @@
             });
         });
     </script>
+    <script>
+        $(document).ready(function () {
+            $('.btn-confirm').click(function (e) {
+                e.preventDefault();
+                var url = $(this).attr('href');
+
+                // Hiển thị hộp thoại xác nhận
+                Swal.fire({
+                    title: 'Xác nhận',
+                    text: 'Bạn có chắc muốn chuyển trạng thái của hóa đơn không?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'OK',
+                    cancelButtonText: 'Hủy'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Nếu người dùng chọn "OK", gửi yêu cầu Ajax
+                        $.ajax({
+                            type: 'POST', // hoặc 'GET' tùy thuộc vào cách bạn xử lý ở server
+                            url: url,
+                            success: function (data) {
+                                // Xử lý reload trang và hiển thị thông báo thành công
+                                if (data.success) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Thành công!',
+                                        text: 'Thay đổi đã được lưu thành công.',
+                                        showConfirmButton: false,
+                                        timer: 1500,
+                                        onClose: function () {
+                                            location.reload();
+                                        }
+                                    });
+                                } else {
+                                    alert('Chuyển trạng thái thất bại');
+                                }
+                            },
+                            error: function () {
+                                alert('Đã xảy ra lỗi');
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>

@@ -213,7 +213,8 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                     SendEmailDangGiao(acc.Email);
                 }
                 _context.SaveChanges();
-                return RedirectToAction("Index");
+                //return RedirectToAction("Index");
+                return Json(new { success = true, data = "/Admin/Bill/Index" });
             }
             
         }
