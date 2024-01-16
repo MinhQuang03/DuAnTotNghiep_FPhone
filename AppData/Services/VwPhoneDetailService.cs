@@ -73,6 +73,48 @@ public class VwPhoneDetailService : IVwPhoneDetailService
         return lst;
     }
 
+    public List<VW_PhoneDetail> listVwPhoneDetails2(VW_PhoneDetail model, ListOptions options)
+    {
+        var lst = new List<VW_PhoneDetail>();
+        var countRecords = _dbContext.VW_PhoneDetail.Count();
+        //nếu pagesize lớn hơn số lượng bản ghi thì lấy ra rất cả bản ghi
+        //if (options.PageSize >= countRecords) options.PageSize = countRecords;
+        try
+        {
+            lst = _dbContext.VW_PhoneDetail.Where(c =>
+                model == null ||
+                ((model.Price == null || c.Price <= model.Price) &&
+                 (model.PhoneName == null || c.PhoneName.Contains(model.PhoneName)) &&
+                 (model.ChipCPUName == null || c.ChipCPUName.Contains(model.ChipCPUName)) &&
+                 (model.MaterialName == null || c.MaterialName.Contains(model.MaterialName)) &&
+                 (model.RamName == null || c.RamName.Contains(model.RamName)) &&
+                 (model.RomName == null || c.RomName.Contains(model.RomName)) &&
+                 (model.ProductionCompanyName == null || c.ProductionCompanyName.Contains(model.ProductionCompanyName))) &&
+                (model.IdPhone == Guid.Empty || model.IdPhone == null || c.IdPhone.Equals(model.IdPhone))
+            ).Take(options.PageSize).ToList();
+
+            options.AllRecordCount = _dbContext.VW_PhoneDetail.Count(c =>
+                model == null ||
+                ((model.Price == null || c.Price <= model.Price) &&
+                 (model.PhoneName == null || c.PhoneName.Contains(model.PhoneName)) &&
+                 (model.ChipCPUName == null || c.ChipCPUName.Contains(model.ChipCPUName)) &&
+                 (model.MaterialName == null || c.MaterialName.Contains(model.MaterialName)) &&
+                 (model.RamName == null || c.RamName.Contains(model.RamName)) &&
+                 (model.RomName == null || c.RomName.Contains(model.RomName)) &&
+                 (model.ProductionCompanyName == null || c.ProductionCompanyName.Contains(model.ProductionCompanyName))) &&
+                (model.IdPhone == Guid.Empty || model.IdPhone == null || c.IdPhone.Equals(model.IdPhone))
+            );
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+
+        return lst;
+    }
+
+
     public List<PhoneDetaild> listPhoneDetailByIDPhone(Guid id)
     {
        var lst = new List<PhoneDetaild>();
