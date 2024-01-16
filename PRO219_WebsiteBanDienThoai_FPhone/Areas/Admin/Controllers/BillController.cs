@@ -298,7 +298,10 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
                 _context.Entry(bill).State = EntityState.Modified;
 
                 var acc = _context.Accounts.FirstOrDefault(p => p.Id == bill.IdAccount);
-                SendEmailDaGiao(acc.Email);
+                if (acc != null)
+                {
+                    SendEmailDaGiao(acc.Email);
+                }
                 _context.SaveChanges();
 
             }
