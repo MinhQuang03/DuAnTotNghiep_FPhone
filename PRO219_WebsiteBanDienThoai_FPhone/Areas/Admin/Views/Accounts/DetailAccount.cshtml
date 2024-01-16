@@ -1,4 +1,5 @@
-﻿@model AppData.Models.ApplicationUser
+﻿@using AppData.Utilities
+@model AppData.Models.ApplicationUser
 @{
     ViewData["Title"] = "EditAccount";
 }
@@ -41,7 +42,7 @@
             <div class="col-sm-4" style="margin-right: 190px">
             @if (Model != null)
             {
-                <p readonly class="form-control">@(Model.Status == 1 ? "Hoạt động" : "Không hoạt động")</p>
+                <p readonly class="form-control">@(Model.Status == FphoneConst.HoatDong ? "Hoạt động" : "Không hoạt động")</p>
             }
             </div>
         </div>
