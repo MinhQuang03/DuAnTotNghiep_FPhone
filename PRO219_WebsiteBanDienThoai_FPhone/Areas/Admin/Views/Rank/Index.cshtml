@@ -6,7 +6,7 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
     
 }
-<div class="" style="background-color:blanchedalmond">
+<div class="" style="background-color:aliceblue">
 <div class="center">
     <r >BẢNG RANKING MEMBER</r>
 </div>
@@ -20,12 +20,13 @@
                 @if (item.STT == 2 && item.Status == 1)
                 {
                     <div class="card mx-5" style="width: 18rem ; color = #800000">
-                        <img src="~/img/ahihi.jpg" width="180px" height="250px">
+                            
+                            <img src="~/images/top22.png" width="260px" height="370px" />
                         <div class="card-body">
                             <h5 class="card-title">@item.Username</h5>
                             <p class="card-text">Point : @item.Point</p>
-                            <p class="card-text">TotalPoint : @item.TotalPoint</p>
-                                <p class="card-text">TotalPoint : @item.Ranking</p>
+                           
+                                <p class="card-text">Rank : @item.Ranking</p>
                             <a href="#" class="btn btn-primary">TOP 2</a>
                         </div>
                     </div>
@@ -38,12 +39,13 @@
                 {
                    
                     <div class="card mx-5" style="width: 18rem; color = #000000">
-                        <img src="~/img/393193568_1374151863224306_5173984096911521077_n.jpg" width="260px" height="330px">
+               
+                            <img src="~/images/Top111.png" width="260px" height="370px" />
                         <div class="card-body">
                             <h5 class="card-title">@item.Username</h5>
                             <p class="card-text">Point : @item.Point</p>
-                            <p class="card-text">TotalPoint : @item.TotalPoint</p>
-                                <p class="card-text">TotalPoint : @item.Ranking</p>
+                         
+                                <p class="card-text">Rank : @item.Ranking</p>
                             <a href="#" class="btn btn-primary">TOP 1</a>
                         </div>
                     </div>
@@ -53,13 +55,13 @@
             {
                     @if (item.STT == 3 && item.Status == 1)
                 {
-                    <div class="card mx-5" style="width: 11rem; color = #000000">
-                        <img src="~/img/khanh.jpg" width="150px" height="220px">
+                    <div class="card mx-5" style="width: 18rem; color = #000000">
+                        <img src="~/images/Top33.png" width="260px" height="370px" />
                         <div class="card-body">
                             <h5 class="card-title">@item.Username</h5>
                             <p class="card-text">Point : @item.Point</p>
-                            <p class="card-text">TotalPoint : @item.TotalPoint</p>
-                                <p class="card-text">TotalPoint : @item.Ranking</p>
+                          
+                                <p class="card-text">Rank : @item.Ranking</p>
                             <a href="#" class="btn btn-primary">TOP 3</a>
                         </div>
                     </div>
@@ -79,7 +81,7 @@
                 <th>STT</th>
                 <th>Tên người dùng</th>
                 <th>Điểm</th>
-                <th>Tổng điểm</th>
+     
                 <th>Ranking</th>
                 <th>Chính sách</th>
                 <th>Quyền lợi</th>
@@ -105,7 +107,7 @@
                     </td>
                     <td>@item.Point</td>
 
-                    <td>@item.TotalPoint</td>
+        
                     <td>
                         <div class="d-flex align-items-center">
                           
