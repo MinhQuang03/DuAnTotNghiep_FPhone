@@ -241,17 +241,7 @@
                             data: $("#checkoutForm").serialize(),
                             success: function (response) {
                                 if (response.success) {
-                                    Swal.fire({
-                                        icon: 'success',
-                                        title: 'Thành công!',
-                                        text: 'Đặt hàng thành công .',
-                                        showConfirmButton: false,
-                                        timer: 2000, // Thời gian hiển thị thông báo (ms)
-                                        onClose: function () {
-                                            // Sau khi thông báo biến mất, reload lại trang
-                                            window.location.href = response.data;
-                                        }
-                                    });
+                                    window.location.href = response.data;
                                    
                                 } else {
                                     // Xử lý lỗi nếu cần

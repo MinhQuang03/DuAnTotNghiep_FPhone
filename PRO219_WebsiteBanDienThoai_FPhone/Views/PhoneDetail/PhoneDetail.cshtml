@@ -10,6 +10,10 @@
     int index = 0;
     FPhoneDbContext dbContext = new FPhoneDbContext();
 }
+<!-- Thêm liên kết đến thư viện Toastr -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
 
 <style>
     .highlighted-name {
@@ -380,6 +384,14 @@
         </div>
     </div>
 </div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <script>
+        toastr.error('@TempData["SuccessMessage"]');
+    </script>
+}
+
 <script src="~/js/JPhoneDetail.js"></script>
 <script>
     $('#notExits').hide();

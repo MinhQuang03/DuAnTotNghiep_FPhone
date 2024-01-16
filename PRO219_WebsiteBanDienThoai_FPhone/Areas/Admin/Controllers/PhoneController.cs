@@ -128,7 +128,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
 
         public IActionResult ListImeiPhoneDetail(Guid IdPhoneDetail)
         {
-            var imei = _dbContext.Imei.Where(p => p.IdPhoneDetaild == IdPhoneDetail).ToList();
+            var imei = _dbContext.Imei.Where(p => p.IdPhoneDetaild == IdPhoneDetail && p.Status == 1).ToList();
 
             var phoneDetail = _dbContext.PhoneDetailds.FirstOrDefault(p => p.Id == IdPhoneDetail);
             var ram = _dbContext.Ram.FirstOrDefault(p => p.Id == phoneDetail.IdRam);
@@ -140,15 +140,7 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
             model.imeis = imei;
             model.PhoneDetailName = phoneName.PhoneName + " " + ram.Name + " " + color.Name;
 
-            //List<string> listImei = TempData["Imei"] as List<string>;
-            //if (listImei != null)
-            //{
-            //    ViewBag.Imei = listImei.ToList();
-            //}
-            //else
-            //{
-            //    ViewBag.Imei = null;
-            //}
+           
 
             return View(model);
         }
@@ -173,26 +165,33 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Areas.Admin.Controllers
         public async Task<IActionResult> CreateImei(ImeiPhoneViewModel obj)
         {
             var a = _dbContext.Imei.FirstOrDefault(p => p.NameImei == obj.AddImeiOfPhone.NameImei);
-            if(a != null)
+            if (obj.AddImeiOfPhone.NameImei.Length != 15)
             {
-                TempData["SuccessMessage"] = "Không được thêm trùng imei !";
-                return RedirectToAction("ListImeiPhoneDetail", new { IdPhoneDetail = a.IdPhoneDetaild });
+                TempData["ErrorMessage"] = "Độ dài của Imei phải là 15 ký tự!";
+                return RedirectToAction("CreateImei", new { IdPhoneDetail = a.IdPhoneDetaild });
             }
-            else
-            {
-                Imei newImei = new Imei
+
+                if (a != null)
                 {
-                    Id = Guid.NewGuid(),
-                    NameImei = obj.AddImeiOfPhone.NameImei,
-                    IdPhoneDetaild = obj.PhoneDetaild.Id,
-                    Status = 1
-                };
+                    TempData["ErrorMessage"] = "Không được thêm trùng imei !";
+                    return RedirectToAction("CreateImei", new { IdPhoneDetail = a.IdPhoneDetaild });
+                }
+                else
+                {
+                    Imei newImei = new Imei
+                    {
+                        Id = Guid.NewGuid(),
+                        NameImei = obj.AddImeiOfPhone.NameImei,
+                        IdPhoneDetaild = obj.PhoneDetaild.Id,
+                        Status = 1
+                    };
 
 
-                _dbContext.Imei.Add(newImei);
-                await _dbContext.SaveChangesAsync();
-                return RedirectToAction("ListImeiPhoneDetail", new { IdPhoneDetail = newImei.IdPhoneDetaild });
-            }
+                    _dbContext.Imei.Add(newImei);
+                    await _dbContext.SaveChangesAsync();
+                    return RedirectToAction("ListImeiPhoneDetail", new { IdPhoneDetail = newImei.IdPhoneDetaild });
+                }
+            
             
         }
 

@@ -18,7 +18,7 @@
             method: 'POST',
             success: function (res) {
                 if (res > 0) {
-                    notification('Thành công');
+                    
                     setTimeout(function () {
                         window.location.reload();
                     }, 2000);
