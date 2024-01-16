@@ -4,7 +4,6 @@
 @model VwProductDetailViewModel;
 @{
     ViewData["Title"] = "PhoneDetail";
-    var lstComment = ViewData["GetListComment"] as List<Review>;
     var idAccount = Model.IdAccount;
     var idPhone = Model.IdPhone;
     int index = 0;
@@ -310,7 +309,6 @@
                         </button>
                         <!-- Modal -->
                             <div class="modal fade showChiTiet" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                
                             </div>
                     </ul>
                 </div>

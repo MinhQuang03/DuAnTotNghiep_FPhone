@@ -59,7 +59,6 @@ namespace PRO219_WebsiteBanDienThoai_FPhone.Controllers
                     }
                 }
             }
-            ViewData["GetListComment"] = _phoneDetailService.GetListComment(id);
             data.ListReview = _phoneDetailService.GetListComment(id);
             return View(data);
         }
