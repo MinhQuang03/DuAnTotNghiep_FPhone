@@ -10,8 +10,8 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <h1>Đang Giao</h1>
 <div>
     <form method="get" action="@Url.Action("Danggiaoview", "Bill")">
@@ -89,7 +89,7 @@
                     </td>
 
                     <td>
-                        <a class="btn btn-sm btn-light text-success border  btn-confirm" href="@Url.Action("Dagiao", "Bill", new { id = item.Id })"> Giao Thành Công  </a>
+                        <a class="btn btn-sm btn-light text-success border btn-confirm" href="@Url.Action("Dagiao", "Bill", new { id = item.Id })"> Giao Thành Công  </a>
                     </td>
                     <td>
                         <a class="btn btn-sm btn-light text-danger border btn-confirm" href="@Url.Action("Giaothatbai", "Bill", new { id = item.Id })"> Giao Thất Bại </a>
@@ -110,36 +110,44 @@
         $('.btn-confirm').click(function (e) {
             e.preventDefault();
             var url = $(this).attr('href');
-            url = url.replace('localhost', 'Xác nhận')
+
             // Hiển thị hộp thoại xác nhận
-            if (confirm('Bạn có chắc muốn chuyển trạng thái của hóa đơn không?')) {
-                // Nếu người dùng chọn "OK", gửi yêu cầu Ajax
-                $.ajax({
-                    type: 'POST', // hoặc 'GET' tùy thuộc vào cách bạn xử lý ở server
-                    url: url,
-                    success: function (data) {
-                        // Xử lý reload trang và hiển thị thông báo thành công
-                        if (data.success) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Thành công!',
-                                text: 'Thay đổi đã được lưu thành công.',
-                                showConfirmButton: false,
-                                timer: 2000, // Thời gian hiển thị thông báo (ms)
-                                onClose: function () {
-                                    // Sau khi thông báo biến mất, reload lại trang
-                                    location.reload();
-                                }
-                            });
-                        } else {
-                            alert('Chuyển trạng thái thất bại');
+            Swal.fire({
+                title: 'Xác nhận',
+                text: 'Bạn có chắc muốn chuyển trạng thái của hóa đơn không?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'OK',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Nếu người dùng chọn "OK", gửi yêu cầu Ajax
+                    $.ajax({
+                        type: 'POST', // hoặc 'GET' tùy thuộc vào cách bạn xử lý ở server
+                        url: url,
+                        success: function (data) {
+                            // Xử lý reload trang và hiển thị thông báo thành công
+                            if (data.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Thành công!',
+                                    text: 'Thay đổi đã được lưu thành công.',
+                                    showConfirmButton: false,
+                                    timer: 1500,
+                                    onClose: function () {
+                                        location.reload();
+                                    }
+                                });
+                            } else {
+                                alert('Chuyển trạng thái thất bại');
+                            }
+                        },
+                        error: function () {
+                            alert('Đã xảy ra lỗi');
                         }
-                    },
-                    error: function () {
-                        alert('Đã xảy ra lỗi');
-                    }
-                });
-            }
+                    });
+                }
+            });
         });
     });
 </script>
