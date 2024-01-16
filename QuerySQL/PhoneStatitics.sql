@@ -1,5 +1,8 @@
+﻿Create or alter VIew PhoneStatitics
+as
 Select top 1
 ----------PhoneName
+CASE WHEN 
 (Select 
 A.PhoneName from (Select TOp 1
 	P.PhoneName  PhoneName,
@@ -11,8 +14,33 @@ Left Join Colors C on C.Id = PD.IdColor
 Left Join Phones P on P.Id = PD.IdPhone
 WHERE B.PaymentDate > DATETRUNC(month ,GETDATE()) And B.PaymentDate < Getdate()
 Group By P.PhoneName
-OrDer BY CountPhoneName DESC ) A ) NamePhoneThangNay, --null
+OrDer BY CountPhoneName DESC ) A ) is null THEN 'no data'
+WHEN (Select 
+A.PhoneName from (Select TOp 1
+	P.PhoneName  PhoneName,
+	COUNT(P.PhoneName) CountPhoneName
+From Bill B
+Left Join BillDetails DB on DB.IdBill = B.Id
+Left Join PhoneDetailds PD on PD.Id = DB.IdPhoneDetail
+Left Join Colors C on C.Id = PD.IdColor
+Left Join Phones P on P.Id = PD.IdPhone
+WHERE B.PaymentDate > DATETRUNC(month ,GETDATE()) And B.PaymentDate < Getdate()
+Group By P.PhoneName
+OrDer BY CountPhoneName DESC ) A ) is not null then (Select 
+A.PhoneName from (Select TOp 1
+	P.PhoneName  PhoneName,
+	COUNT(P.PhoneName) CountPhoneName
+From Bill B
+Left Join BillDetails DB on DB.IdBill = B.Id
+Left Join PhoneDetailds PD on PD.Id = DB.IdPhoneDetail
+Left Join Colors C on C.Id = PD.IdColor
+Left Join Phones P on P.Id = PD.IdPhone
+WHERE B.PaymentDate > DATETRUNC(month ,GETDATE()) And B.PaymentDate < Getdate()
+Group By P.PhoneName
+OrDer BY CountPhoneName DESC ) A )
+END NamePhoneThangNay, --null
 -----------CountPHoneName
+CASE WHEN 
 (Select 
 A.CountPhoneName from (Select TOp 1
 	P.PhoneName  PhoneName,
@@ -24,8 +52,34 @@ Left Join Colors C on C.Id = PD.IdColor
 Left Join Phones P on P.Id = PD.IdPhone
 WHERE B.PaymentDate > DATETRUNC(month ,GETDATE()) And B.PaymentDate < Getdate()
 Group By P.PhoneName
-OrDer BY CountPhoneName DESC ) A ) SlBanThangNay,
+OrDer BY CountPhoneName DESC ) A ) is null THEN 0 
+WHEN (Select 
+A.CountPhoneName from (Select TOp 1
+	P.PhoneName  PhoneName,
+	COUNT(P.PhoneName) CountPhoneName
+From Bill B
+Left Join BillDetails DB on DB.IdBill = B.Id
+Left Join PhoneDetailds PD on PD.Id = DB.IdPhoneDetail
+Left Join Colors C on C.Id = PD.IdColor
+Left Join Phones P on P.Id = PD.IdPhone
+WHERE B.PaymentDate > DATETRUNC(month ,GETDATE()) And B.PaymentDate < Getdate()
+Group By P.PhoneName
+OrDer BY CountPhoneName DESC ) A ) > 0 THEN 
+(Select 
+A.CountPhoneName from (Select TOp 1
+	P.PhoneName  PhoneName,
+	COUNT(P.PhoneName) CountPhoneName
+From Bill B
+Left Join BillDetails DB on DB.IdBill = B.Id
+Left Join PhoneDetailds PD on PD.Id = DB.IdPhoneDetail
+Left Join Colors C on C.Id = PD.IdColor
+Left Join Phones P on P.Id = PD.IdPhone
+WHERE B.PaymentDate > DATETRUNC(month ,GETDATE()) And B.PaymentDate < Getdate()
+Group By P.PhoneName
+OrDer BY CountPhoneName DESC ) A )
+END SlBanThangNay,
 -------------------------------------
+CASE WHEN 
 (Select 
 A.PhoneName from (Select TOp 1
 	P.PhoneName  PhoneName,
@@ -37,9 +91,34 @@ Left Join Colors C on C.Id = PD.IdColor
 Left Join Phones P on P.Id = PD.IdPhone
 WHERE PaymentDate > DATEADD(MONTH, -1, DATETRUNC(month ,GETDATE())) And PaymentDate < DATETRUNC(month ,GETDATE()) and B.[Status] = 3 
 Group By P.PhoneName
-OrDer BY CountPhoneName DESC ) A ) NamePhoneThangTruoc , --null
--------------------------------------------------
+OrDer BY CountPhoneName DESC ) A ) is null THEN 'no data'
+WHEN (Select 
+A.PhoneName from (Select TOp 1
+	P.PhoneName  PhoneName,
+	COUNT(P.PhoneName) CountPhoneName
+From Bill B
+Left Join BillDetails DB on DB.IdBill = B.Id
+Left Join PhoneDetailds PD on PD.Id = DB.IdPhoneDetail
+Left Join Colors C on C.Id = PD.IdColor
+Left Join Phones P on P.Id = PD.IdPhone
+WHERE PaymentDate > DATEADD(MONTH, -1, DATETRUNC(month ,GETDATE())) And PaymentDate < DATETRUNC(month ,GETDATE()) and B.[Status] = 3 
+Group By P.PhoneName
+OrDer BY CountPhoneName DESC ) A ) is not null then 
 (Select 
+A.PhoneName from (Select TOp 1
+	P.PhoneName  PhoneName,
+	COUNT(P.PhoneName) CountPhoneName
+From Bill B
+Left Join BillDetails DB on DB.IdBill = B.Id
+Left Join PhoneDetailds PD on PD.Id = DB.IdPhoneDetail
+Left Join Colors C on C.Id = PD.IdColor
+Left Join Phones P on P.Id = PD.IdPhone
+WHERE PaymentDate > DATEADD(MONTH, -1, DATETRUNC(month ,GETDATE())) And PaymentDate < DATETRUNC(month ,GETDATE()) and B.[Status] = 3 
+Group By P.PhoneName
+OrDer BY CountPhoneName DESC ) A )
+END NamePhoneThangTruoc , --null
+-------------------------------------------------
+CASE WHEN (Select 
 A.CountPhoneName from (Select TOp 1
 	P.PhoneName  PhoneName,
 	COUNT(P.PhoneName) CountPhoneName
@@ -50,8 +129,33 @@ Left Join Colors C on C.Id = PD.IdColor
 Left Join Phones P on P.Id = PD.IdPhone
 WHERE PaymentDate > DATEADD(MONTH, -1, DATETRUNC(month ,GETDATE())) And PaymentDate < DATETRUNC(month ,GETDATE()) and B.[Status] = 3 
 Group By P.PhoneName
-OrDer BY CountPhoneName DESC ) A ) SlBanThangTruoc  ,
+OrDer BY CountPhoneName DESC ) A ) is null THEN 0 
+WHEN (Select 
+A.CountPhoneName from (Select TOp 1
+	P.PhoneName  PhoneName,
+	COUNT(P.PhoneName) CountPhoneName
+From Bill B
+Left Join BillDetails DB on DB.IdBill = B.Id
+Left Join PhoneDetailds PD on PD.Id = DB.IdPhoneDetail
+Left Join Colors C on C.Id = PD.IdColor
+Left Join Phones P on P.Id = PD.IdPhone
+WHERE PaymentDate > DATEADD(MONTH, -1, DATETRUNC(month ,GETDATE())) And PaymentDate < DATETRUNC(month ,GETDATE()) and B.[Status] = 3 
+Group By P.PhoneName
+OrDer BY CountPhoneName DESC ) A ) is not null THEN (Select 
+A.CountPhoneName from (Select TOp 1
+	P.PhoneName  PhoneName,
+	COUNT(P.PhoneName) CountPhoneName
+From Bill B
+Left Join BillDetails DB on DB.IdBill = B.Id
+Left Join PhoneDetailds PD on PD.Id = DB.IdPhoneDetail
+Left Join Colors C on C.Id = PD.IdColor
+Left Join Phones P on P.Id = PD.IdPhone
+WHERE PaymentDate > DATEADD(MONTH, -1, DATETRUNC(month ,GETDATE())) And PaymentDate < DATETRUNC(month ,GETDATE()) and B.[Status] = 3 
+Group By P.PhoneName
+OrDer BY CountPhoneName DESC ) A )
+END SlBanThangTruoc  ,
 -------------------------------------------------------------------
+CASE WHEN 
 (Select 
 A.ColorName from (Select TOp 1
 	C.Name  ColorName,
@@ -63,8 +167,34 @@ Left Join Colors C on C.Id = PD.IdColor
 Left Join Phones P on P.Id = PD.IdPhone
 WHERE B.PaymentDate > DATETRUNC(month ,GETDATE()) And B.PaymentDate < Getdate()
 Group by C.Name
-OrDer BY CountColorName DESC ) A ) NameColorThangNay , --null
+OrDer BY CountColorName DESC ) A ) is null THEN 'no data'
+WHEN (Select 
+A.ColorName from (Select TOp 1
+	C.Name  ColorName,
+	COUNT(C.Name) CountColorName
+From Bill B
+Left Join BillDetails DB on DB.IdBill = B.Id
+Left Join PhoneDetailds PD on PD.Id = DB.IdPhoneDetail
+Left Join Colors C on C.Id = PD.IdColor
+Left Join Phones P on P.Id = PD.IdPhone
+WHERE B.PaymentDate > DATETRUNC(month ,GETDATE()) And B.PaymentDate < Getdate()
+Group by C.Name
+OrDer BY CountColorName DESC ) A ) is not null  THEN 
+(Select 
+A.ColorName from (Select TOp 1
+	C.Name  ColorName,
+	COUNT(C.Name) CountColorName
+From Bill B
+Left Join BillDetails DB on DB.IdBill = B.Id
+Left Join PhoneDetailds PD on PD.Id = DB.IdPhoneDetail
+Left Join Colors C on C.Id = PD.IdColor
+Left Join Phones P on P.Id = PD.IdPhone
+WHERE B.PaymentDate > DATETRUNC(month ,GETDATE()) And B.PaymentDate < Getdate()
+Group by C.Name
+OrDer BY CountColorName DESC ) A )
+END NameColorThangNay , --null
 -----------------------------------------------------------------------
+CASE WHEN
 (Select 
 A.CountColorName from (Select TOp 1
 	C.Name  ColorName,
@@ -76,8 +206,33 @@ Left Join Colors C on C.Id = PD.IdColor
 Left Join Phones P on P.Id = PD.IdPhone
 WHERE B.PaymentDate > DATETRUNC(month ,GETDATE()) And B.PaymentDate < Getdate()
 Group by C.Name
-OrDer BY CountColorName DESC ) A ) SlColorThangNay ,
+OrDer BY CountColorName DESC ) A ) is null THEN 0
+WHEN (Select 
+A.CountColorName from (Select TOp 1
+	C.Name  ColorName,
+	COUNT(C.Name) CountColorName
+From Bill B
+Left Join BillDetails DB on DB.IdBill = B.Id
+Left Join PhoneDetailds PD on PD.Id = DB.IdPhoneDetail
+Left Join Colors C on C.Id = PD.IdColor
+Left Join Phones P on P.Id = PD.IdPhone
+WHERE B.PaymentDate > DATETRUNC(month ,GETDATE()) And B.PaymentDate < Getdate()
+Group by C.Name
+OrDer BY CountColorName DESC ) A ) is not null THEN (Select 
+A.CountColorName from (Select TOp 1
+	C.Name  ColorName,
+	COUNT(C.Name) CountColorName
+From Bill B
+Left Join BillDetails DB on DB.IdBill = B.Id
+Left Join PhoneDetailds PD on PD.Id = DB.IdPhoneDetail
+Left Join Colors C on C.Id = PD.IdColor
+Left Join Phones P on P.Id = PD.IdPhone
+WHERE B.PaymentDate > DATETRUNC(month ,GETDATE()) And B.PaymentDate < Getdate()
+Group by C.Name
+OrDer BY CountColorName DESC ) A )
+END SlColorThangNay ,
 ----------------------------------------------------------------------------
+CASE WHEN
 (Select 
 A.ColorName from (Select TOp 1
 	C.Name  ColorName,
@@ -89,10 +244,35 @@ Left Join Colors C on C.Id = PD.IdColor
 Left Join Phones P on P.Id = PD.IdPhone
 WHERE PaymentDate > DATEADD(MONTH, -1, DATETRUNC(month ,GETDATE())) And PaymentDate < DATETRUNC(month ,GETDATE()) and B.[Status] = 3 
 Group by C.Name
-OrDer BY CountColorName DESC ) A ) NameColorThangTruoc , --null
+OrDer BY CountColorName DESC ) A )is null THEN 'no data'
+WHEN (Select 
+A.ColorName from (Select TOp 1
+	C.Name  ColorName,
+	COUNT(C.Name) CountColorName
+From Bill B
+Left Join BillDetails DB on DB.IdBill = B.Id
+Left Join PhoneDetailds PD on PD.Id = DB.IdPhoneDetail
+Left Join Colors C on C.Id = PD.IdColor
+Left Join Phones P on P.Id = PD.IdPhone
+WHERE PaymentDate > DATEADD(MONTH, -1, DATETRUNC(month ,GETDATE())) And PaymentDate < DATETRUNC(month ,GETDATE()) and B.[Status] = 3 
+Group by C.Name
+OrDer BY CountColorName DESC ) A ) is not null THEN
+(Select 
+A.ColorName from (Select TOp 1
+	C.Name  ColorName,
+	COUNT(C.Name) CountColorName
+From Bill B
+Left Join BillDetails DB on DB.IdBill = B.Id
+Left Join PhoneDetailds PD on PD.Id = DB.IdPhoneDetail
+Left Join Colors C on C.Id = PD.IdColor
+Left Join Phones P on P.Id = PD.IdPhone
+WHERE PaymentDate > DATEADD(MONTH, -1, DATETRUNC(month ,GETDATE())) And PaymentDate < DATETRUNC(month ,GETDATE()) and B.[Status] = 3 
+Group by C.Name
+OrDer BY CountColorName DESC ) A )
+END NameColorThangTruoc , --null
 ---------------------------------------------------------------------------
 -----------------------------------------------------------------------
-(Select 
+CASE WHEN (Select 
 A.CountColorName from (Select TOp 1
 	C.Name  ColorName,
 	COUNT(C.Name) CountColorName
@@ -103,7 +283,31 @@ Left Join Colors C on C.Id = PD.IdColor
 Left Join Phones P on P.Id = PD.IdPhone
 WHERE PaymentDate > DATEADD(MONTH, -1, DATETRUNC(month ,GETDATE())) And PaymentDate < DATETRUNC(month ,GETDATE()) and B.[Status] = 3 
 Group by C.Name
-OrDer BY CountColorName DESC ) A ) SlColorThangTruoc ,
+OrDer BY CountColorName DESC ) A ) is null THEN 'no data'
+WHEN (Select 
+A.CountColorName from (Select TOp 1
+	C.Name  ColorName,
+	COUNT(C.Name) CountColorName
+From Bill B
+Left Join BillDetails DB on DB.IdBill = B.Id
+Left Join PhoneDetailds PD on PD.Id = DB.IdPhoneDetail
+Left Join Colors C on C.Id = PD.IdColor
+Left Join Phones P on P.Id = PD.IdPhone
+WHERE B.PaymentDate > DATETRUNC(month ,GETDATE()) And B.PaymentDate < Getdate()
+Group by C.Name
+OrDer BY CountColorName DESC ) A ) is not null then (Select 
+A.CountColorName from (Select TOp 1
+	C.Name  ColorName,
+	COUNT(C.Name) CountColorName
+From Bill B
+Left Join BillDetails DB on DB.IdBill = B.Id
+Left Join PhoneDetailds PD on PD.Id = DB.IdPhoneDetail
+Left Join Colors C on C.Id = PD.IdColor
+Left Join Phones P on P.Id = PD.IdPhone
+WHERE B.PaymentDate > DATETRUNC(month ,GETDATE()) And B.PaymentDate < Getdate()
+Group by C.Name
+OrDer BY CountColorName DESC ) A )
+END SlColorThangTruoc ,
 ----------------------------------------------------------------------
 Case When(Select TOP 1
 		B.PaymentDate 
@@ -168,4 +372,7 @@ Case When(Select TOP 1
 			WHEN (Select TOP 1 Price From BillDetails Where Price >= 30000000 ) is not null 
 			THEN (Select TOP 1 COUNT(Price) From BillDetails Where Price >= 30000000 )	
 	END 'PhanKhucCaoCap'
+
+
 From Bill
+
